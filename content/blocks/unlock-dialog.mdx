@@ -1,0 +1,44 @@
+---
+title: "Unlock Dialog"
+description: "A non-dismissable modal PIN prompt — no backdrop click, no Escape-to-close."
+category: "Modal & Overlay"
+tags: ["modal", "dialog"]
+registryName: "unlock-dialog"
+relatedBlocks: ["protected-modal", "pin-input", "access-gate"]
+accessibility: "role=\"dialog\" + aria-modal=\"true\" + aria-labelledby pointing at the heading. Focus moves into the panel on open. Deliberately not dismissable via Escape or backdrop click — a gate you can dismiss without unlocking isn't a gate, so this omission is intentional, not a missing feature."
+customization: "Composable standalone — trigger it from your own button or menu item instead of gating content directly, by controlling `open` yourself. Pass `footer` for help text or a support link under the form."
+props:
+  - name: "open"
+    type: "boolean"
+    required: true
+    description: "Whether the dialog is visible."
+  - name: "value"
+    type: "string"
+    required: true
+    description: "Current input value (controlled)."
+  - name: "onChange"
+    type: "(value: string) => void"
+    required: true
+    description: "Called on every keystroke/paste."
+  - name: "onSubmit"
+    type: "() => void"
+    required: true
+    description: "Called on Enter or the submit button."
+  - name: "submitting"
+    type: "boolean"
+    required: true
+    description: "Disables the field and shows the busy label."
+  - name: "error"
+    type: "AccessGateError | null"
+    required: true
+    description: "Drives which error message renders."
+  - name: "labels"
+    type: "AccessGateLabels"
+    description: "Overrides for every user-facing string."
+  - name: "footer"
+    type: "ReactNode"
+    description: "Extra content under the form."
+---
+
+The modal shell `<ProtectedModal>` renders internally, exposed on its own for cases where you want to
+trigger an unlock prompt manually rather than gating a whole content region.

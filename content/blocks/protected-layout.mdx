@@ -1,0 +1,30 @@
+---
+title: "Protected Layout"
+description: "Access Gate shaped for a full-page shell — header/footer stay visible even while locked."
+category: "Routing & Layout"
+tags: ["routing", "layout"]
+registryName: "protected-layout"
+relatedBlocks: ["access-gate", "protected-route", "standalone-gate"]
+accessibility: "Header and footer are always in the document, in source order, whether or not the gate is unlocked — so a persistent nav landmark stays reachable by screen reader users at every state, not just once unlocked."
+customization: "Pass `header`/`footer` for chrome that should survive the gate — a logo, a footer with legal links. Everything else (labels, storage, timeout) is identical to Access Gate."
+props:
+  - name: "expectedHash"
+    type: "string"
+    description: "SHA-256 hex hash to verify against, for local mode."
+  - name: "verify"
+    type: "VerifyFn"
+    description: "Custom async verification function, for server mode."
+  - name: "children"
+    type: "ReactNode"
+    required: true
+    description: "Rendered once unlocked."
+  - name: "header"
+    type: "ReactNode"
+    description: "Rendered above the PIN prompt even while locked."
+  - name: "footer"
+    type: "ReactNode"
+    description: "Rendered below the PIN prompt even while locked."
+---
+
+Built for a Next.js `layout.tsx` or any app root where the gate should wrap the page content but not the
+site chrome around it.

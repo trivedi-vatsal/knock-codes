@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "session-provider",
+  "title": "Session Provider",
+  "description": "Shares one useAccessGate session across a tree, so a gate, a Logout Button, and a Session Timeout Banner all read and act on the same unlock state.",
+  "registryDependencies": [
+    "access-gate-hook"
+  ],
+  "files": [
+    {
+      "path": "packages/react/AccessGateProvider.tsx",
+      "content": "\"use client\";\n\nimport { createContext, useContext, type ReactNode } from \"react\";\nimport { useAccessGate } from \"./useAccessGate.ts\";\nimport type { AccessGateConfig, UseAccessGateResult } from \"./types.ts\";\n\nconst AccessGateContext = createContext<UseAccessGateResult | null>(null);\n\nexport interface AccessGateProviderProps extends AccessGateConfig {\n  children: ReactNode;\n}\n\n/**\n * Shares one `useAccessGate` session across a whole tree, so multiple\n * components — a gate, a `LogoutButton`, a `SessionTimeoutBanner` — read and\n * act on the same unlock state instead of each running an independent\n * verification/session lifecycle. Optional: `useAccessGate` or `<AccessGate>`\n * work standalone with no provider; reach for this only when two or more\n * components need to share one session.\n */\nexport function AccessGateProvider({ children, ...config }: AccessGateProviderProps) {\n  const state = useAccessGate(config);\n  return <AccessGateContext.Provider value={state}>{children}</AccessGateContext.Provider>;\n}\n\n/** Throws outside an `<AccessGateProvider>` — there is no meaningful standalone default. */\nexport function useAccessGateContext(): UseAccessGateResult {\n  const context = useContext(AccessGateContext);\n  if (!context) {\n    throw new Error(\"Access Gate: useAccessGateContext must be used within an <AccessGateProvider>.\");\n  }\n  return context;\n}\n",
+      "type": "registry:file",
+      "target": "components/access-gate/react/AccessGateProvider.tsx"
+    }
+  ],
+  "type": "registry:block"
+}

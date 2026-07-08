@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "session-timeout-banner",
+  "title": "Session Timeout Banner",
+  "description": "Warns before the shared session expires, with a one-click way to log out immediately instead of waiting for automatic expiry. Requires a Session Provider.",
+  "registryDependencies": [
+    "session-provider"
+  ],
+  "files": [
+    {
+      "path": "packages/react/SessionTimeoutBanner.tsx",
+      "content": "\"use client\";\n\nimport { useEffect, useState } from \"react\";\nimport { useAccessGateContext } from \"./AccessGateProvider.tsx\";\nimport { EXPIRY_POLL_INTERVAL_MS } from \"./types.ts\";\nimport { cx } from \"./cx.ts\";\n\nexport interface SessionTimeoutBannerProps {\n  /** Show the banner once this many ms remain before expiry. @default 60_000 */\n  warnBeforeMs?: number;\n  className?: string;\n}\n\n/**\n * Warns before the shared session (from `<AccessGateProvider>`) expires,\n * with a one-click way to log out immediately instead of waiting for the\n * automatic expiry. Renders nothing outside the warning window or with no\n * active session — requires a provider, since a banner needs a session to\n * watch that something else already established.\n */\nexport function SessionTimeoutBanner({ warnBeforeMs = 60_000, className }: SessionTimeoutBannerProps) {\n  const { session, logout } = useAccessGateContext();\n  const [now, setNow] = useState(() => Date.now());\n\n  useEffect(() => {\n    if (!session) return;\n    const interval = setInterval(() => setNow(Date.now()), EXPIRY_POLL_INTERVAL_MS);\n    return () => clearInterval(interval);\n  }, [session]);\n\n  if (!session) return null;\n  const remainingMs = session.expiresAt - now;\n  if (remainingMs > warnBeforeMs || remainingMs <= 0) return null;\n\n  const remainingSeconds = Math.max(0, Math.ceil(remainingMs / 1000));\n\n  return (\n    <div\n      role=\"alert\"\n      className={cx(\n        \"flex items-center justify-between gap-4 rounded-md border border-amber-300 bg-amber-50 px-4 py-2 text-sm text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-200\",\n        className\n      )}\n    >\n      <span>Your session expires in {remainingSeconds}s.</span>\n      <button type=\"button\" onClick={logout} className=\"font-medium underline underline-offset-2\">\n        Log out now\n      </button>\n    </div>\n  );\n}\n",
+      "type": "registry:file",
+      "target": "components/access-gate/react/SessionTimeoutBanner.tsx"
+    }
+  ],
+  "type": "registry:block"
+}

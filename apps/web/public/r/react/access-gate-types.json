@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "access-gate-types",
+  "title": "Access Gate Types",
+  "description": "Shared config/defaults/label types used by every React block. Installed automatically — not meant to be added on its own.",
+  "registryDependencies": [
+    "access-gate-core"
+  ],
+  "files": [
+    {
+      "path": "packages/react/types.ts",
+      "content": "import type { VerifyFn } from \"../core/verify.ts\";\nimport type { StorageMode } from \"../core/storage.ts\";\nimport type { AccessGateSession } from \"../core/session.ts\";\n\n/** Unset-prop defaults pinned by ADR-0011 — see that ADR before changing any of these. */\nexport const DEFAULT_TIMEOUT_MS = 1_800_000; // 30 minutes\nexport const ACTIVITY_WRITE_THROTTLE_MS = 1_000;\nexport const EXPIRY_POLL_INTERVAL_MS = 1_000;\n\n/**\n * Configuration shared by `<AccessGate>` and `useAccessGate` — ADR-0011.\n * The vanilla JS surface (M3) exposes the same names, adjusted only for\n * binding syntax, so the two surfaces stay behaviorally comparable.\n */\nexport interface AccessGateConfig {\n  expectedHash?: string;\n  verify?: VerifyFn;\n  /** @default \"localStorage\" */\n  storage?: StorageMode;\n  /** @default \"access-gate:session\" (src/core/storage.ts DEFAULT_STORAGE_KEY) */\n  storageKey?: string;\n  /** Session lifetime in ms. @default 1_800_000 (30 minutes) */\n  timeout?: number;\n  /** Sliding-timeout model: interaction rewrites expiry instead of a fixed TTL. @default false */\n  activityTracking?: boolean;\n}\n\n/**\n * `\"unknown\"`/omitted `VerifyResult` reasons collapse into `\"invalid\"` here —\n * per ADR-0009, the UI never distinguishes them from a plain wrong-code case.\n */\nexport type AccessGateErrorReason = \"invalid\" | \"network\";\n\nexport interface AccessGateError {\n  reason: AccessGateErrorReason;\n}\n\n/** The four-state machine from docs/ux/flows.md § Unlock Flow — `error` is an annotation on `idle`, not a fifth state. */\nexport type AccessGateState = \"idle\" | \"submitting\" | \"unlocked\";\n\nexport interface UseAccessGateResult {\n  state: AccessGateState;\n  error: AccessGateError | null;\n  session: AccessGateSession | null;\n  /** No-ops (returns without calling the verify strategy) for an empty code — docs/ux/flows.md § Error States. */\n  submit: (code: string) => Promise<void>;\n  logout: () => void;\n}\n\n/**\n * Every user-facing string, overridable per docs/ux/flows.md § Accessibility\n * Requirements' localization rule. `<AccessGate labels={...}>` merges these\n * over `DEFAULT_LABELS`; `useAccessGate` is headless and never touches this\n * type, since it renders no strings itself.\n */\nexport interface AccessGateLabels {\n  heading?: string;\n  inputLabel?: string;\n  placeholder?: string;\n  submitLabel?: string;\n  submittingLabel?: string;\n  invalidErrorMessage?: string;\n  networkErrorMessage?: string;\n  showCodeLabel?: string;\n  hideCodeLabel?: string;\n}\n\nexport const DEFAULT_LABELS: Required<AccessGateLabels> = {\n  heading: \"This page is protected\",\n  inputLabel: \"Access code\",\n  placeholder: \"Enter access code\",\n  submitLabel: \"Unlock\",\n  submittingLabel: \"Checking...\",\n  invalidErrorMessage: \"That code didn't work. Try again.\",\n  networkErrorMessage: \"Couldn't reach the server. Try again.\",\n  showCodeLabel: \"Show code\",\n  hideCodeLabel: \"Hide code\",\n};\n",
+      "type": "registry:file",
+      "target": "components/access-gate/react/types.ts"
+    }
+  ],
+  "type": "registry:block"
+}

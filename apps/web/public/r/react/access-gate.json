@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "access-gate",
+  "title": "Access Gate",
+  "description": "The main gate: renders children when unlocked, otherwise a PIN prompt. Local SHA-256 verification by default; pass a `verify` function for server-mode protection.",
+  "registryDependencies": [
+    "access-gate-hook",
+    "gate-wrapper",
+    "pin-input"
+  ],
+  "files": [
+    {
+      "path": "packages/react/AccessGate.tsx",
+      "content": "\"use client\";\n\nimport { useState, type ReactNode } from \"react\";\nimport { useAccessGate } from \"./useAccessGate.ts\";\nimport { PinInput } from \"./PinInput.tsx\";\nimport { GateWrapper, type GateWrapperVariant } from \"./GateWrapper.tsx\";\nimport { DEFAULT_LABELS, type AccessGateConfig, type AccessGateLabels } from \"./types.ts\";\n\nexport interface AccessGateProps extends AccessGateConfig {\n  children: ReactNode;\n  labels?: AccessGateLabels;\n  /** Visual shell around the PIN prompt. @default \"page\" */\n  variant?: GateWrapperVariant;\n  className?: string;\n}\n\n/**\n * Wrapper component — docs/architecture/overview.md § Component\n * Architecture. Renders `children` only when a valid session exists;\n * otherwise renders the PIN entry UI. Matches the state machine in\n * docs/ux/flows.md § Unlock Flow exactly: no separate \"mount loading\" state\n * (per that doc's Loading States section) — the PIN entry UI covers it.\n */\nexport function AccessGate({ children, labels, variant = \"page\", className, ...config }: AccessGateProps) {\n  const { state, error, submit } = useAccessGate(config);\n  const [code, setCode] = useState(\"\");\n\n  if (state === \"unlocked\") return <>{children}</>;\n\n  const merged = { ...DEFAULT_LABELS, ...labels };\n\n  const handleSubmit = async () => {\n    await submit(code);\n    setCode(\"\"); // clearing after every attempt is an implementation detail, not a contract — docs/ux/flows.md § Unlock Flow step 5\n  };\n\n  return (\n    <GateWrapper variant={variant} className={className}>\n      <div className=\"w-full max-w-sm space-y-4 rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-950\">\n        <h1 className=\"text-lg font-semibold text-gray-900 dark:text-gray-50\">{merged.heading}</h1>\n        <PinInput\n          value={code}\n          onChange={setCode}\n          onSubmit={handleSubmit}\n          submitting={state === \"submitting\"}\n          error={error}\n          labels={labels}\n          autoFocus\n        />\n      </div>\n    </GateWrapper>\n  );\n}\n",
+      "type": "registry:file",
+      "target": "components/access-gate/react/AccessGate.tsx"
+    }
+  ],
+  "type": "registry:block"
+}

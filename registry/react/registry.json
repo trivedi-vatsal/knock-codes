@@ -1,0 +1,209 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "access-gate-react",
+  "homepage": "https://github.com/access-gate/access-gate",
+  "items": [
+    {
+      "name": "access-gate-core",
+      "type": "registry:block",
+      "title": "Access Gate Core",
+      "description": "Framework-agnostic hash/session/storage/verify logic. Installed automatically as a dependency of every React block — install directly only if you're building a custom framework binding.",
+      "docs": "These files use explicit `.ts` extensions in their relative imports. If your TypeScript config reports \"An import path can only end with a '.ts' extension when 'allowImportingTsExtensions' is enabled,\" add `\"allowImportingTsExtensions\": true` to your tsconfig.json's compilerOptions.",
+      "files": [
+        { "path": "packages/core/hash.ts", "type": "registry:file", "target": "components/access-gate/core/hash.ts" },
+        { "path": "packages/core/verify.ts", "type": "registry:file", "target": "components/access-gate/core/verify.ts" },
+        { "path": "packages/core/session.ts", "type": "registry:file", "target": "components/access-gate/core/session.ts" },
+        { "path": "packages/core/storage.ts", "type": "registry:file", "target": "components/access-gate/core/storage.ts" }
+      ]
+    },
+    {
+      "name": "access-gate-types",
+      "type": "registry:block",
+      "title": "Access Gate Types",
+      "description": "Shared config/defaults/label types used by every React block. Installed automatically — not meant to be added on its own.",
+      "registryDependencies": ["access-gate-core"],
+      "files": [
+        { "path": "packages/react/types.ts", "type": "registry:file", "target": "components/access-gate/react/types.ts" }
+      ]
+    },
+    {
+      "name": "access-gate-hook",
+      "type": "registry:block",
+      "title": "useAccessGate",
+      "description": "The headless session/verification hook every stateful block is built on. Installed automatically — use it directly only if you're building a fully custom PIN UI.",
+      "registryDependencies": ["access-gate-types"],
+      "files": [
+        { "path": "packages/react/useAccessGate.ts", "type": "registry:file", "target": "components/access-gate/react/useAccessGate.ts" }
+      ]
+    },
+    {
+      "name": "cx-util",
+      "type": "registry:block",
+      "title": "cx (classname helper)",
+      "description": "Tiny local classname joiner used across blocks. Installed automatically.",
+      "files": [
+        { "path": "packages/react/cx.ts", "type": "registry:file", "target": "components/access-gate/react/cx.ts" }
+      ]
+    },
+    {
+      "name": "gate-wrapper",
+      "type": "registry:block",
+      "title": "Gate Wrapper",
+      "description": "The shared outer-positioning primitive (full-page centered vs. inline) every visible block composes on. Use it directly to build a fully custom gate layout.",
+      "registryDependencies": ["cx-util"],
+      "files": [
+        { "path": "packages/react/GateWrapper.tsx", "type": "registry:file", "target": "components/access-gate/react/GateWrapper.tsx" }
+      ]
+    },
+    {
+      "name": "pin-input",
+      "type": "registry:block",
+      "title": "PIN Input",
+      "description": "Masked PIN/passphrase input with paste support, show/hide toggle, and accessible loading/error states. No verification logic of its own.",
+      "registryDependencies": ["access-gate-types"],
+      "files": [
+        { "path": "packages/react/PinInput.tsx", "type": "registry:file", "target": "components/access-gate/react/PinInput.tsx" }
+      ]
+    },
+    {
+      "name": "access-gate",
+      "type": "registry:block",
+      "title": "Access Gate",
+      "description": "The main gate: renders children when unlocked, otherwise a PIN prompt. Local SHA-256 verification by default; pass a `verify` function for server-mode protection.",
+      "registryDependencies": ["access-gate-hook", "gate-wrapper", "pin-input"],
+      "files": [
+        { "path": "packages/react/AccessGate.tsx", "type": "registry:file", "target": "components/access-gate/react/AccessGate.tsx" }
+      ]
+    },
+    {
+      "name": "protected-route",
+      "type": "registry:block",
+      "title": "Protected Route",
+      "description": "`<AccessGate>` shaped for route-level guarding (a React Router `element`, a layout redirect guard), with an optional `unauthorizedFallback` for routes that shouldn't show an inline PIN prompt.",
+      "registryDependencies": ["access-gate-hook", "access-gate"],
+      "files": [
+        { "path": "packages/react/ProtectedRoute.tsx", "type": "registry:file", "target": "components/access-gate/react/ProtectedRoute.tsx" }
+      ]
+    },
+    {
+      "name": "protected-layout",
+      "type": "registry:block",
+      "title": "Protected Layout",
+      "description": "`<AccessGate>` shaped for a full-page shell (a Next.js layout.tsx): header/footer render even while locked, so persistent site chrome survives the gate.",
+      "registryDependencies": ["access-gate"],
+      "files": [
+        { "path": "packages/react/ProtectedLayout.tsx", "type": "registry:file", "target": "components/access-gate/react/ProtectedLayout.tsx" }
+      ]
+    },
+    {
+      "name": "unlock-dialog",
+      "type": "registry:block",
+      "title": "Unlock Dialog",
+      "description": "A non-dismissable modal PIN prompt — no backdrop click, no Escape-to-close. Composable standalone, or used by Protected Modal.",
+      "registryDependencies": ["pin-input", "access-gate-types"],
+      "files": [
+        { "path": "packages/react/UnlockDialog.tsx", "type": "registry:file", "target": "components/access-gate/react/UnlockDialog.tsx" }
+      ]
+    },
+    {
+      "name": "protected-modal",
+      "type": "registry:block",
+      "title": "Protected Modal",
+      "description": "Content stays mounted (blurred and inert) behind a modal Unlock Dialog instead of being replaced outright — useful when the protected content's layout should stay stable underneath the prompt.",
+      "registryDependencies": ["access-gate-hook", "unlock-dialog"],
+      "files": [
+        { "path": "packages/react/ProtectedModal.tsx", "type": "registry:file", "target": "components/access-gate/react/ProtectedModal.tsx" }
+      ]
+    },
+    {
+      "name": "session-provider",
+      "type": "registry:block",
+      "title": "Session Provider",
+      "description": "Shares one useAccessGate session across a tree, so a gate, a Logout Button, and a Session Timeout Banner all read and act on the same unlock state.",
+      "registryDependencies": ["access-gate-hook"],
+      "files": [
+        { "path": "packages/react/AccessGateProvider.tsx", "type": "registry:file", "target": "components/access-gate/react/AccessGateProvider.tsx" }
+      ]
+    },
+    {
+      "name": "session-timeout-banner",
+      "type": "registry:block",
+      "title": "Session Timeout Banner",
+      "description": "Warns before the shared session expires, with a one-click way to log out immediately instead of waiting for automatic expiry. Requires a Session Provider.",
+      "registryDependencies": ["session-provider"],
+      "files": [
+        { "path": "packages/react/SessionTimeoutBanner.tsx", "type": "registry:file", "target": "components/access-gate/react/SessionTimeoutBanner.tsx" }
+      ]
+    },
+    {
+      "name": "access-denied-screen",
+      "type": "registry:block",
+      "title": "Access Denied Screen",
+      "description": "A static \"you don't have access\" view with no PIN form in it at all — distinct from the PIN entry UI. Use it as a custom unauthorizedFallback or any hard denial state.",
+      "registryDependencies": ["gate-wrapper"],
+      "files": [
+        { "path": "packages/react/AccessDeniedScreen.tsx", "type": "registry:file", "target": "components/access-gate/react/AccessDeniedScreen.tsx" }
+      ]
+    },
+    {
+      "name": "verification-loader",
+      "type": "registry:block",
+      "title": "Verification Loader",
+      "description": "A small presentational spinner + label for the in-flight verification moment, for a fully custom PIN form built directly on useAccessGate.",
+      "registryDependencies": ["cx-util"],
+      "files": [
+        { "path": "packages/react/VerificationLoader.tsx", "type": "registry:file", "target": "components/access-gate/react/VerificationLoader.tsx" }
+      ]
+    },
+    {
+      "name": "logout-button",
+      "type": "registry:block",
+      "title": "Logout Button",
+      "description": "Reads the shared session from a Session Provider and clears it on click.",
+      "registryDependencies": ["session-provider", "cx-util"],
+      "files": [
+        { "path": "packages/react/LogoutButton.tsx", "type": "registry:file", "target": "components/access-gate/react/LogoutButton.tsx" }
+      ]
+    },
+    {
+      "name": "protected-card",
+      "type": "registry:block",
+      "title": "Protected Card",
+      "description": "A card-shaped gate for protecting one section of a page rather than the whole viewport — locked content stays mounted and blurred behind an Unlock button so the card's size never jumps.",
+      "registryDependencies": ["access-gate-hook", "pin-input", "gate-wrapper"],
+      "files": [
+        { "path": "packages/react/ProtectedCard.tsx", "type": "registry:file", "target": "components/access-gate/react/ProtectedCard.tsx" }
+      ]
+    },
+    {
+      "name": "standalone-gate",
+      "type": "registry:block",
+      "title": "Standalone Gate",
+      "description": "The fastest path to a working gate: wrap your app, pass a hash, done. A deliberately smaller prop surface than Access Gate.",
+      "registryDependencies": ["access-gate"],
+      "files": [
+        { "path": "packages/react/StandaloneGate.tsx", "type": "registry:file", "target": "components/access-gate/react/StandaloneGate.tsx" }
+      ]
+    },
+    {
+      "name": "embedded-gate",
+      "type": "registry:block",
+      "title": "Embedded Gate",
+      "description": "Access Gate fixed to the inline shell — sits naturally inside an existing layout (a sidebar widget, a section of a longer page) instead of taking over the full viewport.",
+      "registryDependencies": ["access-gate"],
+      "files": [
+        { "path": "packages/react/EmbeddedGate.tsx", "type": "registry:file", "target": "components/access-gate/react/EmbeddedGate.tsx" }
+      ]
+    },
+    {
+      "name": "access-gate-template",
+      "type": "registry:block",
+      "title": "Access Gate Template",
+      "description": "A complete, single-file \"restricted access\" screen — full-page dark backdrop, centered card, segmented code entry, support link, footer help text. Everything in one component.",
+      "registryDependencies": ["access-gate-hook", "cx-util"],
+      "files": [
+        { "path": "packages/react/AccessGateTemplate.tsx", "type": "registry:file", "target": "components/access-gate/react/AccessGateTemplate.tsx" }
+      ]
+    }
+  ]
+}

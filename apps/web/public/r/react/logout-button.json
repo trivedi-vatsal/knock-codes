@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "logout-button",
+  "title": "Logout Button",
+  "description": "Reads the shared session from a Session Provider and clears it on click.",
+  "registryDependencies": [
+    "session-provider",
+    "cx-util"
+  ],
+  "files": [
+    {
+      "path": "packages/react/LogoutButton.tsx",
+      "content": "\"use client\";\n\nimport type { ReactNode } from \"react\";\nimport { useAccessGateContext } from \"./AccessGateProvider.tsx\";\nimport { cx } from \"./cx.ts\";\n\nexport interface LogoutButtonProps {\n  children?: ReactNode;\n  className?: string;\n  /** Called after the shared session is cleared. */\n  onLoggedOut?: () => void;\n}\n\n/**\n * Reads the shared session from `<AccessGateProvider>` and clears it on\n * click. Requires a provider — a logout action only makes sense where a\n * session is already being shared with something else that reads it.\n */\nexport function LogoutButton({ children = \"Log out\", className, onLoggedOut }: LogoutButtonProps) {\n  const { logout } = useAccessGateContext();\n\n  return (\n    <button\n      type=\"button\"\n      onClick={() => {\n        logout();\n        onLoggedOut?.();\n      }}\n      className={cx(\n        \"rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-900\",\n        className\n      )}\n    >\n      {children}\n    </button>\n  );\n}\n",
+      "type": "registry:file",
+      "target": "components/access-gate/react/LogoutButton.tsx"
+    }
+  ],
+  "type": "registry:block"
+}

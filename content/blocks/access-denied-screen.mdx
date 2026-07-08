@@ -1,0 +1,29 @@
+---
+title: "Access Denied Screen"
+description: "A static \"you don't have access\" view — no PIN form in it at all."
+category: "Feedback"
+tags: ["feedback", "fallback"]
+registryName: "access-denied-screen"
+relatedBlocks: ["protected-route", "gate-wrapper"]
+accessibility: "A plain heading + message + optional action — no live region needed since nothing here changes without a full re-render triggered by the parent."
+customization: "Not wired to any verification strategy on purpose. Use it as a custom `unauthorizedFallback` on `<ProtectedRoute>`, or anywhere you need a denial state that never accepts another attempt — pass `action` for a \"contact us\" link or a retry button that resets your own flow."
+props:
+  - name: "heading"
+    type: "string"
+    default: '"Access denied"'
+    description: "The main heading."
+  - name: "message"
+    type: "ReactNode"
+    default: '"You don’t have permission to view this page."'
+    description: "Body copy under the heading."
+  - name: "action"
+    type: "ReactNode"
+    description: "Optional call to action under the message."
+  - name: "variant"
+    type: '"page" | "inline"'
+    default: '"page"'
+    description: "Outer positioning."
+---
+
+Distinct from the PIN entry UI `<AccessGate>` renders while locked — this screen means "no more attempts,"
+not "try again."

@@ -1,0 +1,26 @@
+---
+title: "Protected Card"
+description: "A card-shaped gate for protecting one section of a page rather than the whole viewport."
+category: "Modal & Overlay"
+tags: ["card", "widget"]
+registryName: "protected-card"
+relatedBlocks: ["protected-modal", "embedded-gate", "gate-wrapper"]
+accessibility: "The blurred preview behind the Unlock button is aria-hidden and inert, matching Protected Modal's approach — it's decorative once the button is shown, not a second interactive surface."
+customization: "Locked content stays mounted and blurred behind an Unlock button instead of being replaced outright, so the card's size and position never jump between locked and unlocked. Good fit for a dashboard tile or a gated preview inside a grid of otherwise-public cards."
+props:
+  - name: "expectedHash"
+    type: "string"
+    description: "SHA-256 hex hash to verify against, for local mode."
+  - name: "verify"
+    type: "VerifyFn"
+    description: "Custom async verification function, for server mode."
+  - name: "children"
+    type: "ReactNode"
+    required: true
+    description: "The card's content — blurred while locked, revealed once unlocked."
+  - name: "className"
+    type: "string"
+    description: "Extra classes on the card."
+---
+
+Click "Unlock" to reveal an inline PIN form in place, without leaving the card or navigating away.

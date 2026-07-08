@@ -1,0 +1,31 @@
+---
+title: "Standalone Gate"
+description: "The fastest path to a working gate: wrap your app, pass a hash, done."
+category: "Routing & Layout"
+tags: ["quickstart"]
+registryName: "standalone-gate"
+relatedBlocks: ["access-gate", "embedded-gate"]
+accessibility: "Same PIN entry UI as Access Gate — full keyboard and screen-reader support inherited, none of it re-implemented."
+customization: "Deliberately a smaller prop surface than Access Gate — just `expectedHash`/`verify`, `children`, and an optional `heading`. Reach for `<AccessGate>` directly the moment you need storage/timeout/activity-tracking control."
+props:
+  - name: "expectedHash"
+    type: "string"
+    description: "SHA-256 hex hash to verify against, for local mode."
+  - name: "verify"
+    type: "VerifyFn"
+    description: "Custom async verification function, for server mode."
+  - name: "children"
+    type: "ReactNode"
+    required: true
+    description: "Rendered once unlocked."
+  - name: "heading"
+    type: "string"
+    default: '"This page is protected"'
+    description: "Overrides just the heading — for everything else, use Access Gate directly."
+  - name: "variant"
+    type: '"page" | "inline"'
+    default: '"page"'
+    description: "Escape hatch for embedding a demo somewhere other than a real app root — a docs page, this gallery's own preview."
+---
+
+For the two-line integration: generate a hash, wrap your app, ship it. No config to reason about.

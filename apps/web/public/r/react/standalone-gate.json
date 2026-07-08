@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "standalone-gate",
+  "title": "Standalone Gate",
+  "description": "The fastest path to a working gate: wrap your app, pass a hash, done. A deliberately smaller prop surface than Access Gate.",
+  "registryDependencies": [
+    "access-gate"
+  ],
+  "files": [
+    {
+      "path": "packages/react/StandaloneGate.tsx",
+      "content": "\"use client\";\n\nimport type { ReactNode } from \"react\";\nimport { AccessGate } from \"./AccessGate.tsx\";\nimport type { GateWrapperVariant } from \"./GateWrapper.tsx\";\nimport type { AccessGateConfig } from \"./types.ts\";\n\nexport interface StandaloneGateProps extends Pick<AccessGateConfig, \"expectedHash\" | \"verify\"> {\n  children: ReactNode;\n  /** @default \"This page is protected\" */\n  heading?: string;\n  /** Escape hatch for embedding a Standalone Gate somewhere other than a real app root (a demo, a docs page). @default \"page\" */\n  variant?: GateWrapperVariant;\n}\n\n/**\n * The fastest path to a working gate: wrap your app, pass a hash, done.\n * Deliberately exposes a smaller surface than `<AccessGate>` — no storage,\n * timeout, or activity-tracking props — reach for `<AccessGate>` directly\n * once you need those.\n */\nexport function StandaloneGate({ children, heading, expectedHash, verify, variant }: StandaloneGateProps) {\n  return (\n    <AccessGate expectedHash={expectedHash} verify={verify} labels={heading ? { heading } : undefined} variant={variant}>\n      {children}\n    </AccessGate>\n  );\n}\n",
+      "type": "registry:file",
+      "target": "components/access-gate/react/StandaloneGate.tsx"
+    }
+  ],
+  "type": "registry:block"
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "protected-card",
+  "title": "Protected Card",
+  "description": "A card-shaped gate for protecting one section of a page rather than the whole viewport — locked content stays mounted and blurred behind an Unlock button so the card's size never jumps.",
+  "registryDependencies": [
+    "access-gate-hook",
+    "pin-input",
+    "gate-wrapper"
+  ],
+  "files": [
+    {
+      "path": "packages/react/ProtectedCard.tsx",
+      "content": "\"use client\";\n\nimport { useState, type ReactNode } from \"react\";\nimport { useAccessGate } from \"./useAccessGate.ts\";\nimport { PinInput } from \"./PinInput.tsx\";\nimport { GateWrapper } from \"./GateWrapper.tsx\";\nimport type { AccessGateConfig } from \"./types.ts\";\nimport { cx } from \"./cx.ts\";\n\nexport interface ProtectedCardProps extends AccessGateConfig {\n  children: ReactNode;\n  className?: string;\n}\n\n/**\n * A card-shaped gate for protecting one section of a page rather than the\n * whole viewport — locked content stays mounted and blurred behind an\n * \"Unlock\" button instead of being replaced outright, so the card's size\n * and position never jump between locked and unlocked.\n */\nexport function ProtectedCard({ children, className, ...config }: ProtectedCardProps) {\n  const { state, error, submit } = useAccessGate(config);\n  const [expanded, setExpanded] = useState(false);\n  const [code, setCode] = useState(\"\");\n\n  const cardClassName = cx(\n    \"w-full max-w-sm rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-950\",\n    className\n  );\n\n  if (state === \"unlocked\") {\n    return (\n      <GateWrapper variant=\"inline\">\n        <div className={cx(cardClassName, \"p-6\")}>{children}</div>\n      </GateWrapper>\n    );\n  }\n\n  const handleSubmit = async () => {\n    await submit(code);\n    setCode(\"\");\n  };\n\n  return (\n    <GateWrapper variant=\"inline\">\n      <div className={cx(cardClassName, \"relative overflow-hidden p-6\")}>\n        <div aria-hidden=\"true\" className=\"pointer-events-none select-none blur-sm\">\n          {children}\n        </div>\n        <div className=\"absolute inset-0 flex items-center justify-center bg-white/80 p-4 dark:bg-gray-950/80\">\n          {expanded ? (\n            <div className=\"w-full max-w-xs\">\n              <PinInput\n                value={code}\n                onChange={setCode}\n                onSubmit={handleSubmit}\n                submitting={state === \"submitting\"}\n                error={error}\n                autoFocus\n              />\n            </div>\n          ) : (\n            <button\n              type=\"button\"\n              onClick={() => setExpanded(true)}\n              className=\"rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-200\"\n            >\n              Unlock\n            </button>\n          )}\n        </div>\n      </div>\n    </GateWrapper>\n  );\n}\n",
+      "type": "registry:file",
+      "target": "components/access-gate/react/ProtectedCard.tsx"
+    }
+  ],
+  "type": "registry:block"
+}

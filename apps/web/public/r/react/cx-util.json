@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cx-util",
+  "title": "cx (classname helper)",
+  "description": "Tiny local classname joiner used across blocks. Installed automatically.",
+  "files": [
+    {
+      "path": "packages/react/cx.ts",
+      "content": "/** Tiny local classname joiner — avoids a `clsx` dependency for copy-owned portability. */\nexport function cx(...classes: Array<string | false | null | undefined>): string {\n  return classes.filter(Boolean).join(\" \");\n}\n",
+      "type": "registry:file",
+      "target": "components/access-gate/react/cx.ts"
+    }
+  ],
+  "type": "registry:block"
+}

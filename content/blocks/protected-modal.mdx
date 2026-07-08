@@ -1,0 +1,30 @@
+---
+title: "Protected Modal"
+description: "Content stays mounted and blurred behind a modal Unlock Dialog instead of being replaced."
+category: "Modal & Overlay"
+tags: ["modal"]
+registryName: "protected-modal"
+relatedBlocks: ["unlock-dialog", "protected-card", "access-gate"]
+accessibility: "The blurred content is marked aria-hidden and pointer-events-none while locked, so screen readers and keyboard tabbing skip straight past it to the dialog — it's visually present but not reachable, which is the correct behavior for inert background content."
+customization: "Best for cases where the protected content's layout should stay stable underneath the prompt — a preview behind a paywall-style modal — rather than collapsing to a bare PIN screen the way Access Gate does."
+props:
+  - name: "expectedHash"
+    type: "string"
+    description: "SHA-256 hex hash to verify against, for local mode."
+  - name: "verify"
+    type: "VerifyFn"
+    description: "Custom async verification function, for server mode."
+  - name: "children"
+    type: "ReactNode"
+    required: true
+    description: "Stays mounted, blurred while locked."
+  - name: "labels"
+    type: "AccessGateLabels"
+    description: "Overrides for every user-facing string."
+  - name: "className"
+    type: "string"
+    description: "Extra classes on the outer relative container."
+---
+
+Content and gate coexist in the DOM at all times — only the modal's visibility changes, which keeps layout
+shifts to zero on unlock.

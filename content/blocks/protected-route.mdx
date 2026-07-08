@@ -1,0 +1,34 @@
+---
+title: "Protected Route"
+description: "Access Gate shaped for route-level guarding, with an optional custom unauthorized state."
+category: "Routing & Layout"
+tags: ["routing"]
+registryName: "protected-route"
+relatedBlocks: ["access-gate", "protected-layout", "access-denied-screen"]
+accessibility: "Identical to Access Gate when unauthorizedFallback is unset. When it is set, make sure whatever you pass as the fallback is itself accessible — this block doesn't manage focus for you across a route transition."
+customization: "Pass `unauthorizedFallback` to render something other than an inline PIN prompt while locked — pair it with your router's own navigation for a redirect-on-lock pattern, or pass an `<AccessDeniedScreen>` for a hard-denial route."
+props:
+  - name: "expectedHash"
+    type: "string"
+    description: "SHA-256 hex hash to verify against, for local mode."
+  - name: "verify"
+    type: "VerifyFn"
+    description: "Custom async verification function, for server mode."
+  - name: "children"
+    type: "ReactNode"
+    required: true
+    description: "Rendered once unlocked."
+  - name: "unauthorizedFallback"
+    type: "ReactNode"
+    description: "Rendered instead of the default PIN prompt while locked. Omit for Access Gate's default behavior."
+  - name: "labels"
+    type: "AccessGateLabels"
+    description: "Overrides for every user-facing string."
+  - name: "variant"
+    type: '"page" | "inline"'
+    default: '"page"'
+    description: "Outer positioning."
+---
+
+Meant for a React Router `element` or any layout-level guard where "locked" sometimes means "show a
+different route entirely" rather than "prompt inline."

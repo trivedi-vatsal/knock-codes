@@ -1,0 +1,20 @@
+---
+title: "Verification Loader"
+description: "A small presentational spinner + label for the in-flight verification moment."
+category: "Feedback"
+tags: ["feedback", "loading"]
+registryName: "verification-loader"
+relatedBlocks: ["pin-input", "access-gate"]
+accessibility: "role=\"status\" + aria-live=\"polite\", with the spinner itself marked aria-hidden so screen readers announce the text label once, not a decorative glyph."
+customization: "The same visual `<PinInput>` shows inline via its `submitting` state, exposed standalone for a fully custom PIN form built directly on `useAccessGate` where you're not using `<PinInput>` at all."
+props:
+  - name: "label"
+    type: "string"
+    default: '"Checking..."'
+    description: "Text next to the spinner."
+  - name: "className"
+    type: "string"
+    description: "Extra classes on the container."
+---
+
+A tiny, focused component — reach for it when composing your own verification UI from scratch.

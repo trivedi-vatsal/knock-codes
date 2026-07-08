@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "access-denied-screen",
+  "title": "Access Denied Screen",
+  "description": "A static \"you don't have access\" view with no PIN form in it at all — distinct from the PIN entry UI. Use it as a custom unauthorizedFallback or any hard denial state.",
+  "registryDependencies": [
+    "gate-wrapper"
+  ],
+  "files": [
+    {
+      "path": "packages/react/AccessDeniedScreen.tsx",
+      "content": "import type { ReactNode } from \"react\";\nimport { GateWrapper, type GateWrapperVariant } from \"./GateWrapper.tsx\";\nimport { cx } from \"./cx.ts\";\n\nexport interface AccessDeniedScreenProps {\n  heading?: string;\n  message?: ReactNode;\n  action?: ReactNode;\n  variant?: GateWrapperVariant;\n  className?: string;\n}\n\n/**\n * A static \"you don't have access\" view — distinct from the PIN entry UI\n * `<AccessGate>` renders while locked, because it never accepts another\n * attempt. Use it as a custom `unauthorizedFallback` (e.g. on\n * `<ProtectedRoute>`) or anywhere a route/component needs a denial state\n * with no verification form in it at all.\n */\nexport function AccessDeniedScreen({\n  heading = \"Access denied\",\n  message = \"You don't have permission to view this page.\",\n  action,\n  variant = \"page\",\n  className,\n}: AccessDeniedScreenProps) {\n  return (\n    <GateWrapper variant={variant} className={className}>\n      <div className={cx(\"w-full max-w-sm space-y-3 text-center\")}>\n        <h1 className=\"text-lg font-semibold text-gray-900 dark:text-gray-50\">{heading}</h1>\n        <p className=\"text-sm text-gray-600 dark:text-gray-400\">{message}</p>\n        {action}\n      </div>\n    </GateWrapper>\n  );\n}\n",
+      "type": "registry:file",
+      "target": "components/access-gate/react/AccessDeniedScreen.tsx"
+    }
+  ],
+  "type": "registry:block"
+}

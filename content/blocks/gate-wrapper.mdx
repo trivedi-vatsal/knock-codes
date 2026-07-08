@@ -1,0 +1,25 @@
+---
+title: "Gate Wrapper"
+description: "The shared outer-positioning primitive every visible block composes on."
+category: "Core"
+tags: ["core", "layout"]
+registryName: "gate-wrapper"
+relatedBlocks: ["access-gate", "embedded-gate", "standalone-gate"]
+accessibility: "Purely structural — a single div with positioning classes. No semantics of its own to get wrong."
+customization: "Use it directly when none of the other blocks' visual shells fit — wrap your own fully custom PIN form in it to get the same full-page-centered or inline placement every other block uses, for free."
+props:
+  - name: "children"
+    type: "ReactNode"
+    required: true
+    description: "Content to position."
+  - name: "variant"
+    type: '"page" | "inline"'
+    default: '"page"'
+    description: '"page" centers full-height (min-h-100dvh); "inline" flows naturally in place.'
+  - name: "className"
+    type: "string"
+    description: "Extra classes on the wrapper."
+---
+
+Not a verification strategy — just layout. Every block that renders visible UI (`<AccessGate>`,
+`<ProtectedCard>`, `<AccessDeniedScreen>`, ...) composes on this instead of re-deriving centering/spacing.

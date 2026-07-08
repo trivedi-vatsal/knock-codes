@@ -1,0 +1,32 @@
+---
+title: "Session Provider"
+description: "Shares one useAccessGate session across a tree, so multiple components stay in sync."
+category: "Session"
+tags: ["context", "session"]
+registryName: "session-provider"
+relatedBlocks: ["logout-button", "session-timeout-banner", "access-gate"]
+accessibility: "Renders no UI of its own — purely a context boundary. Accessibility is entirely a function of whatever you render inside it."
+customization: "Reach for this only when two or more components need to share one session — a gate, a Logout Button, and a Session Timeout Banner all reading and acting on the same unlock state. `useAccessGate`/`<AccessGate>` remain the right choice standalone."
+props:
+  - name: "expectedHash"
+    type: "string"
+    description: "SHA-256 hex hash to verify against, for local mode."
+  - name: "verify"
+    type: "VerifyFn"
+    description: "Custom async verification function, for server mode."
+  - name: "storage"
+    type: '"localStorage" | "sessionStorage" | "memory"'
+    default: '"localStorage"'
+    description: "Where the unlocked session persists."
+  - name: "timeout"
+    type: "number"
+    default: "1800000"
+    description: "Session lifetime in milliseconds."
+  - name: "children"
+    type: "ReactNode"
+    required: true
+    description: "Everything that should read the shared session via useAccessGateContext()."
+---
+
+`useAccessGateContext()` throws outside a provider — there's no meaningful standalone default for "give me
+the shared session" when nothing established one.

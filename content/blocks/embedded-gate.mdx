@@ -1,0 +1,34 @@
+---
+title: "Embedded Gate"
+description: "Access Gate fixed to the inline shell — sits naturally inside an existing layout."
+category: "Routing & Layout"
+tags: ["layout"]
+registryName: "embedded-gate"
+relatedBlocks: ["access-gate", "standalone-gate", "protected-card"]
+accessibility: "Identical to Access Gate — only the outer positioning changes, not the semantics or keyboard flow."
+customization: "Same full prop surface as Access Gate, minus `variant` (fixed to \"inline\"). Use it for a sidebar widget or a gated section partway down a longer page, where a full-viewport takeover would be wrong."
+props:
+  - name: "expectedHash"
+    type: "string"
+    description: "SHA-256 hex hash to verify against, for local mode."
+  - name: "verify"
+    type: "VerifyFn"
+    description: "Custom async verification function, for server mode."
+  - name: "storage"
+    type: '"localStorage" | "sessionStorage" | "memory"'
+    default: '"localStorage"'
+    description: "Where the unlocked session persists."
+  - name: "timeout"
+    type: "number"
+    default: "1800000"
+    description: "Session lifetime in milliseconds."
+  - name: "children"
+    type: "ReactNode"
+    required: true
+    description: "Rendered once unlocked."
+  - name: "labels"
+    type: "AccessGateLabels"
+    description: "Overrides for every user-facing string."
+---
+
+The section-level counterpart to Standalone Gate's whole-app usage — same component, contained footprint.

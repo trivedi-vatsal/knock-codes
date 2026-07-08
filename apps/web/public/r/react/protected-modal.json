@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "protected-modal",
+  "title": "Protected Modal",
+  "description": "Content stays mounted (blurred and inert) behind a modal Unlock Dialog instead of being replaced outright — useful when the protected content's layout should stay stable underneath the prompt.",
+  "registryDependencies": [
+    "access-gate-hook",
+    "unlock-dialog"
+  ],
+  "files": [
+    {
+      "path": "packages/react/ProtectedModal.tsx",
+      "content": "\"use client\";\n\nimport { useState, type ReactNode } from \"react\";\nimport { useAccessGate } from \"./useAccessGate.ts\";\nimport { UnlockDialog } from \"./UnlockDialog.tsx\";\nimport type { AccessGateConfig, AccessGateLabels } from \"./types.ts\";\nimport { cx } from \"./cx.ts\";\n\nexport interface ProtectedModalProps extends AccessGateConfig {\n  children: ReactNode;\n  labels?: AccessGateLabels;\n  className?: string;\n}\n\n/**\n * Content stays mounted (blurred and inert) behind a modal `<UnlockDialog>`\n * instead of being replaced outright — useful when the protected content's\n * layout should stay stable underneath the prompt rather than collapsing to\n * a bare PIN screen.\n */\nexport function ProtectedModal({ children, labels, className, ...config }: ProtectedModalProps) {\n  const { state, error, submit } = useAccessGate(config);\n  const [code, setCode] = useState(\"\");\n  const locked = state !== \"unlocked\";\n\n  const handleSubmit = async () => {\n    await submit(code);\n    setCode(\"\");\n  };\n\n  return (\n    <div className={cx(\"relative\", className)}>\n      <div aria-hidden={locked} className={cx(locked && \"pointer-events-none select-none blur-sm\")}>\n        {children}\n      </div>\n      <UnlockDialog\n        open={locked}\n        value={code}\n        onChange={setCode}\n        onSubmit={handleSubmit}\n        submitting={state === \"submitting\"}\n        error={error}\n        labels={labels}\n      />\n    </div>\n  );\n}\n",
+      "type": "registry:file",
+      "target": "components/access-gate/react/ProtectedModal.tsx"
+    }
+  ],
+  "type": "registry:block"
+}

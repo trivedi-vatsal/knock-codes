@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "gate-wrapper",
+  "title": "Gate Wrapper",
+  "description": "The shared outer-positioning primitive (full-page centered vs. inline) every visible block composes on. Use it directly to build a fully custom gate layout.",
+  "registryDependencies": [
+    "cx-util"
+  ],
+  "files": [
+    {
+      "path": "packages/react/GateWrapper.tsx",
+      "content": "import type { ReactNode } from \"react\";\nimport { cx } from \"./cx.ts\";\n\n/** Outer positioning only — \"page\" centers full-height, \"inline\" flows in place. Visual treatment (borders/padding/shadow) is each block's own concern, not this wrapper's. */\nexport type GateWrapperVariant = \"page\" | \"inline\";\n\nexport interface GateWrapperProps {\n  children: ReactNode;\n  /** @default \"page\" */\n  variant?: GateWrapperVariant;\n  className?: string;\n}\n\nconst VARIANT_CLASSES: Record<GateWrapperVariant, string> = {\n  page: \"flex min-h-[100dvh] w-full items-center justify-center p-6\",\n  inline: \"flex w-full items-start\",\n};\n\n/**\n * The shared outer-positioning primitive every visible block composes on —\n * a plain container, not a verification strategy. Kept separate from\n * `<AccessGate>` so blocks like `<ProtectedRoute>`/`<EmbeddedGate>` can reuse\n * the same page-vs-inline placement without re-deriving it, while each block\n * still owns its own inner card/border/spacing styling.\n */\nexport function GateWrapper({ children, variant = \"page\", className }: GateWrapperProps) {\n  return <div className={cx(VARIANT_CLASSES[variant], className)}>{children}</div>;\n}\n",
+      "type": "registry:file",
+      "target": "components/access-gate/react/GateWrapper.tsx"
+    }
+  ],
+  "type": "registry:block"
+}

@@ -1,0 +1,50 @@
+---
+title: "Access Gate"
+description: "The main gate — renders children when unlocked, otherwise a PIN prompt."
+category: "Core"
+tags: ["core", "gate"]
+registryName: "access-gate"
+relatedBlocks: ["protected-route", "standalone-gate", "protected-card"]
+accessibility: "The PIN field is a labeled, masked text input with native paste support. Errors and the submitting state announce through an aria-live=\"polite\" status region, so screen reader users hear \"Checking...\" and any error without focus moving. The whole flow works keyboard-only: tab to the field, type, Enter to submit."
+customization: "Every string is overridable through the `labels` prop for localization. The wrapper has no fixed visual opinions beyond the default card — pass `className` to restyle the shell, or skip this component and call `useAccessGate` directly to build a fully custom prompt."
+props:
+  - name: "expectedHash"
+    type: "string"
+    description: "SHA-256 hex hash to verify against, for local mode. Mutually exclusive with verify."
+  - name: "verify"
+    type: "VerifyFn"
+    description: "Custom async verification function, for server mode. Mutually exclusive with expectedHash."
+  - name: "storage"
+    type: '"localStorage" | "sessionStorage" | "memory"'
+    default: '"localStorage"'
+    description: "Where the unlocked session persists."
+  - name: "storageKey"
+    type: "string"
+    default: '"access-gate:session"'
+    description: "Storage key the session is written under."
+  - name: "timeout"
+    type: "number"
+    default: "1800000"
+    description: "Session lifetime in milliseconds (30 minutes)."
+  - name: "activityTracking"
+    type: "boolean"
+    default: "false"
+    description: "Sliding-timeout model — interaction rewrites expiry instead of a fixed TTL."
+  - name: "children"
+    type: "ReactNode"
+    required: true
+    description: "Rendered once unlocked."
+  - name: "labels"
+    type: "AccessGateLabels"
+    description: "Overrides for every user-facing string."
+  - name: "variant"
+    type: '"page" | "inline"'
+    default: '"page"'
+    description: "Outer positioning — full-page centered, or flows inline in an existing layout."
+  - name: "className"
+    type: "string"
+    description: "Extra classes on the outer wrapper."
+---
+
+The component every other block in this library either wraps or composes on. Local SHA-256 verification by
+default; swap `expectedHash` for `verify` to upgrade to server-mode protection with no other code changes.

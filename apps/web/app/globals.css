@@ -1,0 +1,143 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-heading: var(--font-sans);
+    --font-sans: var(--font-sans);
+    --font-mono: var(--font-mono);
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/*
+ * Palette modeled on asktori.ai (screenshot reference, not a pixel-exact
+ * clone — see plan doc): royal-blue accent, near-black navy, white content
+ * sections, charcoal body text. Hex rather than oklch for precise control
+ * over this specific blue.
+ */
+:root {
+    --background: #ffffff;
+    --foreground: #111827;
+    --card: #ffffff;
+    --card-foreground: #111827;
+    --popover: #ffffff;
+    --popover-foreground: #111827;
+    --primary: #2954d9;
+    --primary-foreground: #ffffff;
+    --secondary: #f1f5f9;
+    --secondary-foreground: #0f1b33;
+    --muted: #f1f5f9;
+    --muted-foreground: #64748b;
+    --accent: #eff4ff;
+    --accent-foreground: #1d3a8a;
+    --destructive: #dc2626;
+    --border: #e2e8f0;
+    --input: #e2e8f0;
+    --ring: #2954d9;
+    --chart-1: #2954d9;
+    --chart-2: #5b8def;
+    --chart-3: #8fb1f5;
+    --chart-4: #0f1b33;
+    --chart-5: #64748b;
+    --radius: 0.375rem;
+    --sidebar: #f8fafc;
+    --sidebar-foreground: #111827;
+    --sidebar-primary: #2954d9;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #eff4ff;
+    --sidebar-accent-foreground: #1d3a8a;
+    --sidebar-border: #e2e8f0;
+    --sidebar-ring: #2954d9;
+}
+
+.dark {
+    --background: #0b1220;
+    --foreground: #e5eaf3;
+    --card: #111a2e;
+    --card-foreground: #e5eaf3;
+    --popover: #111a2e;
+    --popover-foreground: #e5eaf3;
+    --primary: #5b8def;
+    --primary-foreground: #0b1220;
+    --secondary: #16233f;
+    --secondary-foreground: #c7d2e5;
+    --muted: #16233f;
+    --muted-foreground: #8494b3;
+    --accent: #16233f;
+    --accent-foreground: #bbd0ff;
+    --destructive: #f87171;
+    --border: #223252;
+    --input: #223252;
+    --ring: #5b8def;
+    --chart-1: #5b8def;
+    --chart-2: #2954d9;
+    --chart-3: #8fb1f5;
+    --chart-4: #c7d2e5;
+    --chart-5: #8494b3;
+    --sidebar: #0f1830;
+    --sidebar-foreground: #e5eaf3;
+    --sidebar-primary: #5b8def;
+    --sidebar-primary-foreground: #0b1220;
+    --sidebar-accent: #16233f;
+    --sidebar-accent-foreground: #bbd0ff;
+    --sidebar-border: #223252;
+    --sidebar-ring: #5b8def;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+  html {
+    @apply font-sans;
+    }
+}
+
+@layer utilities {
+  /* Uppercase, letter-spaced monospace label — nav items, tag badges, micro-copy. */
+  .label-mono {
+    @apply font-mono text-xs font-medium tracking-wider uppercase;
+  }
+}

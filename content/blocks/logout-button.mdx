@@ -1,0 +1,24 @@
+---
+title: "Logout Button"
+description: "Reads the shared session from a Session Provider and clears it on click."
+category: "Session"
+tags: ["session", "action"]
+registryName: "logout-button"
+relatedBlocks: ["session-provider", "session-timeout-banner"]
+accessibility: "A real <button>, not a link or div — full keyboard operability and screen-reader semantics for free."
+customization: "Pass children to change the label, or `onLoggedOut` to run something after the session clears (redirect, analytics, whatever your app needs)."
+props:
+  - name: "children"
+    type: "ReactNode"
+    default: '"Log out"'
+    description: "Button label."
+  - name: "className"
+    type: "string"
+    description: "Extra classes on the button."
+  - name: "onLoggedOut"
+    type: "() => void"
+    description: "Called after the shared session is cleared."
+---
+
+Requires a `<SessionProvider>` ancestor — a logout action only makes sense where a session is already being
+shared with something else that reads it.

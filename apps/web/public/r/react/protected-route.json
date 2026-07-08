@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "protected-route",
+  "title": "Protected Route",
+  "description": "`<AccessGate>` shaped for route-level guarding (a React Router `element`, a layout redirect guard), with an optional `unauthorizedFallback` for routes that shouldn't show an inline PIN prompt.",
+  "registryDependencies": [
+    "access-gate-hook",
+    "access-gate"
+  ],
+  "files": [
+    {
+      "path": "packages/react/ProtectedRoute.tsx",
+      "content": "\"use client\";\n\nimport type { ReactNode } from \"react\";\nimport { useAccessGate } from \"./useAccessGate.ts\";\nimport { AccessGate, type AccessGateProps } from \"./AccessGate.tsx\";\n\nexport interface ProtectedRouteProps extends AccessGateProps {\n  /**\n   * Rendered instead of the default PIN prompt while locked — e.g. a\n   * redirect notice paired with your router's own navigation. When omitted,\n   * behaves exactly like `<AccessGate>`.\n   */\n  unauthorizedFallback?: ReactNode;\n}\n\nfunction FallbackGate({ unauthorizedFallback, children, labels: _labels, variant: _variant, className: _className, ...config }: ProtectedRouteProps) {\n  const { state } = useAccessGate(config);\n  return <>{state === \"unlocked\" ? children : unauthorizedFallback}</>;\n}\n\n/**\n * `<AccessGate>` for route-level guarding — a React Router `element`, a\n * layout-level redirect guard — with one addition: an optional\n * `unauthorizedFallback` for routes that should show something other than\n * an inline PIN prompt while locked (e.g. a \"redirecting…\" notice).\n */\nexport function ProtectedRoute({ unauthorizedFallback, ...props }: ProtectedRouteProps) {\n  if (unauthorizedFallback === undefined) return <AccessGate {...props} />;\n  return <FallbackGate {...props} unauthorizedFallback={unauthorizedFallback} />;\n}\n",
+      "type": "registry:file",
+      "target": "components/access-gate/react/ProtectedRoute.tsx"
+    }
+  ],
+  "type": "registry:block"
+}
