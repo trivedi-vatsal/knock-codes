@@ -9,6 +9,7 @@ import { RelatedContent } from "@/components/related-content";
 import { BlockPreview } from "@/components/block-preview";
 import { PreviewPanel } from "@/components/preview-panel";
 import { BlueprintFrame } from "@/components/blueprint-frame";
+import { ThemeLabRoot } from "@/components/customizer/theme-lab-root";
 import { getAllBlocks, getBlockBySlug } from "@/lib/blocks";
 import { getRegistryItemSource, resolveRegistryDependencies } from "@/lib/registry";
 
@@ -40,6 +41,7 @@ export default async function BlockDetailPage({ params }: { params: Promise<{ sl
     .filter((b) => b !== undefined);
 
   return (
+    <ThemeLabRoot>
     <div className="mx-auto max-w-6xl px-6 py-12">
       <div className="mb-8 space-y-3">
         <p className="label-mono text-primary">→ {block.category}</p>
@@ -112,5 +114,6 @@ export default async function BlockDetailPage({ params }: { params: Promise<{ sl
         </section>
       )}
     </div>
+    </ThemeLabRoot>
   );
 }

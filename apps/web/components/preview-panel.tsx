@@ -5,6 +5,7 @@ import { Code2, Eye, Moon, RotateCcw, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CodeBrowser, type CodeBrowserFile } from "@/components/code-browser";
 import { CopyButton } from "@/components/copy-button";
+import { PreviewThemeProvider } from "@/components/customizer/preview-theme-provider";
 
 const ICON_BUTTON_CLASS =
   "inline-flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground hover:bg-muted hover:text-foreground";
@@ -104,7 +105,7 @@ export function PreviewPanel({
             "relative overflow-hidden rounded-lg border border-border",
             fillCanvas ? "h-[44rem] p-0" : "min-h-[44rem] p-8 sm:p-12",
             dark && "dark",
-            !fillCanvas && (dark ? "bg-[#0b1220]" : "bg-[radial-gradient(circle_at_1px_1px,var(--border)_1px,transparent_0)] [background-size:20px_20px]")
+            !fillCanvas && (dark ? "bg-[#0e1311] access-scanlines" : "bg-background access-grid")
           )}
         >
           {/*
@@ -117,7 +118,9 @@ export function PreviewPanel({
             hoping every div in the chain below resolves percentages right.
           */}
           <div key={previewKey} className={fillCanvas ? "absolute inset-0" : undefined}>
-            <PreviewDarkContext.Provider value={dark}>{preview}</PreviewDarkContext.Provider>
+            <PreviewDarkContext.Provider value={dark}>
+              <PreviewThemeProvider className={fillCanvas ? undefined : "rounded-md"}>{preview}</PreviewThemeProvider>
+            </PreviewDarkContext.Provider>
           </div>
         </div>
       </div>

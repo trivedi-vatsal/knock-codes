@@ -21,6 +21,7 @@ export { AccessDeniedScreen, type AccessDeniedScreenProps } from "./AccessDenied
 export { VerificationLoader, type VerificationLoaderProps } from "./VerificationLoader.tsx";
 export { LogoutButton, type LogoutButtonProps } from "./LogoutButton.tsx";
 export { ProtectedCard, type ProtectedCardProps } from "./ProtectedCard.tsx";
+export { AccessReceipt, type AccessReceiptProps } from "./AccessReceipt.tsx";
 export { StandaloneGate, type StandaloneGateProps } from "./StandaloneGate.tsx";
 export { EmbeddedGate, type EmbeddedGateProps } from "./EmbeddedGate.tsx";
 export {

@@ -25,6 +25,9 @@
     --color-input: var(--input);
     --color-border: var(--border);
     --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+    --color-warning: var(--warning);
+    --color-warning-foreground: var(--warning-foreground);
     --color-accent-foreground: var(--accent-foreground);
     --color-accent: var(--accent);
     --color-muted-foreground: var(--muted-foreground);
@@ -49,78 +52,84 @@
 }
 
 /*
- * Palette modeled on asktori.ai (screenshot reference, not a pixel-exact
- * clone — see plan doc): royal-blue accent, near-black navy, white content
- * sections, charcoal body text. Hex rather than oklch for precise control
- * over this specific blue.
+ * "Clearance" palette — access checkpoints, security consoles, passcards.
+ * Warm paper background, oxidized-teal primary, electric-citron signal
+ * accent, security-amber warning, access-red danger. Hex rather than oklch
+ * for precise control over these specific brand colors.
  */
 :root {
-    --background: #ffffff;
-    --foreground: #111827;
-    --card: #ffffff;
-    --card-foreground: #111827;
-    --popover: #ffffff;
-    --popover-foreground: #111827;
-    --primary: #2954d9;
-    --primary-foreground: #ffffff;
-    --secondary: #f1f5f9;
-    --secondary-foreground: #0f1b33;
-    --muted: #f1f5f9;
-    --muted-foreground: #64748b;
-    --accent: #eff4ff;
-    --accent-foreground: #1d3a8a;
-    --destructive: #dc2626;
-    --border: #e2e8f0;
-    --input: #e2e8f0;
-    --ring: #2954d9;
-    --chart-1: #2954d9;
-    --chart-2: #5b8def;
-    --chart-3: #8fb1f5;
-    --chart-4: #0f1b33;
-    --chart-5: #64748b;
-    --radius: 0.375rem;
-    --sidebar: #f8fafc;
-    --sidebar-foreground: #111827;
-    --sidebar-primary: #2954d9;
-    --sidebar-primary-foreground: #ffffff;
-    --sidebar-accent: #eff4ff;
-    --sidebar-accent-foreground: #1d3a8a;
-    --sidebar-border: #e2e8f0;
-    --sidebar-ring: #2954d9;
+    --background: #f7f3ea;
+    --foreground: #191a18;
+    --card: #fbf8f1;
+    --card-foreground: #191a18;
+    --popover: #fbf8f1;
+    --popover-foreground: #191a18;
+    --primary: #187c74;
+    --primary-foreground: #f7f3ea;
+    --secondary: #ece6d6;
+    --secondary-foreground: #191a18;
+    --muted: #d8d1c2;
+    --muted-foreground: #6b6456;
+    --accent: #d6f75a;
+    --accent-foreground: #191a18;
+    --warning: #ffb020;
+    --warning-foreground: #191a18;
+    --destructive: #e5484d;
+    --destructive-foreground: #f7f3ea;
+    --border: #d9d2c2;
+    --input: #d9d2c2;
+    --ring: #187c74;
+    --chart-1: #187c74;
+    --chart-2: #d6f75a;
+    --chart-3: #ffb020;
+    --chart-4: #e5484d;
+    --chart-5: #6b6456;
+    --radius: 0.625rem;
+    --sidebar: #f1ecdf;
+    --sidebar-foreground: #191a18;
+    --sidebar-primary: #187c74;
+    --sidebar-primary-foreground: #f7f3ea;
+    --sidebar-accent: #d6f75a;
+    --sidebar-accent-foreground: #191a18;
+    --sidebar-border: #d9d2c2;
+    --sidebar-ring: #187c74;
 }
 
 .dark {
-    --background: #0b1220;
-    --foreground: #e5eaf3;
-    --card: #111a2e;
-    --card-foreground: #e5eaf3;
-    --popover: #111a2e;
-    --popover-foreground: #e5eaf3;
-    --primary: #5b8def;
-    --primary-foreground: #0b1220;
-    --secondary: #16233f;
-    --secondary-foreground: #c7d2e5;
-    --muted: #16233f;
-    --muted-foreground: #8494b3;
-    --accent: #16233f;
-    --accent-foreground: #bbd0ff;
-    --destructive: #f87171;
-    --border: #223252;
-    --input: #223252;
-    --ring: #5b8def;
-    --chart-1: #5b8def;
-    --chart-2: #2954d9;
-    --chart-3: #8fb1f5;
-    --chart-4: #c7d2e5;
-    --chart-5: #8494b3;
-    --sidebar: #0f1830;
-    --sidebar-foreground: #e5eaf3;
-    --sidebar-primary: #5b8def;
-    --sidebar-primary-foreground: #0b1220;
-    --sidebar-accent: #16233f;
-    --sidebar-accent-foreground: #bbd0ff;
-    --sidebar-border: #223252;
-    --sidebar-ring: #5b8def;
+    --background: #0e1311;
+    --foreground: #edeae0;
+    --card: #171d1a;
+    --card-foreground: #edeae0;
+    --popover: #171d1a;
+    --popover-foreground: #edeae0;
+    --primary: #4fd1c5;
+    --primary-foreground: #0e1311;
+    --secondary: #1b231f;
+    --secondary-foreground: #edeae0;
+    --muted: #232b27;
+    --muted-foreground: #9aa39c;
+    --accent: #dfff67;
+    --accent-foreground: #0e1311;
+    --warning: #ffb020;
+    --warning-foreground: #0e1311;
+    --destructive: #ff6169;
+    --destructive-foreground: #0e1311;
+    --border: #26302b;
+    --input: #26302b;
+    --ring: #4fd1c5;
+    --chart-1: #4fd1c5;
+    --chart-2: #dfff67;
+    --chart-3: #ffb020;
+    --chart-4: #ff6169;
+    --chart-5: #9aa39c;
+    --sidebar: #131916;
+    --sidebar-foreground: #edeae0;
+    --sidebar-primary: #4fd1c5;
+    --sidebar-primary-foreground: #0e1311;
+    --sidebar-accent: #dfff67;
+    --sidebar-accent-foreground: #0e1311;
+    --sidebar-border: #26302b;
+    --sidebar-ring: #4fd1c5;
 }
 
 @layer base {
@@ -140,4 +149,95 @@
   .label-mono {
     @apply font-mono text-xs font-medium tracking-wider uppercase;
   }
+
+  /* Graph-paper dot grid — the "checkpoint console" backdrop for preview canvases and hero surfaces. */
+  .access-grid {
+    background-image: radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0);
+    background-size: 22px 22px;
+  }
+
+  /* Faint horizontal scan lines — console/terminal surfaces in dark mode. */
+  .access-scanlines {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--foreground) 4%, transparent) 0px,
+      color-mix(in oklch, var(--foreground) 4%, transparent) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  }
+
+  /* Thin vertical audit strip — a spine of tick marks along a panel edge. */
+  .audit-strip {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      var(--border) 0px,
+      var(--border) 1px,
+      transparent 1px,
+      transparent 6px
+    );
+  }
+
+  /* Small signal dot — status indicators (SESSION ACTIVE, EXPIRES SOON, LOCKED). */
+  .status-dot {
+    @apply inline-block h-1.5 w-1.5 shrink-0 rounded-full;
+  }
+  .status-dot[data-tone="signal"] {
+    background-color: var(--primary);
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--primary) 18%, transparent);
+  }
+  .status-dot[data-tone="warning"] {
+    background-color: var(--warning);
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--warning) 20%, transparent);
+  }
+  .status-dot[data-tone="danger"] {
+    background-color: var(--destructive);
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--destructive) 20%, transparent);
+  }
+  .status-dot[data-tone="muted"] {
+    background-color: var(--muted-foreground);
+  }
+}
+
+/*
+ * Access Theme Lab surface styles — the customizer's "Surface Style" knob.
+ * Scoped to `.access-theme-scope` (rendered only by PreviewThemeProvider),
+ * so these never leak onto real site chrome.
+ */
+.access-theme-scope {
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.access-theme-scope[data-surface="paper"] {
+  background-image: radial-gradient(circle at 1px 1px, var(--ag-border, #d9d2c2) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+.access-theme-scope[data-surface="console"] {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    color-mix(in oklch, var(--ag-canvas-fg, #191a18) 5%, transparent) 0px,
+    color-mix(in oklch, var(--ag-canvas-fg, #191a18) 5%, transparent) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
+.access-theme-scope[data-surface="terminal"] {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    color-mix(in oklch, var(--ag-primary, #187c74) 8%, transparent) 0px,
+    color-mix(in oklch, var(--ag-primary, #187c74) 8%, transparent) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+.access-theme-scope[data-surface="dashboard"] {
+  background-image:
+    linear-gradient(var(--ag-border, #d9d2c2) 1px, transparent 1px),
+    linear-gradient(to right, var(--ag-border, #d9d2c2) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+.access-theme-scope[data-surface="glass-minimal"] {
+  backdrop-filter: blur(6px);
+}
+.access-theme-scope[data-density="compact"] {
+  font-size: 0.925em;
 }

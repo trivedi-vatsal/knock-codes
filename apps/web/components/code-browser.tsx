@@ -116,7 +116,7 @@ export function CodeBrowser({ files }: { files: CodeBrowserFile[] }) {
             <div className="label-mono shrink-0 border-b border-border bg-muted/50 px-3 py-1.5 text-muted-foreground">
               {selectedFile.path}
             </div>
-            <pre className="flex-1 overflow-auto bg-[#0b1220] p-4 text-xs leading-relaxed text-[#e5eaf3]">
+            <pre className="access-scanlines flex-1 overflow-auto bg-[#0e1311] p-4 text-xs leading-relaxed text-[#edeae0]">
               <code>{selectedFile.content}</code>
             </pre>
           </>

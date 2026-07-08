@@ -20,13 +20,13 @@ export function CodeViewer({
           {filename}
         </div>
       )}
-      <div className="relative bg-[#0b1220]">
+      <div className="relative access-scanlines bg-[#0e1311]">
         {showCopy && (
           <CopyButton text={code} className="absolute top-2 right-2 border-white/15 text-white/70 hover:bg-white/10 hover:text-white" />
         )}
         <pre
           className={cn(
-            "max-h-[32rem] overflow-auto p-4 text-xs leading-relaxed text-[#e5eaf3]",
+            "max-h-[32rem] overflow-auto p-4 text-xs leading-relaxed text-[#edeae0]",
             wrap && "whitespace-pre-wrap break-words"
           )}
         >

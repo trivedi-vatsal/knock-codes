@@ -8,6 +8,7 @@ import { InstallationPanel } from "@/components/installation-panel";
 import { RelatedContent } from "@/components/related-content";
 import { PreviewPanel } from "@/components/preview-panel";
 import { BlueprintFrame } from "@/components/blueprint-frame";
+import { ThemeLabRoot } from "@/components/customizer/theme-lab-root";
 import { CodeBrowser } from "@/components/code-browser";
 import { TemplatePreview } from "@/components/template-preview";
 import { HashGenerator } from "@/components/hash-generator";
@@ -46,6 +47,7 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
   const serverTemplates = getServerTemplates();
 
   return (
+    <ThemeLabRoot>
     <div className="mx-auto max-w-6xl px-6 py-12">
       <div className="mb-8 space-y-3">
         <p className="label-mono text-primary">→ Template</p>
@@ -181,5 +183,6 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
         </section>
       )}
     </div>
+    </ThemeLabRoot>
   );
 }

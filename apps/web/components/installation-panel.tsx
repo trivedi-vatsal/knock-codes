@@ -4,8 +4,8 @@ import type { RegistryFile, RegistryItem } from "@/lib/registry";
 
 function CommandBlock({ command }: { command: string }) {
   return (
-    <div className="flex items-center justify-between gap-2 rounded-lg border border-border bg-[#0b1220] px-3 py-2">
-      <code className="overflow-x-auto text-xs whitespace-nowrap text-[#e5eaf3]">{command}</code>
+    <div className="flex items-center justify-between gap-2 rounded-lg border border-border bg-[#0e1311] px-3 py-2">
+      <code className="overflow-x-auto text-xs whitespace-nowrap text-[#edeae0]">{command}</code>
       <CopyButton text={command} className="shrink-0 border-white/15 text-white/70 hover:bg-white/10 hover:text-white" />
     </div>
   );

@@ -27,7 +27,7 @@ export function LogoutButton({ children = "Log out", className, onLoggedOut }: L
         onLoggedOut?.();
       }}
       className={cx(
-        "rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-900",
+        "rounded-[var(--ag-radius,0.375rem)] border border-[var(--ag-border,#d9d2c2)] px-3 py-1.5 text-sm text-[#191a18] hover:border-[var(--ag-primary,#187c74)]/40 hover:bg-[var(--ag-primary,#187c74)]/5 dark:border-[var(--ag-border-dark,#26302b)] dark:text-[#edeae0] dark:hover:border-[var(--ag-primary-dark,#4fd1c5)]/40 dark:hover:bg-[var(--ag-primary-dark,#4fd1c5)]/10",
         className
       )}
     >

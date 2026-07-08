@@ -1,0 +1,31 @@
+---
+title: "Access Receipt"
+description: "A small session audit strip shown after unlock — timestamp, storage mode, timeout, and verification strategy."
+category: "Session"
+tags: ["session", "feedback"]
+registryName: "access-receipt"
+relatedBlocks: ["session-provider", "session-timeout-banner", "logout-button"]
+accessibility: "Read-only summary content — a definition list, not an interactive control. Renders nothing while locked, so it never announces a session that doesn't exist yet."
+customization: "Pass `storageMode`, `timeout`, and `verificationStrategy` to match the config given to the `<AccessGate>`/`useAccessGate` call sharing this session — the receipt has no way to read those back off the session itself, since the session record intentionally only ever holds `unlockedAt`, `expiresAt`, and an optional token."
+bestUsedFor: "A visible confirmation after unlock — proof for the user (and for you, while testing) of which mode actually ran and how long the session will last."
+props:
+  - name: "storageMode"
+    type: '"localStorage" | "sessionStorage" | "memory"'
+    default: '"localStorage"'
+    description: "Storage backend the active session used — shown on the Storage line."
+  - name: "timeout"
+    type: "number"
+    default: "1800000"
+    description: "Session lifetime in milliseconds, formatted on the Timeout line."
+  - name: "verificationStrategy"
+    type: '"local-hash" | "server-verify"'
+    default: '"local-hash"'
+    description: "Which verification strategy produced this session."
+  - name: "className"
+    type: "string"
+    description: "Extra classes on the outer card."
+---
+
+Requires a `<SessionProvider>` ancestor — it reports on a session something else already established, it
+doesn't create one. Pair it with the same config passed to the gate sharing that session, since the receipt
+can't infer storage mode, timeout, or verification strategy from the session record alone.

@@ -4,7 +4,7 @@ description: "Shares one useAccessGate session across a tree, so multiple compon
 category: "Session"
 tags: ["context", "session"]
 registryName: "session-provider"
-relatedBlocks: ["logout-button", "session-timeout-banner", "access-gate"]
+relatedBlocks: ["logout-button", "session-timeout-banner", "access-receipt", "access-gate"]
 accessibility: "Renders no UI of its own — purely a context boundary. Accessibility is entirely a function of whatever you render inside it."
 customization: "Reach for this only when two or more components need to share one session — a gate, a Logout Button, and a Session Timeout Banner all reading and acting on the same unlock state. `useAccessGate`/`<AccessGate>` remain the right choice standalone."
 bestUsedFor: "Any screen where more than one component (a gate, a logout button, a timeout banner) needs the same session."

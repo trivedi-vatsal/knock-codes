@@ -55,6 +55,7 @@ export interface UseAccessGateResult {
  */
 export interface AccessGateLabels {
   heading?: string;
+  subcopy?: string;
   inputLabel?: string;
   placeholder?: string;
   submitLabel?: string;
@@ -67,6 +68,7 @@ export interface AccessGateLabels {
 
 export const DEFAULT_LABELS: Required<AccessGateLabels> = {
   heading: "This page is protected",
+  subcopy: "Enter the access code to continue.",
   inputLabel: "Access code",
   placeholder: "Enter access code",
   submitLabel: "Unlock",

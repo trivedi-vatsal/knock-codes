@@ -136,6 +136,16 @@
       ]
     },
     {
+      "name": "access-receipt",
+      "type": "registry:block",
+      "title": "Access Receipt",
+      "description": "A small session audit strip shown after unlock — timestamp, storage mode, timeout, and verification strategy. Requires a Session Provider.",
+      "registryDependencies": ["session-provider"],
+      "files": [
+        { "path": "packages/react/AccessReceipt.tsx", "type": "registry:file", "target": "components/access-gate/react/AccessReceipt.tsx" }
+      ]
+    },
+    {
       "name": "access-denied-screen",
       "type": "registry:block",
       "title": "Access Denied Screen",

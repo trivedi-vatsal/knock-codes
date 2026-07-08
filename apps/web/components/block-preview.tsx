@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
-import { sha256Hex } from "@access-gate/core";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { sha256Hex, type VerifyFn } from "@access-gate/core";
 import {
   AccessGate,
   AccessDeniedScreen,
   AccessGateProvider,
+  AccessReceipt,
   EmbeddedGate,
   GateWrapper,
   LogoutButton,
@@ -20,9 +21,37 @@ import {
   VerificationLoader,
   useAccessGate,
   useAccessGateContext,
+  type AccessGateConfig,
 } from "@access-gate/react";
+import { useThemeLab } from "@/components/customizer/theme-lab-context";
+import type { PreviewStateId } from "@/lib/theme-presets";
 
 const DEMO_PIN = "demo1234";
+const WRONG_PIN = "0000";
+const NEVER_RESOLVES_VERIFY: VerifyFn = () => new Promise(() => {});
+
+/**
+ * Scripts a real `submit()` call (from `useAccessGate`/`useAccessGateContext`)
+ * to reach the Theme Lab's selected "Preview state" — real state transitions,
+ * not hand-waved props. "Locked" (the default) never scripts anything, so a
+ * demo stays exactly as interactive as before unless another state is picked.
+ */
+function useScriptedPreviewState(previewState: PreviewStateId, submit: (code: string) => Promise<void>) {
+  const scriptedForRef = useRef<PreviewStateId | null>(null);
+  useEffect(() => {
+    if (scriptedForRef.current === previewState) return;
+    scriptedForRef.current = previewState;
+    if (previewState === "invalid") submit(WRONG_PIN);
+    else if (previewState === "unlocked" || previewState === "expiring" || previewState === "submitting") submit(DEMO_PIN);
+    // `submit`'s identity is intentionally not a dep — scripting should run once per previewState value, not re-run whenever the callback is recreated.
+  }, [previewState]);
+}
+
+/** `expectedHash`/`verify` config, swapped to a never-resolving verifier while illustrating the "Submitting" preview state. */
+function useForcedVerifyConfig(config: AccessGateConfig, previewState: PreviewStateId): AccessGateConfig {
+  if (previewState !== "submitting") return config;
+  return { ...config, expectedHash: undefined, verify: NEVER_RESOLVES_VERIFY };
+}
 
 function useDemoHash() {
   const [hash, setHash] = useState<string | null>(null);
@@ -85,18 +114,7 @@ export function BlockPreview({ slug }: { slug: string }) {
 
   switch (slug) {
     case "access-gate":
-      return (
-        <div>
-          <Hint />
-          <PreviewFrame>
-            <div className="mx-auto w-full max-w-sm">
-              <AccessGate {...common} variant="inline">
-                <DemoUnlockedPanel />
-              </AccessGate>
-            </div>
-          </PreviewFrame>
-        </div>
-      );
+      return <AccessGatePreview hash={hash} />;
 
     case "pin-input":
       return <PinInputPreview />;
@@ -202,15 +220,16 @@ export function BlockPreview({ slug }: { slug: string }) {
       );
 
     case "protected-card":
+      return <ProtectedCardPreview hash={hash} />;
+
+    case "access-receipt":
       return (
         <div>
           <Hint />
           <PreviewFrame>
-            <div className="flex justify-center py-4">
-              <ProtectedCard {...common}>
-                <DemoContentPanel note="Card content — blurred until unlocked." />
-              </ProtectedCard>
-            </div>
+            <AccessGateProvider {...common}>
+              <AccessReceiptDemo />
+            </AccessGateProvider>
           </PreviewFrame>
         </div>
       );
@@ -267,18 +286,80 @@ export function BlockPreview({ slug }: { slug: string }) {
   }
 }
 
+function AccessGatePreview({ hash }: { hash: string }) {
+  const { settings } = useThemeLab();
+  const config = useForcedVerifyConfig({ expectedHash: hash, storage: "memory" }, settings.previewState);
+  return (
+    <div>
+      <Hint />
+      <PreviewFrame>
+        <div className="mx-auto w-full max-w-sm">
+          <AccessGate {...config} variant="inline">
+            <DemoUnlockedPanel />
+          </AccessGate>
+        </div>
+      </PreviewFrame>
+    </div>
+  );
+}
+
+function ProtectedCardPreview({ hash }: { hash: string }) {
+  const { settings } = useThemeLab();
+  const config = useForcedVerifyConfig({ expectedHash: hash, storage: "memory" }, settings.previewState);
+  return (
+    <div>
+      <Hint />
+      <PreviewFrame>
+        <div className="flex justify-center py-4">
+          <ProtectedCard {...config}>
+            <DemoContentPanel note="Card content — blurred until unlocked." />
+          </ProtectedCard>
+        </div>
+      </PreviewFrame>
+    </div>
+  );
+}
+
+function AccessReceiptDemo() {
+  const { settings } = useThemeLab();
+  const { state, submit } = useAccessGateContext();
+  useScriptedPreviewState(settings.previewState, submit);
+  if (state !== "unlocked") return <ContextPinPrompt />;
+  return (
+    <div className="mx-auto max-w-xs p-4">
+      <AccessReceipt storageMode="memory" timeout={1_800_000} verificationStrategy="local-hash" />
+    </div>
+  );
+}
+
 function PinInputPreview() {
+  const { settings } = useThemeLab();
   const [value, setValue] = useState("");
   const [submitCount, setSubmitCount] = useState(0);
+
+  if (settings.previewState === "unlocked" || settings.previewState === "expiring") {
+    return (
+      <PreviewFrame>
+        <div className="mx-auto max-w-xs p-4">
+          <DemoUnlockedPanel note={settings.previewState === "expiring" ? "Session expiring soon." : undefined} />
+        </div>
+      </PreviewFrame>
+    );
+  }
+
+  const forcedError = settings.previewState === "invalid" ? { reason: "invalid" as const } : null;
+  const forcedSubmitting = settings.previewState === "submitting";
+  const displayValue = settings.previewState === "locked" ? value : DEMO_PIN;
+
   return (
     <PreviewFrame>
       <div className="mx-auto max-w-xs p-4">
         <PinInput
-          value={value}
+          value={displayValue}
           onChange={setValue}
           onSubmit={() => setSubmitCount((n) => n + 1)}
-          submitting={false}
-          error={null}
+          submitting={forcedSubmitting}
+          error={forcedError}
           autoFocus={false}
         />
         {submitCount > 0 && <p className="mt-2 text-xs text-muted-foreground">Submitted {submitCount}×</p>}
@@ -340,7 +421,9 @@ function ContextPinPrompt() {
 }
 
 function SessionProviderDemo() {
-  const { state } = useAccessGateContext();
+  const { settings } = useThemeLab();
+  const { state, submit } = useAccessGateContext();
+  useScriptedPreviewState(settings.previewState, submit);
   if (state !== "unlocked") return <ContextPinPrompt />;
   return (
     <div className="flex h-full min-h-32 flex-col items-center justify-center gap-3 rounded-md border border-dashed border-border bg-muted/40 p-6 text-center">
@@ -351,7 +434,9 @@ function SessionProviderDemo() {
 }
 
 function SessionTimeoutBannerDemo() {
-  const { state } = useAccessGateContext();
+  const { settings } = useThemeLab();
+  const { state, submit } = useAccessGateContext();
+  useScriptedPreviewState(settings.previewState, submit);
   if (state !== "unlocked") return <ContextPinPrompt />;
   return (
     <div className="space-y-3 p-4">
@@ -362,7 +447,9 @@ function SessionTimeoutBannerDemo() {
 }
 
 function LogoutButtonDemo() {
-  const { state } = useAccessGateContext();
+  const { settings } = useThemeLab();
+  const { state, submit } = useAccessGateContext();
+  useScriptedPreviewState(settings.previewState, submit);
   if (state !== "unlocked") return <ContextPinPrompt />;
   return (
     <div className="flex h-full min-h-32 flex-col items-center justify-center gap-3 p-6">

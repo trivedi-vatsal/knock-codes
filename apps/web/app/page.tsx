@@ -45,12 +45,12 @@ export default function Home() {
 
   return (
     <div>
-      <section className="border-b border-border bg-[#0b1220] text-white">
+      <section className="border-b border-border bg-[#0e1311] text-[#edeae0]">
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-6 py-20 lg:grid-cols-2 lg:py-24">
           <div>
-            <p className="label-mono mb-4 text-white/60">→ A screen, not a library</p>
+            <p className="label-mono mb-4 text-[#edeae0]/60">→ A screen, not a library</p>
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-              The <span className="text-[#7ba1f7] italic">access screen</span> you copy-paste and ship
+              The <span className="text-[#dfff67] italic">access screen</span> you copy-paste and ship
             </h1>
             <p className="mt-5 max-w-xl text-white/70">
               A complete, single-file &ldquo;enter a code to continue&rdquo; screen for demos, previews,

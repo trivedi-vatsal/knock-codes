@@ -12,6 +12,25 @@ export interface ProtectedCardProps extends AccessGateConfig {
   className?: string;
 }
 
+function StatusBadge({ unlocked }: { unlocked: boolean }) {
+  return (
+    <span
+      className={cx(
+        "absolute top-3 left-3 z-10 inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 font-mono text-[10px] font-medium tracking-wider uppercase",
+        unlocked
+          ? "border-[#187c74]/30 bg-[#187c74]/10 text-[#187c74] dark:border-[#4fd1c5]/30 dark:bg-[#4fd1c5]/10 dark:text-[#4fd1c5]"
+          : "border-[#e5484d]/30 bg-[#e5484d]/10 text-[#e5484d] dark:border-[#ff6169]/30 dark:bg-[#ff6169]/10 dark:text-[#ff6169]"
+      )}
+    >
+      <span
+        aria-hidden="true"
+        className={cx("h-1.5 w-1.5 shrink-0 rounded-full", unlocked ? "bg-[#187c74] dark:bg-[#4fd1c5]" : "bg-[#e5484d] dark:bg-[#ff6169]")}
+      />
+      {unlocked ? "Unlocked" : "Locked"}
+    </span>
+  );
+}
+
 /**
  * A card-shaped gate for protecting one section of a page rather than the
  * whole viewport — locked content stays mounted and blurred behind an
@@ -24,14 +43,17 @@ export function ProtectedCard({ children, className, ...config }: ProtectedCardP
   const [code, setCode] = useState("");
 
   const cardClassName = cx(
-    "w-full max-w-sm rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-950",
+    "relative w-full max-w-sm rounded-[var(--ag-radius,0.5rem)] border border-[var(--ag-border,#d9d2c2)] bg-[var(--ag-card,#fbf8f1)] shadow-sm dark:border-[var(--ag-border-dark,#26302b)] dark:bg-[var(--ag-card-dark,#171d1a)]",
     className
   );
 
   if (state === "unlocked") {
     return (
       <GateWrapper variant="inline">
-        <div className={cx(cardClassName, "p-6")}>{children}</div>
+        <div style={{ fontFamily: "var(--ag-font, inherit)" }} className={cx(cardClassName, "p-6")}>
+          <StatusBadge unlocked />
+          <div className="pt-5">{children}</div>
+        </div>
       </GateWrapper>
     );
   }
@@ -43,11 +65,12 @@ export function ProtectedCard({ children, className, ...config }: ProtectedCardP
 
   return (
     <GateWrapper variant="inline">
-      <div className={cx(cardClassName, "relative overflow-hidden p-6")}>
-        <div aria-hidden="true" className="pointer-events-none select-none blur-sm">
+      <div style={{ fontFamily: "var(--ag-font, inherit)" }} className={cx(cardClassName, "overflow-hidden p-6")}>
+        <StatusBadge unlocked={false} />
+        <div aria-hidden="true" className="pointer-events-none pt-5 select-none blur-sm">
           {children}
         </div>
-        <div className="absolute inset-0 flex items-center justify-center bg-white/80 p-4 dark:bg-gray-950/80">
+        <div className="absolute inset-0 flex items-center justify-center bg-[var(--ag-card,#fbf8f1)]/85 p-4 dark:bg-[var(--ag-card-dark,#171d1a)]/85">
           {expanded ? (
             <div className="w-full max-w-xs">
               <PinInput
@@ -63,7 +86,7 @@ export function ProtectedCard({ children, className, ...config }: ProtectedCardP
             <button
               type="button"
               onClick={() => setExpanded(true)}
-              className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-200"
+              className="rounded-[var(--ag-radius,0.375rem)] bg-[var(--ag-primary,#187c74)] px-4 py-2 text-sm font-medium text-[var(--ag-primary-fg,#f7f3ea)] transition-colors hover:opacity-90 dark:bg-[var(--ag-primary-dark,#4fd1c5)] dark:text-[var(--ag-primary-fg-dark,#0e1311)]"
             >
               Unlock
             </button>
