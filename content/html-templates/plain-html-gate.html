@@ -1,0 +1,315 @@
+<!doctype html>
+<!--
+  Knock Codes — plain HTML/JS access gate. v1.0.0
+  No build step, no framework, no dependency — open this file directly or
+  drop it into any static host. Everything (styles, verification logic,
+  gated content) lives in this one file.
+
+  Setup:
+    1. Generate a hash for your real code (the site's hash generator, or
+       any SHA-256 tool that UTF-8-encodes and lowercases hex output).
+    2. Replace EXPECTED_HASH below with it.
+    3. Replace the contents of #protected-content with your real page.
+  Never put the plaintext code in this file — only its hash.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Restricted Access</title>
+<style>
+  :root {
+    color-scheme: dark;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: #0b1220;
+    color: #f3f4f6;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  .card {
+    width: 100%;
+    max-width: 24rem;
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  }
+  .card h1 {
+    margin: 0 0 0.5rem;
+    font-size: 1.375rem;
+    font-weight: 700;
+  }
+  .card p.description {
+    margin: 0 0 1.5rem;
+    font-size: 0.875rem;
+    color: #9ca3af;
+  }
+  label {
+    display: block;
+    margin-bottom: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #9ca3af;
+  }
+  .field {
+    position: relative;
+  }
+  input[type="password"],
+  input[type="text"] {
+    width: 100%;
+    height: 2.5rem;
+    padding: 0 3.5rem 0 0.75rem;
+    background: #0b1220;
+    border: 1px solid #374151;
+    border-radius: 0.5rem;
+    color: #f3f4f6;
+    font-size: 0.875rem;
+  }
+  input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+  }
+  input:disabled {
+    opacity: 0.6;
+  }
+  .toggle {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #9ca3af;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0;
+  }
+  .toggle:hover {
+    color: #d1d5db;
+  }
+  .status {
+    min-height: 1.1rem;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: #f87171;
+  }
+  button.submit {
+    width: 100%;
+    margin-top: 0.75rem;
+    height: 2.5rem;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  button.submit:hover:not(:disabled) {
+    background: #1d4ed8;
+  }
+  button.submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .card.shake {
+    animation: knock-codes-html-shake 0.4s ease-in-out;
+  }
+  @keyframes knock-codes-html-shake {
+    10%, 90% { transform: translateX(-1px); }
+    20%, 80% { transform: translateX(2px); }
+    30%, 50%, 70% { transform: translateX(-4px); }
+    40%, 60% { transform: translateX(4px); }
+  }
+  .success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+    padding: 1rem 0;
+  }
+  .success .check {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 999px;
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #protected-content {
+    max-width: 28rem;
+    text-align: center;
+  }
+  [hidden] {
+    display: none !important;
+  }
+</style>
+</head>
+<body>
+
+  <main id="gate" class="card">
+    <h1>Restricted Access</h1>
+    <p class="description">This page is protected. Enter your access code to continue.</p>
+
+    <form id="gate-form" novalidate>
+      <label for="code">Access code</label>
+      <div class="field">
+        <input id="code" name="code" type="password" autocomplete="one-time-code" placeholder="Enter access code" />
+        <button type="button" class="toggle" id="toggle-visibility" aria-label="Show code">Show</button>
+      </div>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+      <button type="submit" class="submit" id="submit-button" disabled>Unlock</button>
+    </form>
+  </main>
+
+  <main id="protected-content" hidden>
+    <!-- Replace this with your real page content. -->
+    <p>You're in. This is the protected content — swap this block for your real page.</p>
+  </main>
+
+<script>
+(function () {
+  "use strict";
+
+  // Precomputed sha256Hex("4242") for the out-of-the-box demo — replace
+  // with your own hash (see the file header). Hashing follows the same
+  // canonical contract as every other Knock Codes template: UTF-8 encode,
+  // no trimming or case-folding, lowercase hex SHA-256.
+  var EXPECTED_HASH = "0315b4020af3eccab7706679580ac87a710d82970733b8719e70af9b57e7b9e6";
+
+  var STORAGE_KEY = "knock-codes:session";
+  var TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes, matches the React templates' default
+
+  var gate = document.getElementById("gate");
+  var form = document.getElementById("gate-form");
+  var input = document.getElementById("code");
+  var toggleButton = document.getElementById("toggle-visibility");
+  var submitButton = document.getElementById("submit-button");
+  var status = document.getElementById("status");
+  var protectedContent = document.getElementById("protected-content");
+
+  async function sha256Hex(text) {
+    var bytes = new TextEncoder().encode(text);
+    var digest = await crypto.subtle.digest("SHA-256", bytes);
+    return Array.from(new Uint8Array(digest))
+      .map(function (byte) { return byte.toString(16).padStart(2, "0"); })
+      .join("");
+  }
+
+  function readSession() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      var session = JSON.parse(raw);
+      if (!session || typeof session.expiresAt !== "number" || Date.now() >= session.expiresAt) return null;
+      return session;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  function writeSession() {
+    var session = { unlockedAt: Date.now(), expiresAt: Date.now() + TIMEOUT_MS };
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(session));
+    } catch (err) {
+      // Storage unavailable (private mode, quota) — the gate still works,
+      // it just won't survive a reload.
+    }
+  }
+
+  function unlock() {
+    gate.hidden = true;
+    protectedContent.hidden = false;
+  }
+
+  function showSuccessThenUnlock() {
+    gate.innerHTML =
+      '<div class="success">' +
+      '<div class="check" aria-hidden="true">' +
+      '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">' +
+      '<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />' +
+      "</svg></div>" +
+      '<p style="margin:0;font-size:0.875rem;font-weight:500;">Access granted</p>' +
+      "</div>";
+    setTimeout(unlock, 550);
+  }
+
+  function setError(message) {
+    status.textContent = message;
+    input.setAttribute("aria-invalid", "true");
+    gate.classList.remove("shake");
+    // Force a reflow so the shake animation restarts on repeated failures.
+    void gate.offsetWidth;
+    gate.classList.add("shake");
+  }
+
+  function clearError() {
+    status.textContent = "";
+    input.removeAttribute("aria-invalid");
+  }
+
+  function updateSubmitEnabled() {
+    submitButton.disabled = input.value.length === 0;
+  }
+
+  toggleButton.addEventListener("click", function () {
+    var showing = input.type === "text";
+    input.type = showing ? "password" : "text";
+    toggleButton.textContent = showing ? "Show" : "Hide";
+    toggleButton.setAttribute("aria-label", showing ? "Show code" : "Hide code");
+  });
+
+  input.addEventListener("input", function () {
+    clearError();
+    updateSubmitEnabled();
+  });
+
+  form.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    var code = input.value;
+    if (!code || submitButton.disabled) return;
+
+    submitButton.disabled = true;
+    input.disabled = true;
+    status.textContent = "Checking...";
+
+    var hash = await sha256Hex(code);
+
+    input.disabled = false;
+
+    if (hash === EXPECTED_HASH) {
+      writeSession();
+      showSuccessThenUnlock();
+    } else {
+      setError("That code didn't work. Try again.");
+      input.value = "";
+      input.focus();
+    }
+    updateSubmitEnabled();
+  });
+
+  if (readSession()) {
+    unlock();
+  } else {
+    updateSubmitEnabled();
+  }
+})();
+</script>
+</body>
+</html>

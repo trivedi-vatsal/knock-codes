@@ -1,3 +1,4 @@
+// Branded Access Template v1.0.0
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";

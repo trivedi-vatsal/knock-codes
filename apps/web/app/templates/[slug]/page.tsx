@@ -15,8 +15,10 @@ import { HashGenerator } from "@/components/hash-generator";
 import { getAllTemplates, getTemplateBySlug } from "@/lib/templates";
 import { getBlockBySlug } from "@/lib/blocks";
 import { getRegistryItemSource, resolveRegistryDependencies } from "@/lib/registry";
+import { getHtmlTemplateSource } from "@/lib/html-templates";
 import { getServerTemplates } from "@/lib/server-templates";
 import { THREAT_MODEL_COPY } from "@/lib/copy";
+import { CopyButton } from "@/components/copy-button";
 
 export function generateStaticParams() {
   return getAllTemplates().map((template) => ({ slug: template.slug }));
@@ -34,13 +36,18 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
   const template = getTemplateBySlug(slug);
   if (!template) notFound();
 
-  const source = getRegistryItemSource(template.registryName);
-  const dependencies = resolveRegistryDependencies(template.registryName);
+  const isHtml = template.language === "html";
+  const htmlSource = isHtml ? getHtmlTemplateSource(template.registryName) : null;
+  const source = isHtml ? [] : getRegistryItemSource(template.registryName);
+  const dependencies = isHtml ? [] : resolveRegistryDependencies(template.registryName);
   const ownPaths = new Set(source.map((f) => f.target));
-  const allFiles = [
-    ...dependencies.flatMap((item) => getRegistryItemSource(item.name)),
-    ...source,
-  ].map((f) => ({ path: f.target, content: f.content, primary: ownPaths.has(f.target) }));
+  const allFiles = isHtml
+    ? [{ path: `${template.registryName}.html`, content: htmlSource ?? "", primary: true }]
+    : [...dependencies.flatMap((item) => getRegistryItemSource(item.name)), ...source].map((f) => ({
+        path: f.target,
+        content: f.content,
+        primary: ownPaths.has(f.target),
+      }));
   const related = (template.relatedBlocks ?? [])
     .map((blockSlug) => getBlockBySlug(blockSlug))
     .filter((b) => b !== undefined);
@@ -78,7 +85,13 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
 
       <div className="mb-10">
         <PreviewPanel
-          preview={<TemplatePreview slug={template.slug} />}
+          preview={
+            isHtml ? (
+              <iframe srcDoc={htmlSource ?? ""} title={template.title} className="h-full w-full border-0" />
+            ) : (
+              <TemplatePreview slug={template.slug} />
+            )
+          }
           files={allFiles}
           badge={template.registryName}
           fillCanvas
@@ -91,14 +104,31 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
 
       <section className="mb-10">
         <BlueprintFrame label="Installation">
-          <h2 className="mb-4 text-2xl font-semibold tracking-tight text-foreground">
-            Add this template to your project
-          </h2>
-          <InstallationPanel
-            registryName={template.registryName}
-            ownFiles={source.map((f) => ({ path: f.path, target: f.target, type: "registry:file" }))}
-            dependencyItems={dependencies}
-          />
+          {isHtml ? (
+            <>
+              <h2 className="mb-4 text-2xl font-semibold tracking-tight text-foreground">Add this file to your project</h2>
+              <p className="mb-4 max-w-2xl text-sm text-muted-foreground">
+                No CLI, no npm install, no build step — copy the file below (or use the Code tab in the preview above)
+                into your project as a plain <code className="rounded bg-muted px-1 py-0.5 text-xs">.html</code> file
+                and open it directly.
+              </p>
+              <div className="flex items-center gap-2 rounded-lg border border-border bg-muted/40 px-3 py-2">
+                <code className="flex-1 text-xs text-foreground">{template.registryName}.html</code>
+                <CopyButton text={htmlSource ?? ""} />
+              </div>
+            </>
+          ) : (
+            <>
+              <h2 className="mb-4 text-2xl font-semibold tracking-tight text-foreground">
+                Add this template to your project
+              </h2>
+              <InstallationPanel
+                registryName={template.registryName}
+                ownFiles={source.map((f) => ({ path: f.path, target: f.target, type: "registry:file" }))}
+                dependencyItems={dependencies}
+              />
+            </>
+          )}
 
           <div className="mt-6 border-t border-border pt-6">
             <p className="label-mono mb-1.5 text-muted-foreground">Installing via an AI agent?</p>
@@ -133,10 +163,12 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
         </BlueprintFrame>
       </section>
 
-      <section className="mb-10 space-y-4">
-        <SectionHeader label="Props" title="API reference" />
-        <PropsTable props={template.props} />
-      </section>
+      {template.props.length > 0 && (
+        <section className="mb-10 space-y-4">
+          <SectionHeader label="Props" title="API reference" />
+          <PropsTable props={template.props} />
+        </section>
+      )}
 
       <section className="mb-10">
         <BlueprintFrame label="Notes" className="grid gap-8 sm:grid-cols-2">
@@ -162,11 +194,22 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
         <BlueprintFrame label="Server mode">
           <h2 className="mb-2 text-xl font-semibold tracking-tight text-foreground">Need real protection?</h2>
           <p className="mb-4 max-w-2xl text-sm text-muted-foreground">
-            Local mode is deterrence — the hash ships in your client bundle by design. Swap the{" "}
-            <code className="rounded bg-muted px-1 py-0.5 text-xs">expectedHash</code> prop for a{" "}
-            <code className="rounded bg-muted px-1 py-0.5 text-xs">verify</code> function pointing at one of these,
-            and the code is checked server-side instead — same markup, same component, one prop different. Each
-            template rate-limits attempts and returns a short-lived signed token on success.
+            {isHtml ? (
+              <>
+                Local mode is deterrence — the hash lives right in the script tag. Point the form&apos;s fetch call
+                at one of these endpoints instead of comparing hashes in the browser, and the code is checked
+                server-side — same markup, no local hash to read.
+              </>
+            ) : (
+              <>
+                Local mode is deterrence — the hash ships in your client bundle by design. Swap the{" "}
+                <code className="rounded bg-muted px-1 py-0.5 text-xs">expectedHash</code> prop for a{" "}
+                <code className="rounded bg-muted px-1 py-0.5 text-xs">verify</code> function pointing at one of
+                these, and the code is checked server-side instead — same markup, same component, one prop
+                different.
+              </>
+            )}{" "}
+            Each template rate-limits attempts and returns a short-lived signed token on success.
           </p>
           <CodeBrowser files={serverTemplates.map((t) => ({ path: t.filename, content: t.code }))} />
         </BlueprintFrame>

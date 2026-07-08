@@ -42,6 +42,39 @@ const MODE_COMPARISON = [
   { label: "Stops", local: "Casual visitors, crawlers, forwarded links", server: "Determined visitors too" },
 ];
 
+const FAQ_ITEMS = [
+  {
+    question: "Is this real authentication?",
+    answer:
+      "No. There's no user identity, no accounts, no permissions — everyone who has the code gets the same access. It's a shared secret, not authentication. See the security model for exactly what it does and doesn't protect against.",
+  },
+  {
+    question: "Does it work with Next.js App Router and RSC?",
+    answer:
+      "Yes. Every template is a small client component that a Server Component can render as a child — that's exactly how this homepage's own live demo works. Streaming, RSC payloads, and the App Router's caching are unaffected; the gate only touches what's rendered inside it.",
+  },
+  {
+    question: "Can search engines bypass it?",
+    answer:
+      "Search engines that only read server-rendered HTML won't see what's behind the gate — local mode never renders the protected content until a matching code is entered, so there's nothing indexable in the initial markup. That's not a guarantee of invisibility, though — see the next question. Put noindex on any staging or preview deploy regardless; don't rely on the gate alone to keep it out of search results.",
+  },
+  {
+    question: "In local mode, does the protected content still ship in the bundle?",
+    answer:
+      "Usually, yes. Whatever you pass as children is still part of your React tree and your JavaScript bundle — the template just doesn't render it to the DOM until the state flips to unlocked. If what's behind the gate is genuinely sensitive, don't rely on this alone: fetch it only after unlock, or move it behind server mode.",
+  },
+  {
+    question: "How do I rotate a code?",
+    answer:
+      "Generate a hash for the new code and replace the old one — the env var in local mode, or your server's secret in server mode — then redeploy. Existing unlocked sessions keep working until they expire or are cleared, but nobody can unlock with the old code again.",
+  },
+  {
+    question: "Can I use multiple codes?",
+    answer:
+      "Not out of the box in local mode — expectedHash compares against exactly one hash. For more than one valid code, use server mode: your verify function can check the submitted code's hash against a list or lookup table on your server, where the comparison logic is entirely up to you.",
+  },
+];
+
 export default function Home() {
   const templates = getAllTemplates().slice(0, 4);
   const templateKb = getFlagshipTemplateKb();
@@ -177,6 +210,34 @@ export default function Home() {
           <h2 className="mb-3 text-xl font-semibold tracking-tight text-foreground">The honest version</h2>
           <p className="max-w-2xl text-sm text-muted-foreground">{THREAT_MODEL_COPY}</p>
         </BlueprintFrame>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <SectionHeader label="FAQ" title="Common questions" className="mb-8" />
+        <div className="mx-auto max-w-3xl divide-y divide-border rounded-lg border border-border">
+          {FAQ_ITEMS.map((item) => (
+            <details key={item.question} className="group p-4">
+              <summary className="cursor-pointer list-none text-sm font-medium text-foreground marker:content-none">
+                {item.question}
+              </summary>
+              <p className="mt-2 text-sm text-muted-foreground">{item.answer}</p>
+            </details>
+          ))}
+        </div>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: FAQ_ITEMS.map((item) => ({
+                "@type": "Question",
+                name: item.question,
+                acceptedAnswer: { "@type": "Answer", text: item.answer },
+              })),
+            }),
+          }}
+        />
       </section>
 
       <section className="border-t border-border bg-[#0e1311] px-6 py-16 text-[#edeae0]">

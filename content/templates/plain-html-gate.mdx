@@ -1,0 +1,20 @@
+---
+title: "Plain HTML Gate"
+description: "One static .html file with an inline script — no React, no build step, no npm install. Open it directly or drop it on any static host."
+category: "Templates"
+tags: ["template", "html", "no-build"]
+registryName: "plain-html-gate"
+useCase: "Client preview"
+complexity: "Simple"
+mode: "local"
+language: "html"
+bestUsedFor: "A static site, a legacy page, or anywhere a React build step isn't an option."
+accessibility: "The code field has its own label and an accessible show/hide toggle. Errors and the checking state announce through a role=\"status\" aria-live=\"polite\" region, the same contract every other template uses."
+customization: "Everything — styles, verification logic, and the gated content itself — lives in this one file, with no imports at all. Edit EXPECTED_HASH and the #protected-content block directly; there's no prop API since there's no component."
+props: []
+---
+
+A single `<script>` tag reimplements the same canonical hashing contract as every other template
+(UTF-8 encode, lowercase hex SHA-256) using nothing but the browser's built-in Web Crypto API — no
+bundler, no package.json, no framework. Unlock state persists across reloads via `localStorage` with
+the same 30-minute default timeout as the React templates.

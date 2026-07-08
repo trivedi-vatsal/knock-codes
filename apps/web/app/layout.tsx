@@ -11,15 +11,21 @@ const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
-  title: "Knock Codes",
-  description: "Copy-paste access screens for private previews, staging pages, and client links.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://knock.codes"),
+  title: "Knock Codes — Copy-paste access screens for private previews",
+  description:
+    "A single-file \"enter a code to continue\" screen with verification built in. Copy it into your project, set one env var, ship. No backend, no package, no lock-in.",
   openGraph: {
-    title: "Knock Codes",
-    description: "Copy-paste access screens for private previews, staging pages, and client links.",
+    title: "Knock Codes — Copy-paste access screens for private previews",
+    description:
+      "A single-file \"enter a code to continue\" screen with verification built in. Copy it into your project, set one env var, ship. No backend, no package, no lock-in.",
+    type: "website",
   },
   twitter: {
-    title: "Knock Codes",
-    description: "Copy-paste access screens for private previews, staging pages, and client links.",
+    card: "summary_large_image",
+    title: "Knock Codes — Copy-paste access screens for private previews",
+    description:
+      "A single-file \"enter a code to continue\" screen with verification built in. Copy it into your project, set one env var, ship. No backend, no package, no lock-in.",
   },
 };
 

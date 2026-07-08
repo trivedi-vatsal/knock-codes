@@ -4,6 +4,41 @@ This project is distributed copy-paste (via the shadcn-compatible registry), not
 package — see [`CONTRIBUTING.md`](./CONTRIBUTING.md#versioning-registry-changes) for what "breaking" means
 in that model. Dates are release dates of this repository, not npm publishes.
 
+## 2026-07-08
+
+### Added
+- Homepage hero is now a live, working demo (`Try code 4242`) that renders on first paint with no loading
+  state, plus a proof strip (file count, dependency count, license, file size) computed at build time.
+- A client-side hash generator widget (code in, hash out, nothing leaves the browser), now embedded on the
+  homepage and `/getting-started` in addition to template detail pages.
+- Express and Hono reference server-verification templates, alongside the existing Next.js/Cloudflare/
+  Azure ones — same request/response contract across all five. `/getting-started` now has a tabbed
+  reference-implementations section.
+- Segmented code entry (`KnockCodesTemplate`) gets `autoComplete="one-time-code"` and `inputMode="text"`.
+- All four full-page templates: a shake on a failed attempt, a brief "Access granted" transition on
+  success instead of an instant swap, and an optional `remember="session"` prop (sessionStorage-backed,
+  off by default, documented as client-side-only on `/security`).
+- **Plain HTML Gate** — a new template: one static `.html` file with an inline `<script>`, no React, no
+  build step, no npm install. Same canonical hashing contract as every other template.
+- `/changelog` (this page) and a footer linking to it, the GitHub repo, the MIT license, and the author.
+- FAQ section on the homepage, with `FAQPage` JSON-LD.
+- An OG image and refreshed page metadata (title, description, `summary_large_image` Twitter card).
+
+### Changed
+- Landing page section order: Hero → Templates → How it works → Local vs. server mode → Use cases →
+  Threat model → final CTA. Tightened hero copy and deduplicated repeated phrasing across the page.
+- Template descriptions now lead with their differentiator (split-screen brand panel, segmented dark
+  card, single masked field, blur-overlay dialog) instead of all opening the same way.
+
+### Template versions
+| Template | Version |
+| --- | --- |
+| `knock-codes-template` | 1.0.0 |
+| `branded-access-template` | 1.0.0 |
+| `minimal-access-template` | 1.0.0 |
+| `modal-access-template` | 1.0.0 |
+| `plain-html-gate` | 1.0.0 |
+
 ## Unreleased
 
 ### Changed

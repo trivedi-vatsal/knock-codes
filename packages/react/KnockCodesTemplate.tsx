@@ -1,3 +1,4 @@
+// Knock Codes Template v1.0.0
 "use client";
 
 import { useEffect, useRef, useState, type KeyboardEvent, type ClipboardEvent, type ReactNode } from "react";
