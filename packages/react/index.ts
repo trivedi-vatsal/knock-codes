@@ -28,3 +28,18 @@ export {
   type AccessGateTemplateProps,
   type AccessGateTemplateLabels,
 } from "./AccessGateTemplate.tsx";
+export {
+  MinimalAccessTemplate,
+  type MinimalAccessTemplateProps,
+  type MinimalAccessTemplateLabels,
+} from "./MinimalAccessTemplate.tsx";
+export {
+  BrandedAccessTemplate,
+  type BrandedAccessTemplateProps,
+  type BrandedAccessTemplateLabels,
+} from "./BrandedAccessTemplate.tsx";
+export {
+  ModalAccessTemplate,
+  type ModalAccessTemplateProps,
+  type ModalAccessTemplateLabels,
+} from "./ModalAccessTemplate.tsx";

@@ -5,7 +5,7 @@ import { getAllBlocks, getBlockCategories } from "@/lib/blocks";
 
 export const metadata: Metadata = {
   title: "Blocks — Access Gate",
-  description: "Copy-paste access-control components for React.",
+  description: "Composable access-control primitives for React, for building something custom.",
 };
 
 export default function BlocksPage() {
@@ -16,8 +16,8 @@ export default function BlocksPage() {
     <div className="mx-auto max-w-7xl px-6 py-12">
       <SectionHeader
         label="Blocks"
-        title="Access-control components, ready to copy"
-        description="Every block is a real, independently usable React component backed by the same tested verification core. Preview it live, copy the source, or install it with the shadcn CLI."
+        title="Building something custom?"
+        description="A Template gets you shipped in one file. If you'd rather assemble your own layout, these are the same tested primitives the templates are built from — preview one live, copy the source, or install it with the shadcn CLI."
         className="mb-8"
       />
       <BlocksGallery blocks={blocks} categories={categories} />

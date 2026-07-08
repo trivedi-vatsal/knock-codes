@@ -1,0 +1,49 @@
+---
+title: "Branded Access Template"
+description: "A split-screen, logo-forward restricted-access screen — brand panel on one side, code entry on the other."
+category: "Templates"
+tags: ["template", "branded", "split-screen"]
+registryName: "branded-access-template"
+relatedBlocks: ["access-gate", "pin-input", "protected-layout"]
+accessibility: "The code field has its own label and an accessible show/hide toggle. The brand panel is decorative and collapses out of the DOM's visual flow on small screens rather than stacking above the form, so mobile visitors reach the field without scrolling. Errors and the submitting state announce through a shared aria-live=\"polite\" region, same contract as every other block."
+customization: "Everything is one file — brand panel, form panel, heading, description, field, button, support link, and footer are all inline. Pass `logo` and `tagline` for the brand panel, and `labels` to override every string. The brand panel is hidden below the `lg` breakpoint so mobile visitors see only the form."
+props:
+  - name: "expectedHash"
+    type: "string"
+    description: "SHA-256 hex hash to verify against, for local mode."
+  - name: "verify"
+    type: "VerifyFn"
+    description: "Custom async verification function, for server mode."
+  - name: "children"
+    type: "ReactNode"
+    required: true
+    description: "Rendered once unlocked."
+  - name: "logo"
+    type: "ReactNode"
+    description: "Rendered on the brand panel (and, on mobile, above the form) — your own logo/wordmark."
+  - name: "tagline"
+    type: "ReactNode"
+    description: "Short line under the logo on the brand panel. Hidden along with the rest of that panel below the lg breakpoint."
+  - name: "supportHref"
+    type: "string"
+    description: "Renders \"Contact support\" as a link to this URL."
+  - name: "onContactSupport"
+    type: "() => void"
+    description: "Renders \"Contact support\" as a button instead of a link — e.g. to open a chat widget."
+  - name: "labels"
+    type: "BrandedAccessTemplateLabels"
+    description: "Overrides heading, description, input label, support label, footer text, and every AccessGateLabels string."
+  - name: "fullPage"
+    type: "boolean"
+    default: "true"
+    description: "Set false to embed this somewhere other than a real page root (a demo, a docs preview) — drops the full-viewport (100dvh) sizing."
+  - name: "theme"
+    type: '"light" | "dark"'
+    description: "Forces light or dark presentation on its own, independent of any ancestor \".dark\" class. Omit to follow the nearest \".dark\" ancestor if one happens to exist."
+  - name: "className"
+    type: "string"
+    description: "Extra classes on the outer grid."
+---
+
+The one to reach for when the access screen is also the first real impression of your product —
+a soft-launch landing page with a lock on it, not a bare form.
