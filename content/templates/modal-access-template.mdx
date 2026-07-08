@@ -41,6 +41,9 @@ props:
   - name: "theme"
     type: '"light" | "dark"'
     description: "Forces light or dark presentation on its own, independent of any ancestor \".dark\" class. Omit to follow the nearest \".dark\" ancestor if one happens to exist."
+  - name: "remember"
+    type: '"session"'
+    description: "Persists the unlocked session across reloads within the same tab via sessionStorage. Not a security boundary — see the security model."
   - name: "className"
     type: "string"
     description: "Extra classes on the outer wrapper."

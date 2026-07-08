@@ -5,6 +5,16 @@ import { useKnockCodes } from "./useKnockCodes.ts";
 import { DEFAULT_LABELS, type KnockCodesConfig, type KnockCodesLabels } from "./types.ts";
 import { cx } from "./cx.ts";
 
+// Shakes the code-entry group on a failed attempt — inlined via a plain
+// `<style>` tag (not a Tailwind config keyframe) so this file works
+// standalone in a host project that has no matching keyframe of its own.
+const KNOCK_CODES_SHAKE_KEYFRAMES = `@keyframes knock-codes-shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%, 60% { transform: translateX(4px); }
+}`;
+
 export interface KnockCodesTemplateLabels extends KnockCodesLabels {
   description?: string;
   accessCodeLabel?: string;
@@ -35,6 +45,12 @@ export interface KnockCodesTemplateProps extends KnockCodesConfig {
    * the nearest ".dark" ancestor if one happens to exist.
    */
   theme?: "light" | "dark";
+  /**
+   * Persist the unlocked session across reloads within the same tab via
+   * sessionStorage. Not a security boundary — clearable from DevTools or a
+   * private window, same as any other client-side storage. @default undefined (off)
+   */
+  remember?: "session";
   className?: string;
 }
 
@@ -66,19 +82,57 @@ export function KnockCodesTemplate({
   onContactSupport,
   fullPage = true,
   theme,
+  remember,
   className,
   ...config
 }: KnockCodesTemplateProps) {
   const merged = { ...TEMPLATE_LABELS, ...labels };
-  const { state, error, submit } = useKnockCodes(config);
+  const { state, error, submit } = useKnockCodes({
+    ...config,
+    storage: remember === "session" ? "sessionStorage" : config.storage,
+  });
   const [digits, setDigits] = useState<string[]>(() => Array(codeLength).fill(""));
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
+  const [shakeSeed, setShakeSeed] = useState(0);
+  const [showChildren, setShowChildren] = useState(false);
 
   useEffect(() => {
     if (state === "idle" && error) inputRefs.current[0]?.focus();
   }, [error, state]);
 
-  if (state === "unlocked") return <>{children}</>;
+  useEffect(() => {
+    if (error) setShakeSeed((seed) => seed + 1);
+  }, [error]);
+
+  // Holds the unlock screen visible for a beat so success has a visible
+  // transition instead of an instant swap to `children`.
+  useEffect(() => {
+    if (state !== "unlocked") {
+      setShowChildren(false);
+      return;
+    }
+    const timer = setTimeout(() => setShowChildren(true), 550);
+    return () => clearTimeout(timer);
+  }, [state]);
+
+  if (state === "unlocked") {
+    if (!showChildren) {
+      const successPanel = (
+        <div className="flex h-full min-h-[26rem] w-full items-center justify-center bg-gray-200 p-6 dark:bg-[#0b1220]">
+          <div className="flex flex-col items-center gap-2 text-center">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-500/10 dark:text-green-400">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-5 w-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <p className="text-sm font-medium text-gray-700 dark:text-gray-200">Access granted</p>
+          </div>
+        </div>
+      );
+      return theme === "dark" ? <div className="dark h-full w-full">{successPanel}</div> : successPanel;
+    }
+    return <>{children}</>;
+  }
 
   const code = digits.join("");
   const filled = code.length === codeLength && digits.every((d) => d !== "");
@@ -147,6 +201,7 @@ export function KnockCodesTemplate({
       )}
     >
       <div className="w-full max-w-[27rem] rounded-2xl bg-white p-8 shadow-2xl dark:bg-gray-950">
+        <style>{KNOCK_CODES_SHAKE_KEYFRAMES}</style>
         {logo && <div className="mb-6">{logo}</div>}
 
         <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50">{merged.heading}</h1>
@@ -156,7 +211,12 @@ export function KnockCodesTemplate({
           <span className="mb-2 block text-xs font-medium tracking-wide text-gray-500 uppercase dark:text-gray-400">
             {merged.accessCodeLabel}
           </span>
-          <div role="group" aria-label={merged.accessCodeLabel} className="flex items-center gap-1.5">
+          <div
+            key={shakeSeed}
+            role="group"
+            aria-label={merged.accessCodeLabel}
+            className={cx("flex items-center gap-1.5", shakeSeed > 0 && "animate-[knock-codes-shake_0.4s_ease-in-out]")}
+          >
             {Array.from({ length: codeLength }, (_, index) => (
               <div key={index} className="flex items-center gap-1.5">
                 {index > 0 && index % groupSize === 0 && <span className="text-gray-300">–</span>}
@@ -170,7 +230,8 @@ export function KnockCodesTemplate({
                   onPaste={handlePaste}
                   disabled={state === "submitting"}
                   maxLength={1}
-                  autoComplete="off"
+                  autoComplete="one-time-code"
+                  inputMode="text"
                   aria-label={`${merged.accessCodeLabel} character ${index + 1} of ${codeLength}`}
                   aria-invalid={error ? true : undefined}
                   className="h-11 w-10 rounded-lg border border-gray-300 text-center text-sm font-medium text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 focus:outline-none disabled:opacity-60 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-50"

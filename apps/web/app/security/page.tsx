@@ -93,6 +93,12 @@ export default function SecurityPage() {
             that — it&apos;s a velvet rope for people who won&apos;t open DevTools in the first place, which is most
             visitors, most of the time.
           </p>
+          <p className="mt-3 max-w-3xl text-sm text-muted-foreground">
+            The optional <code className="rounded bg-muted px-1 py-0.5 text-xs">remember=&quot;session&quot;</code> prop
+            works the same way: it stores an unlock marker in sessionStorage so a reload skips the gate for the rest
+            of that tab&apos;s session. It&apos;s client-side persistence, clearable from DevTools or a private
+            window — not a security boundary, just a convenience on top of the same trust model.
+          </p>
         </BlueprintFrame>
       </section>
 
