@@ -4,8 +4,10 @@ import { ArrowRight, TriangleAlert } from "lucide-react";
 import { SectionHeader } from "@/components/section-header";
 import { BlueprintFrame } from "@/components/blueprint-frame";
 import { CodeViewer } from "@/components/code-viewer";
+import { HashGenerator } from "@/components/hash-generator";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { buttonVariants } from "@/components/ui/button";
+import { getServerTemplates } from "@/lib/server-templates";
 
 export const metadata: Metadata = {
   title: "Getting Started — Knock Codes",
@@ -72,7 +74,7 @@ const STEPS = [
   {
     step: "01",
     title: "Hash your code",
-    body: "Every template page has a live hash generator built in — type or generate a code there, get the hash back. The plaintext never touches a file, only the hash does.",
+    body: "Use the generator below — type or generate a code, get the hash back. The plaintext never touches a file, only the hash does.",
   },
   {
     step: "02",
@@ -97,6 +99,8 @@ const STEPS = [
 ];
 
 export default function GettingStartedPage() {
+  const serverTemplates = getServerTemplates();
+
   return (
     <div className="mx-auto max-w-4xl px-6 py-12">
       <SectionHeader
@@ -113,6 +117,10 @@ export default function GettingStartedPage() {
             <p className="text-sm text-muted-foreground">{s.body}</p>
           </BlueprintFrame>
         ))}
+      </div>
+
+      <div className="mt-8">
+        <HashGenerator />
       </div>
 
       <div className="mt-8 flex gap-3 rounded-lg border border-amber-600/30 bg-amber-600/10 p-4 text-sm text-amber-700 dark:text-amber-400">
@@ -135,6 +143,29 @@ export default function GettingStartedPage() {
           {FRAMEWORK_SNIPPETS.map((fw) => (
             <TabsContent key={fw.id} value={fw.id}>
               <CodeViewer code={fw.code} filename={fw.filename} wrap />
+            </TabsContent>
+          ))}
+        </Tabs>
+      </div>
+
+      <div className="mt-12">
+        <SectionHeader
+          label="Server mode"
+          title="Reference verify endpoints"
+          description="Swap expectedHash for a verify function pointing at one of these — same request/response contract in every runtime: POST { code } → { ok: true, token } or { ok: false, reason }."
+          className="mb-6"
+        />
+        <Tabs defaultValue={serverTemplates[0]?.id}>
+          <TabsList>
+            {serverTemplates.map((tpl) => (
+              <TabsTrigger key={tpl.id} value={tpl.id}>
+                {tpl.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          {serverTemplates.map((tpl) => (
+            <TabsContent key={tpl.id} value={tpl.id}>
+              <CodeViewer code={tpl.code} filename={tpl.filename} wrap />
             </TabsContent>
           ))}
         </Tabs>

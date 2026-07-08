@@ -5,12 +5,13 @@ import { TemplateCard } from "@/components/template-card";
 import { SectionHeader } from "@/components/section-header";
 import { BlueprintFrame } from "@/components/blueprint-frame";
 import { HeroPreview } from "@/components/hero-preview";
+import { HashGenerator } from "@/components/hash-generator";
 import { getAllTemplates } from "@/lib/templates";
 import { THREAT_MODEL_COPY, VELVET_ROPE_LINE } from "@/lib/copy";
 import { getFlagshipTemplateKb } from "@/lib/proof-stats";
 
 const STEPS = [
-  { icon: KeyRound, label: "Step 01", title: "Hash your code", body: "Locally, in your browser console. The plaintext never touches a file." },
+  { icon: KeyRound, label: "Step 01", title: "Hash your code", body: "Use the generator below — type or generate a code, get the hash back." },
   { icon: Package, label: "Step 02", title: "Copy the template", body: "One file, straight into your project — no package to maintain." },
   { icon: Terminal, label: "Step 03", title: "Set the env var", body: "The hash goes in your framework's public env var, never the code." },
   { icon: ShieldCheck, label: "Step 04", title: "Ship it", body: "Wrap what you're protecting. Upgrade to server mode later, same markup." },
@@ -114,6 +115,9 @@ export default function Home() {
               <p className="text-xs text-muted-foreground">{body}</p>
             </BlueprintFrame>
           ))}
+        </div>
+        <div className="mt-6">
+          <HashGenerator />
         </div>
       </section>
 

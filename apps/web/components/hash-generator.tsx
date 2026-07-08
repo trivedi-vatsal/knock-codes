@@ -53,8 +53,8 @@ export function HashGenerator() {
     <BlueprintFrame label="Hash your code">
       <h2 className="mb-1.5 text-xl font-semibold tracking-tight text-foreground">Generate a hash</h2>
       <p className="mb-4 text-sm text-muted-foreground">
-        Fully client-side — the plaintext code never leaves this page, and never touches a file. Only the
-        hash below gets pasted into your project.
+        Type or generate a code to get its hash. Only the hash gets pasted into your project, never the
+        plaintext.
       </p>
 
       <div className="flex flex-wrap items-center gap-2">
@@ -96,6 +96,8 @@ export function HashGenerator() {
           <SnippetRow label="Next.js" value={snippets.nextjs} />
         </div>
       )}
+
+      <p className="mt-4 text-xs text-muted-foreground">Runs entirely in your browser. Nothing is sent anywhere.</p>
     </BlueprintFrame>
   );
 }

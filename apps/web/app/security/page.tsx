@@ -63,7 +63,7 @@ const INAPPROPRIATE = [
 
 const RECOMMENDATIONS = [
   "Rate-limit by a stable identifier (IP, or a header your edge/CDN sets) — every reference template below caps attempts per window and returns the same response shape for \"rate-limited\" and \"errored\" so neither is distinguishable to a client.",
-  "Use a shared store for the counter the moment you run more than one instance — an in-memory Map (as in the Next.js/Azure examples) only works for a single-instance deployment; swap in Redis, Vercel KV, or the equivalent before scaling out.",
+  "Use a shared store for the counter the moment you run more than one instance — an in-memory Map (as in the Next.js/Express/Hono/Azure examples) only works for a single-instance deployment; swap in Redis, Vercel KV, or the equivalent before scaling out.",
   "Log failed attempts with a timestamp and identifier, never the submitted code or its hash — you want to notice a spike, not build a wordlist of your own visitors' guesses.",
   "Keep issued tokens short-lived and signed (the templates default to 5 minutes) — a long-lived token turns one successful guess into indefinite access.",
   "Rotate KNOCK_CODES_SERVER_HASH and KNOCK_CODES_TOKEN_SECRET the same way you'd rotate any other secret if either might have leaked.",

@@ -14,7 +14,9 @@ const CONTENT_DIR = path.resolve(process.cwd(), "../../content/server-templates"
 
 const MANIFEST: Array<Pick<ServerTemplate, "id" | "label" | "filename">> = [
   { id: "nextjs", label: "Next.js route handler", filename: "nextjs-route-handler.js" },
+  { id: "express", label: "Express", filename: "express.js" },
   { id: "cloudflare", label: "Cloudflare Worker", filename: "cloudflare-worker.js" },
+  { id: "hono", label: "Hono", filename: "hono.js" },
   { id: "azure", label: "Azure Function", filename: "azure-function.js" },
 ];
 
