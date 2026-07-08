@@ -4,6 +4,7 @@ import { ThemeToggle } from "./theme-toggle";
 const NAV_LINKS = [
   { href: "/templates", label: "Templates" },
   { href: "/blocks", label: "Blocks" },
+  { href: "/security", label: "Security" },
 ];
 
 export function SiteHeader() {

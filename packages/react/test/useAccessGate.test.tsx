@@ -127,6 +127,29 @@ test("logout clears the session and returns to idle", async () => {
   assert.equal(result.current.session, null);
 });
 
+test("calling submit() again while one is already in flight is ignored (no concurrent verify calls)", async () => {
+  let calls = 0;
+  const { result } = renderHook(() =>
+    useAccessGate({
+      verify: async () => {
+        calls++;
+        await new Promise((resolve) => setTimeout(resolve, 30));
+        return { ok: true };
+      },
+      storage: "memory",
+    })
+  );
+
+  await act(async () => {
+    const first = result.current.submit("code-a");
+    const second = result.current.submit("code-b"); // fired before `first` resolves — must be a no-op
+    await Promise.all([first, second]);
+  });
+
+  assert.equal(calls, 1);
+  assert.equal(result.current.state, "unlocked");
+});
+
 test("resolveVerifyFn's mutual-exclusivity throw surfaces from the hook (ADR-0009/0011)", () => {
   assert.throws(() => {
     renderHook(() => useAccessGate({ expectedHash: "x", verify: async () => ({ ok: true }), storage: "memory" }));

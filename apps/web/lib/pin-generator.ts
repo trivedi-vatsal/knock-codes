@@ -30,7 +30,7 @@ export function weaknessWarning(pin: string): string | null {
   if (pin.length === 0) return null;
   const isAllDigits = /^[0-9]+$/.test(pin);
   if (isAllDigits && pin.length < MIN_RECOMMENDED_LENGTH) {
-    return `A ${pin.length}-digit numeric PIN's hash still ships in your client bundle — it can be brute-forced offline even though the comparison itself happens in the browser. Consider a longer passphrase instead.`;
+    return `A ${pin.length}-digit numeric code's hash still ships in your client bundle — it can be brute-forced offline even though the comparison itself happens in the browser. Consider a longer passphrase instead.`;
   }
   return null;
 }

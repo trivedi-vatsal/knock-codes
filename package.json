@@ -12,7 +12,8 @@
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
     "lint": "turbo run lint",
-    "registry:build": "node scripts/build-registry.mjs"
+    "registry:build": "node scripts/build-registry.mjs",
+    "registry:check": "node scripts/check-registry.mjs"
   },
   "devDependencies": {
     "jsdom": "^25.0.0",

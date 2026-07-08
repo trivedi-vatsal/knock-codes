@@ -5,8 +5,9 @@ category: "Routing & Layout"
 tags: ["quickstart"]
 registryName: "standalone-gate"
 relatedBlocks: ["access-gate", "embedded-gate"]
-accessibility: "Same PIN entry UI as Access Gate — full keyboard and screen-reader support inherited, none of it re-implemented."
+accessibility: "Same access-code entry UI as Access Gate — full keyboard and screen-reader support inherited, none of it re-implemented."
 customization: "Deliberately a smaller prop surface than Access Gate — just `expectedHash`/`verify`, `children`, and an optional `heading`. Reach for `<AccessGate>` directly the moment you need storage/timeout/activity-tracking control."
+bestUsedFor: "The fastest possible integration — wrapping an entire app with minimal configuration."
 props:
   - name: "expectedHash"
     type: "string"

@@ -7,6 +7,7 @@ registryName: "protected-card"
 relatedBlocks: ["protected-modal", "embedded-gate", "gate-wrapper"]
 accessibility: "The blurred preview behind the Unlock button is aria-hidden and inert, matching Protected Modal's approach — it's decorative once the button is shown, not a second interactive surface."
 customization: "Locked content stays mounted and blurred behind an Unlock button instead of being replaced outright, so the card's size and position never jump between locked and unlocked. Good fit for a dashboard tile or a gated preview inside a grid of otherwise-public cards."
+bestUsedFor: "A single gated tile inside a grid of otherwise-public cards, e.g. one locked dashboard widget."
 props:
   - name: "expectedHash"
     type: "string"
@@ -23,4 +24,4 @@ props:
     description: "Extra classes on the card."
 ---
 
-Click "Unlock" to reveal an inline PIN form in place, without leaving the card or navigating away.
+Click "Unlock" to reveal an inline access-code form in place, without leaving the card or navigating away.

@@ -52,6 +52,12 @@ export default async function BlockDetailPage({ params }: { params: Promise<{ sl
             </Badge>
           ))}
         </div>
+        {block.bestUsedFor && (
+          <p className="max-w-2xl border-l-2 border-primary pl-3 text-sm text-muted-foreground">
+            <span className="label-mono text-primary">Best used for </span>
+            {block.bestUsedFor}
+          </p>
+        )}
       </div>
 
       {block.content && (
@@ -97,7 +103,11 @@ export default async function BlockDetailPage({ params }: { params: Promise<{ sl
 
       {related.length > 0 && (
         <section className="space-y-4">
-          <SectionHeader label="Related" title="Related blocks" />
+          <SectionHeader
+            label="Compose with"
+            title="Blocks that pair well with this one"
+            description="These combine naturally with this block, whether as a shared shell, a shared session, or a common fallback."
+          />
           <RelatedContent blocks={related} />
         </section>
       )}

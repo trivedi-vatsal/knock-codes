@@ -13,6 +13,10 @@ export interface TemplateFrontmatter {
   props: BlockProp[];
   accessibility: string;
   customization: string;
+  bestUsedFor?: string;
+  useCase?: string;
+  complexity?: "Simple" | "Standard" | "Advanced";
+  mode?: "local" | "server" | "both";
 }
 
 export interface Template extends TemplateFrontmatter {

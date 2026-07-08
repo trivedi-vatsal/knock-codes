@@ -11,7 +11,7 @@ import {
 } from "@access-gate/react";
 import { usePreviewDark } from "@/components/preview-panel";
 
-const DEMO_PIN = "demo1234";
+const DEMO_CODE = "demo1234";
 const LOGO = <span className="text-lg font-bold text-gray-900 dark:text-gray-50">Acme Inc.</span>;
 
 function DemoUnlockedPanel() {
@@ -76,7 +76,7 @@ export function TemplatePreview({ slug }: { slug: string }) {
   const [hash, setHash] = useState<string | null>(null);
 
   useEffect(() => {
-    sha256Hex(DEMO_PIN).then(setHash);
+    sha256Hex(DEMO_CODE).then(setHash);
   }, []);
 
   if (!hash) {
@@ -89,12 +89,19 @@ export function TemplatePreview({ slug }: { slug: string }) {
 
   const factory = PREVIEWS[slug];
   if (!factory) {
-    return <p className="text-sm text-muted-foreground">No live preview available for &ldquo;{slug}&rdquo;.</p>;
+    return (
+      <div className="flex h-56 flex-col items-center justify-center gap-1 rounded-md border border-dashed border-border text-center">
+        <p className="text-sm font-medium text-foreground">No live preview for &ldquo;{slug}&rdquo;</p>
+        <p className="max-w-xs text-xs text-muted-foreground">
+          Check the Code tab above for the full source of this template.
+        </p>
+      </div>
+    );
   }
 
   return (
     <div className="relative flex h-full min-h-[44rem] flex-col">
-      <p className="label-mono absolute top-3 left-3 z-10 text-gray-500 dark:text-white/50">Demo code: {DEMO_PIN}</p>
+      <p className="label-mono absolute top-3 left-3 z-10 text-gray-500 dark:text-white/50">Demo code: {DEMO_CODE}</p>
       <div className="relative isolate min-h-0 w-full flex-1 transform overflow-hidden">{factory(hash, dark ? "dark" : "light")}</div>
     </div>
   );

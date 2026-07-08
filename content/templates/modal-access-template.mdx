@@ -5,6 +5,10 @@ category: "Templates"
 tags: ["template", "modal", "overlay"]
 registryName: "modal-access-template"
 relatedBlocks: ["protected-modal", "protected-card", "unlock-dialog"]
+useCase: "Staging app"
+complexity: "Advanced"
+mode: "both"
+bestUsedFor: "Gating one section of an already-public page without hiding the rest of it."
 accessibility: "The dialog carries role=\"dialog\" and aria-modal=\"true\"; the blurred content behind it is marked aria-hidden and inert while locked, so screen readers and keyboard focus skip it entirely. The code field autofocuses when the dialog opens. Errors and the submitting state announce through a shared aria-live=\"polite\" region, same contract as every other block."
 customization: "Everything is one file — backdrop, dialog, heading, description, field, button, and support link are all inline. Unlike the other templates, `children` renders even while locked (blurred and inert) instead of being swapped out, since the point is gating a section of a page that's otherwise visible. Pass `logo` and `labels` to customize; set `fullPage` if this is the whole page rather than one section of it."
 props:

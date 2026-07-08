@@ -9,7 +9,7 @@
   "files": [
     {
       "path": "packages/react/EmbeddedGate.tsx",
-      "content": "\"use client\";\n\nimport { AccessGate, type AccessGateProps } from \"./AccessGate.tsx\";\n\nexport type EmbeddedGateProps = Omit<AccessGateProps, \"variant\">;\n\n/**\n * `<AccessGate>` fixed to the \"inline\" shell — sits naturally inside an\n * existing layout (a sidebar widget, a section of a longer page) instead of\n * taking over the full viewport like the page-variant default.\n */\nexport function EmbeddedGate(props: EmbeddedGateProps) {\n  return <AccessGate {...props} variant=\"inline\" />;\n}\n",
+      "content": "\"use client\";\r\n\r\nimport { AccessGate, type AccessGateProps } from \"./AccessGate.tsx\";\r\n\r\nexport type EmbeddedGateProps = Omit<AccessGateProps, \"variant\">;\r\n\r\n/**\r\n * `<AccessGate>` fixed to the \"inline\" shell — sits naturally inside an\r\n * existing layout (a sidebar widget, a section of a longer page) instead of\r\n * taking over the full viewport like the page-variant default.\r\n */\r\nexport function EmbeddedGate(props: EmbeddedGateProps) {\r\n  return <AccessGate {...props} variant=\"inline\" />;\r\n}\r\n",
       "type": "registry:file",
       "target": "components/access-gate/react/EmbeddedGate.tsx"
     }

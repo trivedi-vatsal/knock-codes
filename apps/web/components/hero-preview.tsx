@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { sha256Hex } from "@access-gate/core";
 import { AccessGateTemplate, VerificationLoader } from "@access-gate/react";
 
-const DEMO_PIN = "demo1234";
+const DEMO_CODE = "demo1234";
 
 function DemoUnlockedPanel() {
   return (
@@ -20,7 +20,7 @@ export function HeroPreview() {
   const [hash, setHash] = useState<string | null>(null);
 
   useEffect(() => {
-    sha256Hex(DEMO_PIN).then(setHash);
+    sha256Hex(DEMO_CODE).then(setHash);
   }, []);
 
   if (!hash) {
@@ -33,7 +33,7 @@ export function HeroPreview() {
 
   return (
     <div className="relative flex h-full min-h-[26rem] flex-col overflow-hidden rounded-xl border border-white/10 shadow-2xl">
-      <p className="label-mono absolute top-3 left-3 z-10 text-white/50">Try it — code: {DEMO_PIN}</p>
+      <p className="label-mono absolute top-3 left-3 z-10 text-white/50">Try it — code: {DEMO_CODE}</p>
       <div className="relative isolate min-h-0 w-full flex-1">
         <AccessGateTemplate
           expectedHash={hash}

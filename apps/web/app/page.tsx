@@ -9,10 +9,35 @@ import { getAllTemplates } from "@/lib/templates";
 import { THREAT_MODEL_COPY } from "@/lib/copy";
 
 const STEPS = [
-  { icon: KeyRound, label: "Step 01", title: "Hash your PIN", body: "Locally, in your browser console. The plaintext never touches a file." },
+  { icon: KeyRound, label: "Step 01", title: "Hash your code", body: "Locally, in your browser console. The plaintext never touches a file." },
   { icon: Package, label: "Step 02", title: "Copy the template", body: "One file, straight into your project — no package to maintain." },
-  { icon: Terminal, label: "Step 03", title: "Set the env var", body: "The hash goes in your framework's public env var, never the PIN." },
+  { icon: Terminal, label: "Step 03", title: "Set the env var", body: "The hash goes in your framework's public env var, never the code." },
   { icon: ShieldCheck, label: "Step 04", title: "Ship it", body: "Wrap what you're protecting. Upgrade to server mode later, same markup." },
+];
+
+const USE_CASES = [
+  {
+    label: "Client preview",
+    title: "Share work before it's public",
+    body: "Send a link to a client or stakeholder without it ending up indexed, forwarded, or crawled — the code is the only thing standing between the link and the open internet.",
+  },
+  {
+    label: "Staging app",
+    title: "Keep pre-prod off search engines",
+    body: "A staging or preview deploy needs to be reachable by your team, not discoverable by everyone else. One shared code is usually all that's called for.",
+  },
+  {
+    label: "Internal dashboard",
+    title: "Soft-gate a low-risk internal tool",
+    body: "Everyone who has the code is already trusted — you're not modeling per-user permissions, just keeping the tool off a public URL.",
+  },
+];
+
+const MODE_COMPARISON = [
+  { label: "Setup", local: "Paste a template, drop in a hash", server: "One prop swap + a small endpoint" },
+  { label: "Hash visibility", local: "Ships in the client bundle", server: "Stays on your server" },
+  { label: "Rate limiting", local: "Not possible", server: "Yes, per identifier" },
+  { label: "Stops", local: "Casual visitors, crawlers, forwarded links", server: "Determined visitors too" },
 ];
 
 export default function Home() {
@@ -37,10 +62,10 @@ export default function Home() {
                 Copy the code <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
-                href="/templates"
+                href="/security"
                 className={buttonVariants({ size: "lg", variant: "outline" }) + " border-white/20 bg-transparent text-white hover:bg-white/10"}
               >
-                See all templates
+                Read the security model
               </Link>
             </div>
           </div>
@@ -65,6 +90,57 @@ export default function Home() {
               <p className="text-xs text-muted-foreground">{body}</p>
             </BlueprintFrame>
           ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <SectionHeader
+          label="Use cases"
+          title="Built for the times you don't need real auth"
+          description="One shared code, no accounts, no backend to stand up first."
+          className="mb-8"
+        />
+        <div className="grid gap-4 sm:grid-cols-3">
+          {USE_CASES.map((useCase) => (
+            <BlueprintFrame key={useCase.label} label={useCase.label} className="p-6">
+              <h3 className="mb-1.5 text-sm font-semibold text-foreground">{useCase.title}</h3>
+              <p className="text-xs text-muted-foreground">{useCase.body}</p>
+            </BlueprintFrame>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <SectionHeader
+          label="Local mode vs. server mode"
+          title="Start local, upgrade when it matters"
+          description="Same component, one prop different — the honest trade-offs, in brief."
+          className="mb-8"
+        />
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-left text-sm">
+            <thead>
+              <tr className="label-mono border-b border-border bg-muted/50 text-muted-foreground">
+                <th className="px-3 py-2 font-medium"> </th>
+                <th className="px-3 py-2 font-medium">Local mode</th>
+                <th className="px-3 py-2 font-medium">Server mode</th>
+              </tr>
+            </thead>
+            <tbody>
+              {MODE_COMPARISON.map((row) => (
+                <tr key={row.label} className="border-b border-border last:border-0">
+                  <td className="px-3 py-2 font-medium text-foreground">{row.label}</td>
+                  <td className="px-3 py-2 text-muted-foreground">{row.local}</td>
+                  <td className="px-3 py-2 text-muted-foreground">{row.server}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="mt-4">
+          <Link href="/security" className="label-mono inline-flex items-center gap-1.5 text-primary hover:underline">
+            Read the full security model <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
         </div>
       </section>
 

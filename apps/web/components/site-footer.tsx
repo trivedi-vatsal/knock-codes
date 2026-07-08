@@ -8,9 +8,14 @@ export function SiteFooter() {
           Access Gate is copy-owned, dependency-free access control. Local mode is deterrence, not
           protection — server mode is one prop away.
         </p>
-        <Link href="/getting-started" className="label-mono shrink-0 text-primary hover:underline">
-          How it works
-        </Link>
+        <div className="flex shrink-0 items-center gap-4">
+          <Link href="/getting-started" className="label-mono text-primary hover:underline">
+            How it works
+          </Link>
+          <Link href="/security" className="label-mono text-primary hover:underline">
+            Security model
+          </Link>
+        </div>
       </div>
     </footer>
   );

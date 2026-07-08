@@ -256,7 +256,14 @@ export function BlockPreview({ slug }: { slug: string }) {
       );
 
     default:
-      return <p className="text-sm text-muted-foreground">No live preview available for &ldquo;{slug}&rdquo;.</p>;
+      return (
+        <div className="flex h-56 flex-col items-center justify-center gap-1 rounded-md border border-dashed border-border text-center">
+          <p className="text-sm font-medium text-foreground">No live preview for &ldquo;{slug}&rdquo;</p>
+          <p className="max-w-xs text-xs text-muted-foreground">
+            Check the Code tab above, or the Props and Notes sections below, for how this one behaves.
+          </p>
+        </div>
+      );
   }
 }
 

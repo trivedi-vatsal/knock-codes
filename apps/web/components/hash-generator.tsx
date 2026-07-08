@@ -22,8 +22,8 @@ function SnippetRow({ label, value }: { label: string; value: string }) {
 }
 
 /**
- * The site's own PIN → hash tool, embedded directly on each template page —
- * generate or type a PIN, get its hash, copy the env line. Nothing here
+ * The site's own code → hash tool, embedded directly on each template page —
+ * generate or type a code, get its hash, copy the env line. Nothing here
  * leaves the browser; hashing goes through the same `sha256Hex` every
  * template and block verifies against.
  */
@@ -50,10 +50,10 @@ export function HashGenerator() {
   const snippets = hash ? buildSnippets(hash) : null;
 
   return (
-    <BlueprintFrame label="Hash your PIN">
+    <BlueprintFrame label="Hash your code">
       <h2 className="mb-1.5 text-xl font-semibold tracking-tight text-foreground">Generate a hash</h2>
       <p className="mb-4 text-sm text-muted-foreground">
-        Fully client-side — the plaintext PIN never leaves this page, and never touches a file. Only the
+        Fully client-side — the plaintext code never leaves this page, and never touches a file. Only the
         hash below gets pasted into your project.
       </p>
 
@@ -63,15 +63,15 @@ export function HashGenerator() {
             type={revealed ? "text" : "password"}
             value={pin}
             onChange={(e) => setPin(e.target.value)}
-            placeholder="Type a PIN or passphrase…"
+            placeholder="Type a code (PIN or passphrase)…"
             autoComplete="off"
-            aria-label="PIN or passphrase"
+            aria-label="Access code"
             className="pr-9"
           />
           <button
             type="button"
             onClick={() => setRevealed((r) => !r)}
-            aria-label={revealed ? "Hide PIN" : "Show PIN"}
+            aria-label={revealed ? "Hide code" : "Show code"}
             className="absolute top-1/2 right-2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
           >
             {revealed ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}

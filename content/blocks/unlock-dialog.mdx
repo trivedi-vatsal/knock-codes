@@ -1,12 +1,13 @@
 ---
 title: "Unlock Dialog"
-description: "A non-dismissable modal PIN prompt — no backdrop click, no Escape-to-close."
+description: "A non-dismissable modal access-code prompt — no backdrop click, no Escape-to-close."
 category: "Modal & Overlay"
 tags: ["modal", "dialog"]
 registryName: "unlock-dialog"
 relatedBlocks: ["protected-modal", "pin-input", "access-gate"]
 accessibility: "role=\"dialog\" + aria-modal=\"true\" + aria-labelledby pointing at the heading. Focus moves into the panel on open. Deliberately not dismissable via Escape or backdrop click — a gate you can dismiss without unlocking isn't a gate, so this omission is intentional, not a missing feature."
 customization: "Composable standalone — trigger it from your own button or menu item instead of gating content directly, by controlling `open` yourself. Pass `footer` for help text or a support link under the form."
+bestUsedFor: "Triggering an unlock prompt from a custom button or menu item instead of gating content directly."
 props:
   - name: "open"
     type: "boolean"

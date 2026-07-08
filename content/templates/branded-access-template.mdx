@@ -5,6 +5,10 @@ category: "Templates"
 tags: ["template", "branded", "split-screen"]
 registryName: "branded-access-template"
 relatedBlocks: ["access-gate", "pin-input", "protected-layout"]
+useCase: "Client preview"
+complexity: "Standard"
+mode: "both"
+bestUsedFor: "A private beta or soft-launch landing page where the access screen is also the first impression."
 accessibility: "The code field has its own label and an accessible show/hide toggle. The brand panel is decorative and collapses out of the DOM's visual flow on small screens rather than stacking above the form, so mobile visitors reach the field without scrolling. Errors and the submitting state announce through a shared aria-live=\"polite\" region, same contract as every other block."
 customization: "Everything is one file — brand panel, form panel, heading, description, field, button, support link, and footer are all inline. Pass `logo` and `tagline` for the brand panel, and `labels` to override every string. The brand panel is hidden below the `lg` breakpoint so mobile visitors see only the form."
 props:

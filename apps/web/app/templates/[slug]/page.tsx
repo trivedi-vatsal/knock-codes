@@ -52,12 +52,20 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
         <h1 className="text-3xl font-semibold tracking-tight text-foreground">{template.title}</h1>
         <p className="max-w-2xl text-muted-foreground">{template.description}</p>
         <div className="flex flex-wrap gap-1.5 pt-1">
+          {template.useCase && <Badge>{template.useCase}</Badge>}
+          {template.complexity && <Badge variant="secondary">{template.complexity}</Badge>}
           {template.tags.map((tag) => (
             <Badge key={tag} variant="outline">
               {tag}
             </Badge>
           ))}
         </div>
+        {template.bestUsedFor && (
+          <p className="max-w-2xl border-l-2 border-primary pl-3 text-sm text-muted-foreground">
+            <span className="label-mono text-primary">Best used for </span>
+            {template.bestUsedFor}
+          </p>
+        )}
       </div>
 
       {template.content && (
@@ -94,7 +102,7 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
             <p className="label-mono mb-1.5 text-muted-foreground">Installing via an AI agent?</p>
             <p className="mb-3 text-sm text-muted-foreground">
               Drop <code className="rounded bg-muted px-1 py-0.5 text-xs">AGENTS.md</code> into your project root — it
-              instructs any coding agent to hash the PIN locally, write only the hash, and confirm the plaintext never
+              instructs any coding agent to hash the code locally, write only the hash, and confirm the plaintext never
               touched a file. Thin pointer files exist for tools that read a different filename.
             </p>
             <div className="flex flex-wrap gap-3 text-sm">
@@ -164,7 +172,11 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
 
       {related.length > 0 && (
         <section className="space-y-4">
-          <SectionHeader label="Related" title="Related blocks" />
+          <SectionHeader
+            label="Compose with"
+            title="Blocks this template is built from"
+            description="Drop down to these directly once you need more control than the single-file template gives you."
+          />
           <RelatedContent blocks={related} />
         </section>
       )}

@@ -5,6 +5,10 @@ category: "Templates"
 tags: ["template", "segmented"]
 registryName: "access-gate-template"
 relatedBlocks: ["access-gate", "pin-input", "standalone-gate"]
+useCase: "Client preview"
+complexity: "Standard"
+mode: "both"
+bestUsedFor: "A polished, on-brand restricted-access page you can ship as-is, no assembly required."
 accessibility: "Each code box has its own aria-label (\"Access code character N of 8\"), the group has role=\"group\", and Backspace/Arrow-key navigation between boxes works without a mouse. Errors and the submitting state announce through a shared aria-live=\"polite\" region, same contract as every other block."
 customization: "Everything is one file — background, card, heading, description, code entry, button, support link, and footer are all inline, not composed from Gate Wrapper/PIN Input. Pass `logo` for your own wordmark, `codeLength`/`groupSize` to change the code shape, and `labels` to override every string. For a single masked field instead of segmented boxes, use Access Gate + PIN Input instead."
 props:

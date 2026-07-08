@@ -75,6 +75,22 @@ test("labels prop overrides default copy (localization) — docs/ux/flows.md § 
   assert.ok(screen.getByLabelText("Code d'accès"));
 });
 
+test("input is cleared after a failed attempt", async () => {
+  const user = userEvent.setup();
+  const hash = await sha256Hex("secret");
+  render(
+    <AccessGate expectedHash={hash} storage="memory">
+      <div>Protected content</div>
+    </AccessGate>
+  );
+
+  const input = screen.getByLabelText("Access code") as HTMLInputElement;
+  await user.type(input, "wrong{Enter}");
+
+  await screen.findByText("That code didn't work. Try again.");
+  assert.equal(input.value, "");
+});
+
 test("mutual exclusivity of expectedHash and verify throws at mount (ADR-0009/0011)", () => {
   assert.throws(() => {
     render(

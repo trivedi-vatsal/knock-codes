@@ -95,9 +95,17 @@ export function useAccessGate(config: AccessGateConfig): UseAccessGateResult {
     };
   }, [activityTracking, timeout, store]);
 
+  // A ref, not the `submitting` state, guards re-entrancy: two synchronous
+  // back-to-back calls to the same submit closure (e.g. a double-click before
+  // React re-renders) would otherwise both read the same stale `submitting`
+  // value and both proceed.
+  const submittingRef = useRef(false);
+
   const submit = useCallback(
     async (code: string) => {
       if (code.length === 0) return; // no network/hash call for an empty submit — docs/ux/flows.md § Error States
+      if (submittingRef.current) return; // a submit already in flight — ignore re-entrant calls rather than racing two verifications
+      submittingRef.current = true;
       setSubmitting(true);
       setError(null);
 
@@ -109,6 +117,7 @@ export function useAccessGate(config: AccessGateConfig): UseAccessGateResult {
         result = { ok: false, reason: "network" };
       }
 
+      submittingRef.current = false;
       setSubmitting(false);
       if (result.ok) {
         const next = createSession(result, timeout);

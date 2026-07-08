@@ -1,12 +1,13 @@
 ---
 title: "PIN Input"
-description: "Masked PIN/passphrase input with paste support and accessible loading/error states."
+description: "Masked access-code input (PIN or passphrase) with paste support and accessible loading/error states."
 category: "Core"
 tags: ["core", "form"]
 registryName: "pin-input"
 relatedBlocks: ["access-gate", "unlock-dialog", "verification-loader"]
 accessibility: "Labeled via a real <label>, not just a placeholder. The show/hide toggle is a real button with an aria-label that flips with its state. Errors and the submitting label live in a shared aria-live=\"polite\" region."
 customization: "Deliberately a single masked text field, not a segmented per-character box grid — that shape supports arbitrary-length passphrases, not just 4-6 digit PINs. It carries no verification logic of its own, so it drops into any custom gate UI built on `useAccessGate`."
+bestUsedFor: "Building a custom access-code form on useAccessGate without adopting a full template's layout."
 props:
   - name: "value"
     type: "string"
@@ -37,4 +38,4 @@ props:
 ---
 
 The presentational primitive `<AccessGate>` and every dialog-based block render internally. Independently
-useful any time you're building a fully custom PIN form on top of the headless `useAccessGate` hook.
+useful any time you're building a fully custom access-code form on top of the headless `useAccessGate` hook.

@@ -20,6 +20,7 @@ export interface BlockFrontmatter {
   props: BlockProp[];
   accessibility: string;
   customization: string;
+  bestUsedFor?: string;
 }
 
 export interface Block extends BlockFrontmatter {
