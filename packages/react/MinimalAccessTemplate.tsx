@@ -103,7 +103,7 @@ export function MinimalAccessTemplate({
   if (state === "unlocked") {
     if (!showChildren) {
       const successPanel = (
-        <div className="flex h-full min-h-[26rem] w-full items-center justify-center bg-gray-50 p-6 dark:bg-[#0b1220]">
+        <div className="flex h-full min-h-[26rem] w-full items-center justify-center bg-[var(--ag-canvas-bg,#f9fafb)] p-6 dark:bg-[var(--ag-canvas-bg-dark,#0b1220)]">
           <div className="flex flex-col items-center gap-2 text-center">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-500/10 dark:text-green-400">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-5 w-5">
@@ -130,15 +130,16 @@ export function MinimalAccessTemplate({
   const content = (
     <div
       className={cx(
-        "flex w-full items-center justify-center bg-gray-50 p-6 dark:bg-[#0b1220]",
+        "flex w-full items-center justify-center bg-[var(--ag-canvas-bg,#f9fafb)] p-6 dark:bg-[var(--ag-canvas-bg-dark,#0b1220)]",
         fullPage ? "min-h-[100dvh]" : "h-full",
         className
       )}
     >
       <div
         key={shakeSeed}
+        style={{ fontFamily: "var(--ag-font, inherit)" }}
         className={cx(
-          "w-full max-w-sm rounded-xl border border-gray-200 bg-white p-7 dark:border-gray-800 dark:bg-gray-950",
+          "w-full max-w-sm rounded-[var(--ag-radius,0.75rem)] border border-[var(--ag-border,#e5e7eb)] bg-[var(--ag-card,#ffffff)] p-7 dark:border-[var(--ag-border-dark,#1f2937)] dark:bg-[var(--ag-card-dark,#030712)]",
           shakeSeed > 0 && "animate-[minimal-access-shake_0.4s_ease-in-out]"
         )}
       >
@@ -165,7 +166,7 @@ export function MinimalAccessTemplate({
               autoFocus
               disabled={state === "submitting"}
               aria-invalid={error ? true : undefined}
-              className="h-10 w-full rounded-lg border border-gray-300 px-3 pr-16 text-sm text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 focus:outline-none disabled:opacity-60 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-50"
+              className="h-10 w-full rounded-[var(--ag-radius,0.5rem)] border border-[var(--ag-border,#d1d5db)] px-3 pr-16 text-sm text-gray-900 focus:border-[var(--ag-primary,#3b82f6)] focus:ring-2 focus:ring-[var(--ag-primary,#3b82f6)]/30 focus:outline-none disabled:opacity-60 dark:border-[var(--ag-border-dark,#374151)] dark:bg-[var(--ag-card-dark,#111827)] dark:text-gray-50"
             />
             <button
               type="button"
@@ -185,7 +186,7 @@ export function MinimalAccessTemplate({
           type="button"
           onClick={handleSubmit}
           disabled={!code || state === "submitting"}
-          className="mt-3 w-full rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-200"
+          className="mt-3 w-full rounded-[var(--ag-radius,0.5rem)] bg-[var(--ag-primary,#111827)] px-4 py-2.5 text-sm font-semibold text-[var(--ag-primary-fg,#ffffff)] transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[var(--ag-primary-dark,#f9fafb)] dark:text-[var(--ag-primary-fg-dark,#111827)]"
         >
           {state === "submitting" ? merged.submittingLabel : merged.submitLabel}
         </button>

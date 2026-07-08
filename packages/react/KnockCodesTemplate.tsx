@@ -119,7 +119,7 @@ export function KnockCodesTemplate({
   if (state === "unlocked") {
     if (!showChildren) {
       const successPanel = (
-        <div className="flex h-full min-h-[26rem] w-full items-center justify-center bg-gray-200 p-6 dark:bg-[#0b1220]">
+        <div className="flex h-full min-h-[26rem] w-full items-center justify-center bg-[var(--ag-canvas-bg,#e5e7eb)] p-6 dark:bg-[var(--ag-canvas-bg-dark,#0b1220)]">
           <div className="flex flex-col items-center gap-2 text-center">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-500/10 dark:text-green-400">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-5 w-5">
@@ -192,7 +192,7 @@ export function KnockCodesTemplate({
   const content = (
     <div
       className={cx(
-        "flex w-full items-center justify-center bg-gray-200 p-6 dark:bg-[#0b1220]",
+        "flex w-full items-center justify-center bg-[var(--ag-canvas-bg,#e5e7eb)] p-6 dark:bg-[var(--ag-canvas-bg-dark,#0b1220)]",
         // Real page-root usage wants the full viewport; embedded usage
         // (a demo, a docs preview) wants to fill whatever height its own
         // container was given instead — the container providing a real,
@@ -201,7 +201,10 @@ export function KnockCodesTemplate({
         className
       )}
     >
-      <div className="w-full max-w-[27rem] rounded-2xl bg-white p-8 shadow-2xl dark:bg-gray-950">
+      <div
+        style={{ fontFamily: "var(--ag-font, inherit)" }}
+        className="w-full max-w-[27rem] rounded-[var(--ag-radius,1rem)] bg-[var(--ag-card,#ffffff)] p-8 shadow-2xl dark:bg-[var(--ag-card-dark,#030712)]"
+      >
         <style>{KNOCK_CODES_SHAKE_KEYFRAMES}</style>
         {logo && <div className="mb-6">{logo}</div>}
 
@@ -235,7 +238,7 @@ export function KnockCodesTemplate({
                   inputMode="text"
                   aria-label={`${merged.accessCodeLabel} character ${index + 1} of ${codeLength}`}
                   aria-invalid={error ? true : undefined}
-                  className="h-11 w-10 rounded-lg border border-gray-300 text-center text-sm font-medium text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 focus:outline-none disabled:opacity-60 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-50"
+                  className="h-11 w-10 rounded-[var(--ag-radius,0.5rem)] border border-[var(--ag-border,#d1d5db)] text-center text-sm font-medium text-gray-900 focus:border-[var(--ag-primary,#3b82f6)] focus:ring-2 focus:ring-[var(--ag-primary,#3b82f6)]/30 focus:outline-none disabled:opacity-60 dark:border-[var(--ag-border-dark,#374151)] dark:bg-[var(--ag-card-dark,#111827)] dark:text-gray-50"
                 />
               </div>
             ))}
@@ -249,7 +252,7 @@ export function KnockCodesTemplate({
           type="button"
           onClick={handleSubmit}
           disabled={!filled || state === "submitting"}
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-[var(--ag-primary,#2563eb)] px-4 py-2.5 text-sm font-semibold text-[var(--ag-primary-fg,#ffffff)] transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {state === "submitting" ? merged.submittingLabel : merged.submitLabel} →
         </button>

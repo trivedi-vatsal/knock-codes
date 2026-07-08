@@ -107,7 +107,7 @@ export function BrandedAccessTemplate({
   if (state === "unlocked") {
     if (!showChildren) {
       const successPanel = (
-        <div className="flex h-full min-h-[26rem] w-full items-center justify-center bg-white p-6 dark:bg-gray-950">
+        <div className="flex h-full min-h-[26rem] w-full items-center justify-center bg-[var(--ag-card,#ffffff)] p-6 dark:bg-[var(--ag-card-dark,#030712)]">
           <div className="flex flex-col items-center gap-2 text-center">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-500/10 dark:text-green-400">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-5 w-5">
@@ -133,14 +133,15 @@ export function BrandedAccessTemplate({
 
   const content = (
     <div className={cx("grid w-full lg:grid-cols-2", fullPage ? "min-h-[100dvh]" : "h-full", className)}>
-      <div className="hidden flex-col justify-center bg-gradient-to-br from-blue-600 to-indigo-800 p-12 text-white lg:flex">
+      <div className="hidden flex-col justify-center bg-gradient-to-br from-[var(--ag-primary,#2563eb)] to-[var(--ag-accent,#3730a3)] p-12 text-white lg:flex">
         {logo && <div className="mb-6">{logo}</div>}
         {tagline && <p className="max-w-sm text-lg text-white/80">{tagline}</p>}
       </div>
 
-      <div className="flex items-center justify-center bg-white p-6 dark:bg-gray-950 lg:p-12">
+      <div className="flex items-center justify-center bg-[var(--ag-card,#ffffff)] p-6 dark:bg-[var(--ag-card-dark,#030712)] lg:p-12">
         <div
           key={shakeSeed}
+          style={{ fontFamily: "var(--ag-font, inherit)" }}
           className={cx("w-full max-w-sm", shakeSeed > 0 && "animate-[branded-access-shake_0.4s_ease-in-out]")}
         >
           <style>{BRANDED_ACCESS_SHAKE_KEYFRAMES}</style>
@@ -166,7 +167,7 @@ export function BrandedAccessTemplate({
                 autoFocus
                 disabled={state === "submitting"}
                 aria-invalid={error ? true : undefined}
-                className="h-11 w-full rounded-lg border border-gray-300 px-3 pr-16 text-sm text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 focus:outline-none disabled:opacity-60 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-50"
+                className="h-11 w-full rounded-[var(--ag-radius,0.5rem)] border border-[var(--ag-border,#d1d5db)] px-3 pr-16 text-sm text-gray-900 focus:border-[var(--ag-primary,#3b82f6)] focus:ring-2 focus:ring-[var(--ag-primary,#3b82f6)]/30 focus:outline-none disabled:opacity-60 dark:border-[var(--ag-border-dark,#374151)] dark:bg-[var(--ag-card-dark,#111827)] dark:text-gray-50"
               />
               <button
                 type="button"
@@ -186,7 +187,7 @@ export function BrandedAccessTemplate({
             type="button"
             onClick={handleSubmit}
             disabled={!code || state === "submitting"}
-            className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-[var(--ag-primary,#2563eb)] px-4 py-2.5 text-sm font-semibold text-[var(--ag-primary-fg,#ffffff)] transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {state === "submitting" ? merged.submittingLabel : merged.submitLabel}
           </button>
@@ -194,11 +195,11 @@ export function BrandedAccessTemplate({
           {(supportHref || onContactSupport) && (
             <div className="mt-3 text-center">
               {onContactSupport ? (
-                <button type="button" onClick={onContactSupport} className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-400">
+                <button type="button" onClick={onContactSupport} className="text-sm font-medium text-[var(--ag-primary,#2563eb)] hover:underline dark:text-[var(--ag-primary-dark,#60a5fa)]">
                   {merged.supportLabel}
                 </button>
               ) : (
-                <a href={supportHref} className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-400">
+                <a href={supportHref} className="text-sm font-medium text-[var(--ag-primary,#2563eb)] hover:underline dark:text-[var(--ag-primary-dark,#60a5fa)]">
                   {merged.supportLabel}
                 </a>
               )}

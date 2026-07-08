@@ -129,8 +129,9 @@ export function ModalAccessTemplate({
             role="dialog"
             aria-modal="true"
             aria-label={merged.heading}
+            style={{ fontFamily: "var(--ag-font, inherit)" }}
             className={cx(
-              "w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl dark:bg-gray-950",
+              "w-full max-w-sm rounded-[var(--ag-radius,1rem)] bg-[var(--ag-card,#ffffff)] p-6 shadow-2xl dark:bg-[var(--ag-card-dark,#030712)]",
               shakeSeed > 0 && !celebrating && "animate-[modal-access-shake_0.4s_ease-in-out]"
             )}
           >
@@ -167,7 +168,7 @@ export function ModalAccessTemplate({
                       autoComplete="off"
                       disabled={state === "submitting"}
                       aria-invalid={error ? true : undefined}
-                      className="h-10 w-full rounded-lg border border-gray-300 px-3 pr-16 text-sm text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 focus:outline-none disabled:opacity-60 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-50"
+                      className="h-10 w-full rounded-[var(--ag-radius,0.5rem)] border border-[var(--ag-border,#d1d5db)] px-3 pr-16 text-sm text-gray-900 focus:border-[var(--ag-primary,#3b82f6)] focus:ring-2 focus:ring-[var(--ag-primary,#3b82f6)]/30 focus:outline-none disabled:opacity-60 dark:border-[var(--ag-border-dark,#374151)] dark:bg-[var(--ag-card-dark,#111827)] dark:text-gray-50"
                     />
                     <button
                       type="button"
@@ -187,7 +188,7 @@ export function ModalAccessTemplate({
                   type="button"
                   onClick={handleSubmit}
                   disabled={!code || state === "submitting"}
-                  className="mt-3 w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="mt-3 w-full rounded-[var(--ag-radius,0.5rem)] bg-[var(--ag-primary,#2563eb)] px-4 py-2.5 text-sm font-semibold text-[var(--ag-primary-fg,#ffffff)] transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {state === "submitting" ? merged.submittingLabel : merged.submitLabel}
                 </button>
@@ -195,11 +196,11 @@ export function ModalAccessTemplate({
                 {(supportHref || onContactSupport) && (
                   <div className="mt-3 text-center">
                     {onContactSupport ? (
-                      <button type="button" onClick={onContactSupport} className="text-xs font-medium text-blue-600 hover:underline dark:text-blue-400">
+                      <button type="button" onClick={onContactSupport} className="text-xs font-medium text-[var(--ag-primary,#2563eb)] hover:underline dark:text-[var(--ag-primary-dark,#60a5fa)]">
                         {merged.supportLabel}
                       </button>
                     ) : (
-                      <a href={supportHref} className="text-xs font-medium text-blue-600 hover:underline dark:text-blue-400">
+                      <a href={supportHref} className="text-xs font-medium text-[var(--ag-primary,#2563eb)] hover:underline dark:text-[var(--ag-primary-dark,#60a5fa)]">
                         {merged.supportLabel}
                       </a>
                     )}
