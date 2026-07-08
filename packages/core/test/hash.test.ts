@@ -26,13 +26,13 @@ test("is deterministic for the same input", async () => {
   assert.equal(await sha256Hex("repeat-me"), await sha256Hex("repeat-me"));
 });
 
-test("does not trim leading/trailing whitespace (ADR-0009)", async () => {
+test("does not trim leading/trailing whitespace", async () => {
   const a = await sha256Hex("1234");
   const b = await sha256Hex(" 1234 ");
   assert.notEqual(a, b);
 });
 
-test("does not case-fold (ADR-0009)", async () => {
+test("does not case-fold", async () => {
   const a = await sha256Hex("Passphrase");
   const b = await sha256Hex("passphrase");
   assert.notEqual(a, b);

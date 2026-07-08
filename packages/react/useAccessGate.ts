@@ -17,10 +17,9 @@ import {
 const ACTIVITY_EVENTS = ["pointerdown", "keydown", "scroll"] as const;
 
 /**
- * Headless session/verification hook — docs/architecture/overview.md §
- * Component Architecture. `<AccessGate>` is a thin renderer over this; a
- * host app can call it directly to build a fully custom PIN UI while the
- * session contract (ADR-0008) stays identical either way.
+ * Headless session/verification hook. `<AccessGate>` is a thin renderer
+ * over this; a host app can call it directly to build a fully custom PIN
+ * UI while the session contract stays identical either way.
  */
 export function useAccessGate(config: AccessGateConfig): UseAccessGateResult {
   const {
@@ -33,8 +32,8 @@ export function useAccessGate(config: AccessGateConfig): UseAccessGateResult {
   } = config;
 
   // Resolved once per config identity; throws synchronously (during render)
-  // on misconfiguration, per ADR-0009/ADR-0011 — no dev/prod branch here,
-  // matching src/core/verify.ts's own "no dev/prod branch" stance.
+  // on misconfiguration — no dev/prod branch here, matching verify.ts's
+  // own "no dev/prod branch" stance.
   const verifyFn = useMemo(() => resolveVerifyFn({ expectedHash, verify }), [expectedHash, verify]);
   const store = useMemo(() => createSessionStore(storage, { storageKey }), [storage, storageKey]);
 
@@ -44,13 +43,13 @@ export function useAccessGate(config: AccessGateConfig): UseAccessGateResult {
 
   // Initial read is deferred to an effect (never runs during SSR) so the
   // server-rendered/first-paint markup never depends on storage that may not
-  // exist yet — src/core/storage.ts throws rather than silently no-op-ing.
+  // exist yet — storage.ts throws rather than silently no-op-ing.
   useEffect(() => {
     const current = store.get();
     setSession(current && !isExpired(current) ? current : null);
   }, [store]);
 
-  // Expiry: checked on an interval and on tab focus — docs/architecture/overview.md § Session Lifecycle step 5.
+  // Expiry: checked on an interval and on tab focus.
   useEffect(() => {
     const checkExpiry = () => {
       setSession((current) => {
@@ -68,7 +67,7 @@ export function useAccessGate(config: AccessGateConfig): UseAccessGateResult {
   }, [store]);
 
   // Cross-tab sync: only the localStorage-backed store ever actually calls
-  // back here (ADR-0008) — sessionStorage/memory stores' subscribe is a no-op.
+  // back here — sessionStorage/memory stores' subscribe is a no-op.
   useEffect(() => store.subscribe(() => {
     const current = store.get();
     setSession(current && !isExpired(current) ? current : null);
@@ -103,7 +102,7 @@ export function useAccessGate(config: AccessGateConfig): UseAccessGateResult {
 
   const submit = useCallback(
     async (code: string) => {
-      if (code.length === 0) return; // no network/hash call for an empty submit — docs/ux/flows.md § Error States
+      if (code.length === 0) return; // no network/hash call for an empty submit
       if (submittingRef.current) return; // a submit already in flight — ignore re-entrant calls rather than racing two verifications
       submittingRef.current = true;
       setSubmitting(true);
@@ -113,7 +112,7 @@ export function useAccessGate(config: AccessGateConfig): UseAccessGateResult {
       try {
         result = await verifyFn(code);
       } catch {
-        // A throwing VerifyFn is treated as a network failure — ADR-0009.
+        // A throwing VerifyFn is treated as a network failure.
         result = { ok: false, reason: "network" };
       }
 
@@ -124,7 +123,7 @@ export function useAccessGate(config: AccessGateConfig): UseAccessGateResult {
         store.set(next);
         setSession(next);
       } else {
-        // "unknown"/omitted collapses into "invalid" — ADR-0009.
+        // "unknown"/omitted collapses into "invalid".
         setError({ reason: result.reason === "network" ? "network" : "invalid" });
       }
     },
@@ -140,7 +139,7 @@ export function useAccessGate(config: AccessGateConfig): UseAccessGateResult {
 
   return {
     state,
-    error: state === "idle" ? error : null, // error is an annotation on idle, not its own state — docs/ux/flows.md
+    error: state === "idle" ? error : null, // error is an annotation on idle, not its own state
     session,
     submit,
     logout,

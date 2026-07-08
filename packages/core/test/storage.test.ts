@@ -42,7 +42,7 @@ test("memory: get/set/clear round-trip, no global storage needed", () => {
   assert.equal(store.get(), null);
 });
 
-test("memory: subscribe never fires (ADR-0008)", () => {
+test("memory: subscribe never fires", () => {
   const store = createSessionStore("memory");
   let fired = false;
   const unsubscribe = store.subscribe(() => {
@@ -108,7 +108,7 @@ test("localStorage (mocked): subscribe fires on a matching-key storage event, no
   assert.equal(fireCount, 2, "no further calls after unsubscribe");
 });
 
-test("sessionStorage (mocked): subscribe never fires, even if an eventTarget is supplied (ADR-0008)", () => {
+test("sessionStorage (mocked): subscribe never fires, even if an eventTarget is supplied", () => {
   const storage = createMockStorage();
   const eventTarget = createMockEventTarget();
   const store = createSessionStore("sessionStorage", { storage, eventTarget });

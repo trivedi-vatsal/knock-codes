@@ -16,11 +16,9 @@ export interface AccessGateProps extends AccessGateConfig {
 }
 
 /**
- * Wrapper component — docs/architecture/overview.md § Component
- * Architecture. Renders `children` only when a valid session exists;
- * otherwise renders the PIN entry UI. Matches the state machine in
- * docs/ux/flows.md § Unlock Flow exactly: no separate "mount loading" state
- * (per that doc's Loading States section) — the PIN entry UI covers it.
+ * Wrapper component. Renders `children` only when a valid session exists;
+ * otherwise renders the PIN entry UI. There is no separate "mount loading"
+ * state — the PIN entry UI covers it.
  */
 export function AccessGate({ children, labels, variant = "page", className, ...config }: AccessGateProps) {
   const { state, error, submit } = useAccessGate(config);
@@ -33,7 +31,7 @@ export function AccessGate({ children, labels, variant = "page", className, ...c
 
   const handleSubmit = async () => {
     await submit(code);
-    setCode(""); // clearing after every attempt is an implementation detail, not a contract — docs/ux/flows.md § Unlock Flow step 5
+    setCode(""); // clearing after every attempt is an implementation detail, not a contract
   };
 
   return (

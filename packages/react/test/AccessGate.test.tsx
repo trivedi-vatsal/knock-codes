@@ -63,7 +63,7 @@ test("a network-mode failure shows the distinct network error, not the invalid-c
   assert.ok(await screen.findByText("Couldn't reach the server. Try again."));
 });
 
-test("labels prop overrides default copy (localization) — docs/ux/flows.md § Accessibility Requirements", async () => {
+test("labels prop overrides default copy (localization)", async () => {
   const hash = await sha256Hex("secret");
   render(
     <AccessGate expectedHash={hash} storage="memory" labels={{ heading: "Entrez le code", inputLabel: "Code d'accès" }}>
@@ -91,7 +91,7 @@ test("input is cleared after a failed attempt", async () => {
   assert.equal(input.value, "");
 });
 
-test("mutual exclusivity of expectedHash and verify throws at mount (ADR-0009/0011)", () => {
+test("mutual exclusivity of expectedHash and verify throws at mount", () => {
   assert.throws(() => {
     render(
       <AccessGate expectedHash="x" verify={async () => ({ ok: true })} storage="memory">

@@ -1,9 +1,9 @@
 // Minimal load hook so `node --test` can execute .tsx source directly.
 //
 // Node's native TypeScript type-stripping (used unflagged by every .ts file
-// in this repo — see tasks/milestones.md § M1 implementation notes) erases
-// type annotations only; it cannot transform JSX, which is real syntax that
-// needs codegen, not erasure. This hook intercepts .tsx specifiers only and
+// in this repo) erases type annotations only; it cannot transform JSX,
+// which is real syntax that needs codegen, not erasure. This hook
+// intercepts .tsx specifiers only and
 // transpiles them with the `typescript` package (already a devDependency for
 // `tsc --noEmit`, not a new one); every other extension (.ts, .mts, ...)
 // falls through to Node's existing native handling, unchanged.

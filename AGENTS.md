@@ -39,7 +39,7 @@ Guidance for working in this repo.
 ## Pitfalls
 
 - **Registry drift** — editing a block/template's files or `registry.json` without re-running `registry:build` leaves `apps/web/public/r/react` stale. `registry:check` catches it.
-- **ADR/docs citations don't resolve** — comments across `packages/core` and `packages/react` cite `docs/architecture/overview.md`, `docs/security/threat-model.md`, `docs/ux/flows.md`, and ADR numbers (ADR-0004, 0005, 0008, 0009, 0011) as the source of truth for specific decisions. None of these paths exist anywhere in git history (verified via `git log --all -- 'docs/*'`) — treat the citing comment itself as authoritative, don't go looking for the doc.
+- **ADR/docs citations** — code comments used to cite ADR numbers and doc paths (`docs/architecture/overview.md`, `docs/ux/flows.md`, etc.) that never existed in git history; those citations have been removed from comments. The real source of truth for architecture decisions now lives in `docs/adr/` (start at `docs/adr/0001-current-access-gate-architecture.md`) — cite that going forward instead of inventing new doc paths.
 
 ## Don't verify with Playwright unless explicitly asked
 

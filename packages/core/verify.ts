@@ -1,12 +1,12 @@
 import { sha256Hex } from "./hash.ts";
 
 /**
- * Verification contract — ADR-0004, refined by ADR-0009.
+ * Verification contract.
  *
  * Both the local-hash strategy and any custom server-mode strategy resolve
  * to this same shape. `reason` exists so the UI can distinguish "wrong
- * code" from "couldn't reach the server" (docs/ux/flows.md § Error States)
- * without either strategy needing to know about the other.
+ * code" from "couldn't reach the server" without either strategy needing
+ * to know about the other.
  */
 export type VerifyResult =
   | { ok: true; token?: string }
@@ -35,11 +35,11 @@ export interface VerifyConfig {
 /**
  * Resolves a `{ expectedHash, verify }` config into the single `VerifyFn`
  * a session lifecycle actually calls. Supplying both or neither is a
- * configuration error (ADR-0009) — this always throws for either case
- * rather than silently picking a winner. Framework surfaces (e.g. the
- * React component in M2) decide *when* to call this — whether that's once
- * at construction or gated behind a dev-only check is a framework-layer
- * choice, not a core one; this function itself has no dev/prod branch.
+ * configuration error — this always throws for either case rather than
+ * silently picking a winner. Framework surfaces (e.g. `useAccessGate`)
+ * decide *when* to call this — whether that's once at construction or
+ * gated behind a dev-only check is a framework-layer choice, not a core
+ * one; this function itself has no dev/prod branch.
  */
 export function resolveVerifyFn(config: VerifyConfig): VerifyFn {
   const hasHash = config.expectedHash !== undefined;

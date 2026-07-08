@@ -105,7 +105,7 @@ test("invalid error is announced in the aria-live region", () => {
   assert.equal(screen.getByText("That code didn't work. Try again.").textContent, "That code didn't work. Try again.");
 });
 
-test("network error uses distinct copy from invalid (ADR-0009)", () => {
+test("network error uses distinct copy from invalid", () => {
   render(<Harness error={{ reason: "network" }} />);
   assert.equal(screen.getByText("Couldn't reach the server. Try again.").textContent, "Couldn't reach the server. Try again.");
 });

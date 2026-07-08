@@ -5,8 +5,7 @@ import { DEFAULT_LABELS, type AccessGateError, type AccessGateLabels } from "./t
 import { cx } from "./cx.ts";
 
 /**
- * Presentational PIN/OTP input — docs/architecture/overview.md § Component
- * Architecture ("no verification logic of its own"). Per ADR-0011 this is a
+ * Presentational PIN/OTP input — no verification logic of its own. It's a
  * single masked text field (native paste support comes for free), not a
  * segmented per-character box grid — the product encourages arbitrary-length
  * passphrases, which a fixed-length box UI can't host.
@@ -121,7 +120,7 @@ export function PinInput({
       >
         {submitting ? merged.submittingLabel : merged.submitLabel}
       </button>
-      {/* Announces loading and error states — docs/ux/flows.md § Accessibility Requirements */}
+      {/* Announces loading and error states to assistive tech via aria-live */}
       <div
         role="status"
         aria-live="polite"

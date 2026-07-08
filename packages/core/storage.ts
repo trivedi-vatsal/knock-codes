@@ -21,13 +21,12 @@ export interface StorageEventTarget {
 export type StorageMode = "localStorage" | "sessionStorage" | "memory";
 
 /**
- * Unified interface all three storage backends implement — ADR-0008.
+ * Unified interface all three storage backends implement.
  * `subscribe` fires `callback` when the session changes in another tab; it
- * is a real cross-tab mechanism only for `localStorage` (see
- * docs/architecture/overview.md § Cross-Tab Synchronization). For
- * `sessionStorage` and `memory` it never fires — that's correct behavior,
- * not a missing feature, since neither mode has anything to sync across
- * tabs to begin with.
+ * is a real cross-tab mechanism only for `localStorage` (native `storage`
+ * events). For `sessionStorage` and `memory` it never fires — that's
+ * correct behavior, not a missing feature, since neither mode has anything
+ * to sync across tabs to begin with.
  */
 export interface SessionStore {
   get(): AccessGateSession | null;

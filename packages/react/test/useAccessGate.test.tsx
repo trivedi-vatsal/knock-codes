@@ -62,7 +62,7 @@ test("empty submit is a no-op — never calls the verify strategy", async () => 
   assert.equal(result.current.state, "idle");
 });
 
-test("a throwing verify() resolves to reason:network (ADR-0009)", async () => {
+test("a throwing verify() resolves to reason:network", async () => {
   const { result } = renderHook(() =>
     useAccessGate({
       verify: async () => {
@@ -80,7 +80,7 @@ test("a throwing verify() resolves to reason:network (ADR-0009)", async () => {
   assert.equal(result.current.state, "idle");
 });
 
-test("reason:'unknown' from verify() collapses into 'invalid' for the UI (ADR-0009)", async () => {
+test("reason:'unknown' from verify() collapses into 'invalid' for the UI", async () => {
   const { result } = renderHook(() =>
     useAccessGate({
       verify: async () => ({ ok: false, reason: "unknown" }) as const,
@@ -150,7 +150,7 @@ test("calling submit() again while one is already in flight is ignored (no concu
   assert.equal(result.current.state, "unlocked");
 });
 
-test("resolveVerifyFn's mutual-exclusivity throw surfaces from the hook (ADR-0009/0011)", () => {
+test("resolveVerifyFn's mutual-exclusivity throw surfaces from the hook", () => {
   assert.throws(() => {
     renderHook(() => useAccessGate({ expectedHash: "x", verify: async () => ({ ok: true }), storage: "memory" }));
   }, /supply either `expectedHash` or `verify`, not both/);
@@ -247,7 +247,7 @@ test("expiry is detected by the background poll even without a focus event", asy
   assert.equal(result.current.session, null);
 });
 
-test("default storage is localStorage, and cross-tab changes propagate via the storage event (ADR-0008/0011)", async () => {
+test("default storage is localStorage, and cross-tab changes propagate via the storage event", async () => {
   // src/core/storage.ts's default (no options-injected) path reads
   // `globalThis.localStorage`/`addEventListener` directly, mirroring a real
   // browser where `window` *is* `globalThis`. Scoped to this one test (not

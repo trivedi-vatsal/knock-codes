@@ -1,10 +1,9 @@
 /**
- * Session record schema and lifecycle — ADR-0008.
+ * Session record schema and lifecycle.
  *
  * This is the one and only shape any Access Gate surface (React hook,
- * vanilla snippet) writes. No other fields are ever added without revisiting
- * that ADR — in particular the raw PIN or hash is never part of this record
- * (ADR-0005).
+ * vanilla snippet) writes. The raw code and its hash are never part of
+ * this record — only the fact and timing of a successful unlock.
  */
 export type AccessGateSession = {
   /** epoch ms, set once at successful verification */
@@ -20,7 +19,7 @@ export type AccessGateSession = {
  * sets the initial expiry; `now` is injectable for deterministic tests.
  *
  * `token` is included only when the verify result actually provided one —
- * a genuinely missing field, not a `token: undefined` key (ADR-0008).
+ * a genuinely missing field, not a `token: undefined` key.
  */
 export function createSession(
   result: { token?: string },
