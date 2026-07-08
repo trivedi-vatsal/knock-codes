@@ -8,11 +8,12 @@ import { HashGenerator } from "@/components/hash-generator";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { buttonVariants } from "@/components/ui/button";
 import { getServerTemplates } from "@/lib/server-templates";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Getting Started — Knock Codes",
-  description: "Protect a page with Knock Codes in five steps, no backend required to start.",
-};
+export const metadata: Metadata = pageMetadata(
+  "Getting Started — Knock Codes",
+  "Protect a page with Knock Codes in five steps, no backend required to start."
+);
 
 const FRAMEWORK_SNIPPETS = [
   {

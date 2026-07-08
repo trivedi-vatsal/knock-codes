@@ -12,6 +12,7 @@ import { BlueprintFrame } from "@/components/blueprint-frame";
 import { ThemeLabRoot } from "@/components/customizer/theme-lab-root";
 import { getAllBlocks, getBlockBySlug } from "@/lib/blocks";
 import { getRegistryItemSource, resolveRegistryDependencies } from "@/lib/registry";
+import { pageMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   return getAllBlocks().map((block) => ({ slug: block.slug }));
@@ -21,7 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const block = getBlockBySlug(slug);
   if (!block) return {};
-  return { title: `${block.title} — Knock Codes`, description: block.description };
+  return pageMetadata(`${block.title} — Knock Codes`, block.description);
 }
 
 export default async function BlockDetailPage({ params }: { params: Promise<{ slug: string }> }) {

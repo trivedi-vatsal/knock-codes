@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import { SectionHeader } from "@/components/section-header";
 import { TemplateCard } from "@/components/template-card";
 import { getAllTemplates } from "@/lib/templates";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Templates — Knock Codes",
-  description: "Complete, single-file restricted-access screens, ready to copy.",
-};
+export const metadata: Metadata = pageMetadata(
+  "Templates — Knock Codes",
+  "Complete, single-file restricted-access screens, ready to copy."
+);
 
 export default function TemplatesPage() {
   const templates = getAllTemplates();
