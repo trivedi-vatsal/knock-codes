@@ -1,15 +1,10 @@
 import { KnockCodesTemplate } from "@knock-codes/react";
-
-const DEMO_CODE = "4242";
-// Precomputed sha256Hex("4242") (packages/core/hash.ts) — hardcoded so the
-// hero renders the real, working demo on first paint instead of gating it
-// behind an async hash computed after hydration.
-const DEMO_HASH = "0315b4020af3eccab7706679580ac87a710d82970733b8719e70af9b57e7b9e6";
+import { DEMO_CODE, DEMO_HASH } from "@/lib/demo-hash";
 
 function DemoUnlockedPanel() {
   return (
     <div className="flex h-full min-h-32 flex-col items-center justify-center gap-1 rounded-md border border-dashed border-white/20 bg-white/5 p-6 text-center">
-      <p className="text-sm font-medium text-white">Unlocked</p>
+      <p className="text-sm font-medium text-white">Come on in.</p>
       <p className="text-xs text-white/60">This is the protected content.</p>
     </div>
   );
@@ -29,6 +24,7 @@ export function HeroPreview() {
           groupSize={4}
           theme="dark"
           logo={<span className="text-lg font-bold text-gray-50">Acme Inc.</span>}
+          labels={{ invalidErrorMessage: "Wrong knock. Try again." }}
         >
           <DemoUnlockedPanel />
         </KnockCodesTemplate>

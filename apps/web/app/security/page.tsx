@@ -7,12 +7,12 @@ import { CodeBrowser } from "@/components/code-browser";
 import { buttonVariants } from "@/components/ui/button";
 import { getServerTemplates } from "@/lib/server-templates";
 import { THREAT_MODEL_COPY } from "@/lib/copy";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Security model — Knock Codes",
-  description:
-    "The honest threat model behind Knock Codes: what local mode does and doesn't protect against, when to upgrade to server mode, and what belongs behind real auth instead.",
-};
+export const metadata: Metadata = pageMetadata(
+  "Security model — Knock Codes",
+  "The honest threat model behind Knock Codes: what local mode does and doesn't protect against, when to upgrade to server mode, and what belongs behind real auth instead."
+);
 
 const COMPARISON_ROWS = [
   {
@@ -157,7 +157,7 @@ export default function SecurityPage() {
         </BlueprintFrame>
       </section>
 
-      <section className="mb-10">
+      <section id="reference-server-code" className="mb-10 scroll-mt-20">
         <BlueprintFrame label="Server mode">
           <h2 className="mb-2 text-xl font-semibold tracking-tight text-foreground">Upgrading to server verification</h2>
           <p className="mb-4 max-w-3xl text-sm text-muted-foreground">

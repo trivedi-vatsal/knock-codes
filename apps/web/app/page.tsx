@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, KeyRound, Package, ShieldCheck, Terminal } from "lucide-react";
+import { ArrowRight, Clock, KeyRound, Package, ShieldCheck, Terminal } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { TemplateCard } from "@/components/template-card";
 import { SectionHeader } from "@/components/section-header";
@@ -13,8 +13,9 @@ import { getFlagshipTemplateKb } from "@/lib/proof-stats";
 const STEPS = [
   { icon: KeyRound, label: "Step 01", title: "Hash your code", body: "Use the generator below — type or generate a code, get the hash back." },
   { icon: Package, label: "Step 02", title: "Copy the template", body: "One file, straight into your project — no package to maintain." },
-  { icon: Terminal, label: "Step 03", title: "Set the env var", body: "The hash goes in your framework's public env var, never the code." },
-  { icon: ShieldCheck, label: "Step 04", title: "Ship it", body: "Wrap what you're protecting. Upgrade to server mode later, same markup." },
+  { icon: Terminal, label: "Step 03", title: "Set the hash as an env var", body: "The hash goes in your framework's public env var, never the code." },
+  { icon: Clock, label: "Step 04", title: "Choose storage and timeout behavior", body: "Memory, localStorage, or sessionStorage, with a fixed or sliding session timeout." },
+  { icon: ShieldCheck, label: "Step 05", title: "Upgrade to server verification when needed", body: "Swap expectedHash for a verify function pointing at a small endpoint. Same markup, one prop different." },
 ];
 
 const USE_CASES = [
@@ -47,6 +48,11 @@ const FAQ_ITEMS = [
     question: "Is this real authentication?",
     answer:
       "No. There's no user identity, no accounts, no permissions — everyone who has the code gets the same access. It's a shared secret, not authentication. See the security model for exactly what it does and doesn't protect against.",
+  },
+  {
+    question: "Why not use my host's built-in password protection?",
+    answer:
+      "If your host already offers one and it fits, use that instead. It's one less thing to maintain. Knock Codes is for when that option doesn't exist: a host with no built-in gate, a framework you don't want to configure at the platform layer, or a screen where the gate needs to live in your own app code instead.",
   },
   {
     question: "Does it work with Next.js App Router and RSC?",
@@ -84,7 +90,7 @@ export default function Home() {
       <section className="border-b border-border bg-[#0e1311] text-[#edeae0]">
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-6 py-20 lg:grid-cols-2 lg:py-24">
           <div>
-            <p className="label-mono mb-4 text-[#edeae0]/60">→ Private previews, opened with a code.</p>
+            <p className="label-mono mb-4 text-[#edeae0]/60">→ Knock with the right code and the door opens.</p>
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
               The <span className="text-[#dfff67] italic">access screen</span> you copy-paste and ship
             </h1>
@@ -134,11 +140,11 @@ export default function Home() {
       <section className="mx-auto max-w-7xl px-6 py-16">
         <SectionHeader
           label="How it works"
-          title="Protected in four steps"
+          title="Protected in five steps"
           description="No account, no backend to stand up first."
           className="mb-8"
         />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {STEPS.map(({ icon: Icon, label, title, body }) => (
             <BlueprintFrame key={label} label={label} className="p-6">
               <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
@@ -189,6 +195,19 @@ export default function Home() {
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-16">
+        <BlueprintFrame label="Threat model">
+          <h2 className="mb-3 text-xl font-semibold tracking-tight text-foreground">The honest version</h2>
+          <p className="max-w-2xl text-sm text-muted-foreground">{THREAT_MODEL_COPY}</p>
+          <Link
+            href="/security#reference-server-code"
+            className="label-mono mt-4 inline-flex items-center gap-1.5 text-primary hover:underline"
+          >
+            Read the reference server code <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </BlueprintFrame>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 py-16">
         <SectionHeader
           label="Use cases"
           title="Built for the times you don't need real auth"
@@ -203,13 +222,6 @@ export default function Home() {
             </BlueprintFrame>
           ))}
         </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-6 py-16">
-        <BlueprintFrame label="Threat model">
-          <h2 className="mb-3 text-xl font-semibold tracking-tight text-foreground">The honest version</h2>
-          <p className="max-w-2xl text-sm text-muted-foreground">{THREAT_MODEL_COPY}</p>
-        </BlueprintFrame>
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-16">
