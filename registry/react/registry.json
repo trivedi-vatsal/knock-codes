@@ -204,6 +204,36 @@
       "files": [
         { "path": "packages/react/AccessGateTemplate.tsx", "type": "registry:file", "target": "components/access-gate/react/AccessGateTemplate.tsx" }
       ]
+    },
+    {
+      "name": "minimal-access-template",
+      "type": "registry:block",
+      "title": "Minimal Access Template",
+      "description": "The leanest restricted-access screen — a single masked field, a small plain card, no segmented boxes and no default footer copy. Everything in one component.",
+      "registryDependencies": ["access-gate-hook", "cx-util"],
+      "files": [
+        { "path": "packages/react/MinimalAccessTemplate.tsx", "type": "registry:file", "target": "components/access-gate/react/MinimalAccessTemplate.tsx" }
+      ]
+    },
+    {
+      "name": "branded-access-template",
+      "type": "registry:block",
+      "title": "Branded Access Template",
+      "description": "A split-screen, logo-forward restricted-access screen — brand panel on one side, code entry on the other. The brand panel collapses on small screens.",
+      "registryDependencies": ["access-gate-hook", "cx-util"],
+      "files": [
+        { "path": "packages/react/BrandedAccessTemplate.tsx", "type": "registry:file", "target": "components/access-gate/react/BrandedAccessTemplate.tsx" }
+      ]
+    },
+    {
+      "name": "modal-access-template",
+      "type": "registry:block",
+      "title": "Modal Access Template",
+      "description": "Gates one section of an already-visible page — the content stays mounted and blurred behind a centered dialog instead of disappearing entirely.",
+      "registryDependencies": ["access-gate-hook", "cx-util"],
+      "files": [
+        { "path": "packages/react/ModalAccessTemplate.tsx", "type": "registry:file", "target": "components/access-gate/react/ModalAccessTemplate.tsx" }
+      ]
     }
   ]
 }

@@ -2,9 +2,8 @@ import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
 
 const NAV_LINKS = [
-  { href: "/blocks", label: "Blocks" },
   { href: "/templates", label: "Templates" },
-  { href: "/getting-started", label: "Getting Started" },
+  { href: "/blocks", label: "Blocks" },
 ];
 
 export function SiteHeader() {

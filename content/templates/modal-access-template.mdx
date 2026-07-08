@@ -1,0 +1,46 @@
+---
+title: "Modal Access Template"
+description: "Gates one section of an already-visible page — content stays mounted and blurred behind a centered dialog instead of disappearing entirely."
+category: "Templates"
+tags: ["template", "modal", "overlay"]
+registryName: "modal-access-template"
+relatedBlocks: ["protected-modal", "protected-card", "unlock-dialog"]
+accessibility: "The dialog carries role=\"dialog\" and aria-modal=\"true\"; the blurred content behind it is marked aria-hidden and inert while locked, so screen readers and keyboard focus skip it entirely. The code field autofocuses when the dialog opens. Errors and the submitting state announce through a shared aria-live=\"polite\" region, same contract as every other block."
+customization: "Everything is one file — backdrop, dialog, heading, description, field, button, and support link are all inline. Unlike the other templates, `children` renders even while locked (blurred and inert) instead of being swapped out, since the point is gating a section of a page that's otherwise visible. Pass `logo` and `labels` to customize; set `fullPage` if this is the whole page rather than one section of it."
+props:
+  - name: "expectedHash"
+    type: "string"
+    description: "SHA-256 hex hash to verify against, for local mode."
+  - name: "verify"
+    type: "VerifyFn"
+    description: "Custom async verification function, for server mode."
+  - name: "children"
+    type: "ReactNode"
+    required: true
+    description: "The gated section. Stays mounted, blurred, and inert while locked — rendered normally once unlocked."
+  - name: "logo"
+    type: "ReactNode"
+    description: "Rendered above the heading in the dialog — your own logo/wordmark. Omitted entirely if not passed."
+  - name: "supportHref"
+    type: "string"
+    description: "Renders \"Contact support\" as a link to this URL."
+  - name: "onContactSupport"
+    type: "() => void"
+    description: "Renders \"Contact support\" as a button instead of a link — e.g. to open a chat widget."
+  - name: "labels"
+    type: "ModalAccessTemplateLabels"
+    description: "Overrides heading, description, input label, support label, and every AccessGateLabels string."
+  - name: "fullPage"
+    type: "boolean"
+    default: "false"
+    description: "Set true if this template gates the entire page rather than one section, so the wrapper takes the full viewport height."
+  - name: "theme"
+    type: '"light" | "dark"'
+    description: "Forces light or dark presentation on its own, independent of any ancestor \".dark\" class. Omit to follow the nearest \".dark\" ancestor if one happens to exist."
+  - name: "className"
+    type: "string"
+    description: "Extra classes on the outer wrapper."
+---
+
+Wrap a single card, panel, or section instead of a whole route — the rest of the page stays visible
+and interactive, just not this one part.

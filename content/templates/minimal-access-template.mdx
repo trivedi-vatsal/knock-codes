@@ -1,0 +1,46 @@
+---
+title: "Minimal Access Template"
+description: "The leanest restricted-access screen — a single masked field, a small plain card, no default footer copy."
+category: "Templates"
+tags: ["template", "minimal"]
+registryName: "minimal-access-template"
+relatedBlocks: ["access-gate", "pin-input", "standalone-gate"]
+accessibility: "The code field has its own label and an accessible show/hide toggle (aria-label switches between \"Show code\"/\"Hide code\"). Errors and the submitting state announce through a shared aria-live=\"polite\" region, same contract as every other block."
+customization: "Everything is one file — background, card, heading, description, field, button, support link, and footer are all inline, not composed from Gate Wrapper/PIN Input. Pass `logo` for your own wordmark and `labels` to override every string. For segmented code entry instead of a single field, use Access Gate Template instead."
+props:
+  - name: "expectedHash"
+    type: "string"
+    description: "SHA-256 hex hash to verify against, for local mode."
+  - name: "verify"
+    type: "VerifyFn"
+    description: "Custom async verification function, for server mode."
+  - name: "children"
+    type: "ReactNode"
+    required: true
+    description: "Rendered once unlocked."
+  - name: "logo"
+    type: "ReactNode"
+    description: "Rendered above the heading — your own logo/wordmark. Omitted entirely if not passed."
+  - name: "supportHref"
+    type: "string"
+    description: "Renders \"Contact support\" as a link to this URL."
+  - name: "onContactSupport"
+    type: "() => void"
+    description: "Renders \"Contact support\" as a button instead of a link — e.g. to open a chat widget."
+  - name: "labels"
+    type: "MinimalAccessTemplateLabels"
+    description: "Overrides heading, description, input label, support label, footer text, and every AccessGateLabels string."
+  - name: "fullPage"
+    type: "boolean"
+    default: "true"
+    description: "Set false to embed this somewhere other than a real page root (a demo, a docs preview) — drops the full-viewport (100dvh) sizing."
+  - name: "theme"
+    type: '"light" | "dark"'
+    description: "Forces light or dark presentation on its own, independent of any ancestor \".dark\" class. Omit to follow the nearest \".dark\" ancestor if one happens to exist."
+  - name: "className"
+    type: "string"
+    description: "Extra classes on the full-page backdrop."
+---
+
+For when a segmented code doesn't fit the tone of what you're gating — one field, one button, done.
+No footer text unless you pass your own.

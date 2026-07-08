@@ -8,10 +8,14 @@ import { InstallationPanel } from "@/components/installation-panel";
 import { RelatedContent } from "@/components/related-content";
 import { PreviewPanel } from "@/components/preview-panel";
 import { BlueprintFrame } from "@/components/blueprint-frame";
+import { CodeBrowser } from "@/components/code-browser";
 import { TemplatePreview } from "@/components/template-preview";
+import { HashGenerator } from "@/components/hash-generator";
 import { getAllTemplates, getTemplateBySlug } from "@/lib/templates";
 import { getBlockBySlug } from "@/lib/blocks";
 import { getRegistryItemSource, resolveRegistryDependencies } from "@/lib/registry";
+import { getServerTemplates } from "@/lib/server-templates";
+import { THREAT_MODEL_COPY } from "@/lib/copy";
 
 export function generateStaticParams() {
   return getAllTemplates().map((template) => ({ slug: template.slug }));
@@ -39,6 +43,7 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
   const related = (template.relatedBlocks ?? [])
     .map((blockSlug) => getBlockBySlug(blockSlug))
     .filter((b) => b !== undefined);
+  const serverTemplates = getServerTemplates();
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-12">
@@ -70,6 +75,10 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
         />
       </div>
 
+      <div className="mb-10">
+        <HashGenerator />
+      </div>
+
       <section className="mb-10">
         <BlueprintFrame label="Installation">
           <h2 className="mb-4 text-2xl font-semibold tracking-tight text-foreground">
@@ -80,6 +89,37 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
             ownFiles={source.map((f) => ({ path: f.path, target: f.target, type: "registry:file" }))}
             dependencyItems={dependencies}
           />
+
+          <div className="mt-6 border-t border-border pt-6">
+            <p className="label-mono mb-1.5 text-muted-foreground">Installing via an AI agent?</p>
+            <p className="mb-3 text-sm text-muted-foreground">
+              Drop <code className="rounded bg-muted px-1 py-0.5 text-xs">AGENTS.md</code> into your project root — it
+              instructs any coding agent to hash the PIN locally, write only the hash, and confirm the plaintext never
+              touched a file. Thin pointer files exist for tools that read a different filename.
+            </p>
+            <div className="flex flex-wrap gap-3 text-sm">
+              <a href="/agent-specs/AGENTS.md" target="_blank" rel="noreferrer" className="font-medium text-primary hover:underline">
+                AGENTS.md
+              </a>
+              <a href="/agent-specs/CLAUDE.md" target="_blank" rel="noreferrer" className="font-medium text-primary hover:underline">
+                CLAUDE.md
+              </a>
+              <a href="/agent-specs/GEMINI.md" target="_blank" rel="noreferrer" className="font-medium text-primary hover:underline">
+                GEMINI.md
+              </a>
+              <a href="/agent-specs/cursor/access-gate.mdc" target="_blank" rel="noreferrer" className="font-medium text-primary hover:underline">
+                .cursor/rules/access-gate.mdc
+              </a>
+              <a
+                href="/agent-specs/github/copilot-instructions.md"
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-primary hover:underline"
+              >
+                .github/copilot-instructions.md
+              </a>
+            </div>
+          </div>
         </BlueprintFrame>
       </section>
 
@@ -98,6 +138,27 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
             <p className="label-mono text-muted-foreground">Customization</p>
             <p className="text-sm text-muted-foreground">{template.customization}</p>
           </div>
+        </BlueprintFrame>
+      </section>
+
+      <section className="mb-10">
+        <BlueprintFrame label="Threat model">
+          <h2 className="mb-3 text-xl font-semibold tracking-tight text-foreground">The honest version</h2>
+          <p className="max-w-2xl text-sm text-muted-foreground">{THREAT_MODEL_COPY}</p>
+        </BlueprintFrame>
+      </section>
+
+      <section className="mb-10">
+        <BlueprintFrame label="Server mode">
+          <h2 className="mb-2 text-xl font-semibold tracking-tight text-foreground">Need real protection?</h2>
+          <p className="mb-4 max-w-2xl text-sm text-muted-foreground">
+            Local mode is deterrence — the hash ships in your client bundle by design. Swap the{" "}
+            <code className="rounded bg-muted px-1 py-0.5 text-xs">expectedHash</code> prop for a{" "}
+            <code className="rounded bg-muted px-1 py-0.5 text-xs">verify</code> function pointing at one of these,
+            and the code is checked server-side instead — same markup, same component, one prop different. Each
+            template rate-limits attempts and returns a short-lived signed token on success.
+          </p>
+          <CodeBrowser files={serverTemplates.map((t) => ({ path: t.filename, content: t.code }))} />
         </BlueprintFrame>
       </section>
 

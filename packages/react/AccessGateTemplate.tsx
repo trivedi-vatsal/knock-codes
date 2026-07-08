@@ -137,7 +137,7 @@ export function AccessGateTemplate({
   const content = (
     <div
       className={cx(
-        "flex w-full items-center justify-center bg-gray-100 p-6 dark:bg-[#0b1220]",
+        "flex w-full items-center justify-center bg-gray-200 p-6 dark:bg-[#0b1220]",
         // Real page-root usage wants the full viewport; embedded usage
         // (a demo, a docs preview) wants to fill whatever height its own
         // container was given instead — the container providing a real,
