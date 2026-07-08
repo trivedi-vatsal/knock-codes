@@ -1,4 +1,5 @@
-// Verifies apps/web/public/r/react (the committed, built registry) is
+// Verifies apps/web/public/r/react (the committed, built registry) and the
+// root registry.json (for GitHub owner/repo/item addressing) are both
 // byte-for-byte what `node scripts/build-registry.mjs` would produce right
 // now from registry/react/registry.json. Run this in CI, or locally after
 // editing the registry, instead of trusting that build-registry.mjs was
@@ -8,8 +9,12 @@ import { mkdtempSync, readdirSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
-const PUBLIC_DIR = path.resolve(import.meta.dirname, "../apps/web/public/r/react");
+const REPO_ROOT = path.resolve(import.meta.dirname, "..");
+const PUBLIC_DIR = path.resolve(REPO_ROOT, "apps/web/public/r/react");
+const ROOT_REGISTRY_PATH = path.join(REPO_ROOT, "registry.json");
 const tempDir = mkdtempSync(path.join(tmpdir(), "knock-codes-registry-"));
+
+let failed = false;
 
 try {
   const result = spawnSync("npx", ["shadcn@latest", "build", "registry/react/registry.json", "-o", tempDir], {
@@ -33,15 +38,29 @@ try {
 
   if (missing.length === 0 && orphaned.length === 0 && mismatched.length === 0) {
     console.log(`✔ Registry is in sync (${expected.length} files).`);
-    process.exit(0);
+  } else {
+    failed = true;
+    console.error("✖ apps/web/public/r/react is out of sync with registry/react/registry.json.");
+    if (missing.length) console.error(`  Missing (run the build): ${missing.join(", ")}`);
+    if (orphaned.length) console.error(`  Orphaned (no longer in registry.json): ${orphaned.join(", ")}`);
+    if (mismatched.length) console.error(`  Stale content (rebuild and recommit): ${mismatched.join(", ")}`);
   }
 
-  console.error("✖ apps/web/public/r/react is out of sync with registry/react/registry.json.");
-  if (missing.length) console.error(`  Missing (run the build): ${missing.join(", ")}`);
-  if (orphaned.length) console.error(`  Orphaned (no longer in registry.json): ${orphaned.join(", ")}`);
-  if (mismatched.length) console.error(`  Stale content (rebuild and recommit): ${mismatched.join(", ")}`);
-  console.error("\nRun: node scripts/build-registry.mjs");
-  process.exit(1);
+  const sourceRegistry = JSON.parse(readFileSync(path.join(REPO_ROOT, "registry/react/registry.json"), "utf8"));
+  const expectedRoot = JSON.stringify({ ...sourceRegistry, name: "knock-codes" }, null, 2) + "\n";
+  const actualRoot = readFileSync(ROOT_REGISTRY_PATH, "utf8");
+
+  if (expectedRoot === actualRoot) {
+    console.log("✔ Root registry.json is in sync.");
+  } else {
+    failed = true;
+    console.error("✖ registry.json (repo root) is out of sync with registry/react/registry.json.");
+  }
+
+  if (failed) {
+    console.error("\nRun: node scripts/build-registry.mjs");
+    process.exit(1);
+  }
 } finally {
   rmSync(tempDir, { recursive: true, force: true });
 }
