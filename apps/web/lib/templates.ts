@@ -17,6 +17,8 @@ export interface TemplateFrontmatter {
   useCase?: string;
   complexity?: "Simple" | "Standard" | "Advanced";
   mode?: "local" | "server" | "both";
+  /** Matches the version comment header in the template's own source file (and the changelog's version table). */
+  version: string;
   /** @default "react" — "html" templates are a single static .html file with no build step, rendered/handled differently on the detail page. */
   language?: "react" | "html";
 }

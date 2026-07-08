@@ -19,6 +19,7 @@ import { getHtmlTemplateSource } from "@/lib/html-templates";
 import { getServerTemplates } from "@/lib/server-templates";
 import { THREAT_MODEL_COPY } from "@/lib/copy";
 import { CopyButton } from "@/components/copy-button";
+import { pageMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   return getAllTemplates().map((template) => ({ slug: template.slug }));
@@ -28,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const template = getTemplateBySlug(slug);
   if (!template) return {};
-  return { title: `${template.title} — Knock Codes`, description: template.description };
+  return pageMetadata(`${template.title} — Knock Codes`, template.description);
 }
 
 export default async function TemplateDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -68,6 +69,9 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
               {tag}
             </Badge>
           ))}
+          <Badge variant="outline" className="font-mono">
+            v{template.version}
+          </Badge>
         </div>
         {template.bestUsedFor && (
           <p className="max-w-2xl border-l-2 border-primary pl-3 text-sm text-muted-foreground">

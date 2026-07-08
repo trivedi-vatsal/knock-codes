@@ -2,6 +2,8 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { Template } from "@/lib/templates";
 import { AccessPanelCard } from "@/components/access-panel-card";
+import { TemplateCardPreview } from "@/components/template-card-preview";
+import { getHtmlTemplateSource } from "@/lib/html-templates";
 
 const MODE_LABEL: Record<NonNullable<Template["mode"]>, string> = {
   local: "Local mode",
@@ -9,11 +11,29 @@ const MODE_LABEL: Record<NonNullable<Template["mode"]>, string> = {
   both: "Local or server",
 };
 
+const PREVIEW_HEIGHT = 208;
+
 export function TemplateCard({ template }: { template: Template }) {
   return (
     <Link href={`/templates/${template.slug}`} className="block">
       <AccessPanelCard serial={template.registryName} className="h-full hover:border-primary/40 hover:bg-accent/30">
         <div>
+          {template.language === "html" ? (
+            <div
+              aria-hidden="true"
+              className="pointer-events-none relative mb-4 select-none overflow-hidden rounded-md border border-border bg-muted/20"
+              style={{ height: PREVIEW_HEIGHT }}
+            >
+              <iframe
+                srcDoc={getHtmlTemplateSource(template.registryName)}
+                title={`${template.title} preview`}
+                tabIndex={-1}
+                className="h-full w-full border-0"
+              />
+            </div>
+          ) : (
+            <TemplateCardPreview slug={template.slug} />
+          )}
           <h3 className="text-base font-semibold text-foreground">{template.title}</h3>
           <p className="mt-1.5 text-sm text-muted-foreground">{template.description}</p>
           {(template.useCase || template.complexity || template.mode) && (
