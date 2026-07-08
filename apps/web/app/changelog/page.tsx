@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { SectionHeader } from "@/components/section-header";
 import { BlueprintFrame } from "@/components/blueprint-frame";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Changelog — Knock Codes",
-  description: "What changed on Knock Codes, release by release, plus the current version of each template.",
-};
+export const metadata: Metadata = pageMetadata(
+  "Changelog — Knock Codes",
+  "What changed on Knock Codes, release by release, plus the current version of each template."
+);
 
 const TEMPLATE_VERSIONS = [
   { name: "Knock Codes Template", registryName: "knock-codes-template", version: "1.0.0" },
@@ -26,12 +27,19 @@ const ENTRIES = [
       "All four full-page templates: a shake on a failed attempt, a brief success transition instead of an instant swap, and an optional remember=\"session\" prop (off by default, not a security boundary).",
       "Plain HTML Gate — one static .html file with an inline script, no React, no build step, no npm install.",
       "This changelog page, and a footer linking to it, the GitHub repo, the MIT license, and the author.",
-      "An FAQ section on the homepage, with FAQPage JSON-LD.",
-      "An OG image and refreshed page metadata.",
+      "An FAQ section on the homepage, with FAQPage JSON-LD, including a question on why not just use your host's built-in password protection.",
+      "An OG image, plus a unique og:title/og:description on every page instead of one shared description.",
+      "Getting Started and GitHub links in the primary nav.",
+      "Live, scaled-down visual previews on every template gallery card, in place of text-only cards.",
+      "The template version now shows on each template's own detail page, next to its tags.",
+      "A link from the homepage's threat-model section straight to the reference server code on the security page.",
+      "A light door/knock metaphor in the hero line and in the live demo's wrong-code and success states.",
     ],
     changed: [
-      "Landing page section order: Hero, Templates, How it works, Local vs. server mode, Use cases, Threat model, final CTA.",
+      "Landing page section order: Hero, Templates, How it works, Local vs. server mode, Threat model, Use cases, FAQ, final CTA.",
+      "Homepage \"How it works\" now walks all five steps from Getting Started (was four steps, with step one pointing at the browser console instead of the hash generator).",
       "Template descriptions now lead with their differentiator instead of all opening the same way.",
+      "Footer author byline now links to vatsal.xyz in addition to GitHub; the footer's \"How it works\" link is renamed \"Getting Started\" to match where it points.",
     ],
   },
 ];
