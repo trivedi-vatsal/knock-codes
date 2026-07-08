@@ -2,7 +2,7 @@
  * PIN generation and snippet formatting for the site's own hash-generator
  * widget. Nothing here makes a network request — generation and snippet
  * formatting happen entirely in the browser, same guarantee as hashing
- * itself (`sha256Hex` from `@access-gate/core`).
+ * itself (`sha256Hex` from `@knock-codes/core`).
  */
 
 const AMBIGUOUS_CHARS = new Set(["0", "O", "1", "l", "I"]);
@@ -43,8 +43,8 @@ export interface EnvSnippets {
 
 export function buildSnippets(hash: string): EnvSnippets {
   return {
-    generic: `ACCESS_GATE_HASH=${hash}`,
-    vite: `VITE_ACCESS_GATE_HASH=${hash}`,
-    nextjs: `NEXT_PUBLIC_ACCESS_GATE_HASH=${hash}`,
+    generic: `KNOCK_CODES_HASH=${hash}`,
+    vite: `VITE_KNOCK_CODES_HASH=${hash}`,
+    nextjs: `NEXT_PUBLIC_KNOCK_CODES_HASH=${hash}`,
   };
 }

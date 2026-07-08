@@ -1,9 +1,9 @@
 // @ts-check
 /**
- * Access Gate — Next.js route handler server verification template.
+ * Knock Codes — Next.js route handler server verification template.
  * Drop at app/api/verify-access/route.js (App Router).
  *
- * Set two env vars: ACCESS_GATE_SERVER_HASH, ACCESS_GATE_TOKEN_SECRET.
+ * Set two env vars: KNOCK_CODES_SERVER_HASH, KNOCK_CODES_TOKEN_SECRET.
  *
  * Wire contract identical across all three server templates — see the
  * Cloudflare Worker template in this same folder for the full contract.
@@ -61,9 +61,9 @@ export async function POST(request) {
     return Response.json({ ok: false, reason: "network" }, { status: 500 });
   }
 
-  if (sha256Hex(code) !== process.env.ACCESS_GATE_SERVER_HASH) {
+  if (sha256Hex(code) !== process.env.KNOCK_CODES_SERVER_HASH) {
     return Response.json({ ok: false, reason: "invalid" });
   }
 
-  return Response.json({ ok: true, token: signToken(/** @type {string} */ (process.env.ACCESS_GATE_TOKEN_SECRET)) });
+  return Response.json({ ok: true, token: signToken(/** @type {string} */ (process.env.KNOCK_CODES_TOKEN_SECRET)) });
 }

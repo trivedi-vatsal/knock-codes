@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import { sha256Hex } from "@access-gate/core";
+import { sha256Hex } from "@knock-codes/core";
 import {
-  AccessGateTemplate,
+  KnockCodesTemplate,
   MinimalAccessTemplate,
   BrandedAccessTemplate,
   ModalAccessTemplate,
   VerificationLoader,
-} from "@access-gate/react";
+} from "@knock-codes/react";
 import { usePreviewDark } from "@/components/preview-panel";
 
 const DEMO_CODE = "demo1234";
@@ -41,10 +41,10 @@ function DemoSection() {
 type PreviewFactory = (hash: string, theme: "light" | "dark") => ReactNode;
 
 const PREVIEWS: Record<string, PreviewFactory> = {
-  "access-gate-template": (hash, theme) => (
-    <AccessGateTemplate expectedHash={hash} storage="memory" fullPage={false} theme={theme} logo={LOGO} supportHref="#">
+  "knock-codes-template": (hash, theme) => (
+    <KnockCodesTemplate expectedHash={hash} storage="memory" fullPage={false} theme={theme} logo={LOGO} supportHref="#">
       <DemoUnlockedPanel />
-    </AccessGateTemplate>
+    </KnockCodesTemplate>
   ),
   "minimal-access-template": (hash, theme) => (
     <MinimalAccessTemplate expectedHash={hash} storage="memory" fullPage={false} theme={theme} logo={LOGO} supportHref="#">

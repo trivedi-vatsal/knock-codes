@@ -1,22 +1,22 @@
 "use client";
 
 import { useEffect, useRef, useState, type KeyboardEvent, type ClipboardEvent, type ReactNode } from "react";
-import { useAccessGate } from "./useAccessGate.ts";
-import { DEFAULT_LABELS, type AccessGateConfig, type AccessGateLabels } from "./types.ts";
+import { useKnockCodes } from "./useKnockCodes.ts";
+import { DEFAULT_LABELS, type KnockCodesConfig, type KnockCodesLabels } from "./types.ts";
 import { cx } from "./cx.ts";
 
-export interface AccessGateTemplateLabels extends AccessGateLabels {
+export interface KnockCodesTemplateLabels extends KnockCodesLabels {
   description?: string;
   accessCodeLabel?: string;
   supportLabel?: string;
   footerText?: ReactNode;
 }
 
-export interface AccessGateTemplateProps extends AccessGateConfig {
+export interface KnockCodesTemplateProps extends KnockCodesConfig {
   children: ReactNode;
   /** Rendered above the heading — your own logo/wordmark. Omitted entirely if not passed. */
   logo?: ReactNode;
-  labels?: AccessGateTemplateLabels;
+  labels?: KnockCodesTemplateLabels;
   /** Total code length, split into groups of `groupSize` with a dash between. @default 8 */
   codeLength?: number;
   /** @default 4 */
@@ -38,7 +38,7 @@ export interface AccessGateTemplateProps extends AccessGateConfig {
   className?: string;
 }
 
-const TEMPLATE_LABELS: Required<AccessGateTemplateLabels> = {
+const TEMPLATE_LABELS: Required<KnockCodesTemplateLabels> = {
   ...DEFAULT_LABELS,
   heading: "Restricted Access",
   submitLabel: "Unlock Access",
@@ -51,12 +51,12 @@ const TEMPLATE_LABELS: Required<AccessGateTemplateLabels> = {
 /**
  * A complete, single-drop-in "restricted access" screen — full-page dark
  * backdrop, centered card, segmented code entry, support link, and footer
- * help text, all in one file. Built on the same `useAccessGate`
+ * help text, all in one file. Built on the same `useKnockCodes`
  * session/verification contract as every other block, just with a
  * different presentation (segmented boxes instead of a masked text field —
- * for that, use `<AccessGate>` + `<PinInput>` instead).
+ * for that, use `<KnockCodes>` + `<PinInput>` instead).
  */
-export function AccessGateTemplate({
+export function KnockCodesTemplate({
   children,
   logo,
   labels,
@@ -68,9 +68,9 @@ export function AccessGateTemplate({
   theme,
   className,
   ...config
-}: AccessGateTemplateProps) {
+}: KnockCodesTemplateProps) {
   const merged = { ...TEMPLATE_LABELS, ...labels };
-  const { state, error, submit } = useAccessGate(config);
+  const { state, error, submit } = useKnockCodes(config);
   const [digits, setDigits] = useState<string[]>(() => Array(codeLength).fill(""));
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
 

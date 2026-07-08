@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const template = getTemplateBySlug(slug);
   if (!template) return {};
-  return { title: `${template.title} — Access Gate`, description: template.description };
+  return { title: `${template.title} — Knock Codes`, description: template.description };
 }
 
 export default async function TemplateDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -117,8 +117,8 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
               <a href="/agent-specs/GEMINI.md" target="_blank" rel="noreferrer" className="font-medium text-primary hover:underline">
                 GEMINI.md
               </a>
-              <a href="/agent-specs/cursor/access-gate.mdc" target="_blank" rel="noreferrer" className="font-medium text-primary hover:underline">
-                .cursor/rules/access-gate.mdc
+              <a href="/agent-specs/cursor/knock-codes.mdc" target="_blank" rel="noreferrer" className="font-medium text-primary hover:underline">
+                .cursor/rules/knock-codes.mdc
               </a>
               <a
                 href="/agent-specs/github/copilot-instructions.md"

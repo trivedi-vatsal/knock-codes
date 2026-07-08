@@ -1,16 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { useAccessGate } from "./useAccessGate.ts";
-import { DEFAULT_LABELS, type AccessGateConfig, type AccessGateLabels } from "./types.ts";
+import { useKnockCodes } from "./useKnockCodes.ts";
+import { DEFAULT_LABELS, type KnockCodesConfig, type KnockCodesLabels } from "./types.ts";
 import { cx } from "./cx.ts";
 
-export interface ModalAccessTemplateLabels extends AccessGateLabels {
+export interface ModalAccessTemplateLabels extends KnockCodesLabels {
   description?: string;
   supportLabel?: string;
 }
 
-export interface ModalAccessTemplateProps extends AccessGateConfig {
+export interface ModalAccessTemplateProps extends KnockCodesConfig {
   /**
    * The section being gated. Unlike the other templates, this stays mounted
    * (blurred and inert) behind the dialog while locked, instead of being
@@ -42,8 +42,8 @@ const TEMPLATE_LABELS: Required<ModalAccessTemplateLabels> = {
 /**
  * Gates one section of an already-visible page: the content stays mounted
  * and blurred behind a centered dialog instead of disappearing entirely.
- * For a full-page takeover instead, use `<AccessGateTemplate>` or
- * `<MinimalAccessTemplate>`. Same `useAccessGate` contract as every other
+ * For a full-page takeover instead, use `<KnockCodesTemplate>` or
+ * `<MinimalAccessTemplate>`. Same `useKnockCodes` contract as every other
  * block.
  */
 export function ModalAccessTemplate({
@@ -58,7 +58,7 @@ export function ModalAccessTemplate({
   ...config
 }: ModalAccessTemplateProps) {
   const merged = { ...TEMPLATE_LABELS, ...labels };
-  const { state, error, submit } = useAccessGate(config);
+  const { state, error, submit } = useKnockCodes(config);
   const [code, setCode] = useState("");
   const [revealed, setRevealed] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);

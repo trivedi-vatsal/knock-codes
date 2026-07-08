@@ -4,7 +4,7 @@ import { BlocksGallery } from "@/components/blocks-gallery";
 import { getAllBlocks, getBlockCategories } from "@/lib/blocks";
 
 export const metadata: Metadata = {
-  title: "Blocks — Access Gate",
+  title: "Blocks — Knock Codes",
   description: "Composable access-control primitives for React, for building something custom.",
 };
 

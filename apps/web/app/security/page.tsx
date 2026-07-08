@@ -9,9 +9,9 @@ import { getServerTemplates } from "@/lib/server-templates";
 import { THREAT_MODEL_COPY } from "@/lib/copy";
 
 export const metadata: Metadata = {
-  title: "Security model — Access Gate",
+  title: "Security model — Knock Codes",
   description:
-    "The honest threat model behind Access Gate: what local mode does and doesn't protect against, when to upgrade to server mode, and what belongs behind real auth instead.",
+    "The honest threat model behind Knock Codes: what local mode does and doesn't protect against, when to upgrade to server mode, and what belongs behind real auth instead.",
 };
 
 const COMPARISON_ROWS = [
@@ -66,7 +66,7 @@ const RECOMMENDATIONS = [
   "Use a shared store for the counter the moment you run more than one instance — an in-memory Map (as in the Next.js/Azure examples) only works for a single-instance deployment; swap in Redis, Vercel KV, or the equivalent before scaling out.",
   "Log failed attempts with a timestamp and identifier, never the submitted code or its hash — you want to notice a spike, not build a wordlist of your own visitors' guesses.",
   "Keep issued tokens short-lived and signed (the templates default to 5 minutes) — a long-lived token turns one successful guess into indefinite access.",
-  "Rotate ACCESS_GATE_SERVER_HASH and ACCESS_GATE_TOKEN_SECRET the same way you'd rotate any other secret if either might have leaked.",
+  "Rotate KNOCK_CODES_SERVER_HASH and KNOCK_CODES_TOKEN_SECRET the same way you'd rotate any other secret if either might have leaked.",
 ];
 
 export default function SecurityPage() {

@@ -1,9 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createSessionStore, DEFAULT_STORAGE_KEY, type MinimalStorageEvent, type StorageLike } from "../storage.ts";
-import type { AccessGateSession } from "../session.ts";
+import type { KnockCodesSession } from "../session.ts";
 
-const SESSION: AccessGateSession = { unlockedAt: 1, expiresAt: 2 };
+const SESSION: KnockCodesSession = { unlockedAt: 1, expiresAt: 2 };
 
 function createMockStorage(): StorageLike {
   const map = new Map<string, string>();

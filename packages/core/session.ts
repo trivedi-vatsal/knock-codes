@@ -1,11 +1,11 @@
 /**
  * Session record schema and lifecycle.
  *
- * This is the one and only shape any Access Gate surface (React hook,
+ * This is the one and only shape any Knock Codes surface (React hook,
  * vanilla snippet) writes. The raw code and its hash are never part of
  * this record — only the fact and timing of a successful unlock.
  */
-export type AccessGateSession = {
+export type KnockCodesSession = {
   /** epoch ms, set once at successful verification */
   unlockedAt: number;
   /** epoch ms; fixed at creation, or rewritten on each interaction under the sliding model */
@@ -25,7 +25,7 @@ export function createSession(
   result: { token?: string },
   timeoutMs: number,
   now: number = Date.now()
-): AccessGateSession {
+): KnockCodesSession {
   return {
     unlockedAt: now,
     expiresAt: now + timeoutMs,
@@ -33,7 +33,7 @@ export function createSession(
   };
 }
 
-export function isExpired(session: AccessGateSession, now: number = Date.now()): boolean {
+export function isExpired(session: KnockCodesSession, now: number = Date.now()): boolean {
   return now >= session.expiresAt;
 }
 
@@ -43,9 +43,9 @@ export function isExpired(session: AccessGateSession, now: number = Date.now()):
  * new object rather than mutating the input.
  */
 export function touchExpiry(
-  session: AccessGateSession,
+  session: KnockCodesSession,
   timeoutMs: number,
   now: number = Date.now()
-): AccessGateSession {
+): KnockCodesSession {
   return { ...session, expiresAt: now + timeoutMs };
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState, type FormEvent } from "react";
-import { DEFAULT_LABELS, type AccessGateError, type AccessGateLabels } from "./types.ts";
+import { DEFAULT_LABELS, type KnockCodesError, type KnockCodesLabels } from "./types.ts";
 import { cx } from "./cx.ts";
 
 /**
@@ -15,8 +15,8 @@ export interface PinInputProps {
   onChange: (value: string) => void;
   onSubmit: () => void;
   submitting: boolean;
-  error: AccessGateError | null;
-  labels?: AccessGateLabels;
+  error: KnockCodesError | null;
+  labels?: KnockCodesLabels;
   autoFocus?: boolean;
   /** Shown under the field while there's no error yet. */
   helperText?: string;

@@ -19,7 +19,7 @@ const VARIANT_CLASSES: Record<GateWrapperVariant, string> = {
 /**
  * The shared outer-positioning primitive every visible block composes on —
  * a plain container, not a verification strategy. Kept separate from
- * `<AccessGate>` so blocks like `<ProtectedRoute>`/`<EmbeddedGate>` can reuse
+ * `<KnockCodes>` so blocks like `<ProtectedRoute>`/`<EmbeddedGate>` can reuse
  * the same page-vs-inline placement without re-deriving it, while each block
  * still owns its own inner card/border/spacing styling.
  */

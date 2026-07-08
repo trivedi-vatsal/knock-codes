@@ -6,7 +6,7 @@ tags: ["session", "feedback"]
 registryName: "access-receipt"
 relatedBlocks: ["session-provider", "session-timeout-banner", "logout-button"]
 accessibility: "Read-only summary content — a definition list, not an interactive control. Renders nothing while locked, so it never announces a session that doesn't exist yet."
-customization: "Pass `storageMode`, `timeout`, and `verificationStrategy` to match the config given to the `<AccessGate>`/`useAccessGate` call sharing this session — the receipt has no way to read those back off the session itself, since the session record intentionally only ever holds `unlockedAt`, `expiresAt`, and an optional token."
+customization: "Pass `storageMode`, `timeout`, and `verificationStrategy` to match the config given to the `<KnockCodes>`/`useKnockCodes` call sharing this session — the receipt has no way to read those back off the session itself, since the session record intentionally only ever holds `unlockedAt`, `expiresAt`, and an optional token."
 bestUsedFor: "A visible confirmation after unlock — proof for the user (and for you, while testing) of which mode actually ran and how long the session will last."
 props:
   - name: "storageMode"

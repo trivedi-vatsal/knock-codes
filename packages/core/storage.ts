@@ -1,4 +1,4 @@
-import type { AccessGateSession } from "./session.ts";
+import type { KnockCodesSession } from "./session.ts";
 
 /** Structural subset of the Web Storage API — avoids depending on DOM lib types. */
 export interface StorageLike {
@@ -29,17 +29,17 @@ export type StorageMode = "localStorage" | "sessionStorage" | "memory";
  * to sync across tabs to begin with.
  */
 export interface SessionStore {
-  get(): AccessGateSession | null;
-  set(session: AccessGateSession): void;
+  get(): KnockCodesSession | null;
+  set(session: KnockCodesSession): void;
   clear(): void;
   subscribe(callback: () => void): () => void;
 }
 
-export const DEFAULT_STORAGE_KEY = "access-gate:session";
+export const DEFAULT_STORAGE_KEY = "knock-codes:session";
 
 const NOOP_UNSUBSCRIBE = () => {};
 
-function isValidSession(value: unknown): value is AccessGateSession {
+function isValidSession(value: unknown): value is KnockCodesSession {
   if (typeof value !== "object" || value === null) return false;
   const v = value as Record<string, unknown>;
   return typeof v.unlockedAt === "number" && typeof v.expiresAt === "number";
@@ -64,7 +64,7 @@ export function createSessionStore(mode: StorageMode, options: CreateSessionStor
 }
 
 function createMemoryStore(): SessionStore {
-  let current: AccessGateSession | null = null;
+  let current: KnockCodesSession | null = null;
   return {
     get: () => current,
     set: (session) => {
@@ -86,7 +86,7 @@ function createWebStorageStore(
   function requireStorage(): StorageLike {
     if (!storage) {
       throw new Error(
-        `Access Gate: ${mode} is not available in this environment. Pass a \`storage\` implementation explicitly, or use \`storage: "memory"\`.`
+        `Knock Codes: ${mode} is not available in this environment. Pass a \`storage\` implementation explicitly, or use \`storage: "memory"\`.`
       );
     }
     return storage;

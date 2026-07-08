@@ -1,8 +1,8 @@
-# @access-gate/react
+# @knock-codes/react
 
-The React blocks and templates — `<AccessGate>`, `useAccessGate`, PIN Input, Protected
-Route/Layout/Modal/Card, Session Provider, Access Gate/Branded/Minimal/Modal templates, and everything else
-in the gallery — built on [`@access-gate/core`](../core).
+Knock Codes ships components like `<KnockCodes>` and `useKnockCodes`, plus PIN Input, Protected
+Route/Layout/Modal/Card, Session Provider, Knock Codes/Branded/Minimal/Modal templates, and everything else
+in the gallery — built on [`@knock-codes/core`](../core).
 
 Not published to npm. This package is copy-owned: it's distributed by copying the source files (via the
 [shadcn-compatible registry](../../registry/react/registry.json) or by hand), not via `npm install`. See
@@ -12,19 +12,19 @@ template.
 
 ## Contents
 
-- `useAccessGate.ts` — the headless hook every visible block either wraps or composes on.
-- `AccessGate.tsx`, `StandaloneGate.tsx`, `EmbeddedGate.tsx`, `ProtectedRoute.tsx`, `ProtectedLayout.tsx`,
+- `useKnockCodes.ts` — the headless hook every visible block either wraps or composes on.
+- `KnockCodes.tsx`, `StandaloneGate.tsx`, `EmbeddedGate.tsx`, `ProtectedRoute.tsx`, `ProtectedLayout.tsx`,
   `ProtectedCard.tsx`, `ProtectedModal.tsx` — gate shapes for different placements.
 - `PinInput.tsx`, `UnlockDialog.tsx`, `GateWrapper.tsx`, `VerificationLoader.tsx`,
   `AccessDeniedScreen.tsx` — presentational pieces the gates above compose on, also usable standalone.
-- `AccessGateProvider.tsx`, `useAccessGate.ts`'s context counterpart, `LogoutButton.tsx`,
+- `KnockCodesProvider.tsx`, `useKnockCodes.ts`'s context counterpart, `LogoutButton.tsx`,
   `SessionTimeoutBanner.tsx` — for sharing one session across multiple components.
-- `AccessGateTemplate.tsx`, `BrandedAccessTemplate.tsx`, `MinimalAccessTemplate.tsx`,
+- `KnockCodesTemplate.tsx`, `BrandedAccessTemplate.tsx`, `MinimalAccessTemplate.tsx`,
   `ModalAccessTemplate.tsx` — complete, single-file screens (the Templates gallery).
 
 ## Develop
 
 ```
-pnpm --filter @access-gate/react test
-pnpm --filter @access-gate/react typecheck
+pnpm --filter @knock-codes/react test
+pnpm --filter @knock-codes/react typecheck
 ```

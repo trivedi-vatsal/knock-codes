@@ -12,7 +12,7 @@ export interface AccessDeniedScreenProps {
 
 /**
  * A static "you don't have access" view — distinct from the PIN entry UI
- * `<AccessGate>` renders while locked, because it never accepts another
+ * `<KnockCodes>` renders while locked, because it never accepts another
  * attempt. Use it as a custom `unauthorizedFallback` (e.g. on
  * `<ProtectedRoute>`) or anywhere a route/component needs a denial state
  * with no verification form in it at all.

@@ -2,7 +2,7 @@
 
 import { useId, type ReactNode } from "react";
 import { PinInput } from "./PinInput.tsx";
-import { DEFAULT_LABELS, type AccessGateError, type AccessGateLabels } from "./types.ts";
+import { DEFAULT_LABELS, type KnockCodesError, type KnockCodesLabels } from "./types.ts";
 
 export interface UnlockDialogProps {
   open: boolean;
@@ -10,8 +10,8 @@ export interface UnlockDialogProps {
   onChange: (value: string) => void;
   onSubmit: () => void;
   submitting: boolean;
-  error: AccessGateError | null;
-  labels?: AccessGateLabels;
+  error: KnockCodesError | null;
+  labels?: KnockCodesLabels;
   /** Extra content under the form, e.g. help text or a support link. */
   footer?: ReactNode;
 }

@@ -11,8 +11,16 @@ const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
-  title: "Access Gate",
-  description: "Copy-owned access-control components for demos, previews, staging, and internal tools.",
+  title: "Knock Codes",
+  description: "Copy-paste access screens for private previews, staging pages, and client links.",
+  openGraph: {
+    title: "Knock Codes",
+    description: "Copy-paste access screens for private previews, staging pages, and client links.",
+  },
+  twitter: {
+    title: "Knock Codes",
+    description: "Copy-paste access screens for private previews, staging pages, and client links.",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

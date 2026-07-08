@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const block = getBlockBySlug(slug);
   if (!block) return {};
-  return { title: `${block.title} — Access Gate`, description: block.description };
+  return { title: `${block.title} — Knock Codes`, description: block.description };
 }
 
 export default async function BlockDetailPage({ params }: { params: Promise<{ slug: string }> }) {

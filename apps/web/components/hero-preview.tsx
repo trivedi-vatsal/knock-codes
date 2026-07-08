@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { sha256Hex } from "@access-gate/core";
-import { AccessGateTemplate, VerificationLoader } from "@access-gate/react";
+import { sha256Hex } from "@knock-codes/core";
+import { KnockCodesTemplate, VerificationLoader } from "@knock-codes/react";
 
 const DEMO_CODE = "demo1234";
 
@@ -35,7 +35,7 @@ export function HeroPreview() {
     <div className="relative flex h-full min-h-[26rem] flex-col overflow-hidden rounded-xl border border-white/10 shadow-2xl">
       <p className="label-mono absolute top-3 left-3 z-10 text-white/50">Try it — code: {DEMO_CODE}</p>
       <div className="relative isolate min-h-0 w-full flex-1">
-        <AccessGateTemplate
+        <KnockCodesTemplate
           expectedHash={hash}
           storage="memory"
           fullPage={false}
@@ -43,7 +43,7 @@ export function HeroPreview() {
           logo={<span className="text-lg font-bold text-gray-50">Acme Inc.</span>}
         >
           <DemoUnlockedPanel />
-        </AccessGateTemplate>
+        </KnockCodesTemplate>
       </div>
     </div>
   );

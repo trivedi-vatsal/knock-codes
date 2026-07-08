@@ -8,8 +8,8 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { buttonVariants } from "@/components/ui/button";
 
 export const metadata: Metadata = {
-  title: "Getting Started — Access Gate",
-  description: "Protect a page with Access Gate in five steps, no backend required to start.",
+  title: "Getting Started — Knock Codes",
+  description: "Protect a page with Knock Codes in five steps, no backend required to start.",
 };
 
 const FRAMEWORK_SNIPPETS = [
@@ -17,15 +17,15 @@ const FRAMEWORK_SNIPPETS = [
     id: "nextjs",
     label: "Next.js",
     filename: "app/layout.tsx",
-    code: `import { AccessGateTemplate } from "@/components/access-gate/react/AccessGateTemplate";
+    code: `import { KnockCodesTemplate } from "@/components/knock-codes/react/KnockCodesTemplate";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <AccessGateTemplate expectedHash={process.env.NEXT_PUBLIC_ACCESS_GATE_HASH}>
+        <KnockCodesTemplate expectedHash={process.env.NEXT_PUBLIC_KNOCK_CODES_HASH}>
           {children}
-        </AccessGateTemplate>
+        </KnockCodesTemplate>
       </body>
     </html>
   );
@@ -36,13 +36,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     id: "vite",
     label: "Vite",
     filename: "src/App.tsx",
-    code: `import { AccessGateTemplate } from "@/components/access-gate/react/AccessGateTemplate";
+    code: `import { KnockCodesTemplate } from "@/components/knock-codes/react/KnockCodesTemplate";
 
 export default function App() {
   return (
-    <AccessGateTemplate expectedHash={import.meta.env.VITE_ACCESS_GATE_HASH}>
+    <KnockCodesTemplate expectedHash={import.meta.env.VITE_KNOCK_CODES_HASH}>
       <YourRealApp />
-    </AccessGateTemplate>
+    </KnockCodesTemplate>
   );
 }
 `,
@@ -51,17 +51,17 @@ export default function App() {
     id: "react",
     label: "Plain React",
     filename: "src/App.tsx",
-    code: `import { AccessGateTemplate } from "./components/access-gate/react/AccessGateTemplate";
+    code: `import { KnockCodesTemplate } from "./components/knock-codes/react/KnockCodesTemplate";
 
 // The hash is public information by design (see /security) — a constant is
 // fine here. Never put the plaintext code in this file or any other.
-const ACCESS_GATE_HASH = "paste-your-generated-hash-here";
+const KNOCK_CODES_HASH = "paste-your-generated-hash-here";
 
 export default function App() {
   return (
-    <AccessGateTemplate expectedHash={ACCESS_GATE_HASH}>
+    <KnockCodesTemplate expectedHash={KNOCK_CODES_HASH}>
       <YourRealApp />
-    </AccessGateTemplate>
+    </KnockCodesTemplate>
   );
 }
 `,
@@ -82,7 +82,7 @@ const STEPS = [
   {
     step: "03",
     title: "Set the hash as an env var",
-    body: "Store the hash (never the code) in your framework's public env var — VITE_ACCESS_GATE_HASH, NEXT_PUBLIC_ACCESS_GATE_HASH, or equivalent. The generator gives you this line pre-filled.",
+    body: "Store the hash (never the code) in your framework's public env var — VITE_KNOCK_CODES_HASH, NEXT_PUBLIC_KNOCK_CODES_HASH, or equivalent. The generator gives you this line pre-filled.",
   },
   {
     step: "04",
@@ -141,7 +141,7 @@ export default function GettingStartedPage() {
       </div>
 
       <div className="mt-10 flex flex-wrap items-center gap-3">
-        <Link href="/templates/access-gate-template" className={buttonVariants({ size: "lg" })}>
+        <Link href="/templates/knock-codes-template" className={buttonVariants({ size: "lg" })}>
           Pick a template <ArrowRight className="h-4 w-4" />
         </Link>
         <Link href="/security" className={buttonVariants({ size: "lg", variant: "outline" })}>

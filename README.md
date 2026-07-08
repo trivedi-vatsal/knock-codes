@@ -1,12 +1,15 @@
-# Access Gate
+# Knock Codes
 
-A copy-paste "enter a code to continue" screen for demos, staging links, internal tools, and client
-previews — not a login system, not an auth provider.
+Knock Codes is a copy-paste "enter a code to continue" screen for private previews, staging links,
+internal tools, and client review pages. It is not a login system or auth provider.
 
-Pick a template, paste it into your project, drop in a hash of your access code. That's the whole
+Pick a template, paste it into your project, drop in a hash of your access code, and ship. That's the whole
 integration: no account, no backend, and no package living in your `node_modules` unless you want one.
 Every line you ship is yours to read, edit, and own — inspired by [shadcn/ui](https://ui.shadcn.com) and
 [Tremor Blocks](https://blocks.tremor.so).
+
+Knock Codes ships components like `<KnockCodes>` and `useKnockCodes`, distributed under the
+`@knock-codes/core` and `@knock-codes/react` packages — see [Structure](#structure) below.
 
 ## When to use this
 
@@ -31,7 +34,7 @@ model, including what server mode changes and doesn't.
 ## Structure
 
 - `packages/core` — framework-agnostic hash/session/storage/verify logic, no UI.
-- `packages/react` — the React blocks (`<AccessGate>`, `useAccessGate`, PIN Input, Protected
+- `packages/react` — the React blocks (`<KnockCodes>`, `useKnockCodes`, PIN Input, Protected
   Route/Layout/Modal/Card, Session Provider, and the ready-made templates), built on `packages/core`.
 - `registry/react/registry.json` — shadcn-compatible registry entries. Rebuild with
   `node scripts/build-registry.mjs` after editing.
@@ -82,12 +85,12 @@ Installing a block or template with the shadcn CLI:
 
 ```
 # Against a local dev server (pnpm dev running on localhost:3000)
-npx shadcn@latest add http://localhost:3000/r/react/access-gate-template.json
+npx shadcn@latest add http://localhost:3000/r/react/knock-codes-template.json
 
-# Against a deployed docs site
-npx shadcn@latest add https://your-deployed-site.example.com/r/react/access-gate-template.json
+# Against the deployed docs site
+npx shadcn@latest add https://knock.codes/r/react/knock-codes-template.json
 ```
 
-Set `NEXT_PUBLIC_SITE_URL` (e.g. in `apps/web/.env.local` or your host's env config) to your deployed
-site's origin, and every install command shown on the site switches from the localhost example to that URL
-automatically.
+Set `NEXT_PUBLIC_SITE_URL=https://knock.codes` (e.g. in `apps/web/.env.local` or your host's env config) to
+your deployed site's origin, and every install command shown on the site switches from the localhost
+example to that URL automatically.

@@ -1,17 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { useAccessGate } from "./useAccessGate.ts";
-import { DEFAULT_LABELS, type AccessGateConfig, type AccessGateLabels } from "./types.ts";
+import { useKnockCodes } from "./useKnockCodes.ts";
+import { DEFAULT_LABELS, type KnockCodesConfig, type KnockCodesLabels } from "./types.ts";
 import { cx } from "./cx.ts";
 
-export interface BrandedAccessTemplateLabels extends AccessGateLabels {
+export interface BrandedAccessTemplateLabels extends KnockCodesLabels {
   description?: string;
   supportLabel?: string;
   footerText?: ReactNode;
 }
 
-export interface BrandedAccessTemplateProps extends AccessGateConfig {
+export interface BrandedAccessTemplateProps extends KnockCodesConfig {
   children: ReactNode;
   /** Rendered on the brand panel, above the tagline — your own logo/wordmark. */
   logo?: ReactNode;
@@ -42,7 +42,7 @@ const TEMPLATE_LABELS: Required<BrandedAccessTemplateLabels> = {
  * A split-screen, logo-forward restricted-access screen — brand panel on
  * one side, code entry on the other. The brand panel collapses on small
  * screens so the form stays the only thing visible on mobile. Same
- * `useAccessGate` contract as every other block.
+ * `useKnockCodes` contract as every other block.
  */
 export function BrandedAccessTemplate({
   children,
@@ -57,7 +57,7 @@ export function BrandedAccessTemplate({
   ...config
 }: BrandedAccessTemplateProps) {
   const merged = { ...TEMPLATE_LABELS, ...labels };
-  const { state, error, submit } = useAccessGate(config);
+  const { state, error, submit } = useKnockCodes(config);
   const [code, setCode] = useState("");
   const [revealed, setRevealed] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);

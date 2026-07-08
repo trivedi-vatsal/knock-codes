@@ -1,5 +1,5 @@
 {
-  "name": "@access-gate/react",
+  "name": "@knock-codes/react",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -13,7 +13,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@access-gate/core": "workspace:*"
+    "@knock-codes/core": "workspace:*"
   },
   "peerDependencies": {
     "react": "^19.0.0",

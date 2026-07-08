@@ -4,7 +4,7 @@ import { TemplateCard } from "@/components/template-card";
 import { getAllTemplates } from "@/lib/templates";
 
 export const metadata: Metadata = {
-  title: "Templates — Access Gate",
+  title: "Templates — Knock Codes",
   description: "Complete, single-file restricted-access screens, ready to copy.",
 };
 

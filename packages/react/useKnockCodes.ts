@@ -2,26 +2,26 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { resolveVerifyFn, type VerifyResult } from "../core/verify.ts";
-import { createSession, isExpired, touchExpiry, type AccessGateSession } from "../core/session.ts";
+import { createSession, isExpired, touchExpiry, type KnockCodesSession } from "../core/session.ts";
 import { createSessionStore } from "../core/storage.ts";
 import {
   ACTIVITY_WRITE_THROTTLE_MS,
   DEFAULT_TIMEOUT_MS,
   EXPIRY_POLL_INTERVAL_MS,
-  type AccessGateConfig,
-  type AccessGateError,
-  type AccessGateState,
-  type UseAccessGateResult,
+  type KnockCodesConfig,
+  type KnockCodesError,
+  type KnockCodesState,
+  type UseKnockCodesResult,
 } from "./types.ts";
 
 const ACTIVITY_EVENTS = ["pointerdown", "keydown", "scroll"] as const;
 
 /**
- * Headless session/verification hook. `<AccessGate>` is a thin renderer
+ * Headless session/verification hook. `<KnockCodes>` is a thin renderer
  * over this; a host app can call it directly to build a fully custom PIN
  * UI while the session contract stays identical either way.
  */
-export function useAccessGate(config: AccessGateConfig): UseAccessGateResult {
+export function useKnockCodes(config: KnockCodesConfig): UseKnockCodesResult {
   const {
     expectedHash,
     verify,
@@ -37,9 +37,9 @@ export function useAccessGate(config: AccessGateConfig): UseAccessGateResult {
   const verifyFn = useMemo(() => resolveVerifyFn({ expectedHash, verify }), [expectedHash, verify]);
   const store = useMemo(() => createSessionStore(storage, { storageKey }), [storage, storageKey]);
 
-  const [session, setSession] = useState<AccessGateSession | null>(null);
+  const [session, setSession] = useState<KnockCodesSession | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<AccessGateError | null>(null);
+  const [error, setError] = useState<KnockCodesError | null>(null);
 
   // Initial read is deferred to an effect (never runs during SSR) so the
   // server-rendered/first-paint markup never depends on storage that may not
@@ -135,7 +135,7 @@ export function useAccessGate(config: AccessGateConfig): UseAccessGateResult {
     setSession(null);
   }, [store]);
 
-  const state: AccessGateState = submitting ? "submitting" : session ? "unlocked" : "idle";
+  const state: KnockCodesState = submitting ? "submitting" : session ? "unlocked" : "idle";
 
   return {
     state,

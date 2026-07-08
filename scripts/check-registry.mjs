@@ -9,7 +9,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 
 const PUBLIC_DIR = path.resolve(import.meta.dirname, "../apps/web/public/r/react");
-const tempDir = mkdtempSync(path.join(tmpdir(), "access-gate-registry-"));
+const tempDir = mkdtempSync(path.join(tmpdir(), "knock-codes-registry-"));
 
 try {
   const result = spawnSync("npx", ["shadcn@latest", "build", "registry/react/registry.json", "-o", tempDir], {

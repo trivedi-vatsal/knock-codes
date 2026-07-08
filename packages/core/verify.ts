@@ -36,7 +36,7 @@ export interface VerifyConfig {
  * Resolves a `{ expectedHash, verify }` config into the single `VerifyFn`
  * a session lifecycle actually calls. Supplying both or neither is a
  * configuration error — this always throws for either case rather than
- * silently picking a winner. Framework surfaces (e.g. `useAccessGate`)
+ * silently picking a winner. Framework surfaces (e.g. `useKnockCodes`)
  * decide *when* to call this — whether that's once at construction or
  * gated behind a dev-only check is a framework-layer choice, not a core
  * one; this function itself has no dev/prod branch.
@@ -48,8 +48,8 @@ export function resolveVerifyFn(config: VerifyConfig): VerifyFn {
   if (hasHash === hasVerify) {
     throw new Error(
       hasHash
-        ? "Access Gate: supply either `expectedHash` or `verify`, not both."
-        : "Access Gate: supply either `expectedHash` or `verify` — no implicit default verification strategy."
+        ? "Knock Codes: supply either `expectedHash` or `verify`, not both."
+        : "Knock Codes: supply either `expectedHash` or `verify` — no implicit default verification strategy."
     );
   }
 

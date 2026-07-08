@@ -23,15 +23,15 @@ importers:
 
   apps/web:
     dependencies:
-      '@access-gate/core':
-        specifier: workspace:*
-        version: link:../../packages/core
-      '@access-gate/react':
-        specifier: workspace:*
-        version: link:../../packages/react
       '@base-ui/react':
         specifier: ^1.6.0
         version: 1.6.0(@types/react@19.2.17)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@knock-codes/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@knock-codes/react':
+        specifier: workspace:*
+        version: link:../../packages/react
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -105,7 +105,7 @@ importers:
 
   packages/react:
     dependencies:
-      '@access-gate/core':
+      '@knock-codes/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:

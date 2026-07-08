@@ -1,5 +1,5 @@
 export { sha256Hex } from "./hash.ts";
-export { createSession, isExpired, touchExpiry, type AccessGateSession } from "./session.ts";
+export { createSession, isExpired, touchExpiry, type KnockCodesSession } from "./session.ts";
 export {
   createSessionStore,
   DEFAULT_STORAGE_KEY,

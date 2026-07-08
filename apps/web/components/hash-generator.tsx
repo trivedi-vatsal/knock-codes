@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Eye, EyeOff, Shuffle } from "lucide-react";
-import { sha256Hex } from "@access-gate/core";
+import { sha256Hex } from "@knock-codes/core";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { CopyButton } from "@/components/copy-button";

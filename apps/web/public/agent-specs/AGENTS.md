@@ -1,6 +1,6 @@
-# Access Gate — Agent Installation Instructions
+# Knock Codes — Agent Installation Instructions
 
-You are installing Access Gate, a copy-owned access screen. Follow these steps exactly —
+You are installing Knock Codes, a copy-owned access screen. Follow these steps exactly —
 they exist specifically to guarantee no plaintext PIN ever lands in this repo.
 
 ## 1. Get a PIN
@@ -27,14 +27,14 @@ computes for the same PIN. Never send the PIN to a network service to hash it.
 ## 3. Write only the hash
 Write the hash — never the PIN — to the project's env file (e.g. `.env`,
 `.env.local`) under the appropriate framework-prefixed name
-(`VITE_ACCESS_GATE_HASH`, `NEXT_PUBLIC_ACCESS_GATE_HASH`, etc.).
+(`VITE_KNOCK_CODES_HASH`, `NEXT_PUBLIC_KNOCK_CODES_HASH`, etc.).
 Before writing, confirm `.env`/`.env.local` is listed in `.gitignore`.
 If it isn't, add it before writing the hash.
 
 ## 4. Add the template
 Add a template via the registry command, e.g.:
 
-    npx shadcn@latest add <site-url>/r/react/access-gate-template.json
+    npx shadcn@latest add <site-url>/r/react/knock-codes-template.json
 
 Other templates in the same registry: `minimal-access-template`,
 `branded-access-template`, `modal-access-template` — swap the filename above

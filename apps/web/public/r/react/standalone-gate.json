@@ -2,16 +2,16 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "standalone-gate",
   "title": "Standalone Gate",
-  "description": "The fastest path to a working gate: wrap your app, pass a hash, done. A deliberately smaller prop surface than Access Gate.",
+  "description": "The fastest path to a working gate: wrap your app, pass a hash, done. A deliberately smaller prop surface than Knock Codes.",
   "registryDependencies": [
-    "access-gate"
+    "knock-codes"
   ],
   "files": [
     {
       "path": "packages/react/StandaloneGate.tsx",
-      "content": "\"use client\";\r\n\r\nimport type { ReactNode } from \"react\";\r\nimport { AccessGate } from \"./AccessGate.tsx\";\r\nimport type { GateWrapperVariant } from \"./GateWrapper.tsx\";\r\nimport type { AccessGateConfig } from \"./types.ts\";\r\n\r\nexport interface StandaloneGateProps extends Pick<AccessGateConfig, \"expectedHash\" | \"verify\"> {\r\n  children: ReactNode;\r\n  /** @default \"This page is protected\" */\r\n  heading?: string;\r\n  /** Escape hatch for embedding a Standalone Gate somewhere other than a real app root (a demo, a docs page). @default \"page\" */\r\n  variant?: GateWrapperVariant;\r\n}\r\n\r\n/**\r\n * The fastest path to a working gate: wrap your app, pass a hash, done.\r\n * Deliberately exposes a smaller surface than `<AccessGate>` — no storage,\r\n * timeout, or activity-tracking props — reach for `<AccessGate>` directly\r\n * once you need those.\r\n */\r\nexport function StandaloneGate({ children, heading, expectedHash, verify, variant }: StandaloneGateProps) {\r\n  return (\r\n    <AccessGate expectedHash={expectedHash} verify={verify} labels={heading ? { heading } : undefined} variant={variant}>\r\n      {children}\r\n    </AccessGate>\r\n  );\r\n}\r\n",
+      "content": "\"use client\";\n\nimport type { ReactNode } from \"react\";\nimport { KnockCodes } from \"./KnockCodes.tsx\";\nimport type { GateWrapperVariant } from \"./GateWrapper.tsx\";\nimport type { KnockCodesConfig } from \"./types.ts\";\n\nexport interface StandaloneGateProps extends Pick<KnockCodesConfig, \"expectedHash\" | \"verify\"> {\n  children: ReactNode;\n  /** @default \"This page is protected\" */\n  heading?: string;\n  /** Escape hatch for embedding a Standalone Gate somewhere other than a real app root (a demo, a docs page). @default \"page\" */\n  variant?: GateWrapperVariant;\n}\n\n/**\n * The fastest path to a working gate: wrap your app, pass a hash, done.\n * Deliberately exposes a smaller surface than `<KnockCodes>` — no storage,\n * timeout, or activity-tracking props — reach for `<KnockCodes>` directly\n * once you need those.\n */\nexport function StandaloneGate({ children, heading, expectedHash, verify, variant }: StandaloneGateProps) {\n  return (\n    <KnockCodes expectedHash={expectedHash} verify={verify} labels={heading ? { heading } : undefined} variant={variant}>\n      {children}\n    </KnockCodes>\n  );\n}\n",
       "type": "registry:file",
-      "target": "components/access-gate/react/StandaloneGate.tsx"
+      "target": "components/knock-codes/react/StandaloneGate.tsx"
     }
   ],
   "type": "registry:block"

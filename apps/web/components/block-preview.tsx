@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { sha256Hex, type VerifyFn } from "@access-gate/core";
+import { sha256Hex, type VerifyFn } from "@knock-codes/core";
 import {
-  AccessGate,
+  KnockCodes,
   AccessDeniedScreen,
-  AccessGateProvider,
+  KnockCodesProvider,
   AccessReceipt,
   EmbeddedGate,
   GateWrapper,
@@ -19,10 +19,10 @@ import {
   StandaloneGate,
   UnlockDialog,
   VerificationLoader,
-  useAccessGate,
-  useAccessGateContext,
-  type AccessGateConfig,
-} from "@access-gate/react";
+  useKnockCodes,
+  useKnockCodesContext,
+  type KnockCodesConfig,
+} from "@knock-codes/react";
 import { useThemeLab } from "@/components/customizer/theme-lab-context";
 import type { PreviewStateId } from "@/lib/theme-presets";
 
@@ -31,7 +31,7 @@ const WRONG_PIN = "0000";
 const NEVER_RESOLVES_VERIFY: VerifyFn = () => new Promise(() => {});
 
 /**
- * Scripts a real `submit()` call (from `useAccessGate`/`useAccessGateContext`)
+ * Scripts a real `submit()` call (from `useKnockCodes`/`useKnockCodesContext`)
  * to reach the Theme Lab's selected "Preview state" — real state transitions,
  * not hand-waved props. "Locked" (the default) never scripts anything, so a
  * demo stays exactly as interactive as before unless another state is picked.
@@ -48,7 +48,7 @@ function useScriptedPreviewState(previewState: PreviewStateId, submit: (code: st
 }
 
 /** `expectedHash`/`verify` config, swapped to a never-resolving verifier while illustrating the "Submitting" preview state. */
-function useForcedVerifyConfig(config: AccessGateConfig, previewState: PreviewStateId): AccessGateConfig {
+function useForcedVerifyConfig(config: KnockCodesConfig, previewState: PreviewStateId): KnockCodesConfig {
   if (previewState !== "submitting") return config;
   return { ...config, expectedHash: undefined, verify: NEVER_RESOLVES_VERIFY };
 }
@@ -113,8 +113,8 @@ export function BlockPreview({ slug }: { slug: string }) {
   const common = { expectedHash: hash, storage: "memory" as const };
 
   switch (slug) {
-    case "access-gate":
-      return <AccessGatePreview hash={hash} />;
+    case "knock-codes":
+      return <KnockCodesPreview hash={hash} />;
 
     case "pin-input":
       return <PinInputPreview />;
@@ -172,9 +172,9 @@ export function BlockPreview({ slug }: { slug: string }) {
         <div>
           <Hint />
           <PreviewFrame>
-            <AccessGateProvider {...common}>
+            <KnockCodesProvider {...common}>
               <SessionProviderDemo />
-            </AccessGateProvider>
+            </KnockCodesProvider>
           </PreviewFrame>
         </div>
       );
@@ -184,9 +184,9 @@ export function BlockPreview({ slug }: { slug: string }) {
         <div>
           <p className="label-mono mb-3 text-muted-foreground">Demo code: {DEMO_PIN} — timeout set to 12s</p>
           <PreviewFrame>
-            <AccessGateProvider expectedHash={hash} storage="memory" timeout={12_000}>
+            <KnockCodesProvider expectedHash={hash} storage="memory" timeout={12_000}>
               <SessionTimeoutBannerDemo />
-            </AccessGateProvider>
+            </KnockCodesProvider>
           </PreviewFrame>
         </div>
       );
@@ -212,9 +212,9 @@ export function BlockPreview({ slug }: { slug: string }) {
         <div>
           <Hint />
           <PreviewFrame>
-            <AccessGateProvider {...common}>
+            <KnockCodesProvider {...common}>
               <LogoutButtonDemo />
-            </AccessGateProvider>
+            </KnockCodesProvider>
           </PreviewFrame>
         </div>
       );
@@ -227,9 +227,9 @@ export function BlockPreview({ slug }: { slug: string }) {
         <div>
           <Hint />
           <PreviewFrame>
-            <AccessGateProvider {...common}>
+            <KnockCodesProvider {...common}>
               <AccessReceiptDemo />
-            </AccessGateProvider>
+            </KnockCodesProvider>
           </PreviewFrame>
         </div>
       );
@@ -286,7 +286,7 @@ export function BlockPreview({ slug }: { slug: string }) {
   }
 }
 
-function AccessGatePreview({ hash }: { hash: string }) {
+function KnockCodesPreview({ hash }: { hash: string }) {
   const { settings } = useThemeLab();
   const config = useForcedVerifyConfig({ expectedHash: hash, storage: "memory" }, settings.previewState);
   return (
@@ -294,9 +294,9 @@ function AccessGatePreview({ hash }: { hash: string }) {
       <Hint />
       <PreviewFrame>
         <div className="mx-auto w-full max-w-sm">
-          <AccessGate {...config} variant="inline">
+          <KnockCodes {...config} variant="inline">
             <DemoUnlockedPanel />
-          </AccessGate>
+          </KnockCodes>
         </div>
       </PreviewFrame>
     </div>
@@ -322,7 +322,7 @@ function ProtectedCardPreview({ hash }: { hash: string }) {
 
 function AccessReceiptDemo() {
   const { settings } = useThemeLab();
-  const { state, submit } = useAccessGateContext();
+  const { state, submit } = useKnockCodesContext();
   useScriptedPreviewState(settings.previewState, submit);
   if (state !== "unlocked") return <ContextPinPrompt />;
   return (
@@ -369,7 +369,7 @@ function PinInputPreview() {
 }
 
 function UnlockDialogPreview({ hash }: { hash: string }) {
-  const { state, error, submit } = useAccessGate({ expectedHash: hash, storage: "memory" });
+  const { state, error, submit } = useKnockCodes({ expectedHash: hash, storage: "memory" });
   const [code, setCode] = useState("");
 
   return (
@@ -399,9 +399,9 @@ function UnlockDialogPreview({ hash }: { hash: string }) {
   );
 }
 
-/** Shared locked-state UI for the context-based demos below — `<AccessGateProvider>` shares session state but renders no UI of its own, so each consumer wires its own prompt to the same context. */
+/** Shared locked-state UI for the context-based demos below — `<KnockCodesProvider>` shares session state but renders no UI of its own, so each consumer wires its own prompt to the same context. */
 function ContextPinPrompt() {
-  const { error, state, submit } = useAccessGateContext();
+  const { error, state, submit } = useKnockCodesContext();
   const [code, setCode] = useState("");
   return (
     <div className="mx-auto max-w-xs p-4">
@@ -422,7 +422,7 @@ function ContextPinPrompt() {
 
 function SessionProviderDemo() {
   const { settings } = useThemeLab();
-  const { state, submit } = useAccessGateContext();
+  const { state, submit } = useKnockCodesContext();
   useScriptedPreviewState(settings.previewState, submit);
   if (state !== "unlocked") return <ContextPinPrompt />;
   return (
@@ -435,7 +435,7 @@ function SessionProviderDemo() {
 
 function SessionTimeoutBannerDemo() {
   const { settings } = useThemeLab();
-  const { state, submit } = useAccessGateContext();
+  const { state, submit } = useKnockCodesContext();
   useScriptedPreviewState(settings.previewState, submit);
   if (state !== "unlocked") return <ContextPinPrompt />;
   return (
@@ -448,7 +448,7 @@ function SessionTimeoutBannerDemo() {
 
 function LogoutButtonDemo() {
   const { settings } = useThemeLab();
-  const { state, submit } = useAccessGateContext();
+  const { state, submit } = useKnockCodesContext();
   useScriptedPreviewState(settings.previewState, submit);
   if (state !== "unlocked") return <ContextPinPrompt />;
   return (

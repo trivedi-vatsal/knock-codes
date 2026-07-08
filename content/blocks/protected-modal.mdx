@@ -4,9 +4,9 @@ description: "Content stays mounted and blurred behind a modal Unlock Dialog ins
 category: "Modal & Overlay"
 tags: ["modal"]
 registryName: "protected-modal"
-relatedBlocks: ["unlock-dialog", "protected-card", "access-gate"]
+relatedBlocks: ["unlock-dialog", "protected-card", "knock-codes"]
 accessibility: "The blurred content is marked aria-hidden and pointer-events-none while locked, so screen readers and keyboard tabbing skip straight past it to the dialog — it's visually present but not reachable, which is the correct behavior for inert background content."
-customization: "Best for cases where the protected content's layout should stay stable underneath the prompt — a preview behind a paywall-style modal — rather than collapsing to a bare access-code screen the way Access Gate does."
+customization: "Best for cases where the protected content's layout should stay stable underneath the prompt — a preview behind a paywall-style modal — rather than collapsing to a bare access-code screen the way Knock Codes does."
 bestUsedFor: "A paywall-style preview where the blurred content itself is part of the pitch."
 props:
   - name: "expectedHash"
@@ -20,7 +20,7 @@ props:
     required: true
     description: "Stays mounted, blurred while locked."
   - name: "labels"
-    type: "AccessGateLabels"
+    type: "KnockCodesLabels"
     description: "Overrides for every user-facing string."
   - name: "className"
     type: "string"

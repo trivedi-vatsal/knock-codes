@@ -1,17 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { useAccessGate } from "./useAccessGate.ts";
-import { DEFAULT_LABELS, type AccessGateConfig, type AccessGateLabels } from "./types.ts";
+import { useKnockCodes } from "./useKnockCodes.ts";
+import { DEFAULT_LABELS, type KnockCodesConfig, type KnockCodesLabels } from "./types.ts";
 import { cx } from "./cx.ts";
 
-export interface MinimalAccessTemplateLabels extends AccessGateLabels {
+export interface MinimalAccessTemplateLabels extends KnockCodesLabels {
   description?: string;
   supportLabel?: string;
   footerText?: ReactNode;
 }
 
-export interface MinimalAccessTemplateProps extends AccessGateConfig {
+export interface MinimalAccessTemplateProps extends KnockCodesConfig {
   children: ReactNode;
   /** Rendered above the heading — your own logo/wordmark. Omitted entirely if not passed. */
   logo?: ReactNode;
@@ -38,8 +38,8 @@ const TEMPLATE_LABELS: Required<MinimalAccessTemplateLabels> = {
 /**
  * The leanest possible restricted-access screen — a single masked field, a
  * small plain card, no segmented boxes and no default footer copy. Same
- * `useAccessGate` contract as every other block, just the smallest possible
- * presentation. For segmented code entry, use `<AccessGateTemplate>` instead.
+ * `useKnockCodes` contract as every other block, just the smallest possible
+ * presentation. For segmented code entry, use `<KnockCodesTemplate>` instead.
  */
 export function MinimalAccessTemplate({
   children,
@@ -53,7 +53,7 @@ export function MinimalAccessTemplate({
   ...config
 }: MinimalAccessTemplateProps) {
   const merged = { ...TEMPLATE_LABELS, ...labels };
-  const { state, error, submit } = useAccessGate(config);
+  const { state, error, submit } = useKnockCodes(config);
   const [code, setCode] = useState("");
   const [revealed, setRevealed] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);

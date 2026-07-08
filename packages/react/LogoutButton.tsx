@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useAccessGateContext } from "./AccessGateProvider.tsx";
+import { useKnockCodesContext } from "./KnockCodesProvider.tsx";
 import { cx } from "./cx.ts";
 
 export interface LogoutButtonProps {
@@ -12,12 +12,12 @@ export interface LogoutButtonProps {
 }
 
 /**
- * Reads the shared session from `<AccessGateProvider>` and clears it on
+ * Reads the shared session from `<KnockCodesProvider>` and clears it on
  * click. Requires a provider — a logout action only makes sense where a
  * session is already being shared with something else that reads it.
  */
 export function LogoutButton({ children = "Log out", className, onLoggedOut }: LogoutButtonProps) {
-  const { logout } = useAccessGateContext();
+  const { logout } = useKnockCodesContext();
 
   return (
     <button

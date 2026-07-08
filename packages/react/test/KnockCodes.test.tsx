@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { render, cleanup, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
-import { AccessGate } from "../AccessGate.tsx";
+import { KnockCodes } from "../KnockCodes.tsx";
 import { sha256Hex } from "../../core/hash.ts";
 
 test.afterEach(cleanup);
@@ -10,9 +10,9 @@ test.afterEach(cleanup);
 test("renders the PIN entry UI in place of children when locked", async () => {
   const hash = await sha256Hex("secret");
   render(
-    <AccessGate expectedHash={hash} storage="memory">
+    <KnockCodes expectedHash={hash} storage="memory">
       <div>Protected content</div>
-    </AccessGate>
+    </KnockCodes>
   );
 
   assert.ok(screen.getByText("This page is protected"));
@@ -24,9 +24,9 @@ test("renders children immediately (no reload) once unlocked with the correct co
   const user = userEvent.setup();
   const hash = await sha256Hex("secret");
   render(
-    <AccessGate expectedHash={hash} storage="memory">
+    <KnockCodes expectedHash={hash} storage="memory">
       <div>Protected content</div>
-    </AccessGate>
+    </KnockCodes>
   );
 
   await user.type(screen.getByLabelText("Access code"), "secret{Enter}");
@@ -39,9 +39,9 @@ test("wrong code shows the invalid-code inline error and stays locked", async ()
   const user = userEvent.setup();
   const hash = await sha256Hex("secret");
   render(
-    <AccessGate expectedHash={hash} storage="memory">
+    <KnockCodes expectedHash={hash} storage="memory">
       <div>Protected content</div>
-    </AccessGate>
+    </KnockCodes>
   );
 
   await user.type(screen.getByLabelText("Access code"), "wrong{Enter}");
@@ -53,9 +53,9 @@ test("wrong code shows the invalid-code inline error and stays locked", async ()
 test("a network-mode failure shows the distinct network error, not the invalid-code copy", async () => {
   const user = userEvent.setup();
   render(
-    <AccessGate verify={async () => ({ ok: false, reason: "network" })} storage="memory">
+    <KnockCodes verify={async () => ({ ok: false, reason: "network" })} storage="memory">
       <div>Protected content</div>
-    </AccessGate>
+    </KnockCodes>
   );
 
   await user.type(screen.getByLabelText("Access code"), "anything{Enter}");
@@ -66,9 +66,9 @@ test("a network-mode failure shows the distinct network error, not the invalid-c
 test("labels prop overrides default copy (localization)", async () => {
   const hash = await sha256Hex("secret");
   render(
-    <AccessGate expectedHash={hash} storage="memory" labels={{ heading: "Entrez le code", inputLabel: "Code d'accès" }}>
+    <KnockCodes expectedHash={hash} storage="memory" labels={{ heading: "Entrez le code", inputLabel: "Code d'accès" }}>
       <div>Protected content</div>
-    </AccessGate>
+    </KnockCodes>
   );
 
   assert.ok(screen.getByText("Entrez le code"));
@@ -79,9 +79,9 @@ test("input is cleared after a failed attempt", async () => {
   const user = userEvent.setup();
   const hash = await sha256Hex("secret");
   render(
-    <AccessGate expectedHash={hash} storage="memory">
+    <KnockCodes expectedHash={hash} storage="memory">
       <div>Protected content</div>
-    </AccessGate>
+    </KnockCodes>
   );
 
   const input = screen.getByLabelText("Access code") as HTMLInputElement;
@@ -94,9 +94,9 @@ test("input is cleared after a failed attempt", async () => {
 test("mutual exclusivity of expectedHash and verify throws at mount", () => {
   assert.throws(() => {
     render(
-      <AccessGate expectedHash="x" verify={async () => ({ ok: true })} storage="memory">
+      <KnockCodes expectedHash="x" verify={async () => ({ ok: true })} storage="memory">
         <div>Protected content</div>
-      </AccessGate>
+      </KnockCodes>
     );
   }, /supply either `expectedHash` or `verify`, not both/);
 });

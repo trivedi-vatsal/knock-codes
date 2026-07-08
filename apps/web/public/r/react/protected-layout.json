@@ -2,16 +2,16 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "protected-layout",
   "title": "Protected Layout",
-  "description": "`<AccessGate>` shaped for a full-page shell (a Next.js layout.tsx): header/footer render even while locked, so persistent site chrome survives the gate.",
+  "description": "`<KnockCodes>` shaped for a full-page shell (a Next.js layout.tsx): header/footer render even while locked, so persistent site chrome survives the gate.",
   "registryDependencies": [
-    "access-gate"
+    "knock-codes"
   ],
   "files": [
     {
       "path": "packages/react/ProtectedLayout.tsx",
-      "content": "\"use client\";\r\n\r\nimport type { ReactNode } from \"react\";\r\nimport { AccessGate, type AccessGateProps } from \"./AccessGate.tsx\";\r\n\r\nexport interface ProtectedLayoutProps extends AccessGateProps {\r\n  /** Rendered above the PIN prompt even while locked — e.g. a persistent site header/logo. */\r\n  header?: ReactNode;\r\n  /** Rendered below the PIN prompt even while locked. */\r\n  footer?: ReactNode;\r\n}\r\n\r\n/**\r\n * `<AccessGate>` shaped for a full-page shell (a Next.js `layout.tsx`, an\r\n * app root): `header`/`footer` render unconditionally, so persistent site\r\n * chrome (logo, footer links) survives the gate instead of disappearing\r\n * behind it while locked.\r\n */\r\nexport function ProtectedLayout({ header, footer, children, ...props }: ProtectedLayoutProps) {\r\n  return (\r\n    <>\r\n      {header}\r\n      <AccessGate {...props}>{children}</AccessGate>\r\n      {footer}\r\n    </>\r\n  );\r\n}\r\n",
+      "content": "\"use client\";\n\nimport type { ReactNode } from \"react\";\nimport { KnockCodes, type KnockCodesProps } from \"./KnockCodes.tsx\";\n\nexport interface ProtectedLayoutProps extends KnockCodesProps {\n  /** Rendered above the PIN prompt even while locked — e.g. a persistent site header/logo. */\n  header?: ReactNode;\n  /** Rendered below the PIN prompt even while locked. */\n  footer?: ReactNode;\n}\n\n/**\n * `<KnockCodes>` shaped for a full-page shell (a Next.js `layout.tsx`, an\n * app root): `header`/`footer` render unconditionally, so persistent site\n * chrome (logo, footer links) survives the gate instead of disappearing\n * behind it while locked.\n */\nexport function ProtectedLayout({ header, footer, children, ...props }: ProtectedLayoutProps) {\n  return (\n    <>\n      {header}\n      <KnockCodes {...props}>{children}</KnockCodes>\n      {footer}\n    </>\n  );\n}\n",
       "type": "registry:file",
-      "target": "components/access-gate/react/ProtectedLayout.tsx"
+      "target": "components/knock-codes/react/ProtectedLayout.tsx"
     }
   ],
   "type": "registry:block"

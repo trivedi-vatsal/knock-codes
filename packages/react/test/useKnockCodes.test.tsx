@@ -1,13 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { renderHook, act, cleanup } from "@testing-library/react";
-import { useAccessGate } from "../useAccessGate.ts";
+import { useKnockCodes } from "../useKnockCodes.ts";
 import { sha256Hex } from "../../core/hash.ts";
 
 test.afterEach(cleanup);
 
 test("starts idle with no existing session", async () => {
-  const { result } = renderHook(() => useAccessGate({ expectedHash: "irrelevant", storage: "memory" }));
+  const { result } = renderHook(() => useKnockCodes({ expectedHash: "irrelevant", storage: "memory" }));
   assert.equal(result.current.state, "idle");
   assert.equal(result.current.session, null);
   assert.equal(result.current.error, null);
@@ -15,7 +15,7 @@ test("starts idle with no existing session", async () => {
 
 test("submit with a matching hash unlocks and writes a session with no token", async () => {
   const hash = await sha256Hex("correct-horse-battery-staple");
-  const { result } = renderHook(() => useAccessGate({ expectedHash: hash, storage: "memory" }));
+  const { result } = renderHook(() => useKnockCodes({ expectedHash: hash, storage: "memory" }));
 
   await act(async () => {
     await result.current.submit("correct-horse-battery-staple");
@@ -31,7 +31,7 @@ test("submit with a matching hash unlocks and writes a session with no token", a
 
 test("submit with a wrong code sets reason:invalid and stays idle", async () => {
   const hash = await sha256Hex("the-real-code");
-  const { result } = renderHook(() => useAccessGate({ expectedHash: hash, storage: "memory" }));
+  const { result } = renderHook(() => useKnockCodes({ expectedHash: hash, storage: "memory" }));
 
   await act(async () => {
     await result.current.submit("wrong-code");
@@ -45,7 +45,7 @@ test("submit with a wrong code sets reason:invalid and stays idle", async () => 
 test("empty submit is a no-op — never calls the verify strategy", async () => {
   let calls = 0;
   const { result } = renderHook(() =>
-    useAccessGate({
+    useKnockCodes({
       verify: async () => {
         calls++;
         return { ok: true };
@@ -64,7 +64,7 @@ test("empty submit is a no-op — never calls the verify strategy", async () => 
 
 test("a throwing verify() resolves to reason:network", async () => {
   const { result } = renderHook(() =>
-    useAccessGate({
+    useKnockCodes({
       verify: async () => {
         throw new Error("boom");
       },
@@ -82,7 +82,7 @@ test("a throwing verify() resolves to reason:network", async () => {
 
 test("reason:'unknown' from verify() collapses into 'invalid' for the UI", async () => {
   const { result } = renderHook(() =>
-    useAccessGate({
+    useKnockCodes({
       verify: async () => ({ ok: false, reason: "unknown" }) as const,
       storage: "memory",
     })
@@ -97,7 +97,7 @@ test("reason:'unknown' from verify() collapses into 'invalid' for the UI", async
 
 test("a server-mode token is stored verbatim on the session", async () => {
   const { result } = renderHook(() =>
-    useAccessGate({
+    useKnockCodes({
       verify: async () => ({ ok: true, token: "server-issued-token" }),
       storage: "memory",
     })
@@ -112,7 +112,7 @@ test("a server-mode token is stored verbatim on the session", async () => {
 
 test("logout clears the session and returns to idle", async () => {
   const hash = await sha256Hex("secret");
-  const { result } = renderHook(() => useAccessGate({ expectedHash: hash, storage: "memory" }));
+  const { result } = renderHook(() => useKnockCodes({ expectedHash: hash, storage: "memory" }));
 
   await act(async () => {
     await result.current.submit("secret");
@@ -130,7 +130,7 @@ test("logout clears the session and returns to idle", async () => {
 test("calling submit() again while one is already in flight is ignored (no concurrent verify calls)", async () => {
   let calls = 0;
   const { result } = renderHook(() =>
-    useAccessGate({
+    useKnockCodes({
       verify: async () => {
         calls++;
         await new Promise((resolve) => setTimeout(resolve, 30));
@@ -152,13 +152,13 @@ test("calling submit() again while one is already in flight is ignored (no concu
 
 test("resolveVerifyFn's mutual-exclusivity throw surfaces from the hook", () => {
   assert.throws(() => {
-    renderHook(() => useAccessGate({ expectedHash: "x", verify: async () => ({ ok: true }), storage: "memory" }));
+    renderHook(() => useKnockCodes({ expectedHash: "x", verify: async () => ({ ok: true }), storage: "memory" }));
   }, /supply either `expectedHash` or `verify`, not both/);
 });
 
 test("activity tracking disabled (default): interaction does not touch expiresAt", async () => {
   const hash = await sha256Hex("secret");
-  const { result } = renderHook(() => useAccessGate({ expectedHash: hash, storage: "memory", timeout: 60_000 }));
+  const { result } = renderHook(() => useKnockCodes({ expectedHash: hash, storage: "memory", timeout: 60_000 }));
 
   await act(async () => {
     await result.current.submit("secret");
@@ -175,7 +175,7 @@ test("activity tracking disabled (default): interaction does not touch expiresAt
 test("activity tracking enabled: rapid repeated interaction only touches once (throttled)", async () => {
   const hash = await sha256Hex("secret");
   const { result } = renderHook(() =>
-    useAccessGate({ expectedHash: hash, storage: "memory", timeout: 60_000, activityTracking: true })
+    useKnockCodes({ expectedHash: hash, storage: "memory", timeout: 60_000, activityTracking: true })
   );
 
   await act(async () => {
@@ -197,7 +197,7 @@ test("activity tracking enabled: rapid repeated interaction only touches once (t
 test("activity tracking enabled: interaction after the throttle window extends expiresAt (sliding model)", async () => {
   const hash = await sha256Hex("secret");
   const { result } = renderHook(() =>
-    useAccessGate({ expectedHash: hash, storage: "memory", timeout: 60_000, activityTracking: true })
+    useKnockCodes({ expectedHash: hash, storage: "memory", timeout: 60_000, activityTracking: true })
   );
 
   await act(async () => {
@@ -215,7 +215,7 @@ test("activity tracking enabled: interaction after the throttle window extends e
 
 test("expiry is detected on window focus (fixed-timeout model)", async () => {
   const hash = await sha256Hex("secret");
-  const { result } = renderHook(() => useAccessGate({ expectedHash: hash, storage: "memory", timeout: 10 }));
+  const { result } = renderHook(() => useKnockCodes({ expectedHash: hash, storage: "memory", timeout: 10 }));
 
   await act(async () => {
     await result.current.submit("secret");
@@ -233,7 +233,7 @@ test("expiry is detected on window focus (fixed-timeout model)", async () => {
 
 test("expiry is detected by the background poll even without a focus event", async () => {
   const hash = await sha256Hex("secret");
-  const { result } = renderHook(() => useAccessGate({ expectedHash: hash, storage: "memory", timeout: 10 }));
+  const { result } = renderHook(() => useKnockCodes({ expectedHash: hash, storage: "memory", timeout: 10 }));
 
   await act(async () => {
     await result.current.submit("secret");
@@ -256,8 +256,8 @@ test("default storage is localStorage, and cross-tab changes propagate via the s
   globalThis.localStorage = window.localStorage;
   try {
     const hash = await sha256Hex("secret");
-    const storageKey = `access-gate:test:${Math.random().toString(36).slice(2)}`;
-    const { result } = renderHook(() => useAccessGate({ expectedHash: hash, storageKey }));
+    const storageKey = `knock-codes:test:${Math.random().toString(36).slice(2)}`;
+    const { result } = renderHook(() => useKnockCodes({ expectedHash: hash, storageKey }));
 
     assert.equal(result.current.state, "idle");
 

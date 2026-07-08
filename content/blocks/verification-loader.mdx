@@ -4,9 +4,9 @@ description: "A small presentational spinner + label for the in-flight verificat
 category: "Feedback"
 tags: ["feedback", "loading"]
 registryName: "verification-loader"
-relatedBlocks: ["pin-input", "access-gate"]
+relatedBlocks: ["pin-input", "knock-codes"]
 accessibility: "role=\"status\" + aria-live=\"polite\", with the spinner itself marked aria-hidden so screen readers announce the text label once, not a decorative glyph."
-customization: "The same visual `<PinInput>` shows inline via its `submitting` state, exposed standalone for a fully custom access-code form built directly on `useAccessGate` where you're not using `<PinInput>` at all."
+customization: "The same visual `<PinInput>` shows inline via its `submitting` state, exposed standalone for a fully custom access-code form built directly on `useKnockCodes` where you're not using `<PinInput>` at all."
 bestUsedFor: "Composing a fully custom verification UI that still needs the standard in-flight spinner/label."
 props:
   - name: "label"

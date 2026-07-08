@@ -40,7 +40,7 @@ export function ThemeLabProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
 
-  // Deferred to an effect, same reasoning as useAccessGate's initial read:
+  // Deferred to an effect, same reasoning as useKnockCodes's initial read:
   // never let server-rendered markup depend on localStorage.
   useEffect(() => {
     setSettings(readStoredSettings());

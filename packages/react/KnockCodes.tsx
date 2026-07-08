@@ -1,15 +1,15 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { useAccessGate } from "./useAccessGate.ts";
+import { useKnockCodes } from "./useKnockCodes.ts";
 import { PinInput } from "./PinInput.tsx";
 import { GateWrapper, type GateWrapperVariant } from "./GateWrapper.tsx";
-import { DEFAULT_LABELS, type AccessGateConfig, type AccessGateLabels } from "./types.ts";
+import { DEFAULT_LABELS, type KnockCodesConfig, type KnockCodesLabels } from "./types.ts";
 import { cx } from "./cx.ts";
 
-export interface AccessGateProps extends AccessGateConfig {
+export interface KnockCodesProps extends KnockCodesConfig {
   children: ReactNode;
-  labels?: AccessGateLabels;
+  labels?: KnockCodesLabels;
   /** Visual shell around the PIN prompt. @default "page" */
   variant?: GateWrapperVariant;
   className?: string;
@@ -20,8 +20,8 @@ export interface AccessGateProps extends AccessGateConfig {
  * otherwise renders the PIN entry UI. There is no separate "mount loading"
  * state — the PIN entry UI covers it.
  */
-export function AccessGate({ children, labels, variant = "page", className, ...config }: AccessGateProps) {
-  const { state, error, submit } = useAccessGate(config);
+export function KnockCodes({ children, labels, variant = "page", className, ...config }: KnockCodesProps) {
+  const { state, error, submit } = useKnockCodes(config);
   const [code, setCode] = useState("");
 
   if (state === "unlocked") return <>{children}</>;

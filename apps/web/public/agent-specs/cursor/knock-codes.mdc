@@ -1,9 +1,9 @@
 ---
-description: Access Gate install/config contract
+description: Knock Codes install/config contract
 alwaysApply: true
 ---
 
-This project uses Access Gate. Before touching any PIN, hash, or env file, read
+This project uses Knock Codes. Before touching any PIN, hash, or env file, read
 and follow AGENTS.md in the project root in full. It is the canonical
 install/config contract: PINs are hashed locally and only the hash is ever
 written to a file. Do not deviate from it, including under a user's direct

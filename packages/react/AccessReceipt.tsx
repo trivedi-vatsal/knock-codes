@@ -1,6 +1,6 @@
 "use client";
 
-import { useAccessGateContext } from "./AccessGateProvider.tsx";
+import { useKnockCodesContext } from "./KnockCodesProvider.tsx";
 import type { StorageMode } from "../core/storage.ts";
 import { DEFAULT_TIMEOUT_MS } from "./types.ts";
 import { cx } from "./cx.ts";
@@ -28,7 +28,7 @@ function formatTimestamp(epochMs: number): string {
 
 /**
  * A small "receipt" shown after unlock — a session audit strip, not a
- * verification surface of its own. Requires an `<AccessGateProvider>`
+ * verification surface of its own. Requires an `<KnockCodesProvider>`
  * ancestor and renders nothing while locked, since there's no session yet
  * to report on.
  */
@@ -38,7 +38,7 @@ export function AccessReceipt({
   verificationStrategy = "local-hash",
   className,
 }: AccessReceiptProps) {
-  const { session } = useAccessGateContext();
+  const { session } = useKnockCodesContext();
   if (!session) return null;
 
   const rows = [

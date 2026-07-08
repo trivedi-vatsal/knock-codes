@@ -5,7 +5,7 @@ Guidance for working in this repo.
 ## Structure
 
 - `packages/core` — framework-agnostic hash/session/storage/verify logic, no UI.
-- `packages/react` — the 16 React blocks (Access Gate, PIN Input, Protected Route/Layout/Modal/Card, Session Provider, etc.), built on `packages/core`.
+- `packages/react` — the 16 React blocks (Knock Codes, PIN Input, Protected Route/Layout/Modal/Card, Session Provider, etc.), built on `packages/core`.
 - `registry/react/registry.json` — shadcn-compatible registry entries. Build with `node scripts/build-registry.mjs`.
 - `content/blocks/*.mdx` — block metadata/docs (frontmatter: category, tags, props, accessibility, customization) — drives the Blocks gallery.
 - `content/templates/*.mdx` — same shape, for Templates (complete single-file screens). Kept in a separate section from Blocks, not mixed in.
@@ -17,8 +17,8 @@ Guidance for working in this repo.
 - **Verify** — `packages/core/verify.ts` (`resolveVerifyFn`). Picks exactly one of `{ expectedHash, verify }`: local-hash (`createLocalHashVerifier`, hashes the entered code and compares) or a custom server-mode `VerifyFn`. Both or neither throws — no implicit default.
 - **Session** — `packages/core/session.ts`. `createSession(result, timeoutMs)` → `{ unlockedAt, expiresAt, token? }`; `isExpired`; `touchExpiry` rewrites `expiresAt` for the opt-in sliding-timeout model. Never carries the raw code or hash.
 - **Storage** — `packages/core/storage.ts` (`createSessionStore`). Three backends behind one `SessionStore` interface (`get`/`set`/`clear`/`subscribe`): `localStorage`, `sessionStorage`, `memory`. Cross-tab sync only actually fires for `localStorage` (native `storage` event) — the other two modes are correctly inert, not incomplete.
-- **Unlock (React)** — `packages/react/useAccessGate.ts`. The headless hook wiring the four above: resolves `verifyFn` once per config identity, reads the initial session inside an effect (SSR-safe — never assumes storage during render), polls expiry on an interval + tab focus, subscribes to cross-tab changes, and throttles sliding-timeout writes on activity if `activityTracking` is on. `submit()` guards re-entrancy with a ref, not state, so a double-click before React re-renders can't race two verifications. `<AccessGate>` is a thin renderer over this hook; `AccessGateProvider` shares one instance across a tree via context — only needed when 2+ components (a gate, a `LogoutButton`, a `SessionTimeoutBanner`) must share one session.
-- **Registry build** — `node scripts/build-registry.mjs` (`pnpm registry:build`) runs `shadcn build` against `registry/react/registry.json` and writes `apps/web/public/r/react/*.json`, the files `shadcn add <url>` actually serves. Items chain via `registryDependencies` (e.g. `access-gate-hook` → `access-gate-types` → `access-gate-core`) — changing what a block imports usually means editing `registry.json` too, not just the `.tsx`.
+- **Unlock (React)** — `packages/react/useKnockCodes.ts`. The headless hook wiring the four above: resolves `verifyFn` once per config identity, reads the initial session inside an effect (SSR-safe — never assumes storage during render), polls expiry on an interval + tab focus, subscribes to cross-tab changes, and throttles sliding-timeout writes on activity if `activityTracking` is on. `submit()` guards re-entrancy with a ref, not state, so a double-click before React re-renders can't race two verifications. `<KnockCodes>` is a thin renderer over this hook; `KnockCodesProvider` shares one instance across a tree via context — only needed when 2+ components (a gate, a `LogoutButton`, a `SessionTimeoutBanner`) must share one session.
+- **Registry build** — `node scripts/build-registry.mjs` (`pnpm registry:build`) runs `shadcn build` against `registry/react/registry.json` and writes `apps/web/public/r/react/*.json`, the files `shadcn add <url>` actually serves. Items chain via `registryDependencies` (e.g. `knock-codes-hook` → `knock-codes-types` → `knock-codes-core`) — changing what a block imports usually means editing `registry.json` too, not just the `.tsx`.
 
 ## Search tooling
 
@@ -26,8 +26,8 @@ Guidance for working in this repo.
 
 ## Blocks vs. Templates — where to edit
 
-- **Blocks** (`packages/react/*.tsx`, one `content/blocks/*.mdx` each) are composable primitives — `<AccessGate>`, `<ProtectedRoute>`, `<PinInput>`, etc.
-- **Templates** (`packages/react/*Template.tsx`, `content/templates/*.mdx`) are complete, single-file screens that call `useAccessGate` directly instead of importing block components — self-contained on purpose, so installing one doesn't pull in the whole block set.
+- **Blocks** (`packages/react/*.tsx`, one `content/blocks/*.mdx` each) are composable primitives — `<KnockCodes>`, `<ProtectedRoute>`, `<PinInput>`, etc.
+- **Templates** (`packages/react/*Template.tsx`, `content/templates/*.mdx`) are complete, single-file screens that call `useKnockCodes` directly instead of importing block components — self-contained on purpose, so installing one doesn't pull in the whole block set.
 - Changing a prop touches three places: the `.tsx`, the matching `content/{blocks,templates}/*.mdx` frontmatter (`props`/`customization`/`accessibility` — drives the gallery), and — if the file list or dependency chain changed — `registry/react/registry.json`, followed by `registry:build`.
 
 ## Validation commands
@@ -39,7 +39,7 @@ Guidance for working in this repo.
 ## Pitfalls
 
 - **Registry drift** — editing a block/template's files or `registry.json` without re-running `registry:build` leaves `apps/web/public/r/react` stale. `registry:check` catches it.
-- **ADR/docs citations** — code comments used to cite ADR numbers and doc paths (`docs/architecture/overview.md`, `docs/ux/flows.md`, etc.) that never existed in git history; those citations have been removed from comments. The real source of truth for architecture decisions now lives in `docs/adr/` (start at `docs/adr/0001-current-access-gate-architecture.md`) — cite that going forward instead of inventing new doc paths.
+- **ADR/docs citations** — code comments used to cite ADR numbers and doc paths (`docs/architecture/overview.md`, `docs/ux/flows.md`, etc.) that never existed in git history; those citations have been removed from comments. The real source of truth for architecture decisions now lives in `docs/adr/` (start at `docs/adr/0001-current-knock-codes-architecture.md`) — cite that going forward instead of inventing new doc paths.
 
 ## Don't verify with Playwright unless explicitly asked
 

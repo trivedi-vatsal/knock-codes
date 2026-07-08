@@ -1,11 +1,11 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { AccessGate } from "./AccessGate.tsx";
+import { KnockCodes } from "./KnockCodes.tsx";
 import type { GateWrapperVariant } from "./GateWrapper.tsx";
-import type { AccessGateConfig } from "./types.ts";
+import type { KnockCodesConfig } from "./types.ts";
 
-export interface StandaloneGateProps extends Pick<AccessGateConfig, "expectedHash" | "verify"> {
+export interface StandaloneGateProps extends Pick<KnockCodesConfig, "expectedHash" | "verify"> {
   children: ReactNode;
   /** @default "This page is protected" */
   heading?: string;
@@ -15,14 +15,14 @@ export interface StandaloneGateProps extends Pick<AccessGateConfig, "expectedHas
 
 /**
  * The fastest path to a working gate: wrap your app, pass a hash, done.
- * Deliberately exposes a smaller surface than `<AccessGate>` — no storage,
- * timeout, or activity-tracking props — reach for `<AccessGate>` directly
+ * Deliberately exposes a smaller surface than `<KnockCodes>` — no storage,
+ * timeout, or activity-tracking props — reach for `<KnockCodes>` directly
  * once you need those.
  */
 export function StandaloneGate({ children, heading, expectedHash, verify, variant }: StandaloneGateProps) {
   return (
-    <AccessGate expectedHash={expectedHash} verify={verify} labels={heading ? { heading } : undefined} variant={variant}>
+    <KnockCodes expectedHash={expectedHash} verify={verify} labels={heading ? { heading } : undefined} variant={variant}>
       {children}
-    </AccessGate>
+    </KnockCodes>
   );
 }

@@ -9,7 +9,7 @@ export interface VerificationLoaderProps {
  * A small presentational spinner + label for the in-flight verification
  * moment — the same visual `<PinInput>` shows inline via its `submitting`
  * state, exposed standalone for a fully custom PIN form built directly on
- * `useAccessGate`.
+ * `useKnockCodes`.
  */
 export function VerificationLoader({ label = "Checking...", className }: VerificationLoaderProps) {
   return (

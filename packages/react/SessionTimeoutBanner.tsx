@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useAccessGateContext } from "./AccessGateProvider.tsx";
+import { useKnockCodesContext } from "./KnockCodesProvider.tsx";
 import { EXPIRY_POLL_INTERVAL_MS } from "./types.ts";
 import { cx } from "./cx.ts";
 
@@ -14,14 +14,14 @@ export interface SessionTimeoutBannerProps {
 }
 
 /**
- * Warns before the shared session (from `<AccessGateProvider>`) expires,
+ * Warns before the shared session (from `<KnockCodesProvider>`) expires,
  * with a one-click way to log out immediately instead of waiting for the
  * automatic expiry. Renders nothing outside the warning window or with no
  * active session — requires a provider, since a banner needs a session to
  * watch that something else already established.
  */
 export function SessionTimeoutBanner({ warnBeforeMs = 60_000, criticalBeforeMs = 10_000, className }: SessionTimeoutBannerProps) {
-  const { session, logout } = useAccessGateContext();
+  const { session, logout } = useKnockCodesContext();
   const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {

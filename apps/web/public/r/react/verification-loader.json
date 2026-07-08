@@ -2,16 +2,16 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "verification-loader",
   "title": "Verification Loader",
-  "description": "A small presentational spinner + label for the in-flight verification moment, for a fully custom PIN form built directly on useAccessGate.",
+  "description": "A small presentational spinner + label for the in-flight verification moment, for a fully custom PIN form built directly on useKnockCodes.",
   "registryDependencies": [
     "cx-util"
   ],
   "files": [
     {
       "path": "packages/react/VerificationLoader.tsx",
-      "content": "import { cx } from \"./cx.ts\";\r\n\r\nexport interface VerificationLoaderProps {\r\n  label?: string;\r\n  className?: string;\r\n}\r\n\r\n/**\r\n * A small presentational spinner + label for the in-flight verification\r\n * moment — the same visual `<PinInput>` shows inline via its `submitting`\r\n * state, exposed standalone for a fully custom PIN form built directly on\r\n * `useAccessGate`.\r\n */\r\nexport function VerificationLoader({ label = \"Checking...\", className }: VerificationLoaderProps) {\r\n  return (\r\n    <div\r\n      role=\"status\"\r\n      aria-live=\"polite\"\r\n      className={cx(\"flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400\", className)}\r\n    >\r\n      <span\r\n        aria-hidden=\"true\"\r\n        className=\"h-3.5 w-3.5 animate-spin rounded-full border-2 border-gray-300 border-t-gray-600 dark:border-gray-700 dark:border-t-gray-300\"\r\n      />\r\n      {label}\r\n    </div>\r\n  );\r\n}\r\n",
+      "content": "import { cx } from \"./cx.ts\";\n\nexport interface VerificationLoaderProps {\n  label?: string;\n  className?: string;\n}\n\n/**\n * A small presentational spinner + label for the in-flight verification\n * moment — the same visual `<PinInput>` shows inline via its `submitting`\n * state, exposed standalone for a fully custom PIN form built directly on\n * `useKnockCodes`.\n */\nexport function VerificationLoader({ label = \"Checking...\", className }: VerificationLoaderProps) {\n  return (\n    <div\n      role=\"status\"\n      aria-live=\"polite\"\n      className={cx(\"flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400\", className)}\n    >\n      <span\n        aria-hidden=\"true\"\n        className=\"h-3.5 w-3.5 animate-spin rounded-full border-2 border-gray-300 border-t-gray-600 dark:border-gray-700 dark:border-t-gray-300\"\n      />\n      {label}\n    </div>\n  );\n}\n",
       "type": "registry:file",
-      "target": "components/access-gate/react/VerificationLoader.tsx"
+      "target": "components/knock-codes/react/VerificationLoader.tsx"
     }
   ],
   "type": "registry:block"

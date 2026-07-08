@@ -13,7 +13,7 @@ export function SiteHeader() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
         <Link href="/" className="label-mono flex items-center gap-2 text-[#edeae0]">
           <span aria-hidden="true" className="status-dot" data-tone="signal" />
-          Access Gate
+          Knock Codes
         </Link>
         <nav className="flex items-center gap-6">
           {NAV_LINKS.map((link) => (

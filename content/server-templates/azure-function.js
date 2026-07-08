@@ -1,13 +1,13 @@
 // @ts-check
 /**
- * Access Gate — Azure Function (v4 programming model) server verification
+ * Knock Codes — Azure Function (v4 programming model) server verification
  * template.
  *
- * Deploy: set two application settings — ACCESS_GATE_SERVER_HASH,
- * ACCESS_GATE_TOKEN_SECRET. Reuses the Function App's existing
+ * Deploy: set two application settings — KNOCK_CODES_SERVER_HASH,
+ * KNOCK_CODES_TOKEN_SECRET. Reuses the Function App's existing
  * AzureWebJobsStorage account for the rate-limit table (no extra storage
  * account needed) — create the table once before first use, e.g.
- * `az storage table create --name AccessGateRateLimit --connection-string "$AzureWebJobsStorage"`.
+ * `az storage table create --name KnockCodesRateLimit --connection-string "$AzureWebJobsStorage"`.
  * Requires @azure/functions and @azure/data-tables — the official platform
  * SDKs, not a third-party add-on.
  *
@@ -21,7 +21,7 @@ import { createHash, createHmac } from "node:crypto";
 const RATE_LIMIT_MAX_ATTEMPTS = 5; // adjust per deployment
 const RATE_LIMIT_WINDOW_SECONDS = 60;
 const TOKEN_TTL_MS = 5 * 60_000; // 5 minutes
-const RATE_LIMIT_TABLE = "AccessGateRateLimit";
+const RATE_LIMIT_TABLE = "KnockCodesRateLimit";
 
 const tableClient = TableClient.fromConnectionString(
   /** @type {string} */ (process.env.AzureWebJobsStorage),
@@ -86,12 +86,12 @@ app.http("verifyAccess", {
       return { status: 500, jsonBody: { ok: false, reason: "network" } };
     }
 
-    if (sha256Hex(code) !== process.env.ACCESS_GATE_SERVER_HASH) {
+    if (sha256Hex(code) !== process.env.KNOCK_CODES_SERVER_HASH) {
       return { jsonBody: { ok: false, reason: "invalid" } };
     }
 
     return {
-      jsonBody: { ok: true, token: signToken(/** @type {string} */ (process.env.ACCESS_GATE_TOKEN_SECRET)) },
+      jsonBody: { ok: true, token: signToken(/** @type {string} */ (process.env.KNOCK_CODES_TOKEN_SECRET)) },
     };
   },
 });

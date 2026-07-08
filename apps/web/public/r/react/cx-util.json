@@ -8,7 +8,7 @@
       "path": "packages/react/cx.ts",
       "content": "/** Tiny local classname joiner — avoids a `clsx` dependency for copy-owned portability. */\r\nexport function cx(...classes: Array<string | false | null | undefined>): string {\r\n  return classes.filter(Boolean).join(\" \");\r\n}\r\n",
       "type": "registry:file",
-      "target": "components/access-gate/react/cx.ts"
+      "target": "components/knock-codes/react/cx.ts"
     }
   ],
   "type": "registry:block"

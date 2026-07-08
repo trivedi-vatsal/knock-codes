@@ -1,11 +1,11 @@
 // @ts-check
 /**
- * Access Gate — Cloudflare Worker server verification template.
+ * Knock Codes — Cloudflare Worker server verification template.
  *
  * Deploy: bind a KV namespace as RATE_LIMIT_KV, and set two secrets:
  *   wrangler kv namespace create RATE_LIMIT_KV
- *   wrangler secret put ACCESS_GATE_SERVER_HASH
- *   wrangler secret put ACCESS_GATE_TOKEN_SECRET
+ *   wrangler secret put KNOCK_CODES_SERVER_HASH
+ *   wrangler secret put KNOCK_CODES_TOKEN_SECRET
  *
  * Wire contract (identical across all three server templates):
  *   POST { code: string }
@@ -59,7 +59,7 @@ async function checkRateLimit(kv, identifier) {
 export default {
   /**
    * @param {Request} request
-   * @param {{ RATE_LIMIT_KV: Parameters<typeof checkRateLimit>[0], ACCESS_GATE_SERVER_HASH: string, ACCESS_GATE_TOKEN_SECRET: string }} env
+   * @param {{ RATE_LIMIT_KV: Parameters<typeof checkRateLimit>[0], KNOCK_CODES_SERVER_HASH: string, KNOCK_CODES_TOKEN_SECRET: string }} env
    */
   async fetch(request, env) {
     if (request.method !== "POST") return new Response(null, { status: 405 });
@@ -79,10 +79,10 @@ export default {
       return Response.json({ ok: false, reason: "network" }, { status: 500 });
     }
 
-    if ((await sha256Hex(code)) !== env.ACCESS_GATE_SERVER_HASH) {
+    if ((await sha256Hex(code)) !== env.KNOCK_CODES_SERVER_HASH) {
       return Response.json({ ok: false, reason: "invalid" });
     }
 
-    return Response.json({ ok: true, token: await signToken(env.ACCESS_GATE_TOKEN_SECRET) });
+    return Response.json({ ok: true, token: await signToken(env.KNOCK_CODES_TOKEN_SECRET) });
   },
 };

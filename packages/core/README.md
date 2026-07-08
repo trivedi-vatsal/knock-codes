@@ -1,6 +1,6 @@
-# @access-gate/core
+# @knock-codes/core
 
-Framework-agnostic hash/session/storage/verify logic for Access Gate — no UI, no React dependency.
+Framework-agnostic hash/session/storage/verify logic for Knock Codes — no UI, no React dependency.
 
 Not published to npm. This package is copy-owned: it's distributed by copying the source files (via the
 [shadcn-compatible registry](../../registry/react/registry.json) or by hand), not via `npm install`. See
@@ -18,6 +18,6 @@ for how to change it.
 ## Develop
 
 ```
-pnpm --filter @access-gate/core test
-pnpm --filter @access-gate/core typecheck
+pnpm --filter @knock-codes/core test
+pnpm --filter @knock-codes/core typecheck
 ```

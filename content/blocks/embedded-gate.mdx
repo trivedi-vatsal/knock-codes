@@ -1,12 +1,12 @@
 ---
 title: "Embedded Gate"
-description: "Access Gate fixed to the inline shell — sits naturally inside an existing layout."
+description: "Knock Codes fixed to the inline shell — sits naturally inside an existing layout."
 category: "Routing & Layout"
 tags: ["layout"]
 registryName: "embedded-gate"
-relatedBlocks: ["access-gate", "standalone-gate", "protected-card"]
-accessibility: "Identical to Access Gate — only the outer positioning changes, not the semantics or keyboard flow."
-customization: "Same full prop surface as Access Gate, minus `variant` (fixed to \"inline\"). Use it for a sidebar widget or a gated section partway down a longer page, where a full-viewport takeover would be wrong."
+relatedBlocks: ["knock-codes", "standalone-gate", "protected-card"]
+accessibility: "Identical to Knock Codes — only the outer positioning changes, not the semantics or keyboard flow."
+customization: "Same full prop surface as Knock Codes, minus `variant` (fixed to \"inline\"). Use it for a sidebar widget or a gated section partway down a longer page, where a full-viewport takeover would be wrong."
 bestUsedFor: "Gating one section of a longer page — a sidebar widget or a mid-page panel."
 props:
   - name: "expectedHash"
@@ -28,7 +28,7 @@ props:
     required: true
     description: "Rendered once unlocked."
   - name: "labels"
-    type: "AccessGateLabels"
+    type: "KnockCodesLabels"
     description: "Overrides for every user-facing string."
 ---
 

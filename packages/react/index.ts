@@ -1,17 +1,17 @@
-export { AccessGate, type AccessGateProps } from "./AccessGate.tsx";
-export { useAccessGate } from "./useAccessGate.ts";
+export { KnockCodes, type KnockCodesProps } from "./KnockCodes.tsx";
+export { useKnockCodes } from "./useKnockCodes.ts";
 export { PinInput, type PinInputProps } from "./PinInput.tsx";
 export type {
-  AccessGateConfig,
-  AccessGateError,
-  AccessGateErrorReason,
-  AccessGateLabels,
-  AccessGateState,
-  UseAccessGateResult,
+  KnockCodesConfig,
+  KnockCodesError,
+  KnockCodesErrorReason,
+  KnockCodesLabels,
+  KnockCodesState,
+  UseKnockCodesResult,
 } from "./types.ts";
 
 export { GateWrapper, type GateWrapperProps, type GateWrapperVariant } from "./GateWrapper.tsx";
-export { AccessGateProvider, useAccessGateContext, type AccessGateProviderProps } from "./AccessGateProvider.tsx";
+export { KnockCodesProvider, useKnockCodesContext, type KnockCodesProviderProps } from "./KnockCodesProvider.tsx";
 export { ProtectedRoute, type ProtectedRouteProps } from "./ProtectedRoute.tsx";
 export { ProtectedLayout, type ProtectedLayoutProps } from "./ProtectedLayout.tsx";
 export { ProtectedModal, type ProtectedModalProps } from "./ProtectedModal.tsx";
@@ -25,10 +25,10 @@ export { AccessReceipt, type AccessReceiptProps } from "./AccessReceipt.tsx";
 export { StandaloneGate, type StandaloneGateProps } from "./StandaloneGate.tsx";
 export { EmbeddedGate, type EmbeddedGateProps } from "./EmbeddedGate.tsx";
 export {
-  AccessGateTemplate,
-  type AccessGateTemplateProps,
-  type AccessGateTemplateLabels,
-} from "./AccessGateTemplate.tsx";
+  KnockCodesTemplate,
+  type KnockCodesTemplateProps,
+  type KnockCodesTemplateLabels,
+} from "./KnockCodesTemplate.tsx";
 export {
   MinimalAccessTemplate,
   type MinimalAccessTemplateProps,

@@ -1,12 +1,12 @@
 ---
 title: "Protected Layout"
-description: "Access Gate shaped for a full-page shell — header/footer stay visible even while locked."
+description: "Knock Codes shaped for a full-page shell — header/footer stay visible even while locked."
 category: "Routing & Layout"
 tags: ["routing", "layout"]
 registryName: "protected-layout"
-relatedBlocks: ["access-gate", "protected-route", "standalone-gate"]
+relatedBlocks: ["knock-codes", "protected-route", "standalone-gate"]
 accessibility: "Header and footer are always in the document, in source order, whether or not the gate is unlocked — so a persistent nav landmark stays reachable by screen reader users at every state, not just once unlocked."
-customization: "Pass `header`/`footer` for chrome that should survive the gate — a logo, a footer with legal links. Everything else (labels, storage, timeout) is identical to Access Gate."
+customization: "Pass `header`/`footer` for chrome that should survive the gate — a logo, a footer with legal links. Everything else (labels, storage, timeout) is identical to Knock Codes."
 bestUsedFor: "A Next.js layout.tsx or app root where the header/footer must survive the locked state."
 props:
   - name: "expectedHash"

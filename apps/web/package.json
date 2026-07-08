@@ -11,8 +11,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@access-gate/core": "workspace:*",
-    "@access-gate/react": "workspace:*",
+    "@knock-codes/core": "workspace:*",
+    "@knock-codes/react": "workspace:*",
     "@base-ui/react": "^1.6.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

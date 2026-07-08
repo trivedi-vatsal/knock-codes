@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { useAccessGate } from "./useAccessGate.ts";
+import { useKnockCodes } from "./useKnockCodes.ts";
 import { PinInput } from "./PinInput.tsx";
 import { GateWrapper } from "./GateWrapper.tsx";
-import type { AccessGateConfig } from "./types.ts";
+import type { KnockCodesConfig } from "./types.ts";
 import { cx } from "./cx.ts";
 
-export interface ProtectedCardProps extends AccessGateConfig {
+export interface ProtectedCardProps extends KnockCodesConfig {
   children: ReactNode;
   className?: string;
 }
@@ -38,7 +38,7 @@ function StatusBadge({ unlocked }: { unlocked: boolean }) {
  * and position never jump between locked and unlocked.
  */
 export function ProtectedCard({ children, className, ...config }: ProtectedCardProps) {
-  const { state, error, submit } = useAccessGate(config);
+  const { state, error, submit } = useKnockCodes(config);
   const [expanded, setExpanded] = useState(false);
   const [code, setCode] = useState("");
 

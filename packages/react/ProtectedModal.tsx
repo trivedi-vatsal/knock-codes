@@ -1,14 +1,14 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { useAccessGate } from "./useAccessGate.ts";
+import { useKnockCodes } from "./useKnockCodes.ts";
 import { UnlockDialog } from "./UnlockDialog.tsx";
-import type { AccessGateConfig, AccessGateLabels } from "./types.ts";
+import type { KnockCodesConfig, KnockCodesLabels } from "./types.ts";
 import { cx } from "./cx.ts";
 
-export interface ProtectedModalProps extends AccessGateConfig {
+export interface ProtectedModalProps extends KnockCodesConfig {
   children: ReactNode;
-  labels?: AccessGateLabels;
+  labels?: KnockCodesLabels;
   className?: string;
 }
 
@@ -19,7 +19,7 @@ export interface ProtectedModalProps extends AccessGateConfig {
  * a bare PIN screen.
  */
 export function ProtectedModal({ children, labels, className, ...config }: ProtectedModalProps) {
-  const { state, error, submit } = useAccessGate(config);
+  const { state, error, submit } = useKnockCodes(config);
   const [code, setCode] = useState("");
   const locked = state !== "unlocked";
 

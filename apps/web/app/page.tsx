@@ -48,17 +48,17 @@ export default function Home() {
       <section className="border-b border-border bg-[#0e1311] text-[#edeae0]">
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-6 py-20 lg:grid-cols-2 lg:py-24">
           <div>
-            <p className="label-mono mb-4 text-[#edeae0]/60">→ A screen, not a library</p>
+            <p className="label-mono mb-4 text-[#edeae0]/60">→ Private previews, opened with a code.</p>
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
               The <span className="text-[#dfff67] italic">access screen</span> you copy-paste and ship
             </h1>
             <p className="mt-5 max-w-xl text-white/70">
-              A complete, single-file &ldquo;enter a code to continue&rdquo; screen for demos, previews,
-              staging, and internal tools — verification logic included. No backend required to start, no
-              vendor lock-in ever. You own every line.
+              A complete, single-file &ldquo;enter a code to continue&rdquo; screen for private previews,
+              staging pages, and client links — verification logic included. No backend required to start,
+              no vendor lock-in ever. You own every line.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Link href="/templates/access-gate-template" className={buttonVariants({ size: "lg" })}>
+              <Link href="/templates/knock-codes-template" className={buttonVariants({ size: "lg" })}>
                 Copy the code <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
