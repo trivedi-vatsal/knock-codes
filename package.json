@@ -16,6 +16,7 @@
     "registry:check": "node scripts/check-registry.mjs"
   },
   "devDependencies": {
+    "@ast-grep/cli": "^0.44.1",
     "jsdom": "^25.0.0",
     "turbo": "^2.3.0",
     "typescript": "^5.7.0"
