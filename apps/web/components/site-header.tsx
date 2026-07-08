@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
+import { REPO_URL } from "@/lib/site";
 
 const NAV_LINKS = [
+  { href: "/getting-started", label: "Getting Started" },
   { href: "/templates", label: "Templates" },
   { href: "/blocks", label: "Blocks" },
   { href: "/security", label: "Security" },
@@ -21,6 +23,9 @@ export function SiteHeader() {
               {link.label}
             </Link>
           ))}
+          <a href={REPO_URL} target="_blank" rel="noreferrer" className="label-mono text-[#edeae0]/70 hover:text-[#edeae0]">
+            GitHub
+          </a>
           <ThemeToggle />
         </nav>
       </div>

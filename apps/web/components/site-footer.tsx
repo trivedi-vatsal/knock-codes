@@ -1,6 +1,5 @@
 import Link from "next/link";
-
-const REPO_URL = "https://github.com/trivedi-vatsal/knock-codes";
+import { REPO_URL, AUTHOR_SITE_URL, AUTHOR_GITHUB_URL } from "@/lib/site";
 
 export function SiteFooter() {
   return (
@@ -12,7 +11,7 @@ export function SiteFooter() {
         </p>
         <div className="flex shrink-0 flex-wrap items-center gap-4">
           <Link href="/getting-started" className="label-mono text-primary hover:underline">
-            How it works
+            Getting Started
           </Link>
           <Link href="/security" className="label-mono text-primary hover:underline">
             Security model
@@ -26,8 +25,11 @@ export function SiteFooter() {
           <a href={`${REPO_URL}/blob/main/LICENSE`} target="_blank" rel="noreferrer" className="label-mono text-primary hover:underline">
             MIT license
           </a>
-          <a href="https://github.com/trivedi-vatsal" target="_blank" rel="noreferrer" className="label-mono text-primary hover:underline">
-            Author
+          <a href={AUTHOR_SITE_URL} target="_blank" rel="noreferrer" className="label-mono text-primary hover:underline">
+            Vatsal Trivedi
+          </a>
+          <a href={AUTHOR_GITHUB_URL} target="_blank" rel="noreferrer" className="label-mono text-primary hover:underline">
+            Author on GitHub
           </a>
         </div>
       </div>
