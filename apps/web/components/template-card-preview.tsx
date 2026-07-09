@@ -25,7 +25,7 @@ function DemoPanel() {
 // cramped, differently-wrapped version of it.
 const NATURAL_WIDTH = 640;
 const NATURAL_HEIGHT = 420;
-const PREVIEW_HEIGHT = 208;
+const PREVIEW_HEIGHT = 240;
 const SCALE = PREVIEW_HEIGHT / NATURAL_HEIGHT;
 
 const FACTORIES: Record<string, () => ReactNode> = {
@@ -71,7 +71,7 @@ export function TemplateCardPreview({ slug }: { slug: string }) {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none relative mb-4 select-none overflow-hidden rounded-md border border-border bg-muted/20 transition-transform duration-200 group-hover:scale-[1.015] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+      className="pointer-events-none relative w-full select-none overflow-hidden"
       style={{ height: PREVIEW_HEIGHT }}
     >
       <div
@@ -88,3 +88,4 @@ export function TemplateCardPreview({ slug }: { slug: string }) {
     </div>
   );
 }
+
