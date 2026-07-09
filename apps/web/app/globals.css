@@ -2,6 +2,10 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* No toggle — html always carries "dark" (see layout.tsx) so shadcn's
+   built-in `dark:` utility variants stay active unconditionally instead of
+   following OS `prefers-color-scheme`, matching the reference's single
+   always-dark surface regardless of visitor OS setting. */
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -42,6 +46,11 @@
     --color-card: var(--card);
     --color-foreground: var(--foreground);
     --color-background: var(--background);
+    --color-surface-2: var(--surface-2);
+    --color-border-strong: var(--border-strong);
+    --color-fg-faint: var(--fg-faint);
+    --color-success: var(--success);
+    --color-success-dim: var(--success-dim);
     --radius-sm: calc(var(--radius) * 0.6);
     --radius-md: calc(var(--radius) * 0.8);
     --radius-lg: var(--radius);
@@ -52,84 +61,58 @@
 }
 
 /*
- * "Clearance" palette — access checkpoints, security consoles, passcards.
- * Warm paper background, oxidized-teal primary, electric-citron signal
- * accent, security-amber warning, access-red danger. Hex rather than oklch
- * for precise control over these specific brand colors.
+ * knock.codes brand palette — single dark theme, ported verbatim from
+ * knock-reference-v2.html's :root token set. No light variant: the
+ * reference never leaves a dark surface, so there is no toggle to wire up.
+ * Mapped onto the existing shadcn semantic names (primary = the reference's
+ * solid amber --accent, shadcn "accent" = the reference's dim amber wash)
+ * so every component already written against bg-primary/bg-muted/etc.
+ * re-themes for free; surface-2/border-strong/fg-faint/success(-dim) are
+ * extra reference-only tokens with no shadcn equivalent, added as their own
+ * utilities for the homepage's bespoke sections.
  */
 :root {
-    --background: #f7f3ea;
-    --foreground: #191a18;
-    --card: #fbf8f1;
-    --card-foreground: #191a18;
-    --popover: #fbf8f1;
-    --popover-foreground: #191a18;
-    --primary: #187c74;
-    --primary-foreground: #f7f3ea;
-    --secondary: #ece6d6;
-    --secondary-foreground: #191a18;
-    --muted: #d8d1c2;
-    --muted-foreground: #6b6456;
-    --accent: #d6f75a;
-    --accent-foreground: #191a18;
-    --warning: #ffb020;
-    --warning-foreground: #191a18;
-    --destructive: #e5484d;
-    --destructive-foreground: #f7f3ea;
-    --border: #d9d2c2;
-    --input: #d9d2c2;
-    --ring: #187c74;
-    --chart-1: #187c74;
-    --chart-2: #d6f75a;
-    --chart-3: #ffb020;
-    --chart-4: #e5484d;
-    --chart-5: #6b6456;
+    --background: #0A0A0B;
+    --foreground: #FAFAF9;
+    --card: #111113;
+    --card-foreground: #FAFAF9;
+    --popover: #18181B;
+    --popover-foreground: #FAFAF9;
+    --primary: #F59E0B;
+    --primary-foreground: #0A0A0B;
+    --secondary: #18181B;
+    --secondary-foreground: #FAFAF9;
+    --muted: #18181B;
+    --muted-foreground: rgba(250,250,250,0.64);
+    --accent: rgba(245,158,11,0.12);
+    --accent-foreground: #FAFAF9;
+    --warning: #F59E0B;
+    --warning-foreground: #0A0A0B;
+    --destructive: #F87171;
+    --destructive-foreground: #FAFAF9;
+    --border: rgba(250,250,250,0.08);
+    --input: rgba(250,250,250,0.16);
+    --ring: #F59E0B;
+    --chart-1: #F59E0B;
+    --chart-2: #4ADE80;
+    --chart-3: #F87171;
+    --chart-4: rgba(250,250,250,0.64);
+    --chart-5: rgba(250,250,250,0.16);
     --radius: 0.625rem;
-    --sidebar: #f1ecdf;
-    --sidebar-foreground: #191a18;
-    --sidebar-primary: #187c74;
-    --sidebar-primary-foreground: #f7f3ea;
-    --sidebar-accent: #d6f75a;
-    --sidebar-accent-foreground: #191a18;
-    --sidebar-border: #d9d2c2;
-    --sidebar-ring: #187c74;
-}
+    --sidebar: #111113;
+    --sidebar-foreground: #FAFAF9;
+    --sidebar-primary: #F59E0B;
+    --sidebar-primary-foreground: #0A0A0B;
+    --sidebar-accent: rgba(245,158,11,0.12);
+    --sidebar-accent-foreground: #FAFAF9;
+    --sidebar-border: rgba(250,250,250,0.08);
+    --sidebar-ring: #F59E0B;
 
-.dark {
-    --background: #0e1311;
-    --foreground: #edeae0;
-    --card: #171d1a;
-    --card-foreground: #edeae0;
-    --popover: #171d1a;
-    --popover-foreground: #edeae0;
-    --primary: #4fd1c5;
-    --primary-foreground: #0e1311;
-    --secondary: #1b231f;
-    --secondary-foreground: #edeae0;
-    --muted: #232b27;
-    --muted-foreground: #9aa39c;
-    --accent: #dfff67;
-    --accent-foreground: #0e1311;
-    --warning: #ffb020;
-    --warning-foreground: #0e1311;
-    --destructive: #ff6169;
-    --destructive-foreground: #0e1311;
-    --border: #26302b;
-    --input: #26302b;
-    --ring: #4fd1c5;
-    --chart-1: #4fd1c5;
-    --chart-2: #dfff67;
-    --chart-3: #ffb020;
-    --chart-4: #ff6169;
-    --chart-5: #9aa39c;
-    --sidebar: #131916;
-    --sidebar-foreground: #edeae0;
-    --sidebar-primary: #4fd1c5;
-    --sidebar-primary-foreground: #0e1311;
-    --sidebar-accent: #dfff67;
-    --sidebar-accent-foreground: #0e1311;
-    --sidebar-border: #26302b;
-    --sidebar-ring: #4fd1c5;
+    --surface-2: #18181B;
+    --border-strong: rgba(250,250,250,0.16);
+    --fg-faint: rgba(250,250,250,0.40);
+    --success: #4ADE80;
+    --success-dim: rgba(74,222,128,0.10);
 }
 
 @layer base {
@@ -141,7 +124,17 @@
     }
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
     }
+  ::selection {
+    background: var(--primary);
+    color: var(--background);
+    }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+      }
+  }
 }
 
 @layer utilities {
@@ -210,6 +203,13 @@
     }
     .animate-kc-shake {
       animation: kc-shake 0.4s ease-in-out;
+    }
+    @keyframes kc-rise {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: none; }
+    }
+    .animate-kc-rise {
+      animation: kc-rise 0.35s ease;
     }
   }
 

@@ -1,12 +1,11 @@
 import Link from "next/link";
-import { ThemeToggle } from "./theme-toggle";
 import { REPO_URL } from "@/lib/site";
 import { getTemplateSetVersion } from "@/lib/version";
 
 const NAV_LINKS = [
-  { href: "/getting-started", label: "Getting Started" },
   { href: "/templates", label: "Templates" },
   { href: "/blocks", label: "Blocks" },
+  { href: "/getting-started", label: "Getting Started" },
   { href: "/security", label: "Security" },
 ];
 
@@ -14,30 +13,35 @@ export function SiteHeader() {
   const version = getTemplateSetVersion();
 
   return (
-    <header className="border-b border-[#26302b] bg-[#0e1311] text-[#edeae0]">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
-        <Link href="/" className="label-mono flex items-center gap-2 text-[#edeae0]">
-          <span aria-hidden="true" className="status-dot" data-tone="signal" />
-          Knock Codes
+    <header className="sticky top-0 z-50 border-b border-border bg-background/[0.82] backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-[1120px] items-center justify-between px-8">
+        <Link href="/" className="flex items-center gap-2.5 font-mono text-sm font-medium tracking-tight text-foreground">
+          <span aria-hidden="true" className="h-2 w-2 rounded-sm bg-primary shadow-[0_0_12px_rgba(245,158,11,0.5)]" />
+          knock.codes
         </Link>
-        <nav className="flex items-center gap-6">
-          <span className="label-mono hidden text-[#edeae0]/40 lg:inline">// Open Source // MIT</span>
+        <nav className="hidden items-center gap-7 sm:flex">
           {NAV_LINKS.map((link) => (
-            <Link key={link.href} href={link.href} className="label-mono text-[#edeae0]/70 hover:text-[#edeae0]">
+            <Link key={link.href} href={link.href} className="text-[13.5px] text-muted-foreground transition-colors hover:text-foreground">
               {link.label}
             </Link>
           ))}
-          <a href={REPO_URL} target="_blank" rel="noreferrer" className="label-mono text-[#edeae0]/70 hover:text-[#edeae0]">
-            GitHub
-          </a>
+        </nav>
+        <div className="flex items-center gap-5">
           <Link
             href="/changelog"
-            className="label-mono rounded border border-[#26302b] px-1.5 py-0.5 text-[#edeae0]/70 hover:border-[#4fd1c5]/40 hover:text-[#edeae0]"
+            className="hidden font-mono text-[11px] font-medium tracking-[0.14em] text-fg-faint uppercase transition-colors hover:text-muted-foreground sm:inline"
           >
-            v{version}
+            v{version} // MIT
           </Link>
-          <ThemeToggle />
-        </nav>
+          <a
+            href={REPO_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-md border border-border-strong px-3.5 py-[7px] text-[13px] font-medium text-foreground transition-colors hover:border-white/30 hover:bg-white/[0.03]"
+          >
+            GitHub
+          </a>
+        </div>
       </div>
     </header>
   );
