@@ -1,5 +1,11 @@
 import { LiveGate } from "@/components/live-gate";
 import { HomeCtaButton } from "@/components/home-cta-button";
+import { ProofTicker } from "@/components/proof-ticker";
+import { HomeSectionHead } from "@/components/home-section-head";
+import { ProblemCards } from "@/components/problem-section";
+import { BentoGrid } from "@/components/bento-section";
+import { ModeComparisonTable } from "@/components/mode-comparison-table";
+import { Reveal } from "@/components/reveal";
 
 export default function Home() {
   return (
@@ -35,6 +41,48 @@ export default function Home() {
           </div>
         </div>
       </header>
+
+      <ProofTicker />
+
+      <section className="border-t border-border px-8 py-[120px]">
+        <div className="mx-auto max-w-[1120px]">
+          <Reveal>
+            <HomeSectionHead
+              number="01"
+              label="The problem"
+              title={<>&ldquo;Just don&rsquo;t share the link&rdquo; is not a plan.</>}
+              description="Unfinished work leaks in boring, predictable ways. None of them require a hacker."
+            />
+          </Reveal>
+          <Reveal>
+            <ProblemCards />
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="border-t border-border px-8 py-[120px]">
+        <div className="mx-auto max-w-[1120px]">
+          <Reveal>
+            <HomeSectionHead
+              number="02"
+              label="The answer"
+              title="The whole product, in one file."
+              description="Background, card, form, and verification logic — nothing to install, nothing to maintain, nothing phoning home."
+            />
+          </Reveal>
+          <Reveal>
+            <BentoGrid />
+          </Reveal>
+          <Reveal>
+            <div className="mt-16">
+              <p className="mb-4 font-mono text-[11px] font-medium tracking-[0.14em] text-fg-faint uppercase">
+                Local mode vs. server mode, in brief
+              </p>
+              <ModeComparisonTable />
+            </div>
+          </Reveal>
+        </div>
+      </section>
     </div>
   );
 }
