@@ -106,11 +106,11 @@ export function CodeBrowser({ files }: { files: CodeBrowserFile[] }) {
   const tree = buildTree(files);
 
   return (
-    <div className="grid h-[32rem] grid-cols-[13rem_1fr] overflow-hidden rounded-lg border border-border">
-      <div className="h-full overflow-x-hidden overflow-y-auto border-r border-border bg-muted/30 p-2">
+    <div className="flex flex-col overflow-hidden rounded-lg border border-border sm:grid sm:h-[32rem] sm:grid-cols-[13rem_1fr]">
+      <div className="max-h-40 shrink-0 overflow-y-auto border-b border-border bg-muted/30 p-2 sm:h-full sm:max-h-none sm:border-r sm:border-b-0">
         <TreeView node={tree} selectedPath={selectedPath} onSelect={setSelectedPath} />
       </div>
-      <div className="flex h-full flex-col overflow-hidden">
+      <div className="flex h-80 flex-col overflow-hidden sm:h-full">
         {selectedFile && (
           <>
             <div className="label-mono shrink-0 border-b border-border bg-muted/50 px-3 py-1.5 text-muted-foreground">

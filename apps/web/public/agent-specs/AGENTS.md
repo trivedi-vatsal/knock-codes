@@ -32,15 +32,24 @@ Before writing, confirm `.env`/`.env.local` is listed in `.gitignore`.
 If it isn't, add it before writing the hash.
 
 ## 4. Add the template
-Add a template via the registry command, e.g.:
+Add the template via the registry command:
 
-    npx shadcn@latest add <site-url>/r/react/knock-codes-template.json
+    npx shadcn@latest add https://knock.codes/r/react/knock-codes-template.json
+
+If that site is unreachable, or the user tells you they're running their own
+deployment, use the GitHub `owner/repo/item` shorthand instead — no site
+required:
+
+    npx shadcn@latest add trivedi-vatsal/access-gate/knock-codes-template
+
+(For a self-hosted docs site, substitute its origin for `https://knock.codes`
+above.)
 
 Other templates in the same registry: `minimal-access-template`,
-`branded-access-template`, `modal-access-template` — swap the filename above
-for the one the user wants, or copy the provided file directly instead of
-using the CLI. Wire the env var into the `expectedHash` prop at the app's
-entry point.
+`branded-access-template`, `modal-access-template` — swap the filename/item
+name above for the one the user wants, or copy the provided file directly
+instead of using the CLI. Wire the env var into the `expectedHash` prop at the
+app's entry point.
 
 ## 5. Confirm to the user
 State explicitly, in your response, that the plaintext PIN was not written to any

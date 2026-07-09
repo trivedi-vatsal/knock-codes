@@ -241,11 +241,11 @@ export function KnockCodesTemplate({
             key={shakeSeed}
             role="group"
             aria-label={merged.accessCodeLabel}
-            className={cx("flex items-center gap-1.5", shakeSeed > 0 && "animate-[knock-codes-shake_0.4s_ease-in-out]")}
+            className={cx("flex items-center gap-1 sm:gap-1.5", shakeSeed > 0 && "animate-[knock-codes-shake_0.4s_ease-in-out]")}
           >
             {Array.from({ length: codeLength }, (_, index) => (
-              <div key={index} className="flex items-center gap-1.5">
-                {index > 0 && index % groupSize === 0 && <span className="text-gray-300">–</span>}
+              <div key={index} className="flex min-w-0 flex-1 items-center gap-1 sm:gap-1.5">
+                {index > 0 && index % groupSize === 0 && <span className="shrink-0 text-gray-300">–</span>}
                 <input
                   ref={(el) => {
                     inputRefs.current[index] = el;
@@ -261,7 +261,7 @@ export function KnockCodesTemplate({
                   inputMode="text"
                   aria-label={`${merged.accessCodeLabel} character ${index + 1} of ${codeLength}`}
                   aria-invalid={error ? true : undefined}
-                  className="h-11 w-10 rounded-[var(--ag-radius,0.5rem)] border border-[var(--ag-border,#d1d5db)] text-center text-sm font-medium text-gray-900 focus:border-[var(--ag-primary,#3b82f6)] focus:ring-2 focus:ring-[var(--ag-primary,#3b82f6)]/30 focus:outline-none disabled:opacity-60 dark:border-[var(--ag-border-dark,#374151)] dark:bg-[var(--ag-card-dark,#111827)] dark:text-gray-50"
+                  className="h-11 w-full min-w-0 max-w-10 rounded-[var(--ag-radius,0.5rem)] border border-[var(--ag-border,#d1d5db)] text-center text-sm font-medium text-gray-900 focus:border-[var(--ag-primary,#3b82f6)] focus:ring-2 focus:ring-[var(--ag-primary,#3b82f6)]/30 focus:outline-none disabled:opacity-60 dark:border-[var(--ag-border-dark,#374151)] dark:bg-[var(--ag-card-dark,#111827)] dark:text-gray-50"
                 />
               </div>
             ))}

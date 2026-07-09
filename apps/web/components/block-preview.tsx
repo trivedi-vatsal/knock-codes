@@ -261,7 +261,7 @@ export function BlockPreview({ slug }: { slug: string }) {
           <Hint />
           <PreviewFrame>
             <div className="mx-auto w-full max-w-sm">
-              <StandaloneGate expectedHash={hash} variant="inline">
+              <StandaloneGate expectedHash={hash} variant="inline" autoFocus={false}>
                 <DemoUnlockedPanel />
               </StandaloneGate>
             </div>

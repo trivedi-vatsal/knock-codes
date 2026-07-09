@@ -11,6 +11,7 @@ export function BlockCardPreview({ slug }: { slug: string }) {
   return (
     <div
       aria-hidden="true"
+      inert
       className="pointer-events-none relative w-full select-none overflow-hidden"
       style={{ height: PREVIEW_HEIGHT }}
     >

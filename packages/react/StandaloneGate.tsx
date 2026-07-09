@@ -11,6 +11,8 @@ export interface StandaloneGateProps extends Pick<KnockCodesConfig, "expectedHas
   heading?: string;
   /** Escape hatch for embedding a Standalone Gate somewhere other than a real app root (a demo, a docs page). @default "page" */
   variant?: GateWrapperVariant;
+  /** @default true */
+  autoFocus?: boolean;
 }
 
 /**
@@ -19,9 +21,15 @@ export interface StandaloneGateProps extends Pick<KnockCodesConfig, "expectedHas
  * timeout, or activity-tracking props — reach for `<KnockCodes>` directly
  * once you need those.
  */
-export function StandaloneGate({ children, heading, expectedHash, verify, variant }: StandaloneGateProps) {
+export function StandaloneGate({ children, heading, expectedHash, verify, variant, autoFocus }: StandaloneGateProps) {
   return (
-    <KnockCodes expectedHash={expectedHash} verify={verify} labels={heading ? { heading } : undefined} variant={variant}>
+    <KnockCodes
+      expectedHash={expectedHash}
+      verify={verify}
+      labels={heading ? { heading } : undefined}
+      variant={variant}
+      autoFocus={autoFocus}
+    >
       {children}
     </KnockCodes>
   );

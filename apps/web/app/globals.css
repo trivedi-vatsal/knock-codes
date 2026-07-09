@@ -241,6 +241,15 @@
 }
 
 @layer base {
+  /* Anchor-scrolled sections (#gallery, #steps, ...) land flush under the
+     sticky header (h-16) without this — scrollIntoView has no way to know
+     the header covers the top ~4rem of the viewport. Respected natively by
+     both scrollIntoView and plain hash navigation, so one rule fixes every
+     entry path (ScrollReset's JS, browser back/forward, a pasted #hash URL). */
+  section[id] {
+    scroll-margin-top: 4.5rem;
+  }
+
   /* Plain text links (footer, "view all" links, FAQ) don't get shadcn
      Button's focus-visible ring / press treatment — this fills that gap
      everywhere at once rather than per call site. */

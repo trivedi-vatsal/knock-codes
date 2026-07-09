@@ -7,7 +7,7 @@ tags: ["quickstart"]
 registryName: "standalone-gate"
 relatedBlocks: ["knock-codes", "embedded-gate"]
 accessibility: "Same access-code entry UI as Knock Codes — full keyboard and screen-reader support inherited, none of it re-implemented."
-customization: "Deliberately a smaller prop surface than Knock Codes — just `expectedHash`/`verify`, `children`, and an optional `heading`. Reach for `<KnockCodes>` directly the moment you need storage/timeout/activity-tracking control."
+customization: "Deliberately a smaller prop surface than Knock Codes — just `expectedHash`/`verify`, `children`, an optional `heading`, and `autoFocus`. Reach for `<KnockCodes>` directly the moment you need storage/timeout/activity-tracking control."
 bestUsedFor: "The fastest possible integration — wrapping an entire app with minimal configuration."
 props:
   - name: "expectedHash"
@@ -28,6 +28,10 @@ props:
     type: '"page" | "inline"'
     default: '"page"'
     description: "Escape hatch for embedding a demo somewhere other than a real app root — a docs page, this gallery's own preview."
+  - name: "autoFocus"
+    type: "boolean"
+    default: "true"
+    description: "Focuses the code field on mount. Off in embedded previews so a newly-rendered gate can't steal focus and scroll the page."
 ---
 
 For the two-line integration: generate a hash, wrap your app, ship it. No config to reason about.

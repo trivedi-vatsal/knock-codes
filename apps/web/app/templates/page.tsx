@@ -44,7 +44,7 @@ export default function TemplatesPage() {
             />
           </Reveal>
           <Reveal>
-            <div className="grid gap-8 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
               {templates.map((template) => (
                 <TemplateCard key={template.slug} template={template} />
               ))}

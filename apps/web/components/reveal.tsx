@@ -32,7 +32,11 @@ export function Reveal({ children, className }: { children: ReactNode; className
           observer.disconnect();
         }
       },
-      { threshold: 0.15 }
+      // threshold 0 fires as soon as any part of the target is visible — a
+      // percentage-of-target threshold (e.g. 0.15) breaks for tall targets
+      // like a full card grid, since a short viewport can never show enough
+      // of it at once to cross that fraction.
+      { threshold: 0 }
     );
     observer.observe(node);
     return () => observer.disconnect();

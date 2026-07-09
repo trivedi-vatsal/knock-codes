@@ -89,8 +89,10 @@ const FACTORIES: Record<string, () => ReactNode> = {
  * A frozen, non-interactive live render of the real template component — the
  * gallery-card thumbnail. Live-rendered rather than a screenshot so it can
  * never drift from what actually ships. `pointer-events-none` + `aria-hidden`
- * because the whole card is already a `<Link>`; this is decorative, not a
- * second, nested interactive surface.
+ * + `inert` because the whole card is already a `<Link>`; this is decorative,
+ * not a second, nested interactive surface. `inert` (not just `aria-hidden`)
+ * matters because the live render includes a real focusable input — without
+ * it, Tab could still focus into an aria-hidden subtree.
  */
 export function TemplateCardPreview({ slug }: { slug: string }) {
   const factory = FACTORIES[slug];
@@ -99,6 +101,7 @@ export function TemplateCardPreview({ slug }: { slug: string }) {
   return (
     <div
       aria-hidden="true"
+      inert
       className="pointer-events-none relative w-full select-none overflow-hidden"
       style={{ height: PREVIEW_HEIGHT }}
     >

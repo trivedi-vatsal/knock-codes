@@ -21,7 +21,7 @@ export function PageHeader({
   return (
     <header
       className={cn(
-        "relative border-b border-border px-6 pt-16 pb-16 text-center md:px-8 md:pt-24 md:pb-20",
+        "relative overflow-hidden border-b border-border px-6 pt-16 pb-16 text-center md:px-8 md:pt-24 md:pb-20",
         className
       )}
     >
