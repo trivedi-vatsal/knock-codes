@@ -107,7 +107,7 @@ export function SiteFooter() {
       </div>
       <div
         aria-hidden="true"
-        className="text-center font-mono text-[clamp(80px,16vw,220px)] leading-[0.8] font-medium tracking-[-0.04em] text-transparent select-none [-webkit-text-stroke:1px_rgba(250,250,250,0.06)]"
+        className="text-center font-mono text-[clamp(80px,16vw,220px)] leading-[0.8] font-medium tracking-[-0.04em] text-transparent select-none [-webkit-text-stroke:1px_rgba(250,250,250,0.08)]"
       >
         knock.codes
       </div>

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getAllTemplates } from "@/lib/templates";
 
-const FEATURED_SLUGS = ["branded-access-template", "knock-codes-template", "minimal-access-template", "modal-access-template"] as const;
+const FEATURED_SLUGS = ["branded-access", "knock-codes", "minimal-access", "modal-access"] as const;
 
 const MODE_LABEL: Record<string, string> = { local: "Local mode", server: "Server mode", both: "Local or server" };
 
@@ -66,10 +66,10 @@ function ModalSketch() {
 }
 
 const SKETCHES: Record<string, () => React.ReactElement> = {
-  "branded-access-template": SplitSketch,
-  "knock-codes-template": SegmentedSketch,
-  "minimal-access-template": MinimalSketch,
-  "modal-access-template": ModalSketch,
+  "branded-access": SplitSketch,
+  "knock-codes": SegmentedSketch,
+  "minimal-access": MinimalSketch,
+  "modal-access": ModalSketch,
 };
 
 /** The reference's four `.tcard`s, with real titles/descriptions/tags/routes pulled from content/templates/*.mdx instead of placeholder copy. */

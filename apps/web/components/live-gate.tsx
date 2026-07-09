@@ -75,15 +75,30 @@ export function LiveGate() {
     <div
       key={shakeSeed}
       className={cn(
-        "mx-auto mt-13 max-w-[420px] rounded-xl border border-border bg-card px-7 pt-7 pb-6 transition-colors",
-        unlocked && "border-success/35",
-        error && shakeSeed > 0 && "animate-kc-shake border-destructive/40"
+        "mx-auto mt-13 max-w-[430px] rounded-xl border border-border/80 bg-card/65 backdrop-blur-md px-6 pt-4 pb-6 transition-all duration-300 shadow-2xl",
+        unlocked ? "border-success/30 shadow-[0_0_32px_rgba(74,222,128,0.06)]" : "focus-within:border-primary/30 focus-within:shadow-[0_0_32px_rgba(245,158,11,0.05)]",
+        error && shakeSeed > 0 && "animate-kc-shake border-destructive/40 shadow-[0_0_32px_rgba(248,113,113,0.05)]"
       )}
     >
-      <div className="mb-[18px] flex items-center justify-between gap-3">
-        <span className="font-mono text-[11px] font-medium tracking-[0.14em] text-fg-faint uppercase">Fig.00 — The front door</span>
+      {/* Console Top Window Controls & Label */}
+      <div className="mb-4 flex items-center justify-between border-b border-border/40 pb-3">
+        <div className="flex items-center gap-1.5">
+          <span className="h-2 w-2 rounded-full bg-[#FF5F56]/80" />
+          <span className="h-2 w-2 rounded-full bg-[#FFBD2E]/80" />
+          <span className="h-2 w-2 rounded-full bg-[#27C93F]/80" />
+        </div>
+        <span className="font-mono text-[9px] font-medium tracking-[0.1em] text-fg-faint uppercase">
+          {unlocked ? "terminal: unlocked" : "console: gate"}
+        </span>
+        <span className="font-mono text-[9px] rounded bg-surface-2 border border-border-strong px-1.5 py-0.5 text-fg-faint font-semibold uppercase">
+          SHA-256
+        </span>
+      </div>
+
+      <div className="mb-3.5 flex items-center justify-between gap-3">
+        <span className="font-mono text-[10.5px] font-medium tracking-[0.14em] text-fg-faint uppercase">Fig.00 // The front door</span>
         {!unlocked && (
-          <span className="font-mono text-[11px] font-medium tracking-[0.14em] text-primary uppercase">Psst — the code is {DEMO_CODE}</span>
+          <span className="font-mono text-[10.5px] font-semibold tracking-[0.14em] text-primary uppercase animate-pulse">Psst — code is {DEMO_CODE}</span>
         )}
       </div>
 
@@ -106,26 +121,59 @@ export function LiveGate() {
                 onChange={(event) => handleChange(index, event.target.value)}
                 onKeyDown={(event) => handleKeyDown(index, event)}
                 onPaste={handlePaste}
-                className="h-16 w-14 rounded-lg border border-border bg-surface-2 text-center font-mono text-2xl font-medium text-foreground caret-primary outline-none transition-colors focus:border-primary focus:bg-[#1C1C1F] disabled:opacity-60"
+                className={cn(
+                  "h-16 w-14 rounded-lg border border-border bg-surface-2/70 text-center font-mono text-2xl font-bold text-foreground caret-primary outline-none transition-all duration-200",
+                  "focus:scale-105 focus:border-primary focus:bg-[#1C1C1F] focus:shadow-[0_0_12px_rgba(245,158,11,0.15)]",
+                  "disabled:opacity-60"
+                )}
               />
             ))}
           </div>
           <div
             role="status"
             aria-live="polite"
-            className="mt-3.5 min-h-[18px] font-mono text-[11px] font-medium tracking-[0.1em] text-destructive uppercase"
+            className="mt-4 min-h-[18px] font-mono text-[10.5px] font-medium tracking-[0.12em] text-destructive uppercase"
           >
-            {error ? "Wrong knock — try again" : state === "submitting" ? "Checking…" : ""}
+            {error ? (
+              <span className="flex items-center justify-center gap-1.5">
+                <span className="status-dot" data-tone="danger" />
+                Wrong knock — try again
+              </span>
+            ) : state === "submitting" ? (
+              <span className="flex items-center justify-center gap-1.5 text-primary">
+                <span className="status-dot animate-ping" data-tone="signal" />
+                Verifying signature…
+              </span>
+            ) : (
+              <span className="flex items-center justify-center gap-1.5 text-fg-faint">
+                <span className="status-dot" data-tone="muted" />
+                Awaiting input
+              </span>
+            )}
           </div>
         </>
       ) : (
         <div className="animate-kc-rise text-left">
-          <p className="mb-2.5 font-mono text-[11px] font-medium tracking-[0.1em] text-success uppercase">Access granted — come on in</p>
-          <div className="flex items-center justify-between gap-3 rounded-lg border border-border bg-surface-2 px-3.5 py-3">
-            <code className="overflow-x-auto font-mono text-[12.5px] whitespace-nowrap text-muted-foreground">{INSTALL_COMMAND}</code>
-            <CopyButton text={INSTALL_COMMAND} className="shrink-0 border-border-strong text-muted-foreground hover:bg-white/10 hover:text-foreground" />
+          <div className="mb-3.5 flex items-center gap-2">
+            <span className="status-dot" data-tone="warning" style={{ backgroundColor: "#4ADE80", boxShadow: "0 0 0 3px rgba(74,222,128,0.2)" }} />
+            <p className="font-mono text-[10.5px] font-semibold tracking-[0.1em] text-success uppercase">
+              Access granted — Session verified
+            </p>
           </div>
-          <p className="mt-2.5 text-center text-[13px] text-fg-faint">That&rsquo;s the whole install.</p>
+          <div className="rounded-lg border border-border bg-[#0B0B0C] p-3 shadow-inner">
+            <div className="mb-2 flex items-center justify-between border-b border-border/30 pb-1.5">
+              <span className="font-mono text-[9px] text-fg-faint">bash // install command</span>
+              <span className="font-mono text-[8px] text-success/80 tracking-wider">OK // CONNECTED</span>
+            </div>
+            <div className="flex items-center justify-between gap-3 font-mono">
+              <div className="flex items-center gap-2 overflow-x-auto whitespace-nowrap text-[12.5px] scrollbar-none">
+                <span className="text-primary font-bold select-none">$</span>
+                <code className="text-muted-foreground">{INSTALL_COMMAND}</code>
+              </div>
+              <CopyButton text={INSTALL_COMMAND} className="shrink-0 border-border-strong text-muted-foreground hover:bg-white/10 hover:text-foreground" />
+            </div>
+          </div>
+          <p className="mt-3 text-center font-mono text-[10px] text-fg-faint">That&rsquo;s the whole install.</p>
         </div>
       )}
     </div>

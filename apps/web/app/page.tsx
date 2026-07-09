@@ -1,4 +1,4 @@
-import { LiveGate } from "@/components/live-gate";
+import { WorkspaceSimulator } from "@/components/workspace-simulator";
 import { HomeCtaButton } from "@/components/home-cta-button";
 import { ProofTicker } from "@/components/proof-ticker";
 import { HomeSectionHead } from "@/components/home-section-head";
@@ -14,34 +14,72 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div>
-      <header className="relative px-8 pt-[108px] pb-24 text-center">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute top-[-120px] left-1/2 h-[560px] w-[900px] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(245,158,11,0.07)_0%,rgba(250,250,250,0.02)_40%,transparent_70%)]"
-        />
+      <header className="relative overflow-hidden px-8 pt-24 pb-28 text-center">
+        {/* Background Grid and Glowing Mesh */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+          {/* Dots grid with radial fade mask */}
+          <div className="absolute inset-0 access-grid opacity-30 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_70%)]" />
+          {/* Accent mesh glows for ultimate premium dark mode */}
+          <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 h-[600px] w-[1000px] rounded-full bg-[radial-gradient(circle,rgba(245,158,11,0.12)_0%,rgba(245,158,11,0.02)_50%,transparent_100%)] blur-[70px]" />
+          <div className="absolute top-[30%] left-[calc(50%-400px)] h-[400px] w-[800px] rounded-full bg-primary/[0.04] blur-[90px] animate-pulse" style={{ animationDuration: "14s" }} />
+          <div className="absolute top-[40%] left-[calc(50%+200px)] h-[350px] w-[600px] rounded-full bg-success/[0.02] blur-[80px] animate-pulse" style={{ animationDuration: "18s" }} />
+        </div>
+
         <div className="relative mx-auto max-w-[1120px]">
-          <div className="mb-7">
-            <span className="font-mono text-[11px] font-medium tracking-[0.14em] text-fg-faint uppercase">
-              // Copy-paste access screens for private previews
+          {/* Top Pill Badge */}
+          <div className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-primary/25 bg-primary/[0.04] backdrop-blur-md px-4 py-1.5 shadow-[0_2px_16px_rgba(245,158,11,0.06)]">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary"></span>
+            </span>
+            <span className="font-mono text-[10.5px] font-semibold tracking-[0.16em] text-primary uppercase">
+              // Zero runtime dependencies. One single file.
             </span>
           </div>
-          <h1 className="text-[clamp(56px,9.5vw,132px)] font-medium leading-[0.98] tracking-[-0.035em]">
-            Knock,
+
+          {/* Heading */}
+          <h1 className="text-[clamp(44px,7.5vw,96px)] font-extrabold leading-[0.95] tracking-[-0.035em] max-w-[960px] mx-auto">
+            <span className="bg-gradient-to-b from-foreground via-foreground to-muted-foreground/70 bg-clip-text text-transparent">
+              Knock, knock.
+            </span>
             <br />
-            <span className="text-primary">knock.</span>
+            <span className="bg-gradient-to-r from-amber-400 via-primary to-amber-500 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(245,158,11,0.2)]">
+              Private previews, secured.
+            </span>
           </h1>
-          <p className="mx-auto mt-7 max-w-[480px] text-[17px] text-muted-foreground">
-            A single-file &ldquo;enter a code to continue&rdquo; screen with verification built in. Copy it into
-            your project, set one env var, ship.
+
+          {/* Subtitle */}
+          <p className="mx-auto mt-7 max-w-[580px] text-[17px] sm:text-[18.5px] text-muted-foreground/90 leading-relaxed">
+            A production-ready access gate built into a single copy-paste file. Secure your preview deployments in seconds using standard environment variables.
           </p>
 
-          <LiveGate />
-
-          <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+          {/* Call-to-action buttons */}
+          <div className="mt-8 mb-16 flex flex-wrap items-center justify-center gap-3">
             <HomeCtaButton href="#templates">Browse templates</HomeCtaButton>
             <HomeCtaButton href="/security" variant="ghost">
               Read the security model
             </HomeCtaButton>
+          </div>
+
+          {/* Workspace Simulator Mockup */}
+          <div className="relative mx-auto max-w-[850px] w-full z-10">
+            <WorkspaceSimulator />
+          </div>
+
+          {/* Monospace Quick Features under mockup */}
+          <div className="mt-14 flex flex-wrap items-center justify-center gap-x-8 gap-y-3.5 border-t border-border/40 pt-8 max-w-[700px] mx-auto select-none">
+            <div className="flex items-center gap-2 font-mono text-[11px] text-fg-faint uppercase tracking-wider">
+              <span className="text-primary font-bold">✓</span> No database needed
+            </div>
+            <div className="flex items-center gap-2 font-mono text-[11px] text-fg-faint uppercase tracking-wider">
+              <span className="text-primary font-bold">✓</span> Under 100 lines of code
+            </div>
+            <div className="flex items-center gap-2 font-mono text-[11px] text-fg-faint uppercase tracking-wider">
+              <span className="text-primary font-bold">✓</span> SSR & Edge compatible
+            </div>
+            <div className="flex items-center gap-2 font-mono text-[11px] text-fg-faint uppercase tracking-wider">
+              <span className="text-primary font-bold">✓</span> Local SHA-256 signatures
+            </div>
           </div>
         </div>
       </header>
