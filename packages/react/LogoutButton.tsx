@@ -27,7 +27,7 @@ export function LogoutButton({ children = "Log out", className, onLoggedOut }: L
         onLoggedOut?.();
       }}
       className={cx(
-        "rounded-[var(--ag-radius,0.375rem)] border border-[var(--ag-border,#d9d2c2)] px-3 py-1.5 text-sm text-[#191a18] hover:border-[var(--ag-primary,#187c74)]/40 hover:bg-[var(--ag-primary,#187c74)]/5 dark:border-[var(--ag-border-dark,#26302b)] dark:text-[#edeae0] dark:hover:border-[var(--ag-primary-dark,#4fd1c5)]/40 dark:hover:bg-[var(--ag-primary-dark,#4fd1c5)]/10",
+        "rounded-[var(--ag-radius,0.5rem)] border border-[var(--ag-border,#e5e7eb)] px-3 py-1.5 text-sm font-medium text-gray-700 hover:border-[var(--ag-primary,#3b82f6)]/40 hover:bg-[var(--ag-primary,#3b82f6)]/5 dark:border-[var(--ag-border-dark,#1f2937)] dark:text-gray-200 dark:hover:border-[var(--ag-primary,#3b82f6)]/40 dark:hover:bg-[var(--ag-primary,#3b82f6)]/10",
         className
       )}
     >

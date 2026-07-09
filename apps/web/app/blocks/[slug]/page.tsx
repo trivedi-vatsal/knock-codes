@@ -1,17 +1,22 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { SectionHeader } from "@/components/section-header";
 import { PropsTable } from "@/components/props-table";
-import { InstallationPanel } from "@/components/installation-panel";
 import { RelatedContent } from "@/components/related-content";
 import { BlockPreview } from "@/components/block-preview";
 import { PreviewPanel } from "@/components/preview-panel";
-import { BlueprintFrame } from "@/components/blueprint-frame";
 import { ThemeLabRoot } from "@/components/customizer/theme-lab-root";
+import { BlockInstallationSection } from "@/components/block-installation-section";
+import { TemplateNotesSection } from "@/components/template-notes-section";
+import { TemplateSecuritySection } from "@/components/template-security-section";
 import { getAllBlocks, getBlockBySlug } from "@/lib/blocks";
 import { getRegistryItemSource, resolveRegistryDependencies } from "@/lib/registry";
+import { getServerTemplates } from "@/lib/server-templates";
+import { AdaptWithAiButton } from "@/components/adapt-with-ai-button";
+import { buildBlockAdaptPrompt } from "@/lib/adapt-prompt";
 import { pageMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
@@ -40,15 +45,33 @@ export default async function BlockDetailPage({ params }: { params: Promise<{ sl
   const related = (block.relatedBlocks ?? [])
     .map((slug) => getBlockBySlug(slug))
     .filter((b) => b !== undefined);
+  const serverTemplates = getServerTemplates();
+  const primaryPath = allFiles.find((f) => f.primary)?.path ?? `packages/react/${block.registryName}`;
+  const adaptPrompt = buildBlockAdaptPrompt(block, primaryPath);
 
   return (
     <ThemeLabRoot>
     <div className="mx-auto max-w-6xl px-6 py-12">
       <div className="mb-8 space-y-3">
-        <p className="label-mono text-primary">→ {block.category}</p>
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <Link href="/blocks" className="label-mono text-primary transition-colors hover:underline">
+            ← Blocks / {block.category}
+          </Link>
+          <AdaptWithAiButton prompt={adaptPrompt} />
+        </div>
         <h1 className="text-3xl font-semibold tracking-tight text-foreground">{block.title}</h1>
         <p className="max-w-2xl text-muted-foreground">{block.description}</p>
         <div className="flex flex-wrap gap-1.5 pt-1">
+          <Badge>{block.category}</Badge>
+          {block.tier && (
+            <Badge variant="secondary">
+              {block.tier === "primary"
+                ? "Core Primitive"
+                : block.tier === "alias"
+                  ? "Wrapper Alias"
+                  : "Utility"}
+            </Badge>
+          )}
           {block.tags.map((tag) => (
             <Badge key={tag} variant="outline">
               {tag}
@@ -73,36 +96,20 @@ export default async function BlockDetailPage({ params }: { params: Promise<{ sl
         <PreviewPanel preview={<BlockPreview slug={block.slug} />} files={allFiles} badge={block.registryName} />
       </div>
 
-      <section className="mb-10">
-        <BlueprintFrame label="Installation">
-          <h2 className="mb-4 text-2xl font-semibold tracking-tight text-foreground">
-            Add this block to your project
-          </h2>
-          <InstallationPanel
-            registryName={block.registryName}
-            ownFiles={source.map((f) => ({ path: f.path, target: f.target, type: "registry:file" }))}
-            dependencyItems={dependencies}
-          />
-        </BlueprintFrame>
-      </section>
+      <BlockInstallationSection
+        registryName={block.registryName}
+        source={source.map((f) => ({ path: f.path, target: f.target }))}
+        dependencies={dependencies}
+      />
 
       <section className="mb-10 space-y-4">
         <SectionHeader label="Props" title="API reference" />
         <PropsTable props={block.props} />
       </section>
 
-      <section className="mb-10">
-        <BlueprintFrame label="Notes" className="grid gap-8 sm:grid-cols-2">
-          <div className="space-y-2">
-            <p className="label-mono text-muted-foreground">Accessibility</p>
-            <p className="text-sm text-muted-foreground">{block.accessibility}</p>
-          </div>
-          <div className="space-y-2">
-            <p className="label-mono text-muted-foreground">Customization</p>
-            <p className="text-sm text-muted-foreground">{block.customization}</p>
-          </div>
-        </BlueprintFrame>
-      </section>
+      <TemplateNotesSection accessibility={block.accessibility} customization={block.customization} />
+
+      <TemplateSecuritySection isHtml={false} serverTemplates={serverTemplates} />
 
       {related.length > 0 && (
         <section className="space-y-4">

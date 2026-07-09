@@ -1,4 +1,5 @@
 import type { Template } from "./templates";
+import type { Block } from "./blocks";
 
 /**
  * The "Adapt with AI" copy-button text on each template detail page. Built
@@ -24,5 +25,24 @@ export function buildAdaptPrompt(template: Template, primaryPath: string): strin
     `Real props on this component: ${propNames}.`,
     "",
     "This is a shared-secret gate, not authentication — there is no per-user identity or account system. Don't describe it as more secure than that in any copy you write for it.",
+  ].join("\n");
+}
+
+export function buildBlockAdaptPrompt(block: Block, primaryPath: string): string {
+  const propNames = block.props.map((prop) => `${prop.name}${prop.required ? "" : "?"}`).join(", ") || "children only";
+
+  return [
+    `Adapt the "${block.title}" access-gate React block (source: ${primaryPath}) for this project.`,
+    "",
+    "Keep unchanged:",
+    "- The verification and session logic exactly as written — it integrates with useKnockCodes or KnockCodes core primitives.",
+    "- Don't invent props that aren't in the source file. In particular, there is no client-side `attempts` or rate-limit prop.",
+    "",
+    "Free to change:",
+    "- Colors, spacing, typography, copy/labels, and visual layout to match this project's branding and stack.",
+    "",
+    `Real props on this component: ${propNames}.`,
+    "",
+    "This is a shared-secret gate, not authentication — there is no per-user identity or account system.",
   ].join("\n");
 }

@@ -27,7 +27,7 @@ function SnippetRow({ label, value }: { label: string; value: string }) {
  * leaves the browser; hashing goes through the same `sha256Hex` every
  * template and block verifies against.
  */
-export function HashGenerator() {
+export function HashGenerator({ frameless }: { frameless?: boolean } = {}) {
   const [pin, setPin] = useState("");
   const [revealed, setRevealed] = useState(false);
   const [hash, setHash] = useState("");
@@ -49,8 +49,8 @@ export function HashGenerator() {
   const warning = weaknessWarning(pin);
   const snippets = hash ? buildSnippets(hash) : null;
 
-  return (
-    <BlueprintFrame label="Hash your code">
+  const content = (
+    <>
       <h2 className="mb-1.5 text-xl font-semibold tracking-tight text-foreground">Generate a hash</h2>
       <p className="mb-4 text-sm text-muted-foreground">
         Type or generate a code to get its hash. Only the hash gets pasted into your project, never the
@@ -58,23 +58,23 @@ export function HashGenerator() {
       </p>
 
       <div className="flex flex-wrap items-center gap-2">
-        <div className="relative min-w-0 flex-1">
+        <div className="relative min-w-[200px] flex-1">
           <Input
             type={revealed ? "text" : "password"}
             value={pin}
             onChange={(e) => setPin(e.target.value)}
-            placeholder="Type a code (PIN or passphrase)…"
+            placeholder="Enter code (e.g. 1234)"
             autoComplete="off"
             aria-label="Access code"
-            className="pr-9"
+            className="pr-10 font-mono"
           />
           <button
             type="button"
             onClick={() => setRevealed((r) => !r)}
             aria-label={revealed ? "Hide code" : "Show code"}
-            className="absolute top-1/2 right-2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            className="absolute top-1/2 right-2.5 -translate-y-1/2 text-muted-foreground hover:text-foreground"
           >
-            {revealed ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+            {revealed ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>
         </div>
         <Button type="button" variant="outline" onClick={() => setPin(generatePin())}>
@@ -98,6 +98,8 @@ export function HashGenerator() {
       )}
 
       <p className="mt-4 text-xs text-muted-foreground">Runs entirely in your browser. Nothing is sent anywhere.</p>
-    </BlueprintFrame>
+    </>
   );
+
+  return frameless ? <div>{content}</div> : <BlueprintFrame label="Hash your code">{content}</BlueprintFrame>;
 }

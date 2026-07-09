@@ -52,24 +52,24 @@ export function AccessReceipt({
     <div
       style={{ fontFamily: "var(--ag-font, inherit)" }}
       className={cx(
-        "w-full max-w-sm rounded-[var(--ag-radius,0.5rem)] border border-[var(--ag-border,#d9d2c2)] bg-[var(--ag-card,#fbf8f1)] dark:border-[var(--ag-border-dark,#26302b)] dark:bg-[var(--ag-card-dark,#171d1a)]",
+        "w-full max-w-sm rounded-[var(--ag-radius,0.5rem)] border border-[var(--ag-border,#e5e7eb)] bg-[var(--ag-card,#ffffff)] shadow-sm dark:border-[var(--ag-border-dark,#1f2937)] dark:bg-[var(--ag-card-dark,#030712)]",
         className
       )}
     >
-      <div className="flex items-center justify-between border-b border-dashed border-[var(--ag-border,#d9d2c2)] px-4 py-2 dark:border-[var(--ag-border-dark,#26302b)]">
-        <span className="inline-flex items-center gap-1.5 font-mono text-[10px] font-medium tracking-wider text-[var(--ag-primary,#187c74)] uppercase dark:text-[var(--ag-primary-dark,#4fd1c5)]">
-          <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--ag-primary,#187c74)] dark:bg-[var(--ag-primary-dark,#4fd1c5)]" />
+      <div className="flex items-center justify-between border-b border-dashed border-[var(--ag-border,#e5e7eb)] px-4 py-2 dark:border-[var(--ag-border-dark,#1f2937)]">
+        <span className="inline-flex items-center gap-1.5 font-mono text-[10px] font-medium tracking-wider text-emerald-600 uppercase dark:text-emerald-400">
+          <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-600 dark:bg-emerald-400" />
           Session active
         </span>
-        <span className="font-mono text-[10px] text-[#6b6456] dark:text-[#9aa39c]">
+        <span className="font-mono text-[10px] text-gray-400 dark:text-gray-500">
           #{session.unlockedAt.toString(36).toUpperCase()}
         </span>
       </div>
-      <dl className="divide-y divide-dashed divide-[#d9d2c2] px-4 dark:divide-[#26302b]">
+      <dl className="divide-y divide-dashed divide-gray-200 px-4 dark:divide-gray-800">
         {rows.map((row) => (
           <div key={row.label} className="flex items-center justify-between py-2 text-sm">
-            <dt className="text-[#6b6456] dark:text-[#9aa39c]">{row.label}</dt>
-            <dd className="font-mono text-[#191a18] dark:text-[#edeae0]">{row.value}</dd>
+            <dt className="text-gray-500 dark:text-gray-400">{row.label}</dt>
+            <dd className="font-mono text-gray-900 dark:text-gray-100">{row.value}</dd>
           </div>
         ))}
       </dl>

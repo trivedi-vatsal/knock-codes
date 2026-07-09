@@ -9,6 +9,7 @@ import { cx } from "./cx.ts";
 
 export interface ProtectedCardProps extends KnockCodesConfig {
   children: ReactNode;
+  autoFocus?: boolean;
   className?: string;
 }
 
@@ -37,13 +38,13 @@ function StatusBadge({ unlocked }: { unlocked: boolean }) {
  * "Unlock" button instead of being replaced outright, so the card's size
  * and position never jump between locked and unlocked.
  */
-export function ProtectedCard({ children, className, ...config }: ProtectedCardProps) {
+export function ProtectedCard({ children, autoFocus = true, className, ...config }: ProtectedCardProps) {
   const { state, error, submit } = useKnockCodes(config);
   const [expanded, setExpanded] = useState(false);
   const [code, setCode] = useState("");
 
   const cardClassName = cx(
-    "relative w-full max-w-sm rounded-[var(--ag-radius,0.5rem)] border border-[var(--ag-border,#d9d2c2)] bg-[var(--ag-card,#fbf8f1)] shadow-sm dark:border-[var(--ag-border-dark,#26302b)] dark:bg-[var(--ag-card-dark,#171d1a)]",
+    "relative w-full max-w-sm rounded-[var(--ag-radius,0.75rem)] border border-[var(--ag-border,#e5e7eb)] bg-[var(--ag-card,#ffffff)] shadow-sm dark:border-[var(--ag-border-dark,#1f2937)] dark:bg-[var(--ag-card-dark,#030712)]",
     className
   );
 
@@ -70,7 +71,7 @@ export function ProtectedCard({ children, className, ...config }: ProtectedCardP
         <div aria-hidden="true" className="pointer-events-none pt-5 select-none blur-sm">
           {children}
         </div>
-        <div className="absolute inset-0 flex items-center justify-center bg-[var(--ag-card,#fbf8f1)]/85 p-4 dark:bg-[var(--ag-card-dark,#171d1a)]/85">
+        <div className="absolute inset-0 flex items-center justify-center bg-[var(--ag-card,#ffffff)]/90 p-4 dark:bg-[var(--ag-card-dark,#030712)]/90">
           {expanded ? (
             <div className="w-full max-w-xs">
               <PinInput
@@ -79,7 +80,7 @@ export function ProtectedCard({ children, className, ...config }: ProtectedCardP
                 onSubmit={handleSubmit}
                 submitting={state === "submitting"}
                 error={error}
-                autoFocus
+                autoFocus={autoFocus}
               />
             </div>
           ) : (

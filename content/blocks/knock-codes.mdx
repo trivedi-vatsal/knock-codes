@@ -49,3 +49,8 @@ props:
 
 The component every other block in this library either wraps or composes on. Local SHA-256 verification by
 default; swap `expectedHash` for `verify` to upgrade to server-mode protection with no other code changes.
+
+### Outer Positioning Variants
+
+- **Full Page (`variant="page"`)**: Centers the gate vertically and horizontally across the viewport (`min-h-[100dvh]`). Replaces the thin `StandaloneGate` wrapper.
+- **Inline Shell (`variant="inline"`)**: Flows naturally inside your existing layout (e.g. inside a sidebar, modal, or section card). Replaces the thin `EmbeddedGate` wrapper.

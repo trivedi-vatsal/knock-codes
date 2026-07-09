@@ -47,6 +47,7 @@ export interface MinimalAccessTemplateProps extends KnockCodesConfig {
    * private window, same as any other client-side storage. @default undefined (off)
    */
   remember?: "session";
+  autoFocus?: boolean;
   className?: string;
 }
 
@@ -73,6 +74,7 @@ export function MinimalAccessTemplate({
   fullPage = true,
   theme,
   remember,
+  autoFocus = true,
   className,
   ...config
 }: MinimalAccessTemplateProps) {
@@ -106,21 +108,25 @@ export function MinimalAccessTemplate({
     return () => clearTimeout(timer);
   }, [state]);
 
+function SuccessPanel({ theme }: { theme?: "light" | "dark" }) {
+  const panel = (
+    <div className="flex h-full min-h-[26rem] w-full items-center justify-center bg-[var(--ag-canvas-bg,#f9fafb)] p-6 dark:bg-[var(--ag-canvas-bg-dark,#0b1220)]">
+      <div className="flex flex-col items-center gap-2 text-center">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-500/10 dark:text-green-400">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-5 w-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <p className="text-sm font-medium text-gray-700 dark:text-gray-200">Access granted</p>
+      </div>
+    </div>
+  );
+  return theme === "dark" ? <div className="dark h-full w-full">{panel}</div> : panel;
+}
+
   if (state === "unlocked") {
     if (!showChildren) {
-      const successPanel = (
-        <div className="flex h-full min-h-[26rem] w-full items-center justify-center bg-[var(--ag-canvas-bg,#f9fafb)] p-6 dark:bg-[var(--ag-canvas-bg-dark,#0b1220)]">
-          <div className="flex flex-col items-center gap-2 text-center">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-500/10 dark:text-green-400">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-5 w-5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-200">Access granted</p>
-          </div>
-        </div>
-      );
-      return theme === "dark" ? <div className="dark h-full w-full">{successPanel}</div> : successPanel;
+      return <SuccessPanel theme={theme} />;
     }
     return <>{children}</>;
   }
@@ -169,7 +175,7 @@ export function MinimalAccessTemplate({
               onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
               placeholder={merged.placeholder}
               autoComplete="off"
-              autoFocus
+              autoFocus={autoFocus}
               disabled={state === "submitting"}
               aria-invalid={error ? true : undefined}
               className="h-10 w-full rounded-[var(--ag-radius,0.5rem)] border border-[var(--ag-border,#d1d5db)] px-3 pr-16 text-sm text-gray-900 focus:border-[var(--ag-primary,#3b82f6)] focus:ring-2 focus:ring-[var(--ag-primary,#3b82f6)]/30 focus:outline-none disabled:opacity-60 dark:border-[var(--ag-border-dark,#374151)] dark:bg-[var(--ag-card-dark,#111827)] dark:text-gray-50"

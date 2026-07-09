@@ -14,6 +14,7 @@ export interface BlockFrontmatter {
   title: string;
   description: string;
   category: string;
+  tier?: "primary" | "alias" | "utility";
   tags: string[];
   registryName: string;
   relatedBlocks?: string[];
@@ -26,6 +27,7 @@ export interface BlockFrontmatter {
 export interface Block extends BlockFrontmatter {
   slug: string;
   content: string;
+  tier: "primary" | "alias" | "utility";
 }
 
 // process.cwd() is apps/web when running via `next dev`/`next build` from
@@ -44,7 +46,12 @@ export function getAllBlocks(): Block[] {
       const raw = readFileSync(path.join(CONTENT_DIR, file), "utf8");
       const { data, content } = matter(raw);
       const slug = file.replace(/\.mdx$/, "");
-      return { slug, content: content.trim(), ...(data as BlockFrontmatter) };
+      return {
+        slug,
+        content: content.trim(),
+        ...(data as BlockFrontmatter),
+        tier: (data.tier as "primary" | "alias" | "utility") ?? "primary",
+      };
     })
     .sort((a, b) => a.title.localeCompare(b.title));
 

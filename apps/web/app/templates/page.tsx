@@ -21,7 +21,7 @@ export default function TemplatesPage() {
         eyebrow="Complete single-file screens"
         title={
           <>
-            Four looks, <span className="text-primary">one contract.</span>
+            Multiple looks, <span className="text-primary">one contract.</span>
           </>
         }
         description="Every template ships as a complete, single-file restricted-access screen — background, card, form, support link, footer, and verification logic. Pick a style, copy the file, wire a hash, ship it."

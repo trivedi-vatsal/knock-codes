@@ -131,7 +131,7 @@ export function BlockPreview({ slug }: { slug: string }) {
           <Hint />
           <PreviewFrame>
             <div className="mx-auto w-full max-w-sm">
-              <ProtectedRoute {...common} variant="inline">
+              <ProtectedRoute {...common} variant="inline" autoFocus={false}>
                 <DemoUnlockedPanel note="The route's real content." />
               </ProtectedRoute>
             </div>
@@ -148,6 +148,7 @@ export function BlockPreview({ slug }: { slug: string }) {
               <ProtectedLayout
                 {...common}
                 variant="inline"
+                autoFocus={false}
                 header={<div className="label-mono mb-2 text-muted-foreground">Site header (always visible)</div>}
                 footer={<div className="label-mono mt-2 text-muted-foreground">Site footer (always visible)</div>}
               >
@@ -272,7 +273,7 @@ export function BlockPreview({ slug }: { slug: string }) {
           <PreviewFrame>
             <div className="p-4">
               <p className="mb-2 text-xs text-muted-foreground">Sits inline inside existing layout:</p>
-              <EmbeddedGate {...common}>
+              <EmbeddedGate {...common} autoFocus={false}>
                 <DemoUnlockedPanel />
               </EmbeddedGate>
             </div>
@@ -300,7 +301,7 @@ function KnockCodesPreview({ hash }: { hash: string }) {
       <Hint />
       <PreviewFrame>
         <div className="mx-auto w-full max-w-sm">
-          <KnockCodes {...config} variant="inline">
+          <KnockCodes {...config} variant="inline" autoFocus={false}>
             <DemoUnlockedPanel />
           </KnockCodes>
         </div>
@@ -317,7 +318,7 @@ function ProtectedCardPreview({ hash }: { hash: string }) {
       <Hint />
       <PreviewFrame>
         <div className="flex justify-center py-4">
-          <ProtectedCard {...config}>
+          <ProtectedCard {...config} autoFocus={false}>
             <DemoContentPanel note="Card content — blurred until unlocked." />
           </ProtectedCard>
         </div>
@@ -399,6 +400,7 @@ function UnlockDialogPreview({ hash }: { hash: string }) {
           }}
           submitting={state === "submitting"}
           error={error}
+          autoFocus={false}
         />
       </PreviewFrame>
     </>

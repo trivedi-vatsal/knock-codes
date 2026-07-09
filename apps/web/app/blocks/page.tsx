@@ -4,6 +4,7 @@ import { SectionHeader } from "@/components/section-header";
 import { BlocksGallery } from "@/components/blocks-gallery";
 import { Reveal } from "@/components/reveal";
 import { HomeCtaButton } from "@/components/home-cta-button";
+import { ThemeLabRoot } from "@/components/customizer/theme-lab-root";
 import { getAllBlocks, getBlockCategories } from "@/lib/blocks";
 import { pageMetadata } from "@/lib/seo";
 
@@ -45,7 +46,9 @@ export default function BlocksPage() {
             />
           </Reveal>
           <Reveal>
-            <BlocksGallery blocks={blocks} categories={categories} />
+            <ThemeLabRoot showLauncher={false}>
+              <BlocksGallery blocks={blocks} categories={categories} />
+            </ThemeLabRoot>
           </Reveal>
         </div>
       </section>

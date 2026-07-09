@@ -43,12 +43,12 @@ type PreviewFactory = (hash: string, theme: "light" | "dark") => ReactNode;
 
 const PREVIEWS: Record<string, PreviewFactory> = {
   "knock-codes-template": (hash, theme) => (
-    <KnockCodesTemplate expectedHash={hash} storage="memory" fullPage={false} theme={theme} logo={LOGO} supportHref="#">
+    <KnockCodesTemplate expectedHash={hash} storage="memory" fullPage={false} theme={theme} logo={LOGO} supportHref="/security" autoFocus={false}>
       <DemoUnlockedPanel />
     </KnockCodesTemplate>
   ),
   "minimal-access-template": (hash, theme) => (
-    <MinimalAccessTemplate expectedHash={hash} storage="memory" fullPage={false} theme={theme} logo={LOGO} supportHref="#">
+    <MinimalAccessTemplate expectedHash={hash} storage="memory" fullPage={false} theme={theme} logo={LOGO} supportHref="/security" autoFocus={false}>
       <DemoUnlockedPanel />
     </MinimalAccessTemplate>
   ),
@@ -60,13 +60,14 @@ const PREVIEWS: Record<string, PreviewFactory> = {
       theme={theme}
       logo={LOGO}
       tagline="Your staging environment, kept off search engines and forwarded links."
-      supportHref="#"
+      supportHref="/security"
+      autoFocus={false}
     >
       <DemoUnlockedPanel />
     </BrandedAccessTemplate>
   ),
   "modal-access-template": (hash, theme) => (
-    <ModalAccessTemplate expectedHash={hash} storage="memory" fullPage theme={theme} logo={LOGO} supportHref="#">
+    <ModalAccessTemplate expectedHash={hash} storage="memory" fullPage theme={theme} logo={LOGO} supportHref="/security" autoFocus={false}>
       <DemoSection />
     </ModalAccessTemplate>
   ),

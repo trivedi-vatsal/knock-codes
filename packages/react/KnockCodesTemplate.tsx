@@ -62,6 +62,7 @@ export interface KnockCodesTemplateProps extends KnockCodesConfig {
    * private window, same as any other client-side storage. @default undefined (off)
    */
   remember?: "session";
+  autoFocus?: boolean;
   className?: string;
 }
 
@@ -74,6 +75,23 @@ const TEMPLATE_LABELS: Required<KnockCodesTemplateLabels> = {
   supportLabel: "Contact Support",
   footerText: "Don't have an access code? Contact your administrator or support team for assistance.",
 };
+
+function SuccessView({ theme }: { theme?: "light" | "dark" }) {
+  const successPanel = (
+    <div className="flex h-full min-h-[26rem] w-full items-center justify-center bg-[var(--ag-canvas-bg,#e5e7eb)] p-6 dark:bg-[var(--ag-canvas-bg-dark,#0b1220)]">
+      <style>{KNOCK_CODES_MOTION_KEYFRAMES}</style>
+      <div className="flex flex-col items-center gap-2 text-center animate-[knock-codes-reveal_0.3s_ease-out]">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-500/10 dark:text-green-400">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-5 w-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <p className="text-sm font-medium text-gray-700 dark:text-gray-200">Access granted</p>
+      </div>
+    </div>
+  );
+  return theme === "dark" ? <div className="dark h-full w-full">{successPanel}</div> : successPanel;
+}
 
 /**
  * A complete, single-drop-in "restricted access" screen — full-page dark
@@ -94,6 +112,7 @@ export function KnockCodesTemplate({
   fullPage = true,
   theme,
   remember,
+  autoFocus = true,
   className,
   ...config
 }: KnockCodesTemplateProps) {
@@ -108,8 +127,8 @@ export function KnockCodesTemplate({
   const [showChildren, setShowChildren] = useState(false);
 
   useEffect(() => {
-    if (state === "idle" && error) inputRefs.current[0]?.focus();
-  }, [error, state]);
+    if (state === "idle" && error && autoFocus) inputRefs.current[0]?.focus();
+  }, [error, state, autoFocus]);
 
   useEffect(() => {
     if (error) setShakeSeed((seed) => seed + 1);
@@ -128,20 +147,7 @@ export function KnockCodesTemplate({
 
   if (state === "unlocked") {
     if (!showChildren) {
-      const successPanel = (
-        <div className="flex h-full min-h-[26rem] w-full items-center justify-center bg-[var(--ag-canvas-bg,#e5e7eb)] p-6 dark:bg-[var(--ag-canvas-bg-dark,#0b1220)]">
-          <style>{KNOCK_CODES_MOTION_KEYFRAMES}</style>
-          <div className="flex flex-col items-center gap-2 text-center animate-[knock-codes-reveal_0.3s_ease-out]">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-500/10 dark:text-green-400">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-5 w-5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-200">Access granted</p>
-          </div>
-        </div>
-      );
-      return theme === "dark" ? <div className="dark h-full w-full">{successPanel}</div> : successPanel;
+      return <SuccessView theme={theme} />;
     }
     return (
       <div className="animate-[knock-codes-reveal_0.35s_ease-out]">
@@ -249,6 +255,7 @@ export function KnockCodesTemplate({
                   onKeyDown={(event) => handleKeyDown(index, event)}
                   onPaste={handlePaste}
                   disabled={state === "submitting"}
+                  autoFocus={autoFocus && index === 0}
                   maxLength={1}
                   autoComplete="one-time-code"
                   inputMode="text"

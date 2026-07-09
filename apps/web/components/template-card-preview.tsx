@@ -30,12 +30,12 @@ const SCALE = PREVIEW_HEIGHT / NATURAL_HEIGHT;
 
 const FACTORIES: Record<string, () => ReactNode> = {
   "knock-codes-template": () => (
-    <KnockCodesTemplate expectedHash={DEMO_HASH} storage="memory" fullPage={false} codeLength={4} groupSize={4} logo={LOGO}>
+    <KnockCodesTemplate expectedHash={DEMO_HASH} storage="memory" fullPage={false} codeLength={4} groupSize={4} logo={LOGO} autoFocus={false}>
       <DemoPanel />
     </KnockCodesTemplate>
   ),
   "minimal-access-template": () => (
-    <MinimalAccessTemplate expectedHash={DEMO_HASH} storage="memory" fullPage={false} logo={LOGO}>
+    <MinimalAccessTemplate expectedHash={DEMO_HASH} storage="memory" fullPage={false} logo={LOGO} autoFocus={false}>
       <DemoPanel />
     </MinimalAccessTemplate>
   ),
@@ -46,12 +46,13 @@ const FACTORIES: Record<string, () => ReactNode> = {
       fullPage={false}
       logo={LOGO}
       tagline="Kept off search engines and forwarded links."
+      autoFocus={false}
     >
       <DemoPanel />
     </BrandedAccessTemplate>
   ),
   "modal-access-template": () => (
-    <ModalAccessTemplate expectedHash={DEMO_HASH} storage="memory" fullPage={false} logo={LOGO}>
+    <ModalAccessTemplate expectedHash={DEMO_HASH} storage="memory" fullPage={false} logo={LOGO} autoFocus={false}>
       <DemoPanel />
     </ModalAccessTemplate>
   ),

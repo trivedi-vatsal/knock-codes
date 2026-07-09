@@ -77,61 +77,61 @@ export function PinInput({
     : null;
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-2">
-      <label htmlFor={inputId} className="block text-xs font-medium tracking-wide text-[#6b6456] uppercase dark:text-[#9aa39c]">
-        {merged.inputLabel}
-      </label>
-      <div className="flex gap-2">
-        <input
-          id={inputId}
-          name={name}
-          type={revealed ? "text" : "password"}
-          inputMode="text"
-          value={value}
-          onChange={(event) => onChange(event.target.value)}
-          placeholder={merged.placeholder}
-          disabled={submitting}
-          autoFocus={autoFocus}
-          autoComplete={autoComplete}
-          aria-describedby={statusId}
-          aria-invalid={error ? true : undefined}
+    <form onSubmit={handleSubmit} noValidate className="space-y-3">
+      <div>
+        <label htmlFor={inputId} className="mb-1.5 block text-xs font-medium text-gray-500 dark:text-gray-400">
+          {merged.inputLabel}
+        </label>
+        <div className="relative">
+          <input
+            id={inputId}
+            name={name}
+            type={revealed ? "text" : "password"}
+            inputMode="text"
+            value={value}
+            onChange={(event) => onChange(event.target.value)}
+            placeholder={merged.placeholder}
+            disabled={submitting}
+            autoFocus={autoFocus}
+            autoComplete={autoComplete}
+            aria-describedby={statusId}
+            aria-invalid={error ? true : undefined}
+            className={cx(
+              "h-10 w-full rounded-[var(--ag-radius,0.5rem)] border px-3 pr-16 text-sm text-gray-900 focus:outline-none focus:ring-2 disabled:opacity-60 dark:bg-[var(--ag-card-dark,#111827)] dark:text-gray-50",
+              error
+                ? "border-red-500 focus:border-red-500 focus:ring-red-500/25 dark:border-red-400"
+                : "border-[var(--ag-border,#d1d5db)] focus:border-[var(--ag-primary,#3b82f6)] focus:ring-[var(--ag-primary,#3b82f6)]/30 dark:border-[var(--ag-border-dark,#374151)]"
+            )}
+          />
+          <button
+            type="button"
+            onClick={() => setRevealed((current) => !current)}
+            aria-label={revealed ? merged.hideCodeLabel : merged.showCodeLabel}
+            title={revealed ? merged.hideCodeLabel : merged.showCodeLabel}
+            className="absolute top-1/2 right-3 -translate-y-1/2 text-xs font-medium text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+          >
+            {revealed ? merged.hideCodeLabel : merged.showCodeLabel}
+          </button>
+        </div>
+        <div
+          role="status"
+          aria-live="polite"
+          id={statusId}
           className={cx(
-            "w-full rounded-[var(--ag-radius,0.375rem)] border bg-[var(--ag-card,#fbf8f1)] px-3 py-2 font-mono text-sm tracking-wide text-[#191a18] placeholder:font-sans placeholder:text-[#6b6456]/70 focus:outline-none focus:ring-2 disabled:opacity-60",
-            "dark:bg-[var(--ag-card-dark,#171d1a)] dark:text-[#edeae0] dark:placeholder:text-[#9aa39c]/70",
-            error
-              ? "border-[#e5484d] focus:ring-[#e5484d]/25 dark:border-[#ff6169] dark:focus:ring-[#ff6169]/25"
-              : "border-[var(--ag-border,#d9d2c2)] focus:border-[var(--ag-primary,#187c74)] focus:ring-[var(--ag-primary,#187c74)]/20 dark:border-[var(--ag-border-dark,#26302b)] dark:focus:border-[var(--ag-primary-dark,#4fd1c5)] dark:focus:ring-[var(--ag-primary-dark,#4fd1c5)]/20"
+            "mt-2 min-h-[1.1rem] text-xs",
+            errorMessage ? "font-medium text-red-600 dark:text-red-400" : "text-gray-500 dark:text-gray-400"
           )}
-        />
-        <button
-          type="button"
-          onClick={() => setRevealed((current) => !current)}
-          aria-label={revealed ? merged.hideCodeLabel : merged.showCodeLabel}
-          title={revealed ? merged.hideCodeLabel : merged.showCodeLabel}
-          className="shrink-0 rounded-[var(--ag-radius,0.375rem)] border border-[var(--ag-border,#d9d2c2)] px-2.5 text-[#6b6456] hover:border-[var(--ag-primary,#187c74)]/40 hover:text-[var(--ag-primary,#187c74)] dark:border-[var(--ag-border-dark,#26302b)] dark:text-[#9aa39c] dark:hover:border-[var(--ag-primary-dark,#4fd1c5)]/40 dark:hover:text-[var(--ag-primary-dark,#4fd1c5)]"
         >
-          {revealed ? <EyeOffIcon /> : <EyeIcon />}
-        </button>
+          {submitting ? merged.submittingLabel : (errorMessage ?? helperText ?? "")}
+        </div>
       </div>
       <button
         type="submit"
         disabled={submitting || value.length === 0}
-        className="w-full rounded-[var(--ag-radius,0.375rem)] bg-[var(--ag-primary,#187c74)] px-3 py-2 text-sm font-medium text-[var(--ag-primary-fg,#f7f3ea)] transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[var(--ag-primary-dark,#4fd1c5)] dark:text-[var(--ag-primary-fg-dark,#0e1311)]"
+        className="mt-3 w-full rounded-[var(--ag-radius,0.5rem)] bg-[var(--ag-primary,#111827)] px-4 py-2.5 text-sm font-semibold text-[var(--ag-primary-fg,#ffffff)] transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[var(--ag-primary-dark,#f9fafb)] dark:text-[var(--ag-primary-fg-dark,#111827)]"
       >
         {submitting ? merged.submittingLabel : merged.submitLabel}
       </button>
-      {/* Announces loading and error states to assistive tech via aria-live */}
-      <div
-        role="status"
-        aria-live="polite"
-        id={statusId}
-        className={cx(
-          "min-h-[1.25rem] text-xs",
-          errorMessage ? "font-medium text-[#e5484d] dark:text-[#ff6169]" : "text-[#6b6456] dark:text-[#9aa39c]"
-        )}
-      >
-        {submitting ? merged.submittingLabel : (errorMessage ?? helperText ?? "")}
-      </div>
     </form>
   );
 }

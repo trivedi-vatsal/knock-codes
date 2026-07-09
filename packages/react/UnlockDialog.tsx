@@ -12,6 +12,7 @@ export interface UnlockDialogProps {
   submitting: boolean;
   error: KnockCodesError | null;
   labels?: KnockCodesLabels;
+  autoFocus?: boolean;
   /** Extra content under the form, e.g. help text or a support link. */
   footer?: ReactNode;
 }
@@ -23,7 +24,7 @@ export interface UnlockDialogProps {
  * backdrop click, no Escape-to-close): the point of a gate is that closing
  * the dialog can't be how you get past it.
  */
-export function UnlockDialog({ open, value, onChange, onSubmit, submitting, error, labels, footer }: UnlockDialogProps) {
+export function UnlockDialog({ open, value, onChange, onSubmit, submitting, error, labels, autoFocus = true, footer }: UnlockDialogProps) {
   const merged = { ...DEFAULT_LABELS, ...labels };
   const headingId = useId();
 
@@ -47,7 +48,7 @@ export function UnlockDialog({ open, value, onChange, onSubmit, submitting, erro
           submitting={submitting}
           error={error}
           labels={labels}
-          autoFocus
+          autoFocus={autoFocus}
         />
         {footer}
       </div>

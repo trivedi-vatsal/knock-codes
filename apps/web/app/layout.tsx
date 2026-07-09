@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { ScrollReset } from "@/components/scroll-reset";
 import { cn } from "@/lib/utils";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className={cn("dark antialiased", geist.variable, geistMono.variable)}>
       <body>
+        <ScrollReset />
         <div className="flex min-h-svh flex-col">
           <SiteHeader />
           <main className="flex-1">{children}</main>

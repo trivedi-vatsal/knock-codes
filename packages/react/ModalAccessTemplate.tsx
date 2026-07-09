@@ -52,6 +52,7 @@ export interface ModalAccessTemplateProps extends KnockCodesConfig {
    * private window, same as any other client-side storage. @default undefined (off)
    */
   remember?: "session";
+  autoFocus?: boolean;
   className?: string;
 }
 
@@ -61,6 +62,19 @@ const TEMPLATE_LABELS: Required<ModalAccessTemplateLabels> = {
   description: "Enter your access code to view it.",
   supportLabel: "Contact support",
 };
+
+function SuccessDialogBody() {
+  return (
+    <div className="flex flex-col items-center gap-2 py-2 text-center">
+      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-500/10 dark:text-green-400">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-5 w-5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+      <p className="text-sm font-medium text-gray-700 dark:text-gray-200">Access granted</p>
+    </div>
+  );
+}
 
 /**
  * Gates one section of an already-visible page: the content stays mounted
@@ -78,6 +92,7 @@ export function ModalAccessTemplate({
   fullPage = false,
   theme,
   remember,
+  autoFocus = true,
   className,
   ...config
 }: ModalAccessTemplateProps) {
@@ -98,8 +113,8 @@ export function ModalAccessTemplate({
   const showOverlay = locked || celebrating;
 
   useEffect(() => {
-    if (locked) inputRef.current?.focus();
-  }, [locked, error]);
+    if (locked && autoFocus) inputRef.current?.focus();
+  }, [locked, error, autoFocus]);
 
   useEffect(() => {
     if (error) setShakeSeed((seed) => seed + 1);
@@ -143,14 +158,7 @@ export function ModalAccessTemplate({
           >
             <style>{MODAL_ACCESS_SHAKE_KEYFRAMES}</style>
             {celebrating ? (
-              <div className="flex flex-col items-center gap-2 py-2 text-center">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-500/10 dark:text-green-400">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-5 w-5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-200">Access granted</p>
-              </div>
+              <SuccessDialogBody />
             ) : (
               <>
                 {logo && <div className="mb-4">{logo}</div>}

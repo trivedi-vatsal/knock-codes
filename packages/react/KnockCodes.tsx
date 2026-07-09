@@ -12,6 +12,7 @@ export interface KnockCodesProps extends KnockCodesConfig {
   labels?: KnockCodesLabels;
   /** Visual shell around the PIN prompt. @default "page" */
   variant?: GateWrapperVariant;
+  autoFocus?: boolean;
   className?: string;
 }
 
@@ -20,7 +21,7 @@ export interface KnockCodesProps extends KnockCodesConfig {
  * otherwise renders the PIN entry UI. There is no separate "mount loading"
  * state — the PIN entry UI covers it.
  */
-export function KnockCodes({ children, labels, variant = "page", className, ...config }: KnockCodesProps) {
+export function KnockCodes({ children, labels, variant = "page", autoFocus = true, className, ...config }: KnockCodesProps) {
   const { state, error, submit } = useKnockCodes(config);
   const [code, setCode] = useState("");
 
@@ -38,29 +39,21 @@ export function KnockCodes({ children, labels, variant = "page", className, ...c
     <GateWrapper variant={variant} className={className}>
       <div
         style={{ fontFamily: "var(--ag-font, inherit)" }}
-        className={cx(
-          "relative w-full max-w-sm space-y-4 border border-[var(--ag-border,#d9d2c2)] bg-[var(--ag-card,#fbf8f1)] p-6 shadow-sm",
-          "rounded-[var(--ag-radius,0.5rem)] dark:border-[var(--ag-border-dark,#26302b)] dark:bg-[var(--ag-card-dark,#171d1a)]"
-        )}
+        className="w-full max-w-sm rounded-[var(--ag-radius,0.75rem)] border border-[var(--ag-border,#e5e7eb)] bg-[var(--ag-card,#ffffff)] p-7 shadow-sm dark:border-[var(--ag-border-dark,#1f2937)] dark:bg-[var(--ag-card-dark,#030712)]"
       >
-        <span aria-hidden="true" className="absolute -top-px -left-px h-2.5 w-2.5 border-t border-l border-[#191a18]/25 dark:border-[#edeae0]/25" />
-        <span aria-hidden="true" className="absolute -top-px -right-px h-2.5 w-2.5 border-t border-r border-[#191a18]/25 dark:border-[#edeae0]/25" />
-        <span aria-hidden="true" className="absolute -bottom-px -left-px h-2.5 w-2.5 border-b border-l border-[#191a18]/25 dark:border-[#edeae0]/25" />
-        <span aria-hidden="true" className="absolute -bottom-px -right-px h-2.5 w-2.5 border-b border-r border-[#191a18]/25 dark:border-[#edeae0]/25" />
-
-        <div className="flex items-center justify-between gap-2">
-          <span className="inline-flex items-center gap-1.5 text-[10px] font-medium tracking-wider text-[#e5484d] uppercase dark:text-[#ff6169]">
-            <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#e5484d] dark:bg-[#ff6169]" />
+        <div className="mb-5 flex items-center justify-between gap-2">
+          <span className="inline-flex items-center gap-1.5 text-[10px] font-medium tracking-wider text-red-600 uppercase dark:text-red-400">
+            <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-red-600 dark:bg-red-400" />
             Locked
           </span>
-          <span className="rounded-full border border-[#d9d2c2] px-2 py-0.5 font-mono text-[10px] font-medium tracking-wider text-[#6b6456] uppercase dark:border-[#26302b] dark:text-[#9aa39c]">
+          <span className="rounded-full border border-gray-200 px-2 py-0.5 font-mono text-[10px] font-medium tracking-wider text-gray-500 uppercase dark:border-gray-800 dark:text-gray-400">
             {modeLabel}
           </span>
         </div>
 
-        <div className="space-y-1">
-          <h1 className="text-lg font-semibold text-[#191a18] dark:text-[#edeae0]">{merged.heading}</h1>
-          {merged.subcopy && <p className="text-sm text-[#6b6456] dark:text-[#9aa39c]">{merged.subcopy}</p>}
+        <div className="mb-5 space-y-1">
+          <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-50">{merged.heading}</h1>
+          {merged.subcopy && <p className="text-sm text-gray-500 dark:text-gray-400">{merged.subcopy}</p>}
         </div>
 
         <PinInput
@@ -70,7 +63,7 @@ export function KnockCodes({ children, labels, variant = "page", className, ...c
           submitting={state === "submitting"}
           error={error}
           labels={labels}
-          autoFocus
+          autoFocus={autoFocus}
         />
       </div>
     </GateWrapper>

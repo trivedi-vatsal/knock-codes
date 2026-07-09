@@ -94,7 +94,7 @@ export default function Home() {
             <HomeSectionHead
               number="03"
               label="Templates"
-              title="Four looks, one contract."
+              title="Multiple looks, one contract."
               description="Pick the screen, wire a hash, ship it. Every template speaks the same props."
             />
           </Reveal>
