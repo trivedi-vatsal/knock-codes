@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MobileNav } from "@/components/mobile-nav";
 import { REPO_URL } from "@/lib/site";
 import { getTemplateSetVersion } from "@/lib/version";
 
@@ -37,10 +38,11 @@ export function SiteHeader() {
             href={REPO_URL}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-md border border-border-strong px-3.5 py-[7px] text-[13px] font-medium text-foreground transition-colors hover:border-white/30 hover:bg-white/[0.03]"
+            className="hidden items-center gap-2 rounded-md border border-border-strong px-3.5 py-[7px] text-[13px] font-medium text-foreground transition-colors hover:border-white/30 hover:bg-white/[0.03] sm:inline-flex"
           >
             GitHub
           </a>
+          <MobileNav links={NAV_LINKS} repoUrl={REPO_URL} />
         </div>
       </div>
     </header>
