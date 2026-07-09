@@ -135,6 +135,23 @@ export default function Home() {
           </Reveal>
         </div>
       </section>
+
+      <section className="border-t border-border px-8 py-[120px] text-center">
+        <Reveal className="mx-auto max-w-[1120px]">
+          <span className="mb-5 block font-mono text-[11px] font-medium tracking-[0.14em] uppercase">
+            <b className="font-medium text-primary">06</b>
+            <span className="text-fg-faint"> / Ship it</span>
+          </span>
+          <h2 className="text-[clamp(34px,5vw,56px)] leading-[1.1] font-medium tracking-[-0.025em]">Ready to lock something down?</h2>
+          <p className="mx-auto mt-4 max-w-[420px] text-muted-foreground">Pick a template, copy the file, wire a hash. Ship it in minutes.</p>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <HomeCtaButton href="#templates">Browse templates</HomeCtaButton>
+            <HomeCtaButton href="/security" variant="ghost">
+              Read the security model
+            </HomeCtaButton>
+          </div>
+        </Reveal>
+      </section>
     </div>
   );
 }

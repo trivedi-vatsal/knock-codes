@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight, TriangleAlert } from "lucide-react";
+import { TriangleAlert } from "lucide-react";
+import { PageHeader } from "@/components/page-header";
 import { SectionHeader } from "@/components/section-header";
 import { BlueprintFrame } from "@/components/blueprint-frame";
 import { CodeViewer } from "@/components/code-viewer";
 import { HashGenerator } from "@/components/hash-generator";
+import { Reveal } from "@/components/reveal";
+import { HomeCtaButton } from "@/components/home-cta-button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { buttonVariants } from "@/components/ui/button";
 import { getServerTemplates } from "@/lib/server-templates";
 import { pageMetadata } from "@/lib/seo";
 
@@ -103,83 +104,151 @@ export default function GettingStartedPage() {
   const serverTemplates = getServerTemplates();
 
   return (
-    <div className="mx-auto max-w-4xl px-6 py-12">
-      <SectionHeader
-        label="How it works"
-        title="Protect a page in five steps"
-        description="No account, no backend to stand up first. Local mode is deterrence, not protection — see the security model for the honest threat model, and swap in a verify function for server-mode protection later without changing your markup."
-        className="mb-10"
-      />
+    <div>
+      <PageHeader
+        eyebrow="5-minute setup guide"
+        title={
+          <>
+            Protect a page in <span className="text-primary">five steps.</span>
+          </>
+        }
+        description="No account, no backend required to start. Hash your code locally, drop the template file into your project, wire your environment variable, and ship."
+      >
+        <HomeCtaButton href="#steps">Start setup</HomeCtaButton>
+        <HomeCtaButton href="#generator" variant="ghost">
+          Hash generator
+        </HomeCtaButton>
+      </PageHeader>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        {STEPS.map((s) => (
-          <BlueprintFrame key={s.step} label={`Step ${s.step}`}>
-            <h2 className="mb-1.5 text-base font-semibold tracking-tight text-foreground">{s.title}</h2>
-            <p className="text-sm text-muted-foreground">{s.body}</p>
-          </BlueprintFrame>
-        ))}
-      </div>
+      <section id="steps" className="px-8 py-20">
+        <div className="mx-auto max-w-[1120px]">
+          <Reveal>
+            <SectionHeader
+              number="01"
+              label="Workflow"
+              title="How it works"
+              description="Five clear steps from local hash generation to server-mode verification."
+              className="mb-12"
+            />
+          </Reveal>
+          <Reveal>
+            <div className="grid gap-5 sm:grid-cols-2">
+              {STEPS.map((s) => (
+                <BlueprintFrame key={s.step} label={`Step ${s.step}`}>
+                  <h2 className="mb-1.5 text-base font-semibold tracking-tight text-foreground">{s.title}</h2>
+                  <p className="text-sm text-muted-foreground">{s.body}</p>
+                </BlueprintFrame>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
 
-      <div className="mt-8">
-        <HashGenerator />
-      </div>
+      <section id="generator" className="border-t border-border px-8 py-20">
+        <div className="mx-auto max-w-[1120px]">
+          <Reveal>
+            <SectionHeader
+              number="02"
+              label="Interactive tool"
+              title="Generate your hash"
+              description="Enter any secret code below to generate its canonical SHA-256 hex string. The plaintext stays in your browser."
+              className="mb-12"
+            />
+          </Reveal>
+          <Reveal>
+            <HashGenerator />
+            <div className="mt-8 flex gap-3 rounded-lg border border-amber-600/30 bg-amber-600/10 p-4 text-sm text-amber-700 dark:text-amber-400">
+              <TriangleAlert className="h-4 w-4 shrink-0 translate-y-0.5" aria-hidden="true" />
+              <p>
+                Never commit or ship the plaintext code — not in an env file, not in a comment, not in a commit
+                message. Only the hash from step 1 should ever leave your local machine.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
 
-      <div className="mt-8 flex gap-3 rounded-lg border border-amber-600/30 bg-amber-600/10 p-4 text-sm text-amber-700 dark:text-amber-400">
-        <TriangleAlert className="h-4 w-4 shrink-0 translate-y-0.5" aria-hidden="true" />
-        <p>
-          Never commit or ship the plaintext code — not in an env file, not in a comment, not in a commit
-          message. Only the hash from step 1 should ever leave your local machine.
-        </p>
-      </div>
+      <section id="snippets" className="border-t border-border px-8 py-20">
+        <div className="mx-auto max-w-[1120px]">
+          <Reveal>
+            <SectionHeader
+              number="03"
+              label="Integration"
+              title="Framework setup snippets"
+              description="Drop your template and environment variable into Next.js, Vite, or plain React."
+              className="mb-10"
+            />
+          </Reveal>
+          <Reveal>
+            <Tabs defaultValue="nextjs">
+              <TabsList>
+                {FRAMEWORK_SNIPPETS.map((fw) => (
+                  <TabsTrigger key={fw.id} value={fw.id}>
+                    {fw.label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+              {FRAMEWORK_SNIPPETS.map((fw) => (
+                <TabsContent key={fw.id} value={fw.id}>
+                  <CodeViewer code={fw.code} filename={fw.filename} wrap />
+                </TabsContent>
+              ))}
+            </Tabs>
+          </Reveal>
+        </div>
+      </section>
 
-      <div className="mt-8">
-        <Tabs defaultValue="nextjs">
-          <TabsList>
-            {FRAMEWORK_SNIPPETS.map((fw) => (
-              <TabsTrigger key={fw.id} value={fw.id}>
-                {fw.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-          {FRAMEWORK_SNIPPETS.map((fw) => (
-            <TabsContent key={fw.id} value={fw.id}>
-              <CodeViewer code={fw.code} filename={fw.filename} wrap />
-            </TabsContent>
-          ))}
-        </Tabs>
-      </div>
+      <section id="server-mode" className="border-t border-border px-8 py-20">
+        <div className="mx-auto max-w-[1120px]">
+          <Reveal>
+            <SectionHeader
+              number="04"
+              label="Server mode"
+              title="Reference verify endpoints"
+              description="Swap expectedHash for a verify function pointing at one of these — same request/response contract in every runtime: POST { code } → { ok: true, token } or { ok: false, reason }."
+              className="mb-10"
+            />
+          </Reveal>
+          <Reveal>
+            <Tabs defaultValue={serverTemplates[0]?.id}>
+              <TabsList>
+                {serverTemplates.map((tpl) => (
+                  <TabsTrigger key={tpl.id} value={tpl.id}>
+                    {tpl.label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+              {serverTemplates.map((tpl) => (
+                <TabsContent key={tpl.id} value={tpl.id}>
+                  <CodeViewer code={tpl.code} filename={tpl.filename} wrap />
+                </TabsContent>
+              ))}
+            </Tabs>
+          </Reveal>
+        </div>
+      </section>
 
-      <div className="mt-12">
-        <SectionHeader
-          label="Server mode"
-          title="Reference verify endpoints"
-          description="Swap expectedHash for a verify function pointing at one of these — same request/response contract in every runtime: POST { code } → { ok: true, token } or { ok: false, reason }."
-          className="mb-6"
-        />
-        <Tabs defaultValue={serverTemplates[0]?.id}>
-          <TabsList>
-            {serverTemplates.map((tpl) => (
-              <TabsTrigger key={tpl.id} value={tpl.id}>
-                {tpl.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-          {serverTemplates.map((tpl) => (
-            <TabsContent key={tpl.id} value={tpl.id}>
-              <CodeViewer code={tpl.code} filename={tpl.filename} wrap />
-            </TabsContent>
-          ))}
-        </Tabs>
-      </div>
-
-      <div className="mt-10 flex flex-wrap items-center gap-3">
-        <Link href="/templates/knock-codes-template" className={buttonVariants({ size: "lg" })}>
-          Pick a template <ArrowRight className="h-4 w-4" />
-        </Link>
-        <Link href="/security" className={buttonVariants({ size: "lg", variant: "outline" })}>
-          Read the security model
-        </Link>
-      </div>
+      <section className="border-t border-border px-8 py-24 text-center">
+        <Reveal className="mx-auto max-w-[1120px]">
+          <span className="mb-5 block font-mono text-[11px] font-medium tracking-[0.14em] uppercase">
+            <b className="font-medium text-primary">05</b>
+            <span className="text-fg-faint"> / Next steps</span>
+          </span>
+          <h2 className="text-[clamp(30px,4.5vw,48px)] leading-[1.1] font-medium tracking-[-0.025em]">
+            Ready to choose your template?
+          </h2>
+          <p className="mx-auto mt-4 max-w-[480px] text-muted-foreground">
+            Pick from four complete reference screens or read our honest threat model.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <HomeCtaButton href="/templates">Browse templates</HomeCtaButton>
+            <HomeCtaButton href="/security" variant="ghost">
+              Security model
+            </HomeCtaButton>
+          </div>
+        </Reveal>
+      </section>
     </div>
   );
 }
+

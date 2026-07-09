@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { PageHeader } from "@/components/page-header";
 import { SectionHeader } from "@/components/section-header";
 import { BlueprintFrame } from "@/components/blueprint-frame";
 import { CodeBrowser } from "@/components/code-browser";
-import { buttonVariants } from "@/components/ui/button";
+import { Reveal } from "@/components/reveal";
+import { HomeCtaButton } from "@/components/home-cta-button";
 import { getServerTemplates } from "@/lib/server-templates";
 import { THREAT_MODEL_COPY } from "@/lib/copy";
 import { pageMetadata } from "@/lib/seo";
@@ -73,125 +73,203 @@ export default function SecurityPage() {
   const serverTemplates = getServerTemplates();
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
-      <SectionHeader
-        label="Security"
-        title="The honest threat model"
+    <div>
+      <PageHeader
+        eyebrow="Threat model & defense"
+        title={
+          <>
+            The honest <span className="text-primary">security model.</span>
+          </>
+        }
         description={THREAT_MODEL_COPY}
-        className="mb-10"
-      />
+      >
+        <HomeCtaButton href="#comparison">Compare modes</HomeCtaButton>
+        <HomeCtaButton href="#recommendations" variant="ghost">
+          Rate limiting & logging
+        </HomeCtaButton>
+      </PageHeader>
 
-      <section className="mb-10">
-        <BlueprintFrame label="Local mode">
-          <h2 className="mb-2 text-xl font-semibold tracking-tight text-foreground">What local mode actually does</h2>
-          <p className="max-w-3xl text-sm text-muted-foreground">
-            Every default template and block verifies a code against a SHA-256 hash you pass as{" "}
-            <code className="rounded bg-muted px-1 py-0.5 text-xs">expectedHash</code>. That comparison runs entirely
-            in the visitor&apos;s browser — there&apos;s no server, no network round trip, nothing to stand up. The
-            trade-off: the hash itself ships in your client JavaScript bundle. Anyone who opens DevTools can read it,
-            copy it, and run it through an offline cracker at their leisure. Local mode was never designed to survive
-            that — it&apos;s a velvet rope for people who won&apos;t open DevTools in the first place, which is most
-            visitors, most of the time.
-          </p>
-          <p className="mt-3 max-w-3xl text-sm text-muted-foreground">
-            The optional <code className="rounded bg-muted px-1 py-0.5 text-xs">remember=&quot;session&quot;</code> prop
-            works the same way: it stores an unlock marker in sessionStorage so a reload skips the gate for the rest
-            of that tab&apos;s session. It&apos;s client-side persistence, clearable from DevTools or a private
-            window — not a security boundary, just a convenience on top of the same trust model.
-          </p>
-        </BlueprintFrame>
-      </section>
-
-      <section className="mb-10 space-y-4">
-        <SectionHeader label="Compare" title="Local mode vs. server mode" />
-        <div className="overflow-x-auto rounded-lg border border-border">
-          <table className="w-full text-left text-sm">
-            <thead>
-              <tr className="label-mono border-b border-border bg-muted/50 text-muted-foreground">
-                <th className="px-3 py-2 font-medium"> </th>
-                <th className="px-3 py-2 font-medium">Local mode</th>
-                <th className="px-3 py-2 font-medium">Server mode</th>
-              </tr>
-            </thead>
-            <tbody>
-              {COMPARISON_ROWS.map((row) => (
-                <tr key={row.label} className="border-b border-border last:border-0 align-top">
-                  <td className="px-3 py-2 font-medium text-foreground">{row.label}</td>
-                  <td className="px-3 py-2 text-muted-foreground">{row.local}</td>
-                  <td className="px-3 py-2 text-muted-foreground">{row.server}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      <section className="px-8 py-20">
+        <div className="mx-auto max-w-[1120px]">
+          <Reveal>
+            <SectionHeader
+              number="01"
+              label="Local mode"
+              title="What local mode actually does"
+              description="Client-side SHA-256 verification and session storage trade-offs."
+              className="mb-10"
+            />
+          </Reveal>
+          <Reveal>
+            <BlueprintFrame label="Local mode details">
+              <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
+                Every default template and block verifies a code against a SHA-256 hash you pass as{" "}
+                <code className="rounded bg-muted px-1.5 py-0.5 text-xs font-mono text-foreground">expectedHash</code>. That comparison runs entirely
+                in the visitor&apos;s browser — there&apos;s no server, no network round trip, nothing to stand up. The
+                trade-off: the hash itself ships in your client JavaScript bundle. Anyone who opens DevTools can read it,
+                copy it, and run it through an offline cracker at their leisure. Local mode was never designed to survive
+                that — it&apos;s a velvet rope for people who won&apos;t open DevTools in the first place, which is most
+                visitors, most of the time.
+              </p>
+              <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+                The optional <code className="rounded bg-muted px-1.5 py-0.5 text-xs font-mono text-foreground">remember=&quot;session&quot;</code> prop
+                works the same way: it stores an unlock marker in sessionStorage so a reload skips the gate for the rest
+                of that tab&apos;s session. It&apos;s client-side persistence, clearable from DevTools or a private
+                window — not a security boundary, just a convenience on top of the same trust model.
+              </p>
+            </BlueprintFrame>
+          </Reveal>
         </div>
       </section>
 
-      <section className="mb-10">
-        <BlueprintFrame label="Use cases" className="grid gap-8 sm:grid-cols-2">
-          <div className="space-y-3">
-            <p className="label-mono text-muted-foreground">Appropriate</p>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              {APPROPRIATE.map((item) => (
-                <li key={item} className="flex gap-2">
-                  <span aria-hidden="true" className="text-primary">
-                    +
-                  </span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="space-y-3">
-            <p className="label-mono text-muted-foreground">Not appropriate</p>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              {INAPPROPRIATE.map((item) => (
-                <li key={item} className="flex gap-2">
-                  <span aria-hidden="true" className="text-destructive">
-                    −
-                  </span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </BlueprintFrame>
+      <section id="comparison" className="border-t border-border px-8 py-20">
+        <div className="mx-auto max-w-[1120px]">
+          <Reveal>
+            <SectionHeader
+              number="02"
+              label="Compare"
+              title="Local mode vs. server mode"
+              description="A side-by-side breakdown of verification location, visibility, brute-force protection, and setup."
+              className="mb-10"
+            />
+          </Reveal>
+          <Reveal>
+            <div className="overflow-x-auto rounded-lg border border-border">
+              <table className="w-full text-left text-sm">
+                <thead>
+                  <tr className="border-b border-border bg-muted/50 font-mono text-xs text-muted-foreground">
+                    <th className="px-4 py-3 font-medium">Dimension</th>
+                    <th className="px-4 py-3 font-medium">Local mode</th>
+                    <th className="px-4 py-3 font-medium">Server mode</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {COMPARISON_ROWS.map((row) => (
+                    <tr key={row.label} className="border-b border-border last:border-0 align-top">
+                      <td className="px-4 py-3 font-medium text-foreground">{row.label}</td>
+                      <td className="px-4 py-3 text-muted-foreground">{row.local}</td>
+                      <td className="px-4 py-3 text-muted-foreground">{row.server}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Reveal>
+        </div>
       </section>
 
-      <section id="reference-server-code" className="mb-10 scroll-mt-20">
-        <BlueprintFrame label="Server mode">
-          <h2 className="mb-2 text-xl font-semibold tracking-tight text-foreground">Upgrading to server verification</h2>
-          <p className="mb-4 max-w-3xl text-sm text-muted-foreground">
-            Swap the <code className="rounded bg-muted px-1 py-0.5 text-xs">expectedHash</code> prop for a{" "}
-            <code className="rounded bg-muted px-1 py-0.5 text-xs">verify</code> function pointing at an endpoint like
-            one of these — same markup, same component, one prop different. The hash moves server-side, the client
-            never sees it, and attempts can actually be rate-limited.
+      <section className="border-t border-border px-8 py-20">
+        <div className="mx-auto max-w-[1120px]">
+          <Reveal>
+            <SectionHeader
+              number="03"
+              label="Use cases"
+              title="Where Knock Codes belongs"
+              description="When a shared restricted access screen fits your use case, and when to require user accounts."
+              className="mb-10"
+            />
+          </Reveal>
+          <Reveal>
+            <BlueprintFrame label="Evaluation matrix" className="grid gap-8 sm:grid-cols-2">
+              <div className="space-y-3">
+                <p className="font-mono text-xs font-medium tracking-wider text-primary uppercase">Appropriate</p>
+                <ul className="space-y-2.5 text-sm text-muted-foreground">
+                  {APPROPRIATE.map((item) => (
+                    <li key={item} className="flex gap-2">
+                      <span aria-hidden="true" className="text-primary font-bold">
+                        +
+                      </span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="space-y-3">
+                <p className="font-mono text-xs font-medium tracking-wider text-destructive uppercase">Not appropriate</p>
+                <ul className="space-y-2.5 text-sm text-muted-foreground">
+                  {INAPPROPRIATE.map((item) => (
+                    <li key={item} className="flex gap-2">
+                      <span aria-hidden="true" className="text-destructive font-bold">
+                        −
+                      </span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </BlueprintFrame>
+          </Reveal>
+        </div>
+      </section>
+
+      <section id="reference-server-code" className="border-t border-border px-8 py-20 scroll-mt-20">
+        <div className="mx-auto max-w-[1120px]">
+          <Reveal>
+            <SectionHeader
+              number="04"
+              label="Server mode"
+              title="Upgrading to server verification"
+              description="Swap expectedHash for a verify function pointing at one of these reference endpoints — same markup, same component, one prop different."
+              className="mb-10"
+            />
+          </Reveal>
+          <Reveal>
+            <BlueprintFrame label="Reference implementation">
+              <CodeBrowser files={serverTemplates.map((t) => ({ path: t.filename, content: t.code }))} />
+            </BlueprintFrame>
+          </Reveal>
+        </div>
+      </section>
+
+      <section id="recommendations" className="border-t border-border px-8 py-20">
+        <div className="mx-auto max-w-[1120px]">
+          <Reveal>
+            <SectionHeader
+              number="05"
+              label="Recommendations"
+              title="Rate limiting and logging"
+              description="Best practices for running server-mode verification endpoints in production."
+              className="mb-10"
+            />
+          </Reveal>
+          <Reveal>
+            <div className="rounded-lg border border-border bg-card p-6">
+              <ul className="space-y-4 text-sm leading-relaxed text-muted-foreground">
+                {RECOMMENDATIONS.map((item) => (
+                  <li key={item} className="flex gap-3">
+                    <span aria-hidden="true" className="text-primary font-bold">
+                      →
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="border-t border-border px-8 py-24 text-center">
+        <Reveal className="mx-auto max-w-[1120px]">
+          <span className="mb-5 block font-mono text-[11px] font-medium tracking-[0.14em] uppercase">
+            <b className="font-medium text-primary">06</b>
+            <span className="text-fg-faint"> / Ship securely</span>
+          </span>
+          <h2 className="text-[clamp(30px,4.5vw,48px)] leading-[1.1] font-medium tracking-[-0.025em]">
+            Ready to set up server verification?
+          </h2>
+          <p className="mx-auto mt-4 max-w-[480px] text-muted-foreground">
+            Follow our 5-minute quickstart or pick a complete reference template.
           </p>
-          <CodeBrowser files={serverTemplates.map((t) => ({ path: t.filename, content: t.code }))} />
-        </BlueprintFrame>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <HomeCtaButton href="/getting-started">Setup guide</HomeCtaButton>
+            <HomeCtaButton href="/templates" variant="ghost">
+              Browse templates
+            </HomeCtaButton>
+          </div>
+        </Reveal>
       </section>
-
-      <section className="mb-10 space-y-4">
-        <SectionHeader label="Recommendations" title="Rate limiting and logging" />
-        <ul className="max-w-3xl space-y-3 text-sm text-muted-foreground">
-          {RECOMMENDATIONS.map((item) => (
-            <li key={item} className="flex gap-2">
-              <span aria-hidden="true" className="text-primary">
-                →
-              </span>
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <div className="flex flex-wrap items-center gap-3">
-        <Link href="/getting-started" className={buttonVariants({ size: "lg" })}>
-          Set up server mode <ArrowRight className="h-4 w-4" />
-        </Link>
-        <Link href="/templates" className={buttonVariants({ size: "lg", variant: "outline" })}>
-          Browse templates
-        </Link>
-      </div>
     </div>
   );
 }
+
