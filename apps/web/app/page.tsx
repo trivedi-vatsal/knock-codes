@@ -6,6 +6,8 @@ import { ProblemCards } from "@/components/problem-section";
 import { BentoGrid } from "@/components/bento-section";
 import { ModeComparisonTable } from "@/components/mode-comparison-table";
 import { TemplatesGallery } from "@/components/templates-gallery-section";
+import { StatsBand } from "@/components/stats-band";
+import { FaqSection } from "@/components/faq-section";
 import { Reveal } from "@/components/reveal";
 import Link from "next/link";
 
@@ -108,6 +110,28 @@ export default function Home() {
                 View all templates →
               </Link>
             </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section id="numbers" className="border-t border-border px-8 py-[120px]">
+        <div className="mx-auto max-w-[1120px]">
+          <Reveal>
+            <HomeSectionHead number="04" label="By the numbers" title="Small enough to audit over coffee." />
+          </Reveal>
+          <Reveal>
+            <StatsBand />
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="border-t border-border px-8 py-[120px]">
+        <div className="mx-auto max-w-[1120px]">
+          <Reveal>
+            <HomeSectionHead number="05" label="FAQ" title="Common questions" />
+          </Reveal>
+          <Reveal>
+            <FaqSection />
           </Reveal>
         </div>
       </section>
