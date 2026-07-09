@@ -22,7 +22,7 @@ export function BlockCard({ block }: { block: Block }) {
 
   return (
     <Link href={`/blocks/${block.slug}`} className="group block h-full">
-      <AccessPanelCard serial={block.registryName} className="h-full hover:border-primary/50 hover:bg-card">
+      <AccessPanelCard className="h-full hover:border-primary/50 hover:bg-card">
         <div>
           {/* Framed Window Preview with Mini IDE Chrome */}
           <div className="mb-5 overflow-hidden rounded-lg border border-border/80 bg-muted/20 shadow-sm transition-all duration-300 group-hover:border-primary/40 group-hover:shadow-md">

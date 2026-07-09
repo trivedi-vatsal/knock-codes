@@ -90,7 +90,10 @@ function PreviewFrame({ children }: { children: ReactNode }) {
     // gate reads as a real screen, not a cramped little window. Resetting
     // the demo is handled by PreviewPanel (it remounts this whole subtree),
     // not by anything in here.
-    <div className="relative isolate flex min-h-[36rem] w-full transform items-center justify-center overflow-hidden">
+    <div
+      style={{ transform: "translate(0, 0)" }}
+      className="relative isolate flex min-h-[36rem] w-full transform items-center justify-center overflow-hidden"
+    >
       {children}
     </div>
   );

@@ -42,15 +42,39 @@ function DemoSection() {
 type PreviewFactory = (hash: string, theme: "light" | "dark") => ReactNode;
 
 const PREVIEWS: Record<string, PreviewFactory> = {
+  "knock-codes": (hash, theme) => (
+    <KnockCodesTemplate expectedHash={hash} storage="memory" fullPage={false} theme={theme} logo={LOGO} supportHref="/security" autoFocus={false}>
+      <DemoUnlockedPanel />
+    </KnockCodesTemplate>
+  ),
   "knock-codes-template": (hash, theme) => (
     <KnockCodesTemplate expectedHash={hash} storage="memory" fullPage={false} theme={theme} logo={LOGO} supportHref="/security" autoFocus={false}>
       <DemoUnlockedPanel />
     </KnockCodesTemplate>
   ),
+  "minimal-access": (hash, theme) => (
+    <MinimalAccessTemplate expectedHash={hash} storage="memory" fullPage={false} theme={theme} logo={LOGO} supportHref="/security" autoFocus={false}>
+      <DemoUnlockedPanel />
+    </MinimalAccessTemplate>
+  ),
   "minimal-access-template": (hash, theme) => (
     <MinimalAccessTemplate expectedHash={hash} storage="memory" fullPage={false} theme={theme} logo={LOGO} supportHref="/security" autoFocus={false}>
       <DemoUnlockedPanel />
     </MinimalAccessTemplate>
+  ),
+  "branded-access": (hash, theme) => (
+    <BrandedAccessTemplate
+      expectedHash={hash}
+      storage="memory"
+      fullPage={false}
+      theme={theme}
+      logo={LOGO}
+      tagline="Your staging environment, kept off search engines and forwarded links."
+      supportHref="/security"
+      autoFocus={false}
+    >
+      <DemoUnlockedPanel />
+    </BrandedAccessTemplate>
   ),
   "branded-access-template": (hash, theme) => (
     <BrandedAccessTemplate
@@ -65,6 +89,11 @@ const PREVIEWS: Record<string, PreviewFactory> = {
     >
       <DemoUnlockedPanel />
     </BrandedAccessTemplate>
+  ),
+  "modal-access": (hash, theme) => (
+    <ModalAccessTemplate expectedHash={hash} storage="memory" fullPage theme={theme} logo={LOGO} supportHref="/security" autoFocus={false}>
+      <DemoSection />
+    </ModalAccessTemplate>
   ),
   "modal-access-template": (hash, theme) => (
     <ModalAccessTemplate expectedHash={hash} storage="memory" fullPage theme={theme} logo={LOGO} supportHref="/security" autoFocus={false}>
@@ -107,7 +136,12 @@ export function TemplatePreview({ slug }: { slug: string }) {
         <FigureLabel index={1} />
         <span className="label-mono">Demo code: {DEMO_CODE}</span>
       </div>
-      <div className="relative isolate min-h-0 w-full flex-1 transform overflow-hidden">{factory(hash, dark ? "dark" : "light")}</div>
+      <div
+        style={{ transform: "translate(0, 0)" }}
+        className="relative isolate min-h-0 w-full flex-1 transform overflow-hidden"
+      >
+        {factory(hash, dark ? "dark" : "light")}
+      </div>
     </div>
   );
 }
