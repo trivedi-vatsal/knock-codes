@@ -5,7 +5,9 @@ import { HomeSectionHead } from "@/components/home-section-head";
 import { ProblemCards } from "@/components/problem-section";
 import { BentoGrid } from "@/components/bento-section";
 import { ModeComparisonTable } from "@/components/mode-comparison-table";
+import { TemplatesGallery } from "@/components/templates-gallery-section";
 import { Reveal } from "@/components/reveal";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -79,6 +81,32 @@ export default function Home() {
                 Local mode vs. server mode, in brief
               </p>
               <ModeComparisonTable />
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section id="templates" className="border-t border-border px-8 py-[120px]">
+        <div className="mx-auto max-w-[1120px]">
+          <Reveal>
+            <HomeSectionHead
+              number="03"
+              label="Templates"
+              title="Four looks, one contract."
+              description="Pick the screen, wire a hash, ship it. Every template speaks the same props."
+            />
+          </Reveal>
+          <Reveal>
+            <TemplatesGallery />
+          </Reveal>
+          <Reveal>
+            <div className="mt-7">
+              <Link
+                href="/templates"
+                className="font-mono text-xs font-medium tracking-[0.1em] text-muted-foreground uppercase transition-colors hover:text-primary"
+              >
+                View all templates →
+              </Link>
             </div>
           </Reveal>
         </div>
