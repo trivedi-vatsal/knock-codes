@@ -1,5 +1,6 @@
 import { KnockCodesTemplate } from "@knock-codes/react";
 import { DEMO_CODE, DEMO_HASH } from "@/lib/demo-hash";
+import { FigureLabel } from "@/components/figure-label";
 
 function DemoUnlockedPanel() {
   return (
@@ -14,7 +15,10 @@ function DemoUnlockedPanel() {
 export function HeroPreview() {
   return (
     <div className="relative flex h-full min-h-[26rem] flex-col overflow-hidden rounded-xl border border-white/10 shadow-2xl">
-      <p className="label-mono absolute top-3 left-3 z-10 text-white/50">Try code {DEMO_CODE}</p>
+      <div className="absolute top-3 left-3 z-10 flex items-center gap-2 text-white/50">
+        <FigureLabel index={1} />
+        <span className="label-mono">Try code {DEMO_CODE}</span>
+      </div>
       <div className="relative isolate min-h-0 w-full flex-1">
         <KnockCodesTemplate
           expectedHash={DEMO_HASH}

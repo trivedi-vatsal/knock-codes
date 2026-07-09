@@ -2,21 +2,33 @@ import type { Metadata } from "next";
 import { SectionHeader } from "@/components/section-header";
 import { BlueprintFrame } from "@/components/blueprint-frame";
 import { pageMetadata } from "@/lib/seo";
+import { getAllTemplates } from "@/lib/templates";
 
 export const metadata: Metadata = pageMetadata(
   "Changelog — Knock Codes",
   "What changed on Knock Codes, release by release, plus the current version of each template."
 );
 
-const TEMPLATE_VERSIONS = [
-  { name: "Knock Codes Template", registryName: "knock-codes-template", version: "1.0.0" },
-  { name: "Branded Access Template", registryName: "branded-access-template", version: "1.0.0" },
-  { name: "Minimal Access Template", registryName: "minimal-access-template", version: "1.0.0" },
-  { name: "Modal Access Template", registryName: "modal-access-template", version: "1.0.0" },
-  { name: "Plain HTML Gate", registryName: "plain-html-gate", version: "1.0.0" },
-];
-
 const ENTRIES = [
+  {
+    date: "2026-07-09",
+    added: [
+      "A numbered section system on the homepage (01 Templates through 06 FAQ) and FIG.01-style labels on every live demo/preview (hero, feature grid, template and block detail pages).",
+      "A self-demonstrating feature grid in \"How it works\" — five real, independent useKnockCodes instances (not screenshots) for local mode, server mode, session memory, timeout, and a wrong-knock error state, each paired with its real prop.",
+      "// Open Source // MIT and a version badge (linked to this page) in the primary nav.",
+      "A precise fade+slide unlock transition on the Knock Codes Template, alongside the existing shake-on-error.",
+      "Subtle once-per-section fade-up entrances on the homepage, and a hover lift on template gallery preview thumbnails — transform/opacity only, no layout shift.",
+      "prefers-reduced-motion support across all four full-page templates and the plain HTML gate — previously unguarded shake keyframes now disable cleanly instead of playing regardless of the setting.",
+      "/llms.txt — a generated, agent-readable inventory of every template and block, their real props, and the security model summary.",
+      "An \"Adapt with AI\" copy button on each template detail page: a ready prompt naming the template's real props and explicitly instructing an agent to preserve the verification logic rather than inventing new ones.",
+      "A site-wide focus-visible ring and press state on plain text links (previously only shadcn Button had one).",
+    ],
+    changed: [
+      "Homepage section eyebrows (Templates, How it works, Local vs. server, Threat model, Use cases, FAQ) now read \"01 › Templates\" etc. instead of a bare \"→\" — → is reserved for inline links and list markers again.",
+      "The template set version shown in the nav and this page's table now reads from each template's own frontmatter (content/templates/*.mdx) instead of a separately hardcoded list.",
+      "Footer rebuilt into Product / Resources / Author columns, with a version + copyright line at the bottom.",
+    ],
+  },
   {
     date: "2026-07-08",
     added: [
@@ -45,6 +57,8 @@ const ENTRIES = [
 ];
 
 export default function ChangelogPage() {
+  const templates = getAllTemplates();
+
   return (
     <div className="mx-auto max-w-4xl px-6 py-12">
       <SectionHeader
@@ -63,9 +77,9 @@ export default function ChangelogPage() {
             </tr>
           </thead>
           <tbody>
-            {TEMPLATE_VERSIONS.map((t) => (
+            {templates.map((t) => (
               <tr key={t.registryName} className="border-b border-border last:border-0">
-                <td className="px-3 py-2 font-medium text-foreground">{t.name}</td>
+                <td className="px-3 py-2 font-medium text-foreground">{t.title}</td>
                 <td className="px-3 py-2 font-mono text-muted-foreground">{t.version}</td>
               </tr>
             ))}

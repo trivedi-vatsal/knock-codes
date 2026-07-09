@@ -197,6 +197,61 @@
   .status-dot[data-tone="muted"] {
     background-color: var(--muted-foreground);
   }
+
+  /* Wrong-knock shake for the feature-grid demo card — same curve as the
+     template files' own inline shake keyframes, scoped to no-preference so
+     it's inert (not just skipped) under prefers-reduced-motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes kc-shake {
+      10%, 90% { transform: translateX(-1px); }
+      20%, 80% { transform: translateX(2px); }
+      30%, 50%, 70% { transform: translateX(-4px); }
+      40%, 60% { transform: translateX(4px); }
+    }
+    .animate-kc-shake {
+      animation: kc-shake 0.4s ease-in-out;
+    }
+  }
+
+  /* Section-entrance fade-up (Reveal component): starts offset+transparent,
+     JS adds `.kc-in-view` once the section crosses the viewport. Under
+     reduced motion the element starts fully visible instead — never gated
+     behind a scroll trigger it might not react to the "same" way. */
+  .kc-reveal {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.35s ease-out, transform 0.35s ease-out;
+  }
+  .kc-reveal.kc-in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kc-reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+}
+
+@layer base {
+  /* Plain text links (footer, "view all" links, FAQ) don't get shadcn
+     Button's focus-visible ring / press treatment — this fills that gap
+     everywhere at once rather than per call site. */
+  a:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  a:active {
+    transform: translateY(1px);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    a {
+      transition: transform 0.1s ease;
+    }
+  }
 }
 
 /*

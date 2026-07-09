@@ -10,6 +10,7 @@ import {
   VerificationLoader,
 } from "@knock-codes/react";
 import { usePreviewDark } from "@/components/preview-panel";
+import { FigureLabel } from "@/components/figure-label";
 
 const DEMO_CODE = "demo1234";
 const LOGO = <span className="text-lg font-bold text-gray-900 dark:text-gray-50">Acme Inc.</span>;
@@ -101,7 +102,10 @@ export function TemplatePreview({ slug }: { slug: string }) {
 
   return (
     <div className="relative flex h-full min-h-[44rem] flex-col">
-      <p className="label-mono absolute top-3 left-3 z-10 text-gray-500 dark:text-white/50">Demo code: {DEMO_CODE}</p>
+      <div className="absolute top-3 left-3 z-10 flex items-center gap-2 text-gray-500 dark:text-white/50">
+        <FigureLabel index={1} />
+        <span className="label-mono">Demo code: {DEMO_CODE}</span>
+      </div>
       <div className="relative isolate min-h-0 w-full flex-1 transform overflow-hidden">{factory(hash, dark ? "dark" : "light")}</div>
     </div>
   );

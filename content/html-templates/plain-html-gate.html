@@ -127,11 +127,16 @@
   .card.shake {
     animation: knock-codes-html-shake 0.4s ease-in-out;
   }
-  @keyframes knock-codes-html-shake {
-    10%, 90% { transform: translateX(-1px); }
-    20%, 80% { transform: translateX(2px); }
-    30%, 50%, 70% { transform: translateX(-4px); }
-    40%, 60% { transform: translateX(4px); }
+  /* Scoped to the reduced-motion query rather than a JS check: under
+     `prefers-reduced-motion: reduce` this keyframe name doesn't exist, so
+     `.shake`'s `animation` declaration above resolves to no visual effect. */
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes knock-codes-html-shake {
+      10%, 90% { transform: translateX(-1px); }
+      20%, 80% { transform: translateX(2px); }
+      30%, 50%, 70% { transform: translateX(-4px); }
+      40%, 60% { transform: translateX(4px); }
+    }
   }
   .success {
     display: flex;

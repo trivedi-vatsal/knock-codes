@@ -6,6 +6,8 @@ import { SectionHeader } from "@/components/section-header";
 import { BlueprintFrame } from "@/components/blueprint-frame";
 import { HeroPreview } from "@/components/hero-preview";
 import { HashGenerator } from "@/components/hash-generator";
+import { FeatureGrid } from "@/components/feature-grid";
+import { Reveal } from "@/components/reveal";
 import { getAllTemplates } from "@/lib/templates";
 import { THREAT_MODEL_COPY, VELVET_ROPE_LINE } from "@/lib/copy";
 import { getFlagshipTemplateKb } from "@/lib/proof-stats";
@@ -113,13 +115,18 @@ export default function Home() {
             <p className="label-mono mt-5 text-[#edeae0]/40">
               1 file · 0 dependencies · MIT · ~{templateKb}KB
             </p>
+            <Link href="/llms.txt" className="label-mono mt-2 inline-flex items-center gap-1.5 text-[#edeae0]/40 hover:text-[#edeae0]/70">
+              Built for AI <ArrowRight className="h-3 w-3" />
+            </Link>
           </div>
           <HeroPreview />
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-16">
+        <Reveal>
         <SectionHeader
+          number="01"
           label="Templates"
           title="Complete screens, ready to copy"
           description="Each one is a single file — background, card, form, and verification logic included. Pick the look, wire a hash, ship it."
@@ -135,10 +142,13 @@ export default function Home() {
             View all templates <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
+        </Reveal>
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-16">
+        <Reveal>
         <SectionHeader
+          number="02"
           label="How it works"
           title="Protected in five steps"
           description="No account, no backend to stand up first."
@@ -158,10 +168,17 @@ export default function Home() {
         <div className="mt-6">
           <HashGenerator />
         </div>
+        <div className="mt-10">
+          <p className="label-mono mb-4 text-muted-foreground">Try each one live</p>
+          <FeatureGrid />
+        </div>
+        </Reveal>
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-16">
+        <Reveal>
         <SectionHeader
+          number="03"
           label="Local mode vs. server mode"
           title="Start local, upgrade when it matters"
           description="Same component, one prop different — the honest trade-offs, in brief."
@@ -192,11 +209,13 @@ export default function Home() {
             Read the full security model <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
+        </Reveal>
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-16">
-        <BlueprintFrame label="Threat model">
-          <h2 className="mb-3 text-xl font-semibold tracking-tight text-foreground">The honest version</h2>
+        <Reveal>
+        <SectionHeader number="04" label="Threat model" title="The honest version" className="mb-8" />
+        <BlueprintFrame>
           <p className="max-w-2xl text-sm text-muted-foreground">{THREAT_MODEL_COPY}</p>
           <Link
             href="/security#reference-server-code"
@@ -205,10 +224,13 @@ export default function Home() {
             Read the reference server code <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </BlueprintFrame>
+        </Reveal>
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-16">
+        <Reveal>
         <SectionHeader
+          number="05"
           label="Use cases"
           title="Built for the times you don't need real auth"
           description="One shared code, not a login form — everyone who has it is already trusted."
@@ -222,10 +244,12 @@ export default function Home() {
             </BlueprintFrame>
           ))}
         </div>
+        </Reveal>
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-16">
-        <SectionHeader label="FAQ" title="Common questions" className="mb-8" />
+        <Reveal>
+        <SectionHeader number="06" label="FAQ" title="Common questions" className="mb-8" />
         <div className="mx-auto max-w-3xl divide-y divide-border rounded-lg border border-border">
           {FAQ_ITEMS.map((item) => (
             <details key={item.question} className="group p-4">
@@ -236,6 +260,7 @@ export default function Home() {
             </details>
           ))}
         </div>
+        </Reveal>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -253,7 +278,7 @@ export default function Home() {
       </section>
 
       <section className="border-t border-border bg-[#0e1311] px-6 py-16 text-[#edeae0]">
-        <div className="mx-auto max-w-2xl text-center">
+        <Reveal className="mx-auto max-w-2xl text-center">
           <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Ready to lock something down?</h2>
           <p className="mt-3 text-white/70">Pick a template, copy the file, wire a hash. Ship it in minutes.</p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
@@ -267,7 +292,7 @@ export default function Home() {
               Read the security model
             </Link>
           </div>
-        </div>
+        </Reveal>
       </section>
     </div>
   );

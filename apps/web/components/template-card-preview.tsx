@@ -71,7 +71,7 @@ export function TemplateCardPreview({ slug }: { slug: string }) {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none relative mb-4 select-none overflow-hidden rounded-md border border-border bg-muted/20"
+      className="pointer-events-none relative mb-4 select-none overflow-hidden rounded-md border border-border bg-muted/20 transition-transform duration-200 group-hover:scale-[1.015] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
       style={{ height: PREVIEW_HEIGHT }}
     >
       <div

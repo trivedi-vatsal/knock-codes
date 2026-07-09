@@ -19,7 +19,9 @@ import { getHtmlTemplateSource } from "@/lib/html-templates";
 import { getServerTemplates } from "@/lib/server-templates";
 import { THREAT_MODEL_COPY } from "@/lib/copy";
 import { CopyButton } from "@/components/copy-button";
+import { AdaptWithAiButton } from "@/components/adapt-with-ai-button";
 import { pageMetadata } from "@/lib/seo";
+import { buildAdaptPrompt } from "@/lib/adapt-prompt";
 
 export function generateStaticParams() {
   return getAllTemplates().map((template) => ({ slug: template.slug }));
@@ -53,12 +55,17 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
     .map((blockSlug) => getBlockBySlug(blockSlug))
     .filter((b) => b !== undefined);
   const serverTemplates = getServerTemplates();
+  const primaryPath = allFiles.find((f) => f.primary)?.path ?? `packages/react/${template.registryName}`;
+  const adaptPrompt = buildAdaptPrompt(template, primaryPath);
 
   return (
     <ThemeLabRoot>
     <div className="mx-auto max-w-6xl px-6 py-12">
       <div className="mb-8 space-y-3">
-        <p className="label-mono text-primary">→ Template</p>
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <p className="label-mono text-primary">→ Template</p>
+          <AdaptWithAiButton prompt={adaptPrompt} />
+        </div>
         <h1 className="text-3xl font-semibold tracking-tight text-foreground">{template.title}</h1>
         <p className="max-w-2xl text-muted-foreground">{template.description}</p>
         <div className="flex flex-wrap gap-1.5 pt-1">

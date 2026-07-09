@@ -9,11 +9,17 @@ import { cx } from "./cx.ts";
 // Shakes the card on a failed attempt — inlined via a plain `<style>` tag
 // (not a Tailwind config keyframe) so this file works standalone in a host
 // project that has no matching keyframe of its own.
-const MINIMAL_ACCESS_SHAKE_KEYFRAMES = `@keyframes minimal-access-shake {
-  10%, 90% { transform: translateX(-1px); }
-  20%, 80% { transform: translateX(2px); }
-  30%, 50%, 70% { transform: translateX(-4px); }
-  40%, 60% { transform: translateX(4px); }
+// Wrapped in the reduced-motion query rather than toggled from JS: under
+// `prefers-reduced-motion: reduce` this keyframe name simply doesn't exist,
+// so the `animation: minimal-access-shake …` utility below resolves to no
+// visual effect.
+const MINIMAL_ACCESS_SHAKE_KEYFRAMES = `@media (prefers-reduced-motion: no-preference) {
+  @keyframes minimal-access-shake {
+    10%, 90% { transform: translateX(-1px); }
+    20%, 80% { transform: translateX(2px); }
+    30%, 50%, 70% { transform: translateX(-4px); }
+    40%, 60% { transform: translateX(4px); }
+  }
 }`;
 
 export interface MinimalAccessTemplateLabels extends KnockCodesLabels {

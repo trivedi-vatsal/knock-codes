@@ -6,14 +6,24 @@ import { useKnockCodes } from "./useKnockCodes.ts";
 import { DEFAULT_LABELS, type KnockCodesConfig, type KnockCodesLabels } from "./types.ts";
 import { cx } from "./cx.ts";
 
-// Shakes the code-entry group on a failed attempt — inlined via a plain
+// Shake on a failed attempt, fade+slide on unlock — inlined via a plain
 // `<style>` tag (not a Tailwind config keyframe) so this file works
 // standalone in a host project that has no matching keyframe of its own.
-const KNOCK_CODES_SHAKE_KEYFRAMES = `@keyframes knock-codes-shake {
-  10%, 90% { transform: translateX(-1px); }
-  20%, 80% { transform: translateX(2px); }
-  30%, 50%, 70% { transform: translateX(-4px); }
-  40%, 60% { transform: translateX(4px); }
+// Both keyframes are wrapped in the reduced-motion media query rather than
+// toggled from JS: under `prefers-reduced-motion: reduce`, the referenced
+// keyframe names simply don't exist, so `animation: knock-codes-shake …`
+// resolves to no visual effect — no separate JS branch to keep in sync.
+const KNOCK_CODES_MOTION_KEYFRAMES = `@media (prefers-reduced-motion: no-preference) {
+  @keyframes knock-codes-shake {
+    10%, 90% { transform: translateX(-1px); }
+    20%, 80% { transform: translateX(2px); }
+    30%, 50%, 70% { transform: translateX(-4px); }
+    40%, 60% { transform: translateX(4px); }
+  }
+  @keyframes knock-codes-reveal {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 }`;
 
 export interface KnockCodesTemplateLabels extends KnockCodesLabels {
@@ -120,7 +130,8 @@ export function KnockCodesTemplate({
     if (!showChildren) {
       const successPanel = (
         <div className="flex h-full min-h-[26rem] w-full items-center justify-center bg-[var(--ag-canvas-bg,#e5e7eb)] p-6 dark:bg-[var(--ag-canvas-bg-dark,#0b1220)]">
-          <div className="flex flex-col items-center gap-2 text-center">
+          <style>{KNOCK_CODES_MOTION_KEYFRAMES}</style>
+          <div className="flex flex-col items-center gap-2 text-center animate-[knock-codes-reveal_0.3s_ease-out]">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-500/10 dark:text-green-400">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-5 w-5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -132,7 +143,12 @@ export function KnockCodesTemplate({
       );
       return theme === "dark" ? <div className="dark h-full w-full">{successPanel}</div> : successPanel;
     }
-    return <>{children}</>;
+    return (
+      <div className="animate-[knock-codes-reveal_0.35s_ease-out]">
+        <style>{KNOCK_CODES_MOTION_KEYFRAMES}</style>
+        {children}
+      </div>
+    );
   }
 
   const code = digits.join("");
@@ -205,7 +221,7 @@ export function KnockCodesTemplate({
         style={{ fontFamily: "var(--ag-font, inherit)" }}
         className="w-full max-w-[27rem] rounded-[var(--ag-radius,1rem)] bg-[var(--ag-card,#ffffff)] p-8 shadow-2xl dark:bg-[var(--ag-card-dark,#030712)]"
       >
-        <style>{KNOCK_CODES_SHAKE_KEYFRAMES}</style>
+        <style>{KNOCK_CODES_MOTION_KEYFRAMES}</style>
         {logo && <div className="mb-6">{logo}</div>}
 
         <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50">{merged.heading}</h1>

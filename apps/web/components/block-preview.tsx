@@ -24,6 +24,7 @@ import {
   type KnockCodesConfig,
 } from "@knock-codes/react";
 import { useThemeLab } from "@/components/customizer/theme-lab-context";
+import { FigureLabel } from "@/components/figure-label";
 import type { PreviewStateId } from "@/lib/theme-presets";
 
 const DEMO_PIN = "demo1234";
@@ -96,7 +97,12 @@ function PreviewFrame({ children }: { children: ReactNode }) {
 }
 
 function Hint() {
-  return <p className="label-mono mb-3 text-muted-foreground">Demo code: {DEMO_PIN}</p>;
+  return (
+    <div className="mb-3 flex items-center gap-2 text-muted-foreground">
+      <FigureLabel index={1} />
+      <span className="label-mono">Demo code: {DEMO_PIN}</span>
+    </div>
+  );
 }
 
 export function BlockPreview({ slug }: { slug: string }) {
