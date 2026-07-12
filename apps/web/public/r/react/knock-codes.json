@@ -4,9 +4,9 @@
   "title": "Knock Codes",
   "description": "The main gate: renders children when unlocked, otherwise a PIN prompt. Local SHA-256 verification by default; pass a `verify` function for server-mode protection.",
   "registryDependencies": [
-    "knock-codes-hook",
-    "gate-wrapper",
-    "pin-input"
+    "https://knock.codes/r/react/knock-codes-hook.json",
+    "https://knock.codes/r/react/gate-wrapper.json",
+    "https://knock.codes/r/react/pin-input.json"
   ],
   "files": [
     {

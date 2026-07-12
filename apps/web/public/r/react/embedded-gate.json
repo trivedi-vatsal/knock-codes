@@ -4,7 +4,7 @@
   "title": "Embedded Gate",
   "description": "Knock Codes fixed to the inline shell — sits naturally inside an existing layout (a sidebar widget, a section of a longer page) instead of taking over the full viewport.",
   "registryDependencies": [
-    "knock-codes"
+    "https://knock.codes/r/react/knock-codes.json"
   ],
   "files": [
     {

@@ -4,8 +4,8 @@
   "title": "Unlock Dialog",
   "description": "A non-dismissable modal PIN prompt — no backdrop click, no Escape-to-close. Composable standalone, or used by Protected Modal.",
   "registryDependencies": [
-    "pin-input",
-    "knock-codes-types"
+    "https://knock.codes/r/react/pin-input.json",
+    "https://knock.codes/r/react/knock-codes-types.json"
   ],
   "files": [
     {

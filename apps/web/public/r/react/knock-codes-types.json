@@ -4,7 +4,7 @@
   "title": "Knock Codes Types",
   "description": "Shared config/defaults/label types used by every React block. Installed automatically — not meant to be added on its own.",
   "registryDependencies": [
-    "knock-codes-core"
+    "https://knock.codes/r/react/knock-codes-core.json"
   ],
   "files": [
     {

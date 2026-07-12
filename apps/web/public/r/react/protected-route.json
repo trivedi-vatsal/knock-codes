@@ -4,8 +4,8 @@
   "title": "Protected Route",
   "description": "`<KnockCodes>` shaped for route-level guarding (a React Router `element`, a layout redirect guard), with an optional `unauthorizedFallback` for routes that shouldn't show an inline PIN prompt.",
   "registryDependencies": [
-    "knock-codes-hook",
-    "knock-codes"
+    "https://knock.codes/r/react/knock-codes-hook.json",
+    "https://knock.codes/r/react/knock-codes.json"
   ],
   "files": [
     {

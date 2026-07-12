@@ -4,8 +4,8 @@
   "title": "Minimal Access Template",
   "description": "The leanest restricted-access screen — a single masked field, a small plain card, no segmented boxes and no default footer copy. Everything in one component.",
   "registryDependencies": [
-    "knock-codes-hook",
-    "cx-util"
+    "https://knock.codes/r/react/knock-codes-hook.json",
+    "https://knock.codes/r/react/cx-util.json"
   ],
   "files": [
     {

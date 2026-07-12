@@ -4,8 +4,8 @@
   "title": "Modal Access Template",
   "description": "Gates one section of an already-visible page — the content stays mounted and blurred behind a centered dialog instead of disappearing entirely.",
   "registryDependencies": [
-    "knock-codes-hook",
-    "cx-util"
+    "https://knock.codes/r/react/knock-codes-hook.json",
+    "https://knock.codes/r/react/cx-util.json"
   ],
   "files": [
     {

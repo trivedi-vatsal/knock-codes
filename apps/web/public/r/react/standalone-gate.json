@@ -4,7 +4,7 @@
   "title": "Standalone Gate",
   "description": "The fastest path to a working gate: wrap your app, pass a hash, done. A deliberately smaller prop surface than Knock Codes.",
   "registryDependencies": [
-    "knock-codes"
+    "https://knock.codes/r/react/knock-codes.json"
   ],
   "files": [
     {

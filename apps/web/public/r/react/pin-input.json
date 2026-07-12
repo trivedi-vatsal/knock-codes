@@ -4,7 +4,7 @@
   "title": "PIN Input",
   "description": "Masked PIN/passphrase input with paste support, show/hide toggle, and accessible loading/error states. No verification logic of its own.",
   "registryDependencies": [
-    "knock-codes-types"
+    "https://knock.codes/r/react/knock-codes-types.json"
   ],
   "files": [
     {

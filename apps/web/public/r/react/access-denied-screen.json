@@ -4,7 +4,7 @@
   "title": "Access Denied Screen",
   "description": "A static \"you don't have access\" view with no PIN form in it at all — distinct from the PIN entry UI. Use it as a custom unauthorizedFallback or any hard denial state.",
   "registryDependencies": [
-    "gate-wrapper"
+    "https://knock.codes/r/react/gate-wrapper.json"
   ],
   "files": [
     {

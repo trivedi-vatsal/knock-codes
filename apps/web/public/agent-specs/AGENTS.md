@@ -40,7 +40,7 @@ If that site is unreachable, or the user tells you they're running their own
 deployment, use the GitHub `owner/repo/item` shorthand instead — no site
 required:
 
-    npx shadcn@latest add trivedi-vatsal/access-gate/knock-codes-template
+    npx shadcn@latest add trivedi-vatsal/knock-codes/knock-codes-template
 
 (For a self-hosted docs site, substitute its origin for `https://knock.codes`
 above.)

@@ -4,8 +4,8 @@
   "title": "Protected Modal",
   "description": "Content stays mounted (blurred and inert) behind a modal Unlock Dialog instead of being replaced outright — useful when the protected content's layout should stay stable underneath the prompt.",
   "registryDependencies": [
-    "knock-codes-hook",
-    "unlock-dialog"
+    "https://knock.codes/r/react/knock-codes-hook.json",
+    "https://knock.codes/r/react/unlock-dialog.json"
   ],
   "files": [
     {

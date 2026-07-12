@@ -4,7 +4,7 @@
   "title": "Gate Wrapper",
   "description": "The shared outer-positioning primitive (full-page centered vs. inline) every visible block composes on. Use it directly to build a fully custom gate layout.",
   "registryDependencies": [
-    "cx-util"
+    "https://knock.codes/r/react/cx-util.json"
   ],
   "files": [
     {

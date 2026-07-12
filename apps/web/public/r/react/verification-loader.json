@@ -4,7 +4,7 @@
   "title": "Verification Loader",
   "description": "A small presentational spinner + label for the in-flight verification moment, for a fully custom PIN form built directly on useKnockCodes.",
   "registryDependencies": [
-    "cx-util"
+    "https://knock.codes/r/react/cx-util.json"
   ],
   "files": [
     {

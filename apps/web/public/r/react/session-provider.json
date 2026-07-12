@@ -4,7 +4,7 @@
   "title": "Session Provider",
   "description": "Shares one useKnockCodes session across a tree, so a gate, a Logout Button, and a Session Timeout Banner all read and act on the same unlock state.",
   "registryDependencies": [
-    "knock-codes-hook"
+    "https://knock.codes/r/react/knock-codes-hook.json"
   ],
   "files": [
     {

@@ -4,9 +4,9 @@
   "title": "Protected Card",
   "description": "A card-shaped gate for protecting one section of a page rather than the whole viewport — locked content stays mounted and blurred behind an Unlock button so the card's size never jumps.",
   "registryDependencies": [
-    "knock-codes-hook",
-    "pin-input",
-    "gate-wrapper"
+    "https://knock.codes/r/react/knock-codes-hook.json",
+    "https://knock.codes/r/react/pin-input.json",
+    "https://knock.codes/r/react/gate-wrapper.json"
   ],
   "files": [
     {

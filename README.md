@@ -2,7 +2,7 @@
   <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License" />
   <img src="https://img.shields.io/badge/node-%3E%3D22.6.0-brightgreen" alt="Node >=22.6.0" />
   <img src="https://img.shields.io/badge/package%20manager-pnpm-orange" alt="pnpm" />
-  <a href="https://github.com/trivedi-vatsal/access-gate/actions/workflows/ci.yml"><img src="https://github.com/trivedi-vatsal/access-gate/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://github.com/trivedi-vatsal/knock-codes/actions/workflows/ci.yml"><img src="https://github.com/trivedi-vatsal/knock-codes/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
 </p>
 
 # Knock Codes
@@ -48,6 +48,22 @@ model, including what server mode changes and doesn't.
 
    ```
    npx shadcn@latest add https://knock.codes/r/react/knock-codes-template.json
+   ```
+
+   Installing more than one item, or from a script? Register `@knock-codes` once in your project's
+   `components.json` and install by short name from then on — no listing on the shadcn registry
+   directory required, this talks straight to `knock.codes`:
+
+   ```json
+   {
+     "registries": {
+       "@knock-codes": "https://knock.codes/r/react/{name}.json"
+     }
+   }
+   ```
+
+   ```
+   npx shadcn@latest add @knock-codes/knock-codes-template
    ```
 3. **Wire the hash** through a public env var (`NEXT_PUBLIC_KNOCK_CODES_HASH`, `VITE_KNOCK_CODES_HASH`, …):
 
@@ -172,14 +188,19 @@ Always run `registry:build` (and commit the result) after editing `registry/reac
 Installing a block or template with the shadcn CLI:
 
 ```
-# Against a local dev server (pnpm dev running on localhost:3000)
+# Against a local dev server (pnpm dev running on localhost:3000) — cross-item
+# registryDependencies still resolve against https://knock.codes by default,
+# so a plain local rebuild won't reflect local edits to a *dependency* of the
+# item you're installing. For that, rebuild pointing deps at localhost too:
+#   node scripts/build-registry.mjs --base-url=http://localhost:3000
+# (don't commit that — git checkout apps/web/public/r/react afterward)
 npx shadcn@latest add http://localhost:3000/r/react/knock-codes-template.json
 
 # Against the deployed docs site
 npx shadcn@latest add https://knock.codes/r/react/knock-codes-template.json
 
 # Via the GitHub owner/repo/item shorthand, no site required
-npx shadcn@latest add trivedi-vatsal/access-gate/knock-codes-template
+npx shadcn@latest add trivedi-vatsal/knock-codes/knock-codes-template
 ```
 
 Set `NEXT_PUBLIC_SITE_URL=https://knock.codes` (e.g. in `apps/web/.env.local` or your host's env config) to

@@ -4,7 +4,7 @@
   "title": "Access Receipt",
   "description": "A small session audit strip shown after unlock — timestamp, storage mode, timeout, and verification strategy. Requires a Session Provider.",
   "registryDependencies": [
-    "session-provider"
+    "https://knock.codes/r/react/session-provider.json"
   ],
   "files": [
     {

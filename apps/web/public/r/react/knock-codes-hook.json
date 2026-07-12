@@ -4,7 +4,7 @@
   "title": "useKnockCodes",
   "description": "The headless session/verification hook every stateful block is built on. Installed automatically — use it directly only if you're building a fully custom PIN UI.",
   "registryDependencies": [
-    "knock-codes-types"
+    "https://knock.codes/r/react/knock-codes-types.json"
   ],
   "files": [
     {

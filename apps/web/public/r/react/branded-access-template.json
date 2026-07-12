@@ -4,8 +4,8 @@
   "title": "Branded Access Template",
   "description": "A split-screen, logo-forward restricted-access screen — brand panel on one side, code entry on the other. The brand panel collapses on small screens.",
   "registryDependencies": [
-    "knock-codes-hook",
-    "cx-util"
+    "https://knock.codes/r/react/knock-codes-hook.json",
+    "https://knock.codes/r/react/cx-util.json"
   ],
   "files": [
     {

@@ -4,7 +4,7 @@
   "title": "Protected Layout",
   "description": "`<KnockCodes>` shaped for a full-page shell (a Next.js layout.tsx): header/footer render even while locked, so persistent site chrome survives the gate.",
   "registryDependencies": [
-    "knock-codes"
+    "https://knock.codes/r/react/knock-codes.json"
   ],
   "files": [
     {

@@ -4,7 +4,7 @@
   "title": "Session Timeout Banner",
   "description": "Warns before the shared session expires, with a one-click way to log out immediately instead of waiting for automatic expiry. Requires a Session Provider.",
   "registryDependencies": [
-    "session-provider"
+    "https://knock.codes/r/react/session-provider.json"
   ],
   "files": [
     {

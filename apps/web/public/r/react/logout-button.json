@@ -4,8 +4,8 @@
   "title": "Logout Button",
   "description": "Reads the shared session from a Session Provider and clears it on click.",
   "registryDependencies": [
-    "session-provider",
-    "cx-util"
+    "https://knock.codes/r/react/session-provider.json",
+    "https://knock.codes/r/react/cx-util.json"
   ],
   "files": [
     {

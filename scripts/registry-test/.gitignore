@@ -1,0 +1,6 @@
+node_modules/
+package-lock.json
+dist/
+# Everything under src/components is installed by `npx shadcn add` during a
+# test run — never hand-written, never worth committing.
+src/components/

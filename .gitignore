@@ -4,6 +4,7 @@ node_modules/
 dist/
 build/
 out/
+.tmp/
 .env
 .env.local
 *.tsbuildinfo

@@ -4,8 +4,8 @@
   "title": "Knock Codes Template",
   "description": "A complete, single-file \"restricted access\" screen — full-page dark backdrop, centered card, segmented code entry, support link, footer help text. Everything in one component.",
   "registryDependencies": [
-    "knock-codes-hook",
-    "cx-util"
+    "https://knock.codes/r/react/knock-codes-hook.json",
+    "https://knock.codes/r/react/cx-util.json"
   ],
   "files": [
     {
