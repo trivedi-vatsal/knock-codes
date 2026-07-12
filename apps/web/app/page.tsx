@@ -2,14 +2,20 @@ import { WorkspaceSimulator } from "@/components/workspace-simulator";
 import { HomeCtaButton } from "@/components/home-cta-button";
 import { ProofTicker } from "@/components/proof-ticker";
 import { HomeSectionHead } from "@/components/home-section-head";
+import { HowItWorksSteps } from "@/components/how-it-works-section";
 import { ProblemCards } from "@/components/problem-section";
 import { BentoGrid } from "@/components/bento-section";
 import { ModeComparisonTable } from "@/components/mode-comparison-table";
 import { TemplatesGallery } from "@/components/templates-gallery-section";
 import { StatsBand } from "@/components/stats-band";
 import { FaqSection } from "@/components/faq-section";
+import { CodeViewer } from "@/components/code-viewer";
 import { Reveal } from "@/components/reveal";
 import Link from "next/link";
+
+const HERO_SNIPPET = `<KnockCodes expectedHash={process.env.NEXT_PUBLIC_KNOCK_HASH}>
+  <YourApp />
+</KnockCodes>`;
 
 export default function Home() {
   return (
@@ -49,16 +55,34 @@ export default function Home() {
           </h1>
 
           {/* Subtitle */}
-          <p className="mx-auto mt-7 max-w-[580px] text-[17px] sm:text-[18.5px] text-muted-foreground/90 leading-relaxed">
-            A production-ready access gate built into a single copy-paste file. Secure your preview deployments in seconds using standard environment variables.
+          <p className="mx-auto mt-7 max-w-[640px] text-[17px] sm:text-[18.5px] text-muted-foreground/90 leading-relaxed">
+            A password screen for anything you deploy — one React file you paste into your project. No backend, no npm install, no platform upgrade. Set an env var and ship.
+          </p>
+
+          {/* Audience anchor */}
+          <p className="mx-auto mt-3 max-w-[560px] font-mono text-[11px] font-medium tracking-[0.14em] text-fg-faint uppercase">
+            For freelancers, agencies, and teams shipping previews to clients
           </p>
 
           {/* Call-to-action buttons */}
-          <div className="mt-8 mb-16 flex flex-wrap items-center justify-center gap-3">
-            <HomeCtaButton href="#templates">Browse templates</HomeCtaButton>
-            <HomeCtaButton href="/security" variant="ghost">
-              Read the security model
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+            <HomeCtaButton href="/getting-started">Get started →</HomeCtaButton>
+            <HomeCtaButton href="#templates" variant="ghost">
+              Browse templates
             </HomeCtaButton>
+          </div>
+          <div className="mt-3">
+            <Link
+              href="/security"
+              className="font-mono text-xs font-medium tracking-[0.1em] text-muted-foreground uppercase transition-colors hover:text-primary"
+            >
+              Read the security model →
+            </Link>
+          </div>
+
+          {/* Canonical usage snippet */}
+          <div className="mx-auto mt-6 mb-16 max-w-[480px] w-full text-left">
+            <CodeViewer code={HERO_SNIPPET} filename="app.tsx" />
           </div>
 
           {/* Workspace Simulator Mockup */}
@@ -91,10 +115,32 @@ export default function Home() {
           <Reveal>
             <HomeSectionHead
               number="01"
+              label="How it works"
+              title="Three steps, no infrastructure."
+              description="Copy a file, generate a hash, wrap your app. Ship it."
+            />
+          </Reveal>
+          <Reveal>
+            <HowItWorksSteps />
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="border-t border-border px-8 py-[120px]">
+        <div className="mx-auto max-w-[1120px]">
+          <Reveal>
+            <HomeSectionHead
+              number="02"
               label="The problem"
               title={<>&ldquo;Just don&rsquo;t share the link&rdquo; is not a plan.</>}
               description="Unfinished work leaks in boring, predictable ways. None of them require a hacker."
             />
+          </Reveal>
+          <Reveal>
+            <div className="mb-10 max-w-[640px] rounded-lg border border-border/60 bg-surface-2/40 px-5 py-4 text-sm leading-relaxed text-muted-foreground">
+              <span className="font-mono text-[10px] font-semibold tracking-[0.14em] text-primary uppercase">Before you reach for this — </span>
+              If your host already has password protection and it fits, use that. Knock Codes is for when it doesn&rsquo;t exist, costs a plan upgrade, or the gate needs to live in your own code.
+            </div>
           </Reveal>
           <Reveal>
             <ProblemCards />
@@ -106,7 +152,7 @@ export default function Home() {
         <div className="mx-auto max-w-[1120px]">
           <Reveal>
             <HomeSectionHead
-              number="02"
+              number="03"
               label="The answer"
               title="The whole product, in one file."
               description="Background, card, form, and verification logic — nothing to install, nothing to maintain, nothing phoning home."
@@ -130,7 +176,7 @@ export default function Home() {
         <div className="mx-auto max-w-[1120px]">
           <Reveal>
             <HomeSectionHead
-              number="03"
+              number="04"
               label="Templates"
               title="Multiple looks, one contract."
               description="Pick the screen, wire a hash, ship it. Every template speaks the same props."
@@ -155,7 +201,7 @@ export default function Home() {
       <section id="numbers" className="border-t border-border px-8 py-[120px]">
         <div className="mx-auto max-w-[1120px]">
           <Reveal>
-            <HomeSectionHead number="04" label="By the numbers" title="Small enough to audit over coffee." />
+            <HomeSectionHead number="05" label="By the numbers" title="Small enough to audit over coffee." />
           </Reveal>
           <Reveal>
             <StatsBand />
@@ -166,7 +212,7 @@ export default function Home() {
       <section className="border-t border-border px-8 py-[120px]">
         <div className="mx-auto max-w-[1120px]">
           <Reveal>
-            <HomeSectionHead number="05" label="FAQ" title="Common questions" />
+            <HomeSectionHead number="06" label="FAQ" title="Common questions" />
           </Reveal>
           <Reveal>
             <FaqSection />
@@ -177,7 +223,7 @@ export default function Home() {
       <section className="border-t border-border px-8 py-[120px] text-center">
         <Reveal className="mx-auto max-w-[1120px]">
           <span className="mb-5 block font-mono text-[11px] font-medium tracking-[0.14em] uppercase">
-            <b className="font-medium text-primary">06</b>
+            <b className="font-medium text-primary">07</b>
             <span className="text-fg-faint"> / Ship it</span>
           </span>
           <h2 className="text-[clamp(34px,5vw,56px)] leading-[1.1] font-medium tracking-[-0.025em]">Ready to lock something down?</h2>

@@ -23,9 +23,25 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CopyButton } from "@/components/copy-button";
+import { CodeViewer } from "@/components/code-viewer";
+import { Code2 } from "lucide-react";
 
 const INSTALL_COMMAND =
   "npx shadcn@latest add trivedi-vatsal/knock-codes/knock-codes-template";
+
+// The real logic behind this demo — kept in sync with the `useKnockCodes` call
+// in InteractiveGateOverlay below, simplified for display.
+const DEMO_SOURCE = `import { useKnockCodes } from "@knock-codes/react";
+
+const DEMO_HASH = "0315b402...e7b9e6"; // sha256Hex("${DEMO_CODE}")
+
+const { state, error, submit } = useKnockCodes({
+  expectedHash: DEMO_HASH,
+  storage: "memory",
+});
+
+if (state === "unlocked") return <YourApp />;
+return <PinGate error={error} onSubmit={submit} />;`;
 
 // ─── Demo phases ───
 type DemoPhase =
@@ -389,6 +405,7 @@ export function WorkspaceSimulator() {
   const [digits, setDigits] = useState<string[]>(["", "", "", ""]);
   const [activeIdx, setActiveIdx] = useState(0);
   const [mode, setMode] = useState<"demo" | "interactive">("demo");
+  const [showSource, setShowSource] = useState(false);
   const hasRun = useRef(false);
   const demoCode = DEMO_CODE;
   const isRevealed = phase === "unlocked" || phase === "done";
@@ -637,6 +654,26 @@ export function WorkspaceSimulator() {
           )}
         </div>
       </div>
+
+      {/* Inline demo code hint + view-source toggle */}
+      <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-mono text-[10.5px] text-fg-faint">
+        <span>
+          Live demo — try <span className="text-primary font-semibold">{DEMO_CODE}</span>
+        </span>
+        <button
+          onClick={() => setShowSource((v) => !v)}
+          className="flex items-center gap-1.5 uppercase tracking-wider transition-colors hover:text-primary"
+          aria-expanded={showSource}
+        >
+          <Code2 className="h-3 w-3" />
+          {showSource ? "Hide source" : "View source"}
+        </button>
+      </div>
+      {showSource && (
+        <div className="mt-3 text-left animate-kc-rise">
+          <CodeViewer code={DEMO_SOURCE} filename="demo.tsx" />
+        </div>
+      )}
     </div>
   );
 }

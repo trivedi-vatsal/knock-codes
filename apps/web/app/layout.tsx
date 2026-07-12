@@ -10,22 +10,23 @@ import { cn } from "@/lib/utils";
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
+const SITE_TITLE = "Knock Codes — Password-protect preview and staging deploys with one copy-paste file";
+const SITE_DESCRIPTION =
+  "A copy-paste React password screen for preview deployments. One file, zero dependencies, no backend. Works on Vercel, Netlify, Cloudflare, or your own server.";
+
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://knock.codes"),
-  title: "Knock Codes — Copy-paste access screens for private previews",
-  description:
-    "A single-file \"enter a code to continue\" screen with verification built in. Copy it into your project, set one env var, ship. No backend, no package, no lock-in.",
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
   openGraph: {
-    title: "Knock Codes — Copy-paste access screens for private previews",
-    description:
-      "A single-file \"enter a code to continue\" screen with verification built in. Copy it into your project, set one env var, ship. No backend, no package, no lock-in.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Knock Codes — Copy-paste access screens for private previews",
-    description:
-      "A single-file \"enter a code to continue\" screen with verification built in. Copy it into your project, set one env var, ship. No backend, no package, no lock-in.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
   },
 };
 
