@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { sha256Hex, type VerifyFn } from "@knock-codes/core";
+import type { VerifyFn } from "@knock-codes/core";
 import {
   KnockCodes,
   AccessDeniedScreen,
@@ -28,6 +28,9 @@ import { FigureLabel } from "@/components/figure-label";
 import type { PreviewStateId } from "@/lib/theme-presets";
 
 const DEMO_PIN = "demo1234";
+// sha256Hex(DEMO_PIN) — precomputed so every block preview renders on first
+// paint instead of waiting on an async Web Crypto round trip for a hash of a fixed string.
+const DEMO_PIN_HASH = "0ead2060b65992dca4769af601a1b3a35ef38cfad2c2c465bb160ea764157c5d";
 const WRONG_PIN = "0000";
 const NEVER_RESOLVES_VERIFY: VerifyFn = () => new Promise(() => {});
 
@@ -52,14 +55,6 @@ function useScriptedPreviewState(previewState: PreviewStateId, submit: (code: st
 function useForcedVerifyConfig(config: KnockCodesConfig, previewState: PreviewStateId): KnockCodesConfig {
   if (previewState !== "submitting") return config;
   return { ...config, expectedHash: undefined, verify: NEVER_RESOLVES_VERIFY };
-}
-
-function useDemoHash() {
-  const [hash, setHash] = useState<string | null>(null);
-  useEffect(() => {
-    sha256Hex(DEMO_PIN).then(setHash);
-  }, []);
-  return hash;
 }
 
 function DemoUnlockedPanel({ note }: { note?: string }) {
@@ -109,16 +104,7 @@ function Hint() {
 }
 
 export function BlockPreview({ slug }: { slug: string }) {
-  const hash = useDemoHash();
-
-  if (!hash) {
-    return (
-      <div className="flex h-56 items-center justify-center">
-        <VerificationLoader label="Loading preview…" />
-      </div>
-    );
-  }
-
+  const hash = DEMO_PIN_HASH;
   const common = { expectedHash: hash, storage: "memory" as const };
 
   switch (slug) {

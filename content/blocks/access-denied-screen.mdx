@@ -1,6 +1,6 @@
 ---
 title: "Access Denied Screen"
-description: "A static \"you don't have access\" view — no access-code form in it at all."
+description: "A copy-paste React denial screen for a hard-locked route or a custom Protected Route fallback — no access-code form, no retry. Zero dependencies."
 category: "Feedback"
 tier: "utility"
 tags: ["feedback", "fallback"]
@@ -9,6 +9,13 @@ relatedBlocks: ["protected-route", "gate-wrapper"]
 accessibility: "A plain heading + message + optional action — no live region needed since nothing here changes without a full re-render triggered by the parent."
 customization: "Not wired to any verification strategy on purpose. Use it as a custom `unauthorizedFallback` on `<ProtectedRoute>`, or anywhere you need a denial state that never accepts another attempt — pass `action` for a \"contact us\" link or a retry button that resets your own flow."
 bestUsedFor: "A hard-denial state after too many failed attempts, or a custom unauthorizedFallback on Protected Route."
+usageSnippet: |
+  <ProtectedRoute
+    expectedHash={process.env.NEXT_PUBLIC_KNOCK_HASH}
+    unauthorizedFallback={<AccessDeniedScreen action={<a href="/contact">Contact us</a>} />}
+  >
+    <Dashboard />
+  </ProtectedRoute>
 props:
   - name: "heading"
     type: "string"

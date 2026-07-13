@@ -19,7 +19,7 @@ const TEMPLATE_CORE_SLUGS = new Set([
 
 export function BlocksGallery({ blocks, categories }: { blocks: Block[]; categories: string[] }) {
   const [query, setQuery] = useState("");
-  const [filterMode, setFilterMode] = useState<"primary" | "templateCore" | "all" | string>("primary");
+  const [filterMode, setFilterMode] = useState<"primary" | "templateCore" | "all" | string>("all");
 
   const primaryCount = useMemo(() => blocks.filter((b) => b.tier === "primary").length, [blocks]);
   const templateCoreCount = useMemo(
@@ -67,7 +67,7 @@ export function BlocksGallery({ blocks, categories }: { blocks: Block[]; categor
                 : "border-border text-muted-foreground hover:text-foreground"
             )}
           >
-            Core Primitives ({primaryCount})
+            Core Blocks ({primaryCount})
           </button>
           <button
             type="button"
@@ -110,6 +110,9 @@ export function BlocksGallery({ blocks, categories }: { blocks: Block[]; categor
           ))}
         </div>
       </div>
+      <p className="mb-6 text-xs text-muted-foreground/70">
+        Core Blocks, Template Cores, and category views overlap — a block can match more than one.
+      </p>
 
       {filtered.length === 0 ? (
         <p className="py-12 text-center text-sm text-muted-foreground">No blocks match &ldquo;{query}&rdquo;.</p>

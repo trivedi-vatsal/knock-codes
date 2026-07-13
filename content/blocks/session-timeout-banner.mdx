@@ -1,6 +1,6 @@
 ---
 title: "Session Timeout Banner"
-description: "Warns before the shared session expires, with a one-click way to log out immediately."
+description: "A copy-paste React warning banner for Knock Codes access screens — alerts before a shared session expires, with a one-click logout. Zero dependencies."
 category: "Session"
 tags: ["session", "feedback"]
 registryName: "session-timeout-banner"
@@ -8,6 +8,13 @@ relatedBlocks: ["session-provider", "logout-button", "access-receipt"]
 accessibility: "role=\"alert\" — announced immediately when it appears, not just on next poll of an aria-live region, since an imminent session expiry is time-sensitive."
 customization: "Renders nothing outside the warning window or with no active session, so it's safe to mount unconditionally near the top of a layout. Adjust `warnBeforeMs` to change how early it appears."
 bestUsedFor: "Warning users before a shared session expires, especially with a short or activity-based timeout."
+usageSnippet: |
+  <KnockCodesProvider expectedHash={hash} timeout={1_800_000}>
+    <KnockCodes>
+      <Dashboard />
+      <SessionTimeoutBanner warnBeforeMs={60_000} />
+    </KnockCodes>
+  </KnockCodesProvider>
 props:
   - name: "warnBeforeMs"
     type: "number"
@@ -18,5 +25,5 @@ props:
     description: "Extra classes on the banner."
 ---
 
-Requires a `<SessionProvider>` ancestor — it watches a session something else already established, it
+Requires a `<KnockCodesProvider>` ancestor — it watches a session something else already established, it
 doesn't create one.

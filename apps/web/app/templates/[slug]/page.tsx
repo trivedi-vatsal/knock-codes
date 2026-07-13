@@ -7,6 +7,7 @@ import { SectionHeader } from "@/components/section-header";
 import { PropsTable } from "@/components/props-table";
 import { RelatedContent } from "@/components/related-content";
 import { PreviewPanel } from "@/components/preview-panel";
+import { UsageSnippet } from "@/components/usage-snippet";
 import { ThemeLabRoot } from "@/components/customizer/theme-lab-root";
 import { TemplatePreview } from "@/components/template-preview";
 import { TemplateInstallationSection } from "@/components/template-installation-section";
@@ -94,6 +95,8 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
         </div>
       )}
 
+      {template.usageSnippet && <UsageSnippet code={template.usageSnippet} />}
+
       <div className="mb-10">
         <PreviewPanel
           preview={
@@ -141,7 +144,7 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
             title="Blocks this template is built from"
             description="Drop down to these directly once you need more control than the single-file template gives you."
           />
-          <RelatedContent blocks={related} />
+          <RelatedContent items={related} />
         </section>
       )}
     </div>

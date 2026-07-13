@@ -1,11 +1,12 @@
 "use client";
 
 import { createContext, useContext, useState, type ReactNode } from "react";
-import { Code2, Eye, Moon, RotateCcw, Sun } from "lucide-react";
+import { Code2, Eye, Moon, RotateCcw, SlidersHorizontal, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CodeBrowser, type CodeBrowserFile } from "@/components/code-browser";
 import { CopyButton } from "@/components/copy-button";
 import { PreviewThemeProvider } from "@/components/customizer/preview-theme-provider";
+import { useThemeLab } from "@/components/customizer/theme-lab-context";
 
 const ICON_BUTTON_CLASS =
   "inline-flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground hover:bg-muted hover:text-foreground";
@@ -42,6 +43,7 @@ export function PreviewPanel({
   const [dark, setDark] = useState(false);
   const [previewKey, setPreviewKey] = useState(0);
   const allCode = files.map((f) => f.content).join("\n\n");
+  const { setOpen: setThemeLabOpen } = useThemeLab();
 
   return (
     <div>
@@ -86,6 +88,14 @@ export function PreviewPanel({
               {badge}
             </span>
           )}
+          <button
+            type="button"
+            onClick={() => setThemeLabOpen(true)}
+            className="label-mono inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+          >
+            <SlidersHorizontal className="h-3 w-3" />
+            Restyle this →
+          </button>
           {tab === "code" && <CopyButton text={allCode} className={ICON_BUTTON_CLASS} />}
           <button
             type="button"

@@ -1,6 +1,6 @@
 ---
 title: "Protected Card"
-description: "A card-shaped gate for protecting one section of a page rather than the whole viewport."
+description: "A copy-paste React access screen for gating one card in a dashboard grid — blurred preview, inline unlock. Zero dependencies."
 category: "Modal & Overlay"
 tags: ["card", "widget"]
 registryName: "protected-card"
@@ -8,6 +8,10 @@ relatedBlocks: ["protected-modal", "embedded-gate", "gate-wrapper"]
 accessibility: "The blurred preview behind the Unlock button is aria-hidden and inert, matching Protected Modal's approach — it's decorative once the button is shown, not a second interactive surface."
 customization: "Locked content stays mounted and blurred behind an Unlock button instead of being replaced outright, so the card's size and position never jump between locked and unlocked. Good fit for a dashboard tile or a gated preview inside a grid of otherwise-public cards."
 bestUsedFor: "A single gated tile inside a grid of otherwise-public cards, e.g. one locked dashboard widget."
+usageSnippet: |
+  <ProtectedCard expectedHash={process.env.NEXT_PUBLIC_KNOCK_HASH}>
+    <AccountSummary />
+  </ProtectedCard>
 props:
   - name: "expectedHash"
     type: "string"

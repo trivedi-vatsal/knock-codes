@@ -60,7 +60,7 @@ const TEMPLATE_LABELS: Required<MinimalAccessTemplateLabels> = {
 };
 
 /**
- * The leanest possible restricted-access screen — a single masked field, a
+ * The leanest possible access screen — a single masked field, a
  * small plain card, no segmented boxes and no default footer copy. Same
  * `useKnockCodes` contract as every other block, just the smallest possible
  * presentation. For segmented code entry, use `<KnockCodesTemplate>` instead.

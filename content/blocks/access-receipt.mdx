@@ -1,6 +1,6 @@
 ---
 title: "Access Receipt"
-description: "A small session audit strip shown after unlock — timestamp, storage mode, timeout, and verification strategy."
+description: "A copy-paste React session receipt for Knock Codes access screens — unlock time, storage mode, timeout. Zero dependencies."
 category: "Session"
 tags: ["session", "feedback"]
 registryName: "access-receipt"
@@ -8,6 +8,13 @@ relatedBlocks: ["session-provider", "session-timeout-banner", "logout-button"]
 accessibility: "Read-only summary content — a definition list, not an interactive control. Renders nothing while locked, so it never announces a session that doesn't exist yet."
 customization: "Pass `storageMode`, `timeout`, and `verificationStrategy` to match the config given to the `<KnockCodes>`/`useKnockCodes` call sharing this session — the receipt has no way to read those back off the session itself, since the session record intentionally only ever holds `unlockedAt`, `expiresAt`, and an optional token."
 bestUsedFor: "A visible confirmation after unlock — proof for the user (and for you, while testing) of which mode actually ran and how long the session will last."
+usageSnippet: |
+  <KnockCodesProvider expectedHash={hash} timeout={1_800_000}>
+    <KnockCodes>
+      <Dashboard />
+      <AccessReceipt timeout={1_800_000} storageMode="localStorage" />
+    </KnockCodes>
+  </KnockCodesProvider>
 props:
   - name: "storageMode"
     type: '"localStorage" | "sessionStorage" | "memory"'
@@ -26,6 +33,6 @@ props:
     description: "Extra classes on the outer card."
 ---
 
-Requires a `<SessionProvider>` ancestor — it reports on a session something else already established, it
+Requires a `<KnockCodesProvider>` ancestor — it reports on a session something else already established, it
 doesn't create one. Pair it with the same config passed to the gate sharing that session, since the receipt
 can't infer storage mode, timeout, or verification strategy from the session record alone.

@@ -1,6 +1,6 @@
 ---
 title: "Logout Button"
-description: "Reads the shared session from a Session Provider and clears it on click."
+description: "A copy-paste React logout control for Knock Codes access screens — clears the shared session on click. Zero dependencies."
 category: "Session"
 tags: ["session", "action"]
 registryName: "logout-button"
@@ -8,6 +8,13 @@ relatedBlocks: ["session-provider", "session-timeout-banner", "access-receipt"]
 accessibility: "A real <button>, not a link or div — full keyboard operability and screen-reader semantics for free."
 customization: "Pass children to change the label, or `onLoggedOut` to run something after the session clears (redirect, analytics, whatever your app needs)."
 bestUsedFor: "Any screen sharing a Session Provider session that needs a manual way to lock again."
+usageSnippet: |
+  <KnockCodesProvider expectedHash={hash}>
+    <KnockCodes>
+      <Dashboard />
+      <LogoutButton />
+    </KnockCodes>
+  </KnockCodesProvider>
 props:
   - name: "children"
     type: "ReactNode"
@@ -21,5 +28,5 @@ props:
     description: "Called after the shared session is cleared."
 ---
 
-Requires a `<SessionProvider>` ancestor — a logout action only makes sense where a session is already being
+Requires a `<KnockCodesProvider>` ancestor — a logout action only makes sense where a session is already being
 shared with something else that reads it.

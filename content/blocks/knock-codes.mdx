@@ -1,6 +1,6 @@
 ---
 title: "Knock Codes"
-description: "The main gate — renders children when unlocked, otherwise an access-code prompt."
+description: "A copy-paste React access screen for gating a whole page or app root — local hash or server verification, one prop swap between them. Zero dependencies."
 category: "Core"
 tags: ["core", "gate"]
 registryName: "knock-codes"
@@ -8,6 +8,10 @@ relatedBlocks: ["protected-route", "standalone-gate", "protected-card"]
 accessibility: "The access-code field is a labeled, masked text input with native paste support. Errors and the submitting state announce through an aria-live=\"polite\" status region, so screen reader users hear \"Checking...\" and any error without focus moving. The whole flow works keyboard-only: tab to the field, type, Enter to submit."
 customization: "Every string is overridable through the `labels` prop for localization. The wrapper has no fixed visual opinions beyond the default card — pass `className` to restyle the shell, or skip this component and call `useKnockCodes` directly to build a fully custom prompt."
 bestUsedFor: "The default choice for gating a whole page or app root in local mode."
+usageSnippet: |
+  <KnockCodes expectedHash={process.env.NEXT_PUBLIC_KNOCK_HASH}>
+    <YourApp />
+  </KnockCodes>
 props:
   - name: "expectedHash"
     type: "string"

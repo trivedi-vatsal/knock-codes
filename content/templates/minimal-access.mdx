@@ -1,6 +1,6 @@
 ---
 title: "Minimal Access"
-description: "A single masked field in a small plain card — the leanest gate, no footer copy unless you add it."
+description: "A copy-paste React access screen for internal tools and quick gates — a single masked field, no frills. One file, zero dependencies."
 category: "Templates"
 tags: ["template", "minimal"]
 registryName: "minimal-access-template"
@@ -10,6 +10,10 @@ useCase: "Internal dashboard"
 complexity: "Simple"
 mode: "both"
 bestUsedFor: "A quick, no-frills gate for an internal tool where tone doesn't matter."
+usageSnippet: |
+  <MinimalAccessTemplate expectedHash={process.env.NEXT_PUBLIC_KNOCK_HASH}>
+    <YourApp />
+  </MinimalAccessTemplate>
 accessibility: "The code field has its own label and an accessible show/hide toggle (aria-label switches between \"Show code\"/\"Hide code\"). Errors and the submitting state announce through a shared aria-live=\"polite\" region, same contract as every other block."
 customization: "Everything is one file — background, card, heading, description, field, button, support link, and footer are all inline, not composed from Gate Wrapper/PIN Input. Pass `logo` for your own wordmark and `labels` to override every string. For segmented code entry instead of a single field, use Knock Codes Template instead."
 props:

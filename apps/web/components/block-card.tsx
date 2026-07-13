@@ -70,7 +70,7 @@ export function BlockCard({ block }: { block: Block }) {
               {block.category}
             </span>
             <span className="inline-flex items-center rounded-md border border-border/80 bg-muted/50 px-2 py-0.5 font-mono text-xs text-muted-foreground">
-              {block.tier === "primary" ? "Core Primitive" : block.tier === "alias" ? "Wrapper Alias" : "Utility"}
+              {block.tier === "primary" ? "Core Block" : block.tier === "alias" ? "Wrapper Alias" : "Utility"}
             </span>
           </div>
         </div>

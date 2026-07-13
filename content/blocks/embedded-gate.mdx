@@ -1,6 +1,6 @@
 ---
 title: "Embedded Gate"
-description: "Knock Codes fixed to the inline shell — sits naturally inside an existing layout."
+description: "A copy-paste React access screen for gating a widget or section inside an existing layout — Knock Codes, fixed to the inline shell. Zero dependencies."
 category: "Routing & Layout"
 tier: "alias"
 tags: ["layout"]
@@ -9,6 +9,10 @@ relatedBlocks: ["knock-codes", "standalone-gate", "protected-card"]
 accessibility: "Identical to Knock Codes — only the outer positioning changes, not the semantics or keyboard flow."
 customization: "Same full prop surface as Knock Codes, minus `variant` (fixed to \"inline\"). Use it for a sidebar widget or a gated section partway down a longer page, where a full-viewport takeover would be wrong."
 bestUsedFor: "Gating one section of a longer page — a sidebar widget or a mid-page panel."
+usageSnippet: |
+  <EmbeddedGate expectedHash={process.env.NEXT_PUBLIC_KNOCK_HASH}>
+    <SidebarWidget />
+  </EmbeddedGate>
 props:
   - name: "expectedHash"
     type: "string"

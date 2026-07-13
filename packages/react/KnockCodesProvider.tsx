@@ -23,7 +23,7 @@ export function KnockCodesProvider({ children, ...config }: KnockCodesProviderPr
   return <KnockCodesContext.Provider value={state}>{children}</KnockCodesContext.Provider>;
 }
 
-/** Throws outside an `<KnockCodesProvider>` — there is no meaningful standalone default. */
+/** Throws outside a `<KnockCodesProvider>` — there is no meaningful standalone default. */
 export function useKnockCodesContext(): UseKnockCodesResult {
   const context = useContext(KnockCodesContext);
   if (!context) {

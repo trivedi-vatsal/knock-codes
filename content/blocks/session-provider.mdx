@@ -1,6 +1,6 @@
 ---
 title: "Session Provider"
-description: "Shares one useKnockCodes session across a tree, so multiple components stay in sync."
+description: "A copy-paste React session provider for Knock Codes access screens — shares one unlock state across a gate, a logout button, and a timeout banner. Zero dependencies."
 category: "Session"
 tags: ["context", "session"]
 registryName: "session-provider"
@@ -8,6 +8,12 @@ relatedBlocks: ["logout-button", "session-timeout-banner", "access-receipt", "kn
 accessibility: "Renders no UI of its own — purely a context boundary. Accessibility is entirely a function of whatever you render inside it."
 customization: "Reach for this only when two or more components need to share one session — a gate, a Logout Button, and a Session Timeout Banner all reading and acting on the same unlock state. `useKnockCodes`/`<KnockCodes>` remain the right choice standalone."
 bestUsedFor: "Any screen where more than one component (a gate, a logout button, a timeout banner) needs the same session."
+usageSnippet: |
+  <KnockCodesProvider expectedHash={process.env.NEXT_PUBLIC_KNOCK_HASH}>
+    <KnockCodes>
+      <Dashboard />
+    </KnockCodes>
+  </KnockCodesProvider>
 props:
   - name: "expectedHash"
     type: "string"

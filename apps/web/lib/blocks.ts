@@ -22,6 +22,8 @@ export interface BlockFrontmatter {
   accessibility: string;
   customization: string;
   bestUsedFor?: string;
+  /** Minimal composition example shown above the source viewer — this block's actual wiring, ancestor requirements included. */
+  usageSnippet?: string;
 }
 
 export interface Block extends BlockFrontmatter {

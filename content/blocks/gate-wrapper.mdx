@@ -1,6 +1,6 @@
 ---
 title: "Gate Wrapper"
-description: "The shared outer-positioning primitive every visible block composes on."
+description: "A copy-paste React layout primitive for composing a fully custom access-code UI — page-centered or inline positioning, no verification logic. Zero dependencies."
 category: "Core"
 tier: "utility"
 tags: ["core", "layout"]
@@ -9,6 +9,10 @@ relatedBlocks: ["knock-codes", "embedded-gate", "standalone-gate"]
 accessibility: "Purely structural — a single div with positioning classes. No semantics of its own to get wrong."
 customization: "Use it directly when none of the other blocks' visual shells fit — wrap your own fully custom access-code form in it to get the same full-page-centered or inline placement every other block uses, for free."
 bestUsedFor: "Composing a fully custom access-code UI that still needs the standard page/inline positioning."
+usageSnippet: |
+  <GateWrapper variant="page">
+    <YourCustomAccessForm />
+  </GateWrapper>
 props:
   - name: "children"
     type: "ReactNode"

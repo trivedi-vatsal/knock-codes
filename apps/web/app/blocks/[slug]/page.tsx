@@ -8,11 +8,13 @@ import { PropsTable } from "@/components/props-table";
 import { RelatedContent } from "@/components/related-content";
 import { BlockPreview } from "@/components/block-preview";
 import { PreviewPanel } from "@/components/preview-panel";
+import { UsageSnippet } from "@/components/usage-snippet";
 import { ThemeLabRoot } from "@/components/customizer/theme-lab-root";
 import { BlockInstallationSection } from "@/components/block-installation-section";
 import { TemplateNotesSection } from "@/components/template-notes-section";
 import { TemplateSecuritySection } from "@/components/template-security-section";
 import { getAllBlocks, getBlockBySlug } from "@/lib/blocks";
+import { getTemplatesUsingBlock } from "@/lib/templates";
 import { getRegistryItemSource, resolveRegistryDependencies } from "@/lib/registry";
 import { getServerTemplates } from "@/lib/server-templates";
 import { AdaptWithAiButton } from "@/components/adapt-with-ai-button";
@@ -45,6 +47,7 @@ export default async function BlockDetailPage({ params }: { params: Promise<{ sl
   const related = (block.relatedBlocks ?? [])
     .map((slug) => getBlockBySlug(slug))
     .filter((b) => b !== undefined);
+  const usedInTemplates = getTemplatesUsingBlock(block.slug);
   const serverTemplates = getServerTemplates();
   const primaryPath = allFiles.find((f) => f.primary)?.path ?? `packages/react/${block.registryName}`;
   const adaptPrompt = buildBlockAdaptPrompt(block, primaryPath);
@@ -66,7 +69,7 @@ export default async function BlockDetailPage({ params }: { params: Promise<{ sl
           {block.tier && (
             <Badge variant="secondary">
               {block.tier === "primary"
-                ? "Core Primitive"
+                ? "Core Block"
                 : block.tier === "alias"
                   ? "Wrapper Alias"
                   : "Utility"}
@@ -92,6 +95,8 @@ export default async function BlockDetailPage({ params }: { params: Promise<{ sl
         </div>
       )}
 
+      {block.usageSnippet && <UsageSnippet code={block.usageSnippet} />}
+
       <div className="mb-10">
         <PreviewPanel preview={<BlockPreview slug={block.slug} />} files={allFiles} badge={block.registryName} />
       </div>
@@ -111,6 +116,17 @@ export default async function BlockDetailPage({ params }: { params: Promise<{ sl
 
       <TemplateSecuritySection isHtml={false} serverTemplates={serverTemplates} />
 
+      {usedInTemplates.length > 0 && (
+        <section className="mb-10 space-y-4">
+          <SectionHeader
+            label="Ready-made"
+            title="Used in these templates"
+            description="Want the whole screen instead of assembling it yourself? These templates already build on this block."
+          />
+          <RelatedContent items={usedInTemplates} basePath="/templates" />
+        </section>
+      )}
+
       {related.length > 0 && (
         <section className="space-y-4">
           <SectionHeader
@@ -118,7 +134,7 @@ export default async function BlockDetailPage({ params }: { params: Promise<{ sl
             title="Blocks that pair well with this one"
             description="These combine naturally with this block, whether as a shared shell, a shared session, or a common fallback."
           />
-          <RelatedContent blocks={related} />
+          <RelatedContent items={related} />
         </section>
       )}
     </div>

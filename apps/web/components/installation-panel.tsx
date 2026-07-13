@@ -1,6 +1,6 @@
 import { CopyButton } from "./copy-button";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import type { RegistryFile, RegistryItem } from "@/lib/registry";
+import { resolveSiteUrl } from "@/lib/site-url";
 
 function CommandBlock({ command }: { command: string }) {
   return (
@@ -20,37 +20,22 @@ export function InstallationPanel({
   ownFiles: RegistryFile[];
   dependencyItems: RegistryItem[];
 }) {
-  const deployedOrigin = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
-  const localCommand = `npx shadcn@latest add http://localhost:3000/r/react/${registryName}.json`;
-  const deployedCommand = deployedOrigin ? `npx shadcn@latest add ${deployedOrigin}/r/react/${registryName}.json` : null;
+  const siteUrl = resolveSiteUrl();
+  const command = `npx shadcn@latest add ${siteUrl}/r/react/${registryName}.json`;
+  const isLocalDev = siteUrl === "http://localhost:3000";
   const allFiles = [...dependencyItems.flatMap((item) => item.files), ...ownFiles];
 
   return (
     <div className="space-y-4">
       <div>
         <p className="label-mono mb-2 text-muted-foreground">CLI</p>
-        {deployedCommand ? (
-          <Tabs defaultValue="deployed">
-            <TabsList>
-              <TabsTrigger value="deployed">Deployed docs site</TabsTrigger>
-              <TabsTrigger value="local">Local dev</TabsTrigger>
-            </TabsList>
-            <TabsContent value="deployed">
-              <CommandBlock command={deployedCommand} />
-            </TabsContent>
-            <TabsContent value="local">
-              <CommandBlock command={localCommand} />
-            </TabsContent>
-          </Tabs>
-        ) : (
-          <>
-            <CommandBlock command={localCommand} />
-            <p className="mt-2 text-xs text-muted-foreground">
-              Running this site somewhere other than localhost? Set{" "}
-              <code className="rounded bg-muted px-1 py-0.5">NEXT_PUBLIC_SITE_URL</code> and this command switches to
-              that host automatically.
-            </p>
-          </>
+        <CommandBlock command={command} />
+        {isLocalDev && (
+          <p className="mt-2 text-xs text-muted-foreground">
+            Showing the local dev registry. Set{" "}
+            <code className="rounded bg-muted px-1 py-0.5">NEXT_PUBLIC_SITE_URL</code> to preview the deployed command
+            instead.
+          </p>
         )}
       </div>
 
@@ -64,6 +49,10 @@ export function InstallationPanel({
               </li>
             ))}
           </ul>
+          <p className="mt-2 text-xs text-muted-foreground">
+            These install together as one atomic unit — even a presentational or read-only piece needs the full
+            verification stack (hook, types, core) behind it to actually run.
+          </p>
         </div>
       )}
 

@@ -1,6 +1,6 @@
 ---
 title: "Plain HTML Gate"
-description: "One static .html file with an inline script — no React, no build step, no npm install. Open it directly or drop it on any static host."
+description: "A copy-paste HTML password screen for static sites and legacy pages — no React, no build step, no npm install. One file, zero dependencies."
 category: "Templates"
 tags: ["template", "html", "no-build"]
 registryName: "plain-html-gate"
@@ -10,6 +10,13 @@ complexity: "Simple"
 mode: "local"
 language: "html"
 bestUsedFor: "A static site, a legacy page, or anywhere a React build step isn't an option."
+usageSnippet: |
+  <script>
+    var EXPECTED_HASH = "…"; // paste your generated hash here
+  </script>
+  <main id="protected-content" hidden>
+    <!-- your real page markup -->
+  </main>
 accessibility: "The code field has its own label and an accessible show/hide toggle. Errors and the checking state announce through a role=\"status\" aria-live=\"polite\" region, the same contract every other template uses."
 customization: "Everything — styles, verification logic, and the gated content itself — lives in this one file, with no imports at all. Edit EXPECTED_HASH and the #protected-content block directly; there's no prop API since there's no component."
 props: []

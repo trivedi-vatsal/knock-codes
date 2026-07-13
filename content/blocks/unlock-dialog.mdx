@@ -1,6 +1,6 @@
 ---
 title: "Unlock Dialog"
-description: "A non-dismissable modal access-code prompt — no backdrop click, no Escape-to-close."
+description: "A copy-paste React unlock dialog for triggering an access-code prompt from a custom button or menu item. Zero dependencies."
 category: "Modal & Overlay"
 tags: ["modal", "dialog"]
 registryName: "unlock-dialog"
@@ -8,6 +8,18 @@ relatedBlocks: ["protected-modal", "pin-input", "knock-codes"]
 accessibility: "role=\"dialog\" + aria-modal=\"true\" + aria-labelledby pointing at the heading. Focus moves into the panel on open. Deliberately not dismissable via Escape or backdrop click — a gate you can dismiss without unlocking isn't a gate, so this omission is intentional, not a missing feature."
 customization: "Composable standalone — trigger it from your own button or menu item instead of gating content directly, by controlling `open` yourself. Pass `footer` for help text or a support link under the form."
 bestUsedFor: "Triggering an unlock prompt from a custom button or menu item instead of gating content directly."
+usageSnippet: |
+  const { state, error, submit } = useKnockCodes({ expectedHash: hash });
+  const [code, setCode] = useState("");
+
+  <UnlockDialog
+    open={state !== "unlocked"}
+    value={code}
+    onChange={setCode}
+    onSubmit={() => submit(code)}
+    submitting={state === "submitting"}
+    error={error}
+  />
 props:
   - name: "open"
     type: "boolean"

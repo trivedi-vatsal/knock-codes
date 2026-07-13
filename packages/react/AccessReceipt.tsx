@@ -28,7 +28,7 @@ function formatTimestamp(epochMs: number): string {
 
 /**
  * A small "receipt" shown after unlock — a session audit strip, not a
- * verification surface of its own. Requires an `<KnockCodesProvider>`
+ * verification surface of its own. Requires a `<KnockCodesProvider>`
  * ancestor and renders nothing while locked, since there's no session yet
  * to report on.
  */

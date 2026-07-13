@@ -1,12 +1,16 @@
 ---
 title: "Protected Route"
-description: "Knock Codes shaped for route-level guarding, with an optional custom unauthorized state."
+description: "A copy-paste React access screen for route-level guarding — React Router or similar, with an optional custom denial state. Zero dependencies."
 category: "Routing & Layout"
 tags: ["routing"]
 registryName: "protected-route"
 relatedBlocks: ["knock-codes", "protected-layout", "access-denied-screen"]
 accessibility: "Identical to Knock Codes when unauthorizedFallback is unset. When it is set, make sure whatever you pass as the fallback is itself accessible — this block doesn't manage focus for you across a route transition."
 bestUsedFor: "Route-level guarding in React Router or similar, especially with a custom denial screen."
+usageSnippet: |
+  <ProtectedRoute expectedHash={process.env.NEXT_PUBLIC_KNOCK_HASH}>
+    <Dashboard />
+  </ProtectedRoute>
 customization: "Pass `unauthorizedFallback` to render something other than an inline access-code prompt while locked — pair it with your router's own navigation for a redirect-on-lock pattern, or pass an `<AccessDeniedScreen>` for a hard-denial route."
 props:
   - name: "expectedHash"

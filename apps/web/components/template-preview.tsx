@@ -1,18 +1,19 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
-import { sha256Hex } from "@knock-codes/core";
+import type { ReactNode } from "react";
 import {
   KnockCodesTemplate,
   MinimalAccessTemplate,
   BrandedAccessTemplate,
   ModalAccessTemplate,
-  VerificationLoader,
 } from "@knock-codes/react";
 import { usePreviewDark } from "@/components/preview-panel";
 import { FigureLabel } from "@/components/figure-label";
 
 const DEMO_CODE = "demo1234";
+// sha256Hex(DEMO_CODE) — precomputed so the preview renders on first paint
+// instead of waiting on an async Web Crypto round trip for a hash of a fixed string.
+const DEMO_CODE_HASH = "0ead2060b65992dca4769af601a1b3a35ef38cfad2c2c465bb160ea764157c5d";
 const LOGO = <span className="text-lg font-bold text-gray-900 dark:text-gray-50">Acme Inc.</span>;
 
 function DemoUnlockedPanel() {
@@ -104,19 +105,7 @@ const PREVIEWS: Record<string, PreviewFactory> = {
 
 export function TemplatePreview({ slug }: { slug: string }) {
   const dark = usePreviewDark();
-  const [hash, setHash] = useState<string | null>(null);
-
-  useEffect(() => {
-    sha256Hex(DEMO_CODE).then(setHash);
-  }, []);
-
-  if (!hash) {
-    return (
-      <div className="flex h-56 items-center justify-center">
-        <VerificationLoader label="Loading preview…" />
-      </div>
-    );
-  }
+  const hash = DEMO_CODE_HASH;
 
   const factory = PREVIEWS[slug];
   if (!factory) {

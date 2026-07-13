@@ -10,7 +10,7 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata(
   "Blocks — Knock Codes",
-  "Composable access-control primitives for React, for building something custom."
+  "Composable React blocks for building custom access screens."
 );
 
 export default function BlocksPage() {
@@ -20,15 +20,15 @@ export default function BlocksPage() {
   return (
     <div>
       <PageHeader
-        eyebrow="Composable React primitives"
+        eyebrow="Composable React blocks"
         title={
           <>
             Building something <span className="text-primary">custom?</span>
           </>
         }
-        description="A Template gets you shipped in one file. If you'd rather assemble your own layout, these are the 16 tested React primitives our templates are built from — preview live, copy source, or install via shadcn CLI."
+        description="A Template gets you shipped in one file. If you'd rather assemble your own layout, these are the 16 tested React blocks our templates are built from — preview live, copy source, or install via shadcn CLI."
       >
-        <HomeCtaButton href="#gallery">Explore primitives</HomeCtaButton>
+        <HomeCtaButton href="#gallery">Explore blocks</HomeCtaButton>
         <HomeCtaButton href="/templates" variant="ghost">
           Single-file templates
         </HomeCtaButton>
@@ -39,9 +39,9 @@ export default function BlocksPage() {
           <Reveal>
             <SectionHeader
               number="01"
-              label="Primitive blocks"
+              label="Blocks"
               title="16 building blocks"
-              description="From access gates and PIN inputs to layout wrappers, modals, and session indicators — built on packages/core and ready for shadcn add."
+              description="From access screens and PIN inputs to layout wrappers, modals, and session indicators — built on the same tiny core as the templates, installable via the shadcn CLI or copy-paste."
               className="mb-12"
             />
           </Reveal>

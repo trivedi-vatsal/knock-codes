@@ -219,7 +219,7 @@
       "name": "minimal-access-template",
       "type": "registry:block",
       "title": "Minimal Access Template",
-      "description": "The leanest restricted-access screen — a single masked field, a small plain card, no segmented boxes and no default footer copy. Everything in one component.",
+      "description": "The leanest access screen — a single masked field, a small plain card, no segmented boxes and no default footer copy. Everything in one component.",
       "registryDependencies": ["knock-codes-hook", "cx-util"],
       "files": [
         { "path": "packages/react/MinimalAccessTemplate.tsx", "type": "registry:file", "target": "components/knock-codes/react/MinimalAccessTemplate.tsx" }
@@ -229,7 +229,7 @@
       "name": "branded-access-template",
       "type": "registry:block",
       "title": "Branded Access Template",
-      "description": "A split-screen, logo-forward restricted-access screen — brand panel on one side, code entry on the other. The brand panel collapses on small screens.",
+      "description": "A split-screen, logo-forward access screen — brand panel on one side, code entry on the other. The brand panel collapses on small screens.",
       "registryDependencies": ["knock-codes-hook", "cx-util"],
       "files": [
         { "path": "packages/react/BrandedAccessTemplate.tsx", "type": "registry:file", "target": "components/knock-codes/react/BrandedAccessTemplate.tsx" }

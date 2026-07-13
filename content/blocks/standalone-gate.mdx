@@ -1,6 +1,6 @@
 ---
 title: "Standalone Gate"
-description: "The fastest path to a working gate: wrap your app, pass a hash, done."
+description: "A copy-paste React access screen for the fastest possible integration — wrap your app, pass a hash, done. Zero dependencies."
 category: "Routing & Layout"
 tier: "alias"
 tags: ["quickstart"]
@@ -9,6 +9,10 @@ relatedBlocks: ["knock-codes", "embedded-gate"]
 accessibility: "Same access-code entry UI as Knock Codes — full keyboard and screen-reader support inherited, none of it re-implemented."
 customization: "Deliberately a smaller prop surface than Knock Codes — just `expectedHash`/`verify`, `children`, an optional `heading`, and `autoFocus`. Reach for `<KnockCodes>` directly the moment you need storage/timeout/activity-tracking control."
 bestUsedFor: "The fastest possible integration — wrapping an entire app with minimal configuration."
+usageSnippet: |
+  <StandaloneGate expectedHash={process.env.NEXT_PUBLIC_KNOCK_HASH}>
+    <YourApp />
+  </StandaloneGate>
 props:
   - name: "expectedHash"
     type: "string"

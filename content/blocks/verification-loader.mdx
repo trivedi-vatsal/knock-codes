@@ -1,6 +1,6 @@
 ---
 title: "Verification Loader"
-description: "A small presentational spinner + label for the in-flight verification moment."
+description: "A copy-paste React loading indicator for a custom access-code form built on useKnockCodes. Zero dependencies."
 category: "Feedback"
 tier: "utility"
 tags: ["feedback", "loading"]
@@ -9,6 +9,10 @@ relatedBlocks: ["pin-input", "knock-codes"]
 accessibility: "role=\"status\" + aria-live=\"polite\", with the spinner itself marked aria-hidden so screen readers announce the text label once, not a decorative glyph."
 customization: "The same visual `<PinInput>` shows inline via its `submitting` state, exposed standalone for a fully custom access-code form built directly on `useKnockCodes` where you're not using `<PinInput>` at all."
 bestUsedFor: "Composing a fully custom verification UI that still needs the standard in-flight spinner/label."
+usageSnippet: |
+  const { state } = useKnockCodes({ expectedHash: hash });
+
+  {state === "submitting" && <VerificationLoader />}
 props:
   - name: "label"
     type: "string"

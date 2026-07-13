@@ -79,7 +79,7 @@ function SuccessPanel({ theme }: { theme?: "light" | "dark" }) {
 }
 
 /**
- * A split-screen, logo-forward restricted-access screen — brand panel on
+ * A split-screen, logo-forward access screen — brand panel on
  * one side, code entry on the other. The brand panel collapses on small
  * screens so the form stays the only thing visible on mobile. Same
  * `useKnockCodes` contract as every other block.

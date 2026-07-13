@@ -1,6 +1,6 @@
 ---
 title: "Knock Codes"
-description: "A segmented dark card — full-page backdrop, eight-box code entry, support link, and footer help text, all in one file."
+description: "A copy-paste React access screen for client previews and staging apps — segmented code entry, dark card, footer help text. One file, zero dependencies."
 category: "Templates"
 tags: ["template", "segmented"]
 registryName: "knock-codes-template"
@@ -9,7 +9,11 @@ relatedBlocks: ["knock-codes", "pin-input", "standalone-gate"]
 useCase: "Client preview"
 complexity: "Standard"
 mode: "both"
-bestUsedFor: "A polished, on-brand restricted-access page you can ship as-is, no assembly required."
+bestUsedFor: "A polished, on-brand access page you can ship as-is, no assembly required."
+usageSnippet: |
+  <KnockCodesTemplate expectedHash={process.env.NEXT_PUBLIC_KNOCK_HASH}>
+    <YourApp />
+  </KnockCodesTemplate>
 accessibility: "Each code box has its own aria-label (\"Access code character N of 8\"), the group has role=\"group\", and Backspace/Arrow-key navigation between boxes works without a mouse. Errors and the submitting state announce through a shared aria-live=\"polite\" region, same contract as every other block."
 customization: "Everything is one file — background, card, heading, description, code entry, button, support link, and footer are all inline, not composed from Gate Wrapper/PIN Input. Pass `logo` for your own wordmark, `codeLength`/`groupSize` to change the code shape, and `labels` to override every string. For a single masked field instead of segmented boxes, use Knock Codes + PIN Input instead."
 props:
@@ -58,5 +62,5 @@ props:
     description: "Extra classes on the full-page backdrop."
 ---
 
-The fastest way to a fully-branded, polished restricted-access page — copy one file, wire a hash and a logo,
+The fastest way to a fully-branded, polished access page — copy one file, wire a hash and a logo,
 done. Paste a code across any box and it distributes automatically across the group.

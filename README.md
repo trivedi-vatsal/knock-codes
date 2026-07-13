@@ -203,9 +203,10 @@ npx shadcn@latest add https://knock.codes/r/react/knock-codes-template.json
 npx shadcn@latest add trivedi-vatsal/knock-codes/knock-codes-template
 ```
 
-Set `NEXT_PUBLIC_SITE_URL=https://knock.codes` (e.g. in `apps/web/.env.local` or your host's env config) to
-your deployed site's origin, and every install command shown on the site switches from the localhost
-example to that URL automatically.
+Production builds default every install command shown on the site to `https://knock.codes` automatically —
+set `NEXT_PUBLIC_SITE_URL` (e.g. in `apps/web/.env.local` or your host's env config, see `apps/web/.env.example`)
+only if you're deploying this site to a different origin (a fork, a preview URL). In local dev, commands show
+the `localhost:3000` registry unless you override it the same way.
 
 ## License
 

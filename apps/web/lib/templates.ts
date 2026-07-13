@@ -14,6 +14,8 @@ export interface TemplateFrontmatter {
   accessibility: string;
   customization: string;
   bestUsedFor?: string;
+  /** Minimal composition example shown above the source viewer — this template's actual wiring. */
+  usageSnippet?: string;
   useCase?: string;
   complexity?: "Simple" | "Standard" | "Advanced";
   mode?: "local" | "server" | "both";
@@ -52,4 +54,9 @@ export function getAllTemplates(): Template[] {
 
 export function getTemplateBySlug(slug: string): Template | undefined {
   return getAllTemplates().find((template) => template.slug === slug);
+}
+
+/** Inverse of a template's own `relatedBlocks` — every template built from this block, for the "used in these templates" link back from a block's detail page. */
+export function getTemplatesUsingBlock(blockSlug: string): Template[] {
+  return getAllTemplates().filter((template) => template.relatedBlocks?.includes(blockSlug));
 }

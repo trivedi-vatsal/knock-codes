@@ -32,10 +32,16 @@ export function TemplateCard({ template }: { template: Template }) {
                 </div>
                 <span className="ml-1 truncate font-medium text-foreground/85">{filename}</span>
               </div>
-              {template.mode && (
-                <span className="rounded border border-border/60 bg-background/80 px-1.5 py-0.5 text-[9px] font-medium tracking-wider uppercase text-muted-foreground">
-                  {MODE_LABEL[template.mode]}
+              {template.language === "html" ? (
+                <span className="rounded border border-amber-500/30 bg-amber-500/10 px-1.5 py-0.5 text-[9px] font-medium tracking-wider uppercase text-amber-600 dark:text-amber-400">
+                  No React · No build step
                 </span>
+              ) : (
+                template.mode && (
+                  <span className="rounded border border-border/60 bg-background/80 px-1.5 py-0.5 text-[9px] font-medium tracking-wider uppercase text-muted-foreground">
+                    {MODE_LABEL[template.mode]}
+                  </span>
+                )
               )}
             </div>
 
@@ -66,10 +72,10 @@ export function TemplateCard({ template }: { template: Template }) {
 
           {/* Badges */}
           {(template.useCase || template.complexity) && (
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-4 flex flex-wrap items-center gap-2">
               {template.useCase && (
-                <span className="inline-flex items-center rounded-md border border-primary/30 bg-primary/10 px-2 py-0.5 font-mono text-xs font-medium text-primary">
-                  {template.useCase}
+                <span className="inline-flex items-center gap-1 rounded-md border border-primary/30 bg-primary/10 px-2 py-0.5 font-mono text-xs font-medium text-primary">
+                  <span className="text-primary/60">Best for:</span> {template.useCase}
                 </span>
               )}
               {template.complexity && (

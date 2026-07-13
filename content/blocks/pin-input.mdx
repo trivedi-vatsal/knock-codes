@@ -1,6 +1,6 @@
 ---
 title: "PIN Input"
-description: "Masked access-code input (PIN or passphrase) with paste support and accessible loading/error states."
+description: "A copy-paste React access-code field for building a fully custom gate UI on useKnockCodes — masked input, paste support, accessible errors. Zero dependencies."
 category: "Core"
 tags: ["core", "form"]
 registryName: "pin-input"
@@ -8,6 +8,17 @@ relatedBlocks: ["knock-codes", "unlock-dialog", "verification-loader"]
 accessibility: "Labeled via a real <label>, not just a placeholder. The show/hide toggle is a real button with an aria-label that flips with its state. Errors and the submitting label live in a shared aria-live=\"polite\" region."
 customization: "Deliberately a single masked text field, not a segmented per-character box grid — that shape supports arbitrary-length passphrases, not just 4-6 digit PINs. It carries no verification logic of its own, so it drops into any custom gate UI built on `useKnockCodes`."
 bestUsedFor: "Building a custom access-code form on useKnockCodes without adopting a full template's layout."
+usageSnippet: |
+  const { state, error, submit } = useKnockCodes({ expectedHash: hash });
+  const [code, setCode] = useState("");
+
+  <PinInput
+    value={code}
+    onChange={setCode}
+    onSubmit={() => submit(code)}
+    submitting={state === "submitting"}
+    error={error}
+  />
 props:
   - name: "value"
     type: "string"
