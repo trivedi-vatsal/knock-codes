@@ -4,7 +4,7 @@ description: "A copy-paste React access screen for gating one section of a live 
 category: "Templates"
 tags: ["template", "modal", "overlay"]
 registryName: "modal-access-template"
-version: "1.0.0"
+version: "1.0.1"
 relatedBlocks: ["protected-modal", "protected-card", "unlock-dialog"]
 useCase: "Staging app"
 complexity: "Advanced"
@@ -23,6 +23,9 @@ props:
   - name: "verify"
     type: "VerifyFn"
     description: "Custom async verification function, for server mode."
+  - name: "validateSession"
+    type: "(session: KnockCodesSession) => boolean | Promise<boolean>"
+    description: "Called when a session is read from storage. Return false or throw to reject it (server-mode token check)."
   - name: "children"
     type: "ReactNode"
     required: true

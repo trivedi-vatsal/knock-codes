@@ -117,7 +117,7 @@ export function KnockCodesTemplate({
   ...config
 }: KnockCodesTemplateProps) {
   const merged = { ...TEMPLATE_LABELS, ...labels };
-  const { state, error, submit } = useKnockCodes({
+  const { state, error, submit, ready } = useKnockCodes({
     ...config,
     storage: remember === "session" ? "sessionStorage" : config.storage,
   });
@@ -144,6 +144,8 @@ export function KnockCodesTemplate({
     const timer = setTimeout(() => setShowChildren(true), 550);
     return () => clearTimeout(timer);
   }, [state]);
+
+  if (!ready) return null;
 
   if (state === "unlocked") {
     if (!showChildren) {

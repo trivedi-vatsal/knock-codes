@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { useKnockCodes } from "./useKnockCodes.ts";
 import { UnlockDialog } from "./UnlockDialog.tsx";
-import type { KnockCodesConfig, KnockCodesLabels } from "./types.ts";
+import { GateSession } from "./KnockCodesContext.tsx";
+import type { KnockCodesConfig, KnockCodesLabels, UseKnockCodesResult } from "./types.ts";
 import { cx } from "./cx.ts";
 
 export interface ProtectedModalProps extends KnockCodesConfig {
@@ -19,8 +19,26 @@ export interface ProtectedModalProps extends KnockCodesConfig {
  * a bare PIN screen.
  */
 export function ProtectedModal({ children, labels, className, ...config }: ProtectedModalProps) {
-  const { state, error, submit } = useKnockCodes(config);
+  return (
+    <GateSession config={config}>
+      {(session) => (
+        <ProtectedModalView labels={labels} className={className} session={session}>
+          {children}
+        </ProtectedModalView>
+      )}
+    </GateSession>
+  );
+}
+
+function ProtectedModalView({
+  children,
+  labels,
+  className,
+  session,
+}: Pick<ProtectedModalProps, "children" | "labels" | "className"> & { session: UseKnockCodesResult }) {
+  const { ready, state, error, submit } = session;
   const [code, setCode] = useState("");
+  if (!ready) return null;
   const locked = state !== "unlocked";
 
   const handleSubmit = async () => {

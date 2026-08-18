@@ -3,6 +3,8 @@ import assert from "node:assert/strict";
 import { render, cleanup, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { KnockCodes } from "../KnockCodes.tsx";
+import { KnockCodesProvider } from "../KnockCodesProvider.tsx";
+import { LogoutButton } from "../LogoutButton.tsx";
 import { sha256Hex } from "../../core/hash.ts";
 
 test.afterEach(cleanup);
@@ -15,7 +17,7 @@ test("renders the PIN entry UI in place of children when locked", async () => {
     </KnockCodes>
   );
 
-  assert.ok(screen.getByText("This page is protected"));
+  assert.ok(await screen.findByText("This page is protected"));
   assert.ok(screen.getByLabelText("Access code"));
   assert.equal(screen.queryByText("Protected content"), null);
 });
@@ -29,7 +31,7 @@ test("renders children immediately (no reload) once unlocked with the correct co
     </KnockCodes>
   );
 
-  await user.type(screen.getByLabelText("Access code"), "secret{Enter}");
+  await user.type(await screen.findByLabelText("Access code"), "secret{Enter}");
 
   assert.ok(await screen.findByText("Protected content"));
   assert.equal(screen.queryByLabelText("Access code"), null);
@@ -44,7 +46,7 @@ test("wrong code shows the invalid-code inline error and stays locked", async ()
     </KnockCodes>
   );
 
-  await user.type(screen.getByLabelText("Access code"), "wrong{Enter}");
+  await user.type(await screen.findByLabelText("Access code"), "wrong{Enter}");
 
   assert.ok(await screen.findByText("That code didn't work. Try again."));
   assert.equal(screen.queryByText("Protected content"), null);
@@ -58,7 +60,7 @@ test("a network-mode failure shows the distinct network error, not the invalid-c
     </KnockCodes>
   );
 
-  await user.type(screen.getByLabelText("Access code"), "anything{Enter}");
+  await user.type(await screen.findByLabelText("Access code"), "anything{Enter}");
 
   assert.ok(await screen.findByText("Couldn't reach the server. Try again."));
 });
@@ -71,7 +73,7 @@ test("labels prop overrides default copy (localization)", async () => {
     </KnockCodes>
   );
 
-  assert.ok(screen.getByText("Entrez le code"));
+  assert.ok(await screen.findByText("Entrez le code"));
   assert.ok(screen.getByLabelText("Code d'accès"));
 });
 
@@ -84,7 +86,7 @@ test("input is cleared after a failed attempt", async () => {
     </KnockCodes>
   );
 
-  const input = screen.getByLabelText("Access code") as HTMLInputElement;
+  const input = (await screen.findByLabelText("Access code")) as HTMLInputElement;
   await user.type(input, "wrong{Enter}");
 
   await screen.findByText("That code didn't work. Try again.");
@@ -99,4 +101,40 @@ test("mutual exclusivity of expectedHash and verify throws at mount", () => {
       </KnockCodes>
     );
   }, /supply either `expectedHash` or `verify`, not both/);
+});
+
+test("standalone KnockCodes still unlocks with no provider", async () => {
+  const user = userEvent.setup();
+  const hash = await sha256Hex("secret");
+  render(
+    <KnockCodes expectedHash={hash} storage="memory">
+      <div>Protected content</div>
+    </KnockCodes>
+  );
+
+  await user.type(await screen.findByLabelText("Access code"), "secret{Enter}");
+  assert.ok(await screen.findByText("Protected content"));
+});
+
+test("logout inside a provider relocks the gate in the same tab", async () => {
+  const user = userEvent.setup();
+  const hash = await sha256Hex("secret");
+  render(
+    <KnockCodesProvider expectedHash={hash} storage="memory">
+      <KnockCodes>
+        <div>
+          Protected content
+          <LogoutButton />
+        </div>
+      </KnockCodes>
+    </KnockCodesProvider>
+  );
+
+  await user.type(await screen.findByLabelText("Access code"), "secret{Enter}");
+  assert.ok(await screen.findByText("Protected content"));
+
+  await user.click(screen.getByRole("button", { name: "Log out" }));
+
+  assert.ok(await screen.findByLabelText("Access code"));
+  assert.equal(screen.queryByText("Protected content"), null);
 });

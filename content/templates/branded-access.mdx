@@ -4,7 +4,7 @@ description: "A copy-paste React password screen for client previews and private
 category: "Templates"
 tags: ["template", "branded", "split-screen"]
 registryName: "branded-access-template"
-version: "1.0.0"
+version: "1.0.1"
 relatedBlocks: ["knock-codes", "pin-input", "protected-layout"]
 useCase: "Client preview"
 complexity: "Standard"
@@ -26,6 +26,9 @@ props:
   - name: "verify"
     type: "VerifyFn"
     description: "Custom async verification function, for server mode."
+  - name: "validateSession"
+    type: "(session: KnockCodesSession) => boolean | Promise<boolean>"
+    description: "Called when a session is read from storage. Return false or throw to reject it (server-mode token check)."
   - name: "children"
     type: "ReactNode"
     required: true

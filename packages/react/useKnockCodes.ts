@@ -29,6 +29,7 @@ export function useKnockCodes(config: KnockCodesConfig): UseKnockCodesResult {
     storageKey,
     timeout = DEFAULT_TIMEOUT_MS,
     activityTracking = false,
+    validateSession,
   } = config;
 
   // Resolved once per config identity; throws synchronously (during render)
@@ -38,15 +39,64 @@ export function useKnockCodes(config: KnockCodesConfig): UseKnockCodesResult {
   const store = useMemo(() => createSessionStore(storage, { storageKey }), [storage, storageKey]);
 
   const [session, setSession] = useState<KnockCodesSession | null>(null);
+  const [ready, setReady] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<KnockCodesError | null>(null);
 
-  // Initial read is deferred to an effect (never runs during SSR) so the
-  // server-rendered/first-paint markup never depends on storage that may not
-  // exist yet — storage.ts throws rather than silently no-op-ing.
+  const validateSessionRef = useRef(validateSession);
+  validateSessionRef.current = validateSession;
+
+  // Initial read + cross-tab sync. Storage is never read during render
+  // (SSR-safe). `ready` stays false until this settles so gates can skip
+  // the PIN flash. `validateSession` (ref) runs on every apply so a forged
+  // `{ unlockedAt, expiresAt }` can be rejected in server mode.
   useEffect(() => {
-    const current = store.get();
-    setSession(current && !isExpired(current) ? current : null);
+    let generation = 0;
+    let cancelled = false;
+
+    const apply = async () => {
+      const gen = ++generation;
+      const current = store.get();
+      if (!current || isExpired(current)) {
+        if (current) store.clear();
+        if (!cancelled && gen === generation) {
+          setSession(null);
+          setReady(true);
+        }
+        return;
+      }
+      const validate = validateSessionRef.current;
+      if (!validate) {
+        if (!cancelled && gen === generation) {
+          setSession(current);
+          setReady(true);
+        }
+        return;
+      }
+      let ok = false;
+      try {
+        ok = await Promise.resolve(validate(current));
+      } catch {
+        ok = false;
+      }
+      if (cancelled || gen !== generation) return;
+      if (!ok) {
+        store.clear();
+        setSession(null);
+      } else {
+        setSession(current);
+      }
+      setReady(true);
+    };
+
+    void apply();
+    const unsubscribe = store.subscribe(() => {
+      void apply();
+    });
+    return () => {
+      cancelled = true;
+      unsubscribe();
+    };
   }, [store]);
 
   // Expiry: checked on an interval and on tab focus.
@@ -65,13 +115,6 @@ export function useKnockCodes(config: KnockCodesConfig): UseKnockCodesResult {
       window.removeEventListener("focus", checkExpiry);
     };
   }, [store]);
-
-  // Cross-tab sync: only the localStorage-backed store ever actually calls
-  // back here — sessionStorage/memory stores' subscribe is a no-op.
-  useEffect(() => store.subscribe(() => {
-    const current = store.get();
-    setSession(current && !isExpired(current) ? current : null);
-  }), [store]);
 
   // Activity tracking (opt-in): sliding-timeout model, throttled writes.
   const lastTouchAtRef = useRef(0);
@@ -108,23 +151,26 @@ export function useKnockCodes(config: KnockCodesConfig): UseKnockCodesResult {
       setSubmitting(true);
       setError(null);
 
-      let result: VerifyResult;
       try {
-        result = await verifyFn(code);
-      } catch {
-        // A throwing VerifyFn is treated as a network failure.
-        result = { ok: false, reason: "network" };
-      }
+        let result: VerifyResult;
+        try {
+          result = await verifyFn(code);
+        } catch {
+          // A throwing VerifyFn is treated as a network failure.
+          result = { ok: false, reason: "network" };
+        }
 
-      submittingRef.current = false;
-      setSubmitting(false);
-      if (result.ok) {
-        const next = createSession(result, timeout);
-        store.set(next);
-        setSession(next);
-      } else {
-        // "unknown"/omitted collapses into "invalid".
-        setError({ reason: result.reason === "network" ? "network" : "invalid" });
+        if (result.ok) {
+          const next = createSession(result, timeout);
+          store.set(next);
+          setSession(next);
+        } else {
+          // "unknown"/omitted collapses into "invalid".
+          setError({ reason: result.reason === "network" ? "network" : "invalid" });
+        }
+      } finally {
+        submittingRef.current = false;
+        setSubmitting(false);
       }
     },
     [verifyFn, store, timeout]
@@ -141,6 +187,7 @@ export function useKnockCodes(config: KnockCodesConfig): UseKnockCodesResult {
     state,
     error: state === "idle" ? error : null, // error is an annotation on idle, not its own state
     session,
+    ready,
     submit,
     logout,
   };

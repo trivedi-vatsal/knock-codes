@@ -11,6 +11,17 @@ export const metadata: Metadata = pageMetadata(
 
 const ENTRIES = [
   {
+    date: "2026-08-18",
+    added: [
+      "Optional validateSession on useKnockCodes and the provider — reject a stored session (for example by checking the server-issued token) on restore.",
+      "ready on the hook result; gates and React templates wait for the first storage read so a returning visitor doesn't flash the PIN UI.",
+    ],
+    changed: [
+      "Gates under KnockCodesProvider join the shared session. Same-tab logout actually relocks the gate.",
+      "README: server mode hides the hash, not bundled children; distribution is the registry, not npm.",
+    ],
+  },
+  {
     date: "2026-07-09",
     added: [
       "A numbered section system on the homepage (01 Templates through 06 FAQ) and FIG.01-style labels on every live demo/preview (hero, feature grid, template and block detail pages).",

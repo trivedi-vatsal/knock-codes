@@ -15,8 +15,10 @@ whole integration: no account, no backend, and no package living in your `node_m
 one. Every line you ship is yours to read, edit, and own — inspired by [shadcn/ui](https://ui.shadcn.com)
 and [Tremor Blocks](https://blocks.tremor.so).
 
-Knock Codes ships components like `<KnockCodes>` and `useKnockCodes`, distributed under the
-`@knock-codes/core` and `@knock-codes/react` packages — see [Structure](#structure) below.
+Knock Codes ships components like `<KnockCodes>` and `useKnockCodes`. `@knock-codes/core` and
+`@knock-codes/react` are the in-repo sources — they are **not** published to npm. Distribution is the
+[shadcn-compatible registry](https://knock.codes) (copy-paste / `npx shadcn add`). See
+[Structure](#structure) below.
 
 ## When to use this
 
@@ -32,8 +34,9 @@ Knock Codes ships components like `<KnockCodes>` and `useKnockCodes`, distribute
 - Admin authorization or anything gating a real write path — pair with real auth instead.
 - Compliance-sensitive data (health records, financial data, PII at rest) — local mode's hash ships in
   the client bundle by design; anyone can read it in DevTools.
-- Anywhere the cost of someone bypassing the gate is high. If that's true for you, use server mode
-  instead of local mode, or skip this entirely for a real auth provider.
+- Anywhere the cost of someone bypassing the gate is high. Server mode hides the hash and lets you
+  rate-limit guesses; it still does not hide client-rendered children. Fetch sensitive data after
+  unlock, or use a real auth provider.
 
 See [`apps/web/app/security`](apps/web/app/security) (the site's `/security` page) for the full threat
 model, including what server mode changes and doesn't.
@@ -132,8 +135,8 @@ Browse live, interactive previews and copy-paste source for every block and temp
 | --- | --- | --- |
 | Backend required | No | Yes (any small endpoint) |
 | Where the check runs | In the browser, against a hash in the client bundle | On your server |
-| Bypassable via DevTools | Yes — the hash is public by design | No |
-| Good for | Casual friction on low-stakes links | Anything where a bypass actually matters |
+| What DevTools can see | The hash, and a forgeable session record | Not the hash. A stored `{ unlockedAt, expiresAt }` can still skip the prompt unless you pass `validateSession` to re-check the token. Children you already bundled stay in the JS. |
+| Good for | Casual friction on low-stakes links | Hiding the hash and rate-limiting guesses. Not a substitute for keeping sensitive data on the server. |
 
 Both modes render the same component with the same markup — only the prop differs. See
 [`apps/web/app/security`](apps/web/app/security) for the full comparison and rate-limiting guidance.

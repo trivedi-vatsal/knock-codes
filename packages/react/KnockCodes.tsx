@@ -1,11 +1,10 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { useKnockCodes } from "./useKnockCodes.ts";
 import { PinInput } from "./PinInput.tsx";
 import { GateWrapper, type GateWrapperVariant } from "./GateWrapper.tsx";
-import { DEFAULT_LABELS, type KnockCodesConfig, type KnockCodesLabels } from "./types.ts";
-import { cx } from "./cx.ts";
+import { GateSession } from "./KnockCodesContext.tsx";
+import { DEFAULT_LABELS, type KnockCodesConfig, type KnockCodesLabels, type UseKnockCodesResult } from "./types.ts";
 
 export interface KnockCodesProps extends KnockCodesConfig {
   children: ReactNode;
@@ -16,19 +15,26 @@ export interface KnockCodesProps extends KnockCodesConfig {
   className?: string;
 }
 
-/**
- * Wrapper component. Renders `children` only when a valid session exists;
- * otherwise renders the PIN entry UI. There is no separate "mount loading"
- * state — the PIN entry UI covers it.
- */
-export function KnockCodes({ children, labels, variant = "page", autoFocus = true, className, ...config }: KnockCodesProps) {
-  const { state, error, submit } = useKnockCodes(config);
+function KnockCodesView({
+  children,
+  labels,
+  variant = "page",
+  autoFocus = true,
+  className,
+  verify,
+  ready,
+  state,
+  error,
+  submit,
+}: Pick<KnockCodesProps, "children" | "labels" | "variant" | "autoFocus" | "className" | "verify"> &
+  Pick<UseKnockCodesResult, "ready" | "state" | "error" | "submit">) {
   const [code, setCode] = useState("");
 
+  if (!ready) return null;
   if (state === "unlocked") return <>{children}</>;
 
   const merged = { ...DEFAULT_LABELS, ...labels };
-  const modeLabel = config.verify ? "SERVER VERIFY" : "LOCAL HASH";
+  const modeLabel = verify ? "SERVER VERIFY" : "LOCAL HASH";
 
   const handleSubmit = async () => {
     await submit(code);
@@ -67,5 +73,36 @@ export function KnockCodes({ children, labels, variant = "page", autoFocus = tru
         />
       </div>
     </GateWrapper>
+  );
+}
+
+/**
+ * Wrapper component. Renders `children` only when a valid session exists;
+ * otherwise renders the PIN entry UI. There is no separate "mount loading"
+ * state — nothing is shown until storage has been read (`ready`), then the
+ * PIN entry UI covers the locked case.
+ *
+ * Inside a `<KnockCodesProvider>`, this joins the shared session instead of
+ * creating a second one. Put `expectedHash` / `verify` on the provider.
+ */
+export function KnockCodes({ children, labels, variant = "page", autoFocus = true, className, ...config }: KnockCodesProps) {
+  return (
+    <GateSession config={config}>
+      {(session) => (
+        <KnockCodesView
+          labels={labels}
+          variant={variant}
+          autoFocus={autoFocus}
+          className={className}
+          verify={config.verify}
+          ready={session.ready}
+          state={session.state}
+          error={session.error}
+          submit={session.submit}
+        >
+          {children}
+        </KnockCodesView>
+      )}
+    </GateSession>
   );
 }

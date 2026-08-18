@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { renderHook, act, cleanup } from "@testing-library/react";
+import { renderHook, act, cleanup, waitFor } from "@testing-library/react";
 import { useKnockCodes } from "../useKnockCodes.ts";
 import { sha256Hex } from "../../core/hash.ts";
 
@@ -8,6 +8,7 @@ test.afterEach(cleanup);
 
 test("starts idle with no existing session", async () => {
   const { result } = renderHook(() => useKnockCodes({ expectedHash: "irrelevant", storage: "memory" }));
+  assert.equal(result.current.ready, true);
   assert.equal(result.current.state, "idle");
   assert.equal(result.current.session, null);
   assert.equal(result.current.error, null);
@@ -271,6 +272,75 @@ test("default storage is localStorage, and cross-tab changes propagate via the s
     assert.deepEqual(result.current.session, foreignSession);
 
     window.localStorage.removeItem(storageKey);
+  } finally {
+    delete (globalThis as { localStorage?: unknown }).localStorage;
+  }
+});
+
+test("a stored session is restored on mount when validateSession is omitted", async () => {
+  globalThis.localStorage = window.localStorage;
+  try {
+    const storageKey = `knock-codes:test:${Math.random().toString(36).slice(2)}`;
+    const stored = { unlockedAt: Date.now(), expiresAt: Date.now() + 60_000 };
+    window.localStorage.setItem(storageKey, JSON.stringify(stored));
+
+    const { result } = renderHook(() => useKnockCodes({ expectedHash: "x", storageKey }));
+    await waitFor(() => assert.equal(result.current.ready, true));
+    assert.equal(result.current.state, "unlocked");
+    assert.deepEqual(result.current.session, stored);
+
+    window.localStorage.removeItem(storageKey);
+  } finally {
+    delete (globalThis as { localStorage?: unknown }).localStorage;
+  }
+});
+
+test("validateSession returning false clears the stored session and stays idle", async () => {
+  globalThis.localStorage = window.localStorage;
+  try {
+    const storageKey = `knock-codes:test:${Math.random().toString(36).slice(2)}`;
+    const stored = { unlockedAt: Date.now(), expiresAt: Date.now() + 60_000, token: "forged" };
+    window.localStorage.setItem(storageKey, JSON.stringify(stored));
+
+    const { result } = renderHook(() =>
+      useKnockCodes({
+        verify: async () => ({ ok: true }),
+        storageKey,
+        validateSession: (session) => session.token === "good",
+      })
+    );
+
+    await waitFor(() => assert.equal(result.current.ready, true));
+    assert.equal(result.current.state, "idle");
+    assert.equal(result.current.session, null);
+    assert.equal(window.localStorage.getItem(storageKey), null);
+  } finally {
+    delete (globalThis as { localStorage?: unknown }).localStorage;
+  }
+});
+
+test("validateSession throwing is treated as a rejected restore", async () => {
+  globalThis.localStorage = window.localStorage;
+  try {
+    const storageKey = `knock-codes:test:${Math.random().toString(36).slice(2)}`;
+    window.localStorage.setItem(
+      storageKey,
+      JSON.stringify({ unlockedAt: Date.now(), expiresAt: Date.now() + 60_000, token: "x" })
+    );
+
+    const { result } = renderHook(() =>
+      useKnockCodes({
+        verify: async () => ({ ok: true }),
+        storageKey,
+        validateSession: async () => {
+          throw new Error("network");
+        },
+      })
+    );
+
+    await waitFor(() => assert.equal(result.current.ready, true));
+    assert.equal(result.current.state, "idle");
+    assert.equal(window.localStorage.getItem(storageKey), null);
   } finally {
     delete (globalThis as { localStorage?: unknown }).localStorage;
   }

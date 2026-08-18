@@ -11,7 +11,7 @@ export type {
 } from "./types.ts";
 
 export { GateWrapper, type GateWrapperProps, type GateWrapperVariant } from "./GateWrapper.tsx";
-export { KnockCodesProvider, useKnockCodesContext, type KnockCodesProviderProps } from "./KnockCodesProvider.tsx";
+export { KnockCodesProvider, useKnockCodesContext, useOptionalKnockCodesContext, type KnockCodesProviderProps } from "./KnockCodesProvider.tsx";
 export { ProtectedRoute, type ProtectedRouteProps } from "./ProtectedRoute.tsx";
 export { ProtectedLayout, type ProtectedLayoutProps } from "./ProtectedLayout.tsx";
 export { ProtectedModal, type ProtectedModalProps } from "./ProtectedModal.tsx";

@@ -6,7 +6,7 @@ tags: ["context", "session"]
 registryName: "session-provider"
 relatedBlocks: ["logout-button", "session-timeout-banner", "access-receipt", "knock-codes"]
 accessibility: "Renders no UI of its own — purely a context boundary. Accessibility is entirely a function of whatever you render inside it."
-customization: "Reach for this only when two or more components need to share one session — a gate, a Logout Button, and a Session Timeout Banner all reading and acting on the same unlock state. `useKnockCodes`/`<KnockCodes>` remain the right choice standalone."
+customization: "Reach for this only when two or more components need to share one session — a gate, a Logout Button, and a Session Timeout Banner all reading and acting on the same unlock state. Gates under this provider (`<KnockCodes>`, `<ProtectedCard>`, `<ProtectedModal>`, `<ProtectedRoute>`) join that session automatically instead of spinning up a second hook. Put `expectedHash` / `verify` on the provider; repeating them on the gate is ignored. `useKnockCodes` remains the right choice for a fully custom standalone prompt."
 bestUsedFor: "Any screen where more than one component (a gate, a logout button, a timeout banner) needs the same session."
 usageSnippet: |
   <KnockCodesProvider expectedHash={process.env.NEXT_PUBLIC_KNOCK_HASH}>
@@ -29,6 +29,9 @@ props:
     type: "number"
     default: "1800000"
     description: "Session lifetime in milliseconds."
+  - name: "validateSession"
+    type: "(session: KnockCodesSession) => boolean | Promise<boolean>"
+    description: "Called when a session is read from storage. Return false or throw to reject it (server-mode token check)."
   - name: "children"
     type: "ReactNode"
     required: true

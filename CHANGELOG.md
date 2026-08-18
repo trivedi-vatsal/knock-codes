@@ -41,6 +41,35 @@ in that model. Dates are release dates of this repository, not npm publishes.
 
 ## Unreleased
 
+### Added
+- Optional `validateSession` on `useKnockCodes` / `<KnockCodes>` / the provider. Called when a session is
+  read from storage; return false or throw to reject it. The Next.js server template accepts `POST { token }`
+  so a stored `{ unlockedAt, expiresAt }` cannot skip the gate without a still-valid token.
+- `ready` on `UseKnockCodesResult` — false until that first storage read (and optional validation) finishes.
+  Gates and the four React templates render nothing until `ready`, so a returning visitor doesn't flash the
+  PIN UI.
+- `useOptionalKnockCodesContext` / `GateSession` — gates under `<KnockCodesProvider>` join the shared
+  session instead of creating a second hook.
+
+### Fixed
+- Same-tab logout actually relocks `<KnockCodes>` (and card/modal/route) when they sit under a provider.
+  Previously each gate called `useKnockCodes` itself; `storage` events don't fire in the originating tab.
+- `submit()` now clears its in-flight ref in a `finally`, so a throw after verify can't leave the hook stuck
+  submitting.
+
+### Changed
+- README local-vs-server table: server mode hides the hash; it does not hide bundled children or stop a
+  forged session unless `validateSession` is wired. Packages are not on npm — distribution is the registry.
+
+### Template versions
+| Template | Version |
+| --- | --- |
+| `knock-codes-template` | 1.0.1 |
+| `branded-access-template` | 1.0.1 |
+| `minimal-access-template` | 1.0.1 |
+| `modal-access-template` | 1.0.1 |
+| `plain-html-gate` | 1.0.0 |
+
 ### Changed
 - Rebranded the public site and docs to **Knock Codes** at `https://knock.codes`. Internal package names
   (`@knock-codes/core`, `@knock-codes/react`), component APIs (`<KnockCodes>`, `useKnockCodes`, etc.),
