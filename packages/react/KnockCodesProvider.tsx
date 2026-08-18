@@ -1,10 +1,11 @@
 "use client";
 
-import { createContext, useContext, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { useKnockCodes } from "./useKnockCodes.ts";
-import type { KnockCodesConfig, UseKnockCodesResult } from "./types.ts";
+import { KnockCodesContext } from "./KnockCodesContext.tsx";
+import type { KnockCodesConfig } from "./types.ts";
 
-const KnockCodesContext = createContext<UseKnockCodesResult | null>(null);
+export { useKnockCodesContext, useOptionalKnockCodesContext } from "./KnockCodesContext.tsx";
 
 export interface KnockCodesProviderProps extends KnockCodesConfig {
   children: ReactNode;
@@ -17,17 +18,12 @@ export interface KnockCodesProviderProps extends KnockCodesConfig {
  * verification/session lifecycle. Optional: `useKnockCodes` or `<KnockCodes>`
  * work standalone with no provider; reach for this only when two or more
  * components need to share one session.
+ *
+ * Gates under this provider (`<KnockCodes>`, `<ProtectedCard>`, …) join the
+ * shared session automatically. Put `expectedHash` / `verify` on the
+ * provider; repeating them on the gate is ignored.
  */
 export function KnockCodesProvider({ children, ...config }: KnockCodesProviderProps) {
   const state = useKnockCodes(config);
   return <KnockCodesContext.Provider value={state}>{children}</KnockCodesContext.Provider>;
-}
-
-/** Throws outside a `<KnockCodesProvider>` — there is no meaningful standalone default. */
-export function useKnockCodesContext(): UseKnockCodesResult {
-  const context = useContext(KnockCodesContext);
-  if (!context) {
-    throw new Error("Knock Codes: useKnockCodesContext must be used within an <KnockCodesProvider>.");
-  }
-  return context;
 }

@@ -79,7 +79,7 @@ export function MinimalAccessTemplate({
   ...config
 }: MinimalAccessTemplateProps) {
   const merged = { ...TEMPLATE_LABELS, ...labels };
-  const { state, error, submit } = useKnockCodes({
+  const { state, error, submit, ready } = useKnockCodes({
     ...config,
     storage: remember === "session" ? "sessionStorage" : config.storage,
   });
@@ -123,6 +123,8 @@ function SuccessPanel({ theme }: { theme?: "light" | "dark" }) {
   );
   return theme === "dark" ? <div className="dark h-full w-full">{panel}</div> : panel;
 }
+
+  if (!ready) return null;
 
   if (state === "unlocked") {
     if (!showChildren) {

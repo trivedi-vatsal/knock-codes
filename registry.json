@@ -61,6 +61,11 @@
           "path": "packages/react/useKnockCodes.ts",
           "type": "registry:file",
           "target": "components/knock-codes/react/useKnockCodes.ts"
+        },
+        {
+          "path": "packages/react/KnockCodesContext.tsx",
+          "type": "registry:file",
+          "target": "components/knock-codes/react/KnockCodesContext.tsx"
         }
       ]
     },

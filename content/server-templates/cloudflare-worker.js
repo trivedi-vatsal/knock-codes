@@ -12,6 +12,10 @@
  *   -> 200 { ok: true, token } | 200 { ok: false, reason: "invalid" }
  *   -> 429/500 { ok: false, reason: "network" } (rate-limited or errored —
  *      deliberately the same body shape, so neither is distinguishable)
+ *
+ * Session restore (`validateSession` + POST `{ token }`): see the Next.js
+ * route handler template in this folder. A client-stored session record is
+ * not proof of unlock without checking the token.
  */
 
 const RATE_LIMIT_MAX_ATTEMPTS = 5; // adjust per deployment

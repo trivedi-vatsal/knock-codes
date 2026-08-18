@@ -17,8 +17,7 @@ template.
   `ProtectedCard.tsx`, `ProtectedModal.tsx` — gate shapes for different placements.
 - `PinInput.tsx`, `UnlockDialog.tsx`, `GateWrapper.tsx`, `VerificationLoader.tsx`,
   `AccessDeniedScreen.tsx` — presentational pieces the gates above compose on, also usable standalone.
-- `KnockCodesProvider.tsx`, `useKnockCodes.ts`'s context counterpart, `LogoutButton.tsx`,
-  `SessionTimeoutBanner.tsx` — for sharing one session across multiple components.
+- `KnockCodesProvider.tsx` / `KnockCodesContext.tsx` — shared session; gates under the provider join it automatically. `LogoutButton.tsx`, `SessionTimeoutBanner.tsx` still require the provider.
 - `KnockCodesTemplate.tsx`, `BrandedAccessTemplate.tsx`, `MinimalAccessTemplate.tsx`,
   `ModalAccessTemplate.tsx` — complete, single-file screens (the Templates gallery).
 

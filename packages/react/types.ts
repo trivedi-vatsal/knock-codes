@@ -19,6 +19,13 @@ export interface KnockCodesConfig {
   timeout?: number;
   /** Sliding-timeout model: interaction rewrites expiry instead of a fixed TTL. @default false */
   activityTracking?: boolean;
+  /**
+   * Called when a session is read from storage (first mount and cross-tab
+   * sync). Return false or throw to reject it — the store is cleared and the
+   * hook stays idle. Intended for server mode (check the stored token is
+   * still valid). Omitted: expiry is the only restore check.
+   */
+  validateSession?: (session: KnockCodesSession) => boolean | Promise<boolean>;
 }
 
 /**
@@ -38,6 +45,12 @@ export interface UseKnockCodesResult {
   state: KnockCodesState;
   error: KnockCodesError | null;
   session: KnockCodesSession | null;
+  /**
+   * False until the first storage read (and optional `validateSession`)
+   * finishes. Gates render nothing until this is true so a stored session
+   * doesn't flash the PIN UI.
+   */
+  ready: boolean;
   /** No-ops (returns without calling the verify strategy) for an empty code. */
   submit: (code: string) => Promise<void>;
   logout: () => void;

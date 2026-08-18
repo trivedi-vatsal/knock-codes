@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { useKnockCodes } from "./useKnockCodes.ts";
 import { PinInput } from "./PinInput.tsx";
 import { GateWrapper } from "./GateWrapper.tsx";
-import type { KnockCodesConfig } from "./types.ts";
+import { GateSession } from "./KnockCodesContext.tsx";
+import type { KnockCodesConfig, UseKnockCodesResult } from "./types.ts";
 import { cx } from "./cx.ts";
 
 export interface ProtectedCardProps extends KnockCodesConfig {
@@ -39,9 +39,28 @@ function StatusBadge({ unlocked }: { unlocked: boolean }) {
  * and position never jump between locked and unlocked.
  */
 export function ProtectedCard({ children, autoFocus = true, className, ...config }: ProtectedCardProps) {
-  const { state, error, submit } = useKnockCodes(config);
+  return (
+    <GateSession config={config}>
+      {(session) => (
+        <ProtectedCardView autoFocus={autoFocus} className={className} session={session}>
+          {children}
+        </ProtectedCardView>
+      )}
+    </GateSession>
+  );
+}
+
+function ProtectedCardView({
+  children,
+  autoFocus = true,
+  className,
+  session,
+}: Pick<ProtectedCardProps, "children" | "autoFocus" | "className"> & { session: UseKnockCodesResult }) {
+  const { ready, state, error, submit } = session;
   const [expanded, setExpanded] = useState(false);
   const [code, setCode] = useState("");
+
+  if (!ready) return null;
 
   const cardClassName = cx(
     "relative w-full max-w-sm rounded-[var(--ag-radius,0.75rem)] border border-[var(--ag-border,#e5e7eb)] bg-[var(--ag-card,#ffffff)] shadow-sm dark:border-[var(--ag-border-dark,#1f2937)] dark:bg-[var(--ag-card-dark,#030712)]",

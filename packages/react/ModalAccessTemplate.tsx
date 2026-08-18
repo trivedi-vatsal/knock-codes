@@ -97,7 +97,7 @@ export function ModalAccessTemplate({
   ...config
 }: ModalAccessTemplateProps) {
   const merged = { ...TEMPLATE_LABELS, ...labels };
-  const { state, error, submit } = useKnockCodes({
+  const { state, error, submit, ready } = useKnockCodes({
     ...config,
     storage: remember === "session" ? "sessionStorage" : config.storage,
   });
@@ -128,6 +128,8 @@ export function ModalAccessTemplate({
     const timer = setTimeout(() => setShowChildren(true), 550);
     return () => clearTimeout(timer);
   }, [state]);
+
+  if (!ready) return null;
 
   const handleSubmit = async () => {
     if (!code || state === "submitting") return;

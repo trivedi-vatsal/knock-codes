@@ -35,6 +35,9 @@ props:
     type: "boolean"
     default: "false"
     description: "Sliding-timeout model — interaction rewrites expiry instead of a fixed TTL."
+  - name: "validateSession"
+    type: "(session: KnockCodesSession) => boolean | Promise<boolean>"
+    description: "Called when a session is read from storage. Return false or throw to reject it (server-mode token check). Omitted: expiry is the only restore check."
   - name: "children"
     type: "ReactNode"
     required: true
@@ -53,6 +56,9 @@ props:
 
 The component every other block in this library either wraps or composes on. Local SHA-256 verification by
 default; swap `expectedHash` for `verify` to upgrade to server-mode protection with no other code changes.
+Inside a `<KnockCodesProvider>`, this joins the shared session so a `<LogoutButton>` in the same tab actually
+relocks the gate. Nothing is rendered until storage has been read (`ready`), so a returning visitor doesn't
+flash the PIN UI.
 
 ### Outer Positioning Variants
 
