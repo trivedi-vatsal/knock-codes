@@ -44,26 +44,20 @@ model, including what server mode changes and doesn't.
    turns a plaintext code into a hex hash. Only the hash ever goes in your source or env vars — never the
    plaintext.
 2. **Copy a template** — pick one from [Templates](#templates) below and either paste the file or install
-   it with the shadcn CLI:
-
-   ```
-   npx shadcn@latest add https://knock.codes/r/react/knock-codes-template.json
-   ```
-
-   Installing more than one item, or from a script? Register `@knock-codes` once in your project's
-   `components.json` and install by short name from then on — no listing on the shadcn registry
-   directory required, this talks straight to `knock.codes`:
-
-   ```json
-   {
-     "registries": {
-       "@knock-codes": "https://knock.codes/r/react/{name}.json"
-     }
-   }
-   ```
+   it with the shadcn CLI. Knock Codes is listed in the [shadcn registry
+   directory](https://ui.shadcn.com/docs/registry/registry-index), so this works in any shadcn project
+   with no extra config:
 
    ```
    npx shadcn@latest add @knock-codes/knock-codes-template
+   ```
+
+   The first `add` writes the registry URL into `components.json` automatically. Direct URL and GitHub
+   shorthand also work:
+
+   ```
+   npx shadcn@latest add https://knock.codes/r/react/knock-codes-template.json
+   npx shadcn@latest add trivedi-vatsal/knock-codes/knock-codes-template
    ```
 3. **Wire the hash** through a public env var (`NEXT_PUBLIC_KNOCK_CODES_HASH`, `VITE_KNOCK_CODES_HASH`, …):
 
@@ -188,6 +182,9 @@ Always run `registry:build` (and commit the result) after editing `registry/reac
 Installing a block or template with the shadcn CLI:
 
 ```
+# Namespaced — listed in the shadcn registry directory, no extra config
+npx shadcn@latest add @knock-codes/knock-codes-template
+
 # Against a local dev server (pnpm dev running on localhost:3000) — cross-item
 # registryDependencies still resolve against https://knock.codes by default,
 # so a plain local rebuild won't reflect local edits to a *dependency* of the
@@ -199,7 +196,7 @@ npx shadcn@latest add http://localhost:3000/r/react/knock-codes-template.json
 # Against the deployed docs site
 npx shadcn@latest add https://knock.codes/r/react/knock-codes-template.json
 
-# Via the GitHub owner/repo/item shorthand, no site required
+# Via the GitHub owner/repo/item shorthand (reads this repo's root registry.json)
 npx shadcn@latest add trivedi-vatsal/knock-codes/knock-codes-template
 ```
 

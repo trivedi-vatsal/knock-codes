@@ -7,7 +7,7 @@
 import { spawnSync } from "node:child_process";
 import { mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { PRODUCTION_REGISTRY_BASE_URL, resolveRegistryDependencies } from "./registry-dependencies.mjs";
+import { PRODUCTION_REGISTRY_BASE_URL, buildRootRegistry, resolveRegistryDependencies } from "./registry-dependencies.mjs";
 
 const REPO_ROOT = path.resolve(import.meta.dirname, "..");
 const PUBLIC_DIR = path.resolve(REPO_ROOT, "apps/web/public/r/react");
@@ -58,7 +58,7 @@ try {
     if (mismatched.length) console.error(`  Stale content (rebuild and recommit): ${mismatched.join(", ")}`);
   }
 
-  const expectedRoot = JSON.stringify({ ...sourceRegistry, name: "knock-codes" }, null, 2) + "\n";
+  const expectedRoot = JSON.stringify(buildRootRegistry(sourceRegistry, itemNames), null, 2) + "\n";
   const actualRoot = readFileSync(ROOT_REGISTRY_PATH, "utf8");
 
   if (expectedRoot === actualRoot) {

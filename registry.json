@@ -38,7 +38,7 @@
       "title": "Knock Codes Types",
       "description": "Shared config/defaults/label types used by every React block. Installed automatically — not meant to be added on its own.",
       "registryDependencies": [
-        "knock-codes-core"
+        "trivedi-vatsal/knock-codes/knock-codes-core"
       ],
       "files": [
         {
@@ -54,7 +54,7 @@
       "title": "useKnockCodes",
       "description": "The headless session/verification hook every stateful block is built on. Installed automatically — use it directly only if you're building a fully custom PIN UI.",
       "registryDependencies": [
-        "knock-codes-types"
+        "trivedi-vatsal/knock-codes/knock-codes-types"
       ],
       "files": [
         {
@@ -83,7 +83,7 @@
       "title": "Gate Wrapper",
       "description": "The shared outer-positioning primitive (full-page centered vs. inline) every visible block composes on. Use it directly to build a fully custom gate layout.",
       "registryDependencies": [
-        "cx-util"
+        "trivedi-vatsal/knock-codes/cx-util"
       ],
       "files": [
         {
@@ -99,7 +99,7 @@
       "title": "PIN Input",
       "description": "Masked PIN/passphrase input with paste support, show/hide toggle, and accessible loading/error states. No verification logic of its own.",
       "registryDependencies": [
-        "knock-codes-types"
+        "trivedi-vatsal/knock-codes/knock-codes-types"
       ],
       "files": [
         {
@@ -115,9 +115,9 @@
       "title": "Knock Codes",
       "description": "The main gate: renders children when unlocked, otherwise a PIN prompt. Local SHA-256 verification by default; pass a `verify` function for server-mode protection.",
       "registryDependencies": [
-        "knock-codes-hook",
-        "gate-wrapper",
-        "pin-input"
+        "trivedi-vatsal/knock-codes/knock-codes-hook",
+        "trivedi-vatsal/knock-codes/gate-wrapper",
+        "trivedi-vatsal/knock-codes/pin-input"
       ],
       "files": [
         {
@@ -133,8 +133,8 @@
       "title": "Protected Route",
       "description": "`<KnockCodes>` shaped for route-level guarding (a React Router `element`, a layout redirect guard), with an optional `unauthorizedFallback` for routes that shouldn't show an inline PIN prompt.",
       "registryDependencies": [
-        "knock-codes-hook",
-        "knock-codes"
+        "trivedi-vatsal/knock-codes/knock-codes-hook",
+        "trivedi-vatsal/knock-codes/knock-codes"
       ],
       "files": [
         {
@@ -150,7 +150,7 @@
       "title": "Protected Layout",
       "description": "`<KnockCodes>` shaped for a full-page shell (a Next.js layout.tsx): header/footer render even while locked, so persistent site chrome survives the gate.",
       "registryDependencies": [
-        "knock-codes"
+        "trivedi-vatsal/knock-codes/knock-codes"
       ],
       "files": [
         {
@@ -166,8 +166,8 @@
       "title": "Unlock Dialog",
       "description": "A non-dismissable modal PIN prompt — no backdrop click, no Escape-to-close. Composable standalone, or used by Protected Modal.",
       "registryDependencies": [
-        "pin-input",
-        "knock-codes-types"
+        "trivedi-vatsal/knock-codes/pin-input",
+        "trivedi-vatsal/knock-codes/knock-codes-types"
       ],
       "files": [
         {
@@ -183,8 +183,8 @@
       "title": "Protected Modal",
       "description": "Content stays mounted (blurred and inert) behind a modal Unlock Dialog instead of being replaced outright — useful when the protected content's layout should stay stable underneath the prompt.",
       "registryDependencies": [
-        "knock-codes-hook",
-        "unlock-dialog"
+        "trivedi-vatsal/knock-codes/knock-codes-hook",
+        "trivedi-vatsal/knock-codes/unlock-dialog"
       ],
       "files": [
         {
@@ -200,7 +200,7 @@
       "title": "Session Provider",
       "description": "Shares one useKnockCodes session across a tree, so a gate, a Logout Button, and a Session Timeout Banner all read and act on the same unlock state.",
       "registryDependencies": [
-        "knock-codes-hook"
+        "trivedi-vatsal/knock-codes/knock-codes-hook"
       ],
       "files": [
         {
@@ -216,7 +216,7 @@
       "title": "Session Timeout Banner",
       "description": "Warns before the shared session expires, with a one-click way to log out immediately instead of waiting for automatic expiry. Requires a Session Provider.",
       "registryDependencies": [
-        "session-provider"
+        "trivedi-vatsal/knock-codes/session-provider"
       ],
       "files": [
         {
@@ -232,7 +232,7 @@
       "title": "Access Receipt",
       "description": "A small session audit strip shown after unlock — timestamp, storage mode, timeout, and verification strategy. Requires a Session Provider.",
       "registryDependencies": [
-        "session-provider"
+        "trivedi-vatsal/knock-codes/session-provider"
       ],
       "files": [
         {
@@ -248,7 +248,7 @@
       "title": "Access Denied Screen",
       "description": "A static \"you don't have access\" view with no PIN form in it at all — distinct from the PIN entry UI. Use it as a custom unauthorizedFallback or any hard denial state.",
       "registryDependencies": [
-        "gate-wrapper"
+        "trivedi-vatsal/knock-codes/gate-wrapper"
       ],
       "files": [
         {
@@ -264,7 +264,7 @@
       "title": "Verification Loader",
       "description": "A small presentational spinner + label for the in-flight verification moment, for a fully custom PIN form built directly on useKnockCodes.",
       "registryDependencies": [
-        "cx-util"
+        "trivedi-vatsal/knock-codes/cx-util"
       ],
       "files": [
         {
@@ -280,8 +280,8 @@
       "title": "Logout Button",
       "description": "Reads the shared session from a Session Provider and clears it on click.",
       "registryDependencies": [
-        "session-provider",
-        "cx-util"
+        "trivedi-vatsal/knock-codes/session-provider",
+        "trivedi-vatsal/knock-codes/cx-util"
       ],
       "files": [
         {
@@ -297,9 +297,9 @@
       "title": "Protected Card",
       "description": "A card-shaped gate for protecting one section of a page rather than the whole viewport — locked content stays mounted and blurred behind an Unlock button so the card's size never jumps.",
       "registryDependencies": [
-        "knock-codes-hook",
-        "pin-input",
-        "gate-wrapper"
+        "trivedi-vatsal/knock-codes/knock-codes-hook",
+        "trivedi-vatsal/knock-codes/pin-input",
+        "trivedi-vatsal/knock-codes/gate-wrapper"
       ],
       "files": [
         {
@@ -315,7 +315,7 @@
       "title": "Standalone Gate",
       "description": "The fastest path to a working gate: wrap your app, pass a hash, done. A deliberately smaller prop surface than Knock Codes.",
       "registryDependencies": [
-        "knock-codes"
+        "trivedi-vatsal/knock-codes/knock-codes"
       ],
       "files": [
         {
@@ -331,7 +331,7 @@
       "title": "Embedded Gate",
       "description": "Knock Codes fixed to the inline shell — sits naturally inside an existing layout (a sidebar widget, a section of a longer page) instead of taking over the full viewport.",
       "registryDependencies": [
-        "knock-codes"
+        "trivedi-vatsal/knock-codes/knock-codes"
       ],
       "files": [
         {
@@ -347,8 +347,8 @@
       "title": "Knock Codes Template",
       "description": "A complete, single-file \"restricted access\" screen — full-page dark backdrop, centered card, segmented code entry, support link, footer help text. Everything in one component.",
       "registryDependencies": [
-        "knock-codes-hook",
-        "cx-util"
+        "trivedi-vatsal/knock-codes/knock-codes-hook",
+        "trivedi-vatsal/knock-codes/cx-util"
       ],
       "files": [
         {
@@ -364,8 +364,8 @@
       "title": "Minimal Access Template",
       "description": "The leanest access screen — a single masked field, a small plain card, no segmented boxes and no default footer copy. Everything in one component.",
       "registryDependencies": [
-        "knock-codes-hook",
-        "cx-util"
+        "trivedi-vatsal/knock-codes/knock-codes-hook",
+        "trivedi-vatsal/knock-codes/cx-util"
       ],
       "files": [
         {
@@ -381,8 +381,8 @@
       "title": "Branded Access Template",
       "description": "A split-screen, logo-forward access screen — brand panel on one side, code entry on the other. The brand panel collapses on small screens.",
       "registryDependencies": [
-        "knock-codes-hook",
-        "cx-util"
+        "trivedi-vatsal/knock-codes/knock-codes-hook",
+        "trivedi-vatsal/knock-codes/cx-util"
       ],
       "files": [
         {
@@ -398,8 +398,8 @@
       "title": "Modal Access Template",
       "description": "Gates one section of an already-visible page — the content stays mounted and blurred behind a centered dialog instead of disappearing entirely.",
       "registryDependencies": [
-        "knock-codes-hook",
-        "cx-util"
+        "trivedi-vatsal/knock-codes/knock-codes-hook",
+        "trivedi-vatsal/knock-codes/cx-util"
       ],
       "files": [
         {

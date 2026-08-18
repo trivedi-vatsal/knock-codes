@@ -26,8 +26,7 @@ import { CopyButton } from "@/components/copy-button";
 import { CodeViewer } from "@/components/code-viewer";
 import { Code2 } from "lucide-react";
 
-const INSTALL_COMMAND =
-  "npx shadcn@latest add trivedi-vatsal/knock-codes/knock-codes-template";
+const INSTALL_COMMAND = "npx shadcn@latest add @knock-codes/knock-codes-template";
 
 // The real logic behind this demo — kept in sync with the `useKnockCodes` call
 // in InteractiveGateOverlay below, simplified for display.

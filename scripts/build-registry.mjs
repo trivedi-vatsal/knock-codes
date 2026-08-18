@@ -3,7 +3,7 @@
 import { spawnSync } from "node:child_process";
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { PRODUCTION_REGISTRY_BASE_URL, resolveRegistryDependencies } from "./registry-dependencies.mjs";
+import { PRODUCTION_REGISTRY_BASE_URL, buildRootRegistry, resolveRegistryDependencies } from "./registry-dependencies.mjs";
 
 const REPO_ROOT = path.resolve(import.meta.dirname, "..");
 
@@ -36,12 +36,14 @@ if (result.status !== 0) process.exit(result.status ?? 1);
 
 // A thin, path-only root registry.json — required for the GitHub
 // `owner/repo/item` shorthand (`npx shadcn add trivedi-vatsal/knock-codes/<item>`),
-// which only reads a registry.json at the repo root. `include` can't be used
-// here since registry/react/registry.json's paths are repo-root-relative and
-// `include` resolves paths relative to the *included* file's own directory,
-// with no parent-traversal escape hatch — so this is a generated copy, not
+// which only reads a registry.json at the repo root. Same-registry deps are
+// rewritten to `trivedi-vatsal/knock-codes/<name>` so the CLI doesn't resolve
+// bare names against ui.shadcn.com. `include` can't be used here since
+// registry/react/registry.json's paths are repo-root-relative and `include`
+// resolves paths relative to the *included* file's own directory, with no
+// parent-traversal escape hatch — so this is a generated copy, not
 // hand-maintained, to avoid drift. Keep in sync via `pnpm registry:check`.
-const rootRegistry = { ...sourceRegistry, name: "knock-codes" };
+const rootRegistry = buildRootRegistry(sourceRegistry, itemNames);
 writeFileSync(path.join(REPO_ROOT, "registry.json"), JSON.stringify(rootRegistry, null, 2) + "\n");
 
 if (baseUrl !== PRODUCTION_REGISTRY_BASE_URL) {

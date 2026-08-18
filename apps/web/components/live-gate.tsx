@@ -7,7 +7,7 @@ import { CopyButton } from "@/components/copy-button";
 import { cn } from "@/lib/utils";
 
 const CODE_LENGTH = 4;
-const INSTALL_COMMAND = "npx shadcn@latest add trivedi-vatsal/knock-codes/knock-codes-template";
+const INSTALL_COMMAND = "npx shadcn@latest add @knock-codes/knock-codes-template";
 
 /**
  * The homepage hero's live "front door" — real `useKnockCodes` verification

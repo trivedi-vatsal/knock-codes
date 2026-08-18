@@ -58,6 +58,7 @@ export function GET() {
   lines.push(
     "## Install",
     "Copy a template file directly from its detail page, or:",
+    "  npx shadcn add @knock-codes/<registryName>",
     "  npx shadcn add https://knock.codes/r/react/<registryName>.json",
     "  npx shadcn add trivedi-vatsal/knock-codes/<registryName>",
     "",

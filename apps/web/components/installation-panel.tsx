@@ -21,8 +21,10 @@ export function InstallationPanel({
   dependencyItems: RegistryItem[];
 }) {
   const siteUrl = resolveSiteUrl();
-  const command = `npx shadcn@latest add ${siteUrl}/r/react/${registryName}.json`;
   const isLocalDev = siteUrl === "http://localhost:3000";
+  const command = isLocalDev
+    ? `npx shadcn@latest add ${siteUrl}/r/react/${registryName}.json`
+    : `npx shadcn@latest add @knock-codes/${registryName}`;
   const allFiles = [...dependencyItems.flatMap((item) => item.files), ...ownFiles];
 
   return (
