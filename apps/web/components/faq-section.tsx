@@ -43,8 +43,11 @@ export function FaqSection() {
       <div className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-card">
         {FAQ_ITEMS.map((item) => (
           <details key={item.question} className="group p-6">
-            <summary className="cursor-pointer list-none text-[15px] font-medium text-foreground marker:content-none">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[15px] font-medium text-foreground marker:content-none">
               {item.question}
+              <span aria-hidden="true" className="shrink-0 text-muted-foreground transition-transform group-open:rotate-45">
+                +
+              </span>
             </summary>
             <p className="mt-2.5 text-sm leading-[1.6] text-muted-foreground">{item.answer}</p>
           </details>

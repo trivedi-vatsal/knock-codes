@@ -22,7 +22,7 @@ function SnippetRow({ label, value }: { label: string; value: string }) {
 }
 
 /**
- * The site's own code → hash tool, embedded directly on each template page —
+ * The site's own code → hash tool. Used on Getting Started and the homepage —
  * generate or type a code, get its hash, copy the env line. Nothing here
  * leaves the browser; hashing goes through the same `sha256Hex` every
  * template and block verifies against.

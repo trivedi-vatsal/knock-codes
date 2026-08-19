@@ -1,19 +1,15 @@
-import Link from "next/link";
-
 const STEPS = [
   {
     num: "01",
     label: "Copy the file",
-    title: "One template, zero dependencies.",
-    body: "Paste a single file into your project. Nothing to install, nothing to configure at the platform layer.",
+    title: "One template, zero runtime dependencies.",
+    body: "Paste a single file into your project, or install it with the shadcn CLI. Nothing to configure at the platform layer.",
   },
   {
     num: "02",
     label: "Generate a hash",
     title: "Turn your code into a SHA-256 hash.",
-    body: "Type an access code into the on-page generator and copy the hash it produces — computed locally, never sent anywhere.",
-    href: "/getting-started#generator",
-    linkLabel: "Open the hash generator →",
+    body: "Type an access code into the generator below and copy the hash it produces — computed locally, never sent anywhere.",
   },
   {
     num: "03",
@@ -37,14 +33,6 @@ export function HowItWorksSteps() {
           </div>
           <h3 className="text-[19px] font-semibold tracking-[-0.015em]">{step.title}</h3>
           <p className="mt-2 max-w-[400px] text-sm leading-[1.6] text-muted-foreground">{step.body}</p>
-          {step.href && (
-            <Link
-              href={step.href}
-              className="mt-4 inline-block font-mono text-xs font-medium tracking-[0.1em] text-primary uppercase transition-colors hover:text-primary/80"
-            >
-              {step.linkLabel}
-            </Link>
-          )}
         </div>
       ))}
     </div>

@@ -2,18 +2,20 @@ import type { Metadata } from "next";
 import { TriangleAlert } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { SectionHeader } from "@/components/section-header";
-import { BlueprintFrame } from "@/components/blueprint-frame";
 import { CodeViewer } from "@/components/code-viewer";
 import { HashGenerator } from "@/components/hash-generator";
 import { Reveal } from "@/components/reveal";
 import { HomeCtaButton } from "@/components/home-cta-button";
+import { CopyButton } from "@/components/copy-button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { getServerTemplates } from "@/lib/server-templates";
 import { pageMetadata } from "@/lib/seo";
+import { resolveSiteUrl } from "@/lib/site-url";
+import Link from "next/link";
 
 export const metadata: Metadata = pageMetadata(
   "Getting Started — Knock Codes",
-  "Protect a page with Knock Codes in five steps, no backend required to start."
+  "Protect a page, no backend required. Hash a code, paste a template, set one env var."
 );
 
 const FRAMEWORK_SNIPPETS = [
@@ -73,35 +75,18 @@ export default function App() {
 ];
 
 const STEPS = [
-  {
-    step: "01",
-    title: "Hash your code",
-    body: "Use the generator below — type or generate a code, get the hash back. The plaintext never touches a file, only the hash does.",
-  },
-  {
-    step: "02",
-    title: "Copy the template",
-    body: "Pick a style, then copy the one file it ships as — or run its install command. There's no package to add to node_modules.",
-  },
-  {
-    step: "03",
-    title: "Set the hash as an env var",
-    body: "Store the hash (never the code) in your framework's public env var — VITE_KNOCK_CODES_HASH, NEXT_PUBLIC_KNOCK_CODES_HASH, or equivalent. The generator gives you this line pre-filled.",
-  },
-  {
-    step: "04",
-    title: "Choose storage and timeout behavior",
-    body: "Pick where the unlocked session lives (memory, localStorage, or sessionStorage) and how long it lasts — a fixed timeout, or one that slides forward on activity. Session Provider and every template default to something reasonable; override via props when they don't fit.",
-  },
-  {
-    step: "05",
-    title: "Upgrade to server verification when needed",
-    body: "If bypassing this gate would actually matter, swap expectedHash for a verify function pointing at a small endpoint — same component, same markup, one prop different. See the security model for reference server templates and rate-limiting guidance.",
-  },
+  "Hash your access code locally — only the hash ever leaves your machine.",
+  "Install a template (CLI below, or copy the file from the gallery).",
+  "Wrap your app and set the hash as an environment variable.",
 ];
 
 export default function GettingStartedPage() {
   const serverTemplates = getServerTemplates();
+  const siteUrl = resolveSiteUrl();
+  const isLocalDev = siteUrl === "http://localhost:3000";
+  const installCommand = isLocalDev
+    ? `npx shadcn@latest add ${siteUrl}/r/react/knock-codes-template.json`
+    : "npx shadcn@latest add @knock-codes/knock-codes-template";
 
   return (
     <div>
@@ -109,46 +94,37 @@ export default function GettingStartedPage() {
         eyebrow="5-minute setup guide"
         title={
           <>
-            Protect a page in <span className="text-primary">five steps.</span>
+            Protect a page, <span className="text-primary">no backend required.</span>
           </>
         }
-        description="No account, no backend required to start. Hash your code locally, drop the template file into your project, wire your environment variable, and ship."
+        description="Hash your code locally, drop the template file into your project, wire one environment variable, and ship."
       >
-        <HomeCtaButton href="#steps">Start setup</HomeCtaButton>
-        <HomeCtaButton href="#generator" variant="ghost">
-          Hash generator
+        <HomeCtaButton href="#generator">Hash generator</HomeCtaButton>
+        <HomeCtaButton href="#install" variant="ghost">
+          Install command
         </HomeCtaButton>
       </PageHeader>
 
-      <section id="steps" className="px-8 py-20">
+      <section className="px-8 py-16">
+        <div className="mx-auto max-w-[720px]">
+          <ol className="space-y-3 text-sm leading-relaxed text-muted-foreground">
+            {STEPS.map((step, index) => (
+              <li key={step} className="flex gap-3">
+                <span className="font-mono text-[11px] font-medium tracking-[0.14em] text-primary">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span>{step}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section id="generator" className="scroll-mt-20 border-t border-border px-8 py-20">
         <div className="mx-auto max-w-[1120px]">
           <Reveal>
             <SectionHeader
               number="01"
-              label="Workflow"
-              title="How it works"
-              description="Five clear steps from local hash generation to server-mode verification."
-              className="mb-12"
-            />
-          </Reveal>
-          <Reveal>
-            <div className="grid gap-5 sm:grid-cols-2">
-              {STEPS.map((s) => (
-                <BlueprintFrame key={s.step} label={`Step ${s.step}`}>
-                  <h2 className="mb-1.5 text-base font-semibold tracking-tight text-foreground">{s.title}</h2>
-                  <p className="text-sm text-muted-foreground">{s.body}</p>
-                </BlueprintFrame>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      <section id="generator" className="border-t border-border px-8 py-20">
-        <div className="mx-auto max-w-[1120px]">
-          <Reveal>
-            <SectionHeader
-              number="02"
               label="Interactive tool"
               title="Generate your hash"
               description="Enter any secret code below to generate its canonical SHA-256 hex string. The plaintext stays in your browser."
@@ -161,9 +137,36 @@ export default function GettingStartedPage() {
               <TriangleAlert className="h-4 w-4 shrink-0 translate-y-0.5" aria-hidden="true" />
               <p>
                 Never commit or ship the plaintext code — not in an env file, not in a comment, not in a commit
-                message. Only the hash from step 1 should ever leave your local machine.
+                message. Only the hash should ever leave your local machine.
               </p>
             </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section id="install" className="scroll-mt-20 border-t border-border px-8 py-20">
+        <div className="mx-auto max-w-[1120px]">
+          <Reveal>
+            <SectionHeader
+              number="02"
+              label="Install"
+              title="One command"
+              description="This drops the Knock Codes template into your project. Other looks live on the templates page."
+              className="mb-10"
+            />
+          </Reveal>
+          <Reveal>
+            <div className="flex items-center justify-between gap-2 rounded-lg border border-border bg-[#0e1311] px-3 py-2">
+              <code className="overflow-x-auto text-xs whitespace-nowrap text-[#edeae0]">{installCommand}</code>
+              <CopyButton text={installCommand} className="shrink-0 border-white/15 text-white/70 hover:bg-white/10 hover:text-white" />
+            </div>
+            {isLocalDev && (
+              <p className="mt-2 text-xs text-muted-foreground">
+                Showing the local dev registry. Set{" "}
+                <code className="rounded bg-muted px-1 py-0.5">NEXT_PUBLIC_SITE_URL</code> to preview the deployed
+                command instead.
+              </p>
+            )}
           </Reveal>
         </div>
       </section>
@@ -204,12 +207,19 @@ export default function GettingStartedPage() {
             <SectionHeader
               number="04"
               label="Server mode"
-              title="Reference verify endpoints"
-              description="Swap expectedHash for a verify function pointing at one of these — same request/response contract in every runtime: POST { code } → { ok: true, token } or { ok: false, reason }."
+              title="When a determined visitor would matter"
+              description="Swap expectedHash for a verify function pointing at a small endpoint. Same component, one prop different. Server mode hides the hash — not children you already bundled."
               className="mb-10"
             />
           </Reveal>
           <Reveal>
+            <p className="mb-6 max-w-2xl text-sm text-muted-foreground">
+              Full threat model, rate-limiting notes, and when this is the wrong tool:{" "}
+              <Link href="/security" className="font-medium text-primary hover:underline">
+                /security
+              </Link>
+              .
+            </p>
             <Tabs defaultValue={serverTemplates[0]?.id}>
               <TabsList>
                 {serverTemplates.map((tpl) => (
@@ -238,7 +248,7 @@ export default function GettingStartedPage() {
             Ready to choose your template?
           </h2>
           <p className="mx-auto mt-4 max-w-[480px] text-muted-foreground">
-            Pick from four complete reference screens or read our honest threat model.
+            Pick from four complete reference screens or read the threat model.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <HomeCtaButton href="/templates">Browse templates</HomeCtaButton>
@@ -251,4 +261,3 @@ export default function GettingStartedPage() {
     </div>
   );
 }
-

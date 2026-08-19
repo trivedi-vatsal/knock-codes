@@ -23,7 +23,12 @@ const COMPARISON_ROWS = [
   {
     label: "What a curious visitor can see",
     local: "The full SHA-256 hash, in DevTools → Sources/Network, for anyone who looks.",
-    server: "Nothing — only a pass/fail response and a short-lived token on success.",
+    server: "The hash stays off the client. Children you already bundled are still in the JavaScript. A stored session can be forged unless you pass validateSession.",
+  },
+  {
+    label: "Stored session",
+    local: "A client-writable {unlockedAt, expiresAt} unless you pass validateSession.",
+    server: "Same client storage. Wire validateSession to POST the token on restore, or a forged session still unlocks.",
   },
   {
     label: "Can it be brute-forced offline?",
@@ -259,7 +264,7 @@ export default function SecurityPage() {
             Ready to set up server verification?
           </h2>
           <p className="mx-auto mt-4 max-w-[480px] text-muted-foreground">
-            Follow our 5-minute quickstart or pick a complete reference template.
+            Follow the setup guide or pick a complete reference template.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <HomeCtaButton href="/getting-started">Setup guide</HomeCtaButton>

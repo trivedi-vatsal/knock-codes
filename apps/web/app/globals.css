@@ -185,7 +185,7 @@
     background-color: var(--muted-foreground);
   }
 
-  /* Wrong-knock shake for the feature-grid demo card — same curve as the
+  /* Wrong-knock shake for live demos — same curve as the
      template files' own inline shake keyframes, scoped to no-preference so
      it's inert (not just skipped) under prefers-reduced-motion. */
   @media (prefers-reduced-motion: no-preference) {

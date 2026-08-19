@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { MobileNav } from "@/components/mobile-nav";
+import { PrimaryNav } from "@/components/primary-nav";
 import { REPO_URL } from "@/lib/site";
 import { getTemplateSetVersion } from "@/lib/version";
 
 const NAV_LINKS = [
   { href: "/templates", label: "Templates" },
-  { href: "/blocks", label: "Blocks" },
   { href: "/getting-started", label: "Getting Started" },
   { href: "/security", label: "Security" },
 ];
@@ -20,13 +20,7 @@ export function SiteHeader() {
           <span aria-hidden="true" className="h-2 w-2 rounded-sm bg-primary shadow-[0_0_12px_rgba(245,158,11,0.5)]" />
           knock.codes
         </Link>
-        <nav className="hidden items-center gap-7 sm:flex">
-          {NAV_LINKS.map((link) => (
-            <Link key={link.href} href={link.href} className="text-[13.5px] text-muted-foreground transition-colors hover:text-foreground">
-              {link.label}
-            </Link>
-          ))}
-        </nav>
+        <PrimaryNav links={NAV_LINKS} />
         <div className="flex items-center gap-5">
           <Link
             href="/changelog"
@@ -42,7 +36,7 @@ export function SiteHeader() {
           >
             GitHub
           </a>
-          <MobileNav links={NAV_LINKS} repoUrl={REPO_URL} />
+          <MobileNav links={NAV_LINKS} repoUrl={REPO_URL} version={version} />
         </div>
       </div>
     </header>

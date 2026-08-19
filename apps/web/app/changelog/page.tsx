@@ -15,10 +15,15 @@ const ENTRIES = [
     added: [
       "Optional validateSession on useKnockCodes and the provider — reject a stored session (for example by checking the server-issued token) on restore.",
       "ready on the hook result; gates and React templates wait for the first storage read so a returning visitor doesn't flash the PIN UI.",
+      "Skip-to-content link; hash generator on the homepage.",
     ],
     changed: [
       "Gates under KnockCodesProvider join the shared session. Same-tab logout actually relocks the gate.",
       "README: server mode hides the hash, not bundled children; distribution is the registry, not npm.",
+      "Homepage is a shorter path: live gate, hash generator on-page, templates, one honest local/server table.",
+      "Primary nav is Templates, Getting Started, Security. Blocks stays in the footer and as a text link from the templates gallery.",
+      "Previews default to dark; demo code is 4242 on live gates and template previews.",
+      "Server-mode copy no longer claims the client sees nothing — hash is hidden, bundled children are not, sessions are forgeable without validateSession.",
     ],
   },
   {

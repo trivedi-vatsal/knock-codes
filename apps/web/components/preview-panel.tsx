@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, type ReactNode } from "react";
-import { Code2, Eye, Moon, RotateCcw, SlidersHorizontal, Sun } from "lucide-react";
+import { Code2, Eye, Maximize2, Minimize2, Moon, RotateCcw, SlidersHorizontal, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CodeBrowser, type CodeBrowserFile } from "@/components/code-browser";
 import { CopyButton } from "@/components/copy-button";
@@ -40,7 +40,8 @@ export function PreviewPanel({
   fillCanvas?: boolean;
 }) {
   const [tab, setTab] = useState<"preview" | "code">("preview");
-  const [dark, setDark] = useState(false);
+  const [dark, setDark] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const [previewKey, setPreviewKey] = useState(0);
   const allCode = files.map((f) => f.content).join("\n\n");
   const { setOpen: setThemeLabOpen } = useThemeLab();
@@ -99,9 +100,18 @@ export function PreviewPanel({
           {tab === "code" && <CopyButton text={allCode} className={ICON_BUTTON_CLASS} />}
           <button
             type="button"
+            onClick={() => setExpanded((value) => !value)}
+            aria-label={expanded ? "Shorter preview" : "Taller preview"}
+            title={expanded ? "Shorter preview" : "Taller preview"}
+            className={ICON_BUTTON_CLASS}
+          >
+            {expanded ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+          </button>
+          <button
+            type="button"
             onClick={() => setDark((d) => !d)}
-            aria-label={dark ? "Preview in light mode" : "Preview in dark mode"}
-            title={dark ? "Preview in light mode" : "Preview in dark mode"}
+            aria-label={dark ? "Light preview" : "Dark preview"}
+            title={dark ? "Light preview" : "Dark preview"}
             className={ICON_BUTTON_CLASS}
           >
             {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
@@ -113,7 +123,7 @@ export function PreviewPanel({
         <div
           className={cn(
             "relative overflow-hidden rounded-lg border border-border",
-            fillCanvas ? "h-[44rem] p-0" : "min-h-[44rem] p-8 sm:p-12",
+            fillCanvas ? (expanded ? "h-[44rem] p-0" : "h-[28rem] p-0") : expanded ? "min-h-[44rem] p-8 sm:p-12" : "min-h-[28rem] p-8 sm:p-12",
             dark && "dark",
             !fillCanvas && (dark ? "bg-[#0e1311] access-scanlines" : "bg-background access-grid")
           )}
@@ -122,7 +132,7 @@ export function PreviewPanel({
             `absolute inset-0` instead of `h-full` — an absolutely
             positioned box with all four insets set gets a genuinely
             *definite* computed size straight from its positioned ancestor
-            (the canvas above, `relative` + a real `h-[44rem]`), which a
+            (the canvas above, `relative` + a real height), which a
             plain `height: 100%` can't guarantee through several more levels
             of nested flex/block children. One robust anchor here beats
             hoping every div in the chain below resolves percentages right.

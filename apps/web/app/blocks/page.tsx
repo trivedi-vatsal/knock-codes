@@ -52,28 +52,6 @@ export default function BlocksPage() {
           </Reveal>
         </div>
       </section>
-
-      <section className="border-t border-border px-8 py-24 text-center">
-        <Reveal className="mx-auto max-w-[1120px]">
-          <span className="mb-5 block font-mono text-[11px] font-medium tracking-[0.14em] uppercase">
-            <b className="font-medium text-primary">02</b>
-            <span className="text-fg-faint"> / Fast path</span>
-          </span>
-          <h2 className="text-[clamp(30px,4.5vw,48px)] leading-[1.1] font-medium tracking-[-0.025em]">
-            Want the whole screen in one file?
-          </h2>
-          <p className="mx-auto mt-4 max-w-[480px] text-muted-foreground">
-            Skip block assembly and drop a complete, ready-to-ship access screen into your codebase with one file.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <HomeCtaButton href="/templates">Browse templates</HomeCtaButton>
-            <HomeCtaButton href="/security" variant="ghost">
-              Security model
-            </HomeCtaButton>
-          </div>
-        </Reveal>
-      </section>
     </div>
   );
 }
-

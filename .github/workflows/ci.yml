@@ -32,3 +32,8 @@ jobs:
 
       - name: Verify the built registry matches registry/react/registry.json
         run: pnpm registry:check
+
+      - name: Build web
+        run: pnpm --filter web build
+        env:
+          NEXT_PUBLIC_SITE_URL: https://knock.codes

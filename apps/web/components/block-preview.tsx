@@ -25,12 +25,8 @@ import {
 } from "@knock-codes/react";
 import { useThemeLab } from "@/components/customizer/theme-lab-context";
 import { FigureLabel } from "@/components/figure-label";
+import { DEMO_CODE, DEMO_HASH } from "@/lib/demo-hash";
 import type { PreviewStateId } from "@/lib/theme-presets";
-
-const DEMO_PIN = "demo1234";
-// sha256Hex(DEMO_PIN) — precomputed so every block preview renders on first
-// paint instead of waiting on an async Web Crypto round trip for a hash of a fixed string.
-const DEMO_PIN_HASH = "0ead2060b65992dca4769af601a1b3a35ef38cfad2c2c465bb160ea764157c5d";
 const WRONG_PIN = "0000";
 const NEVER_RESOLVES_VERIFY: VerifyFn = () => new Promise(() => {});
 
@@ -46,7 +42,7 @@ function useScriptedPreviewState(previewState: PreviewStateId, submit: (code: st
     if (scriptedForRef.current === previewState) return;
     scriptedForRef.current = previewState;
     if (previewState === "invalid") submit(WRONG_PIN);
-    else if (previewState === "unlocked" || previewState === "expiring" || previewState === "submitting") submit(DEMO_PIN);
+    else if (previewState === "unlocked" || previewState === "expiring" || previewState === "submitting") submit(DEMO_CODE);
     // `submit`'s identity is intentionally not a dep — scripting should run once per previewState value, not re-run whenever the callback is recreated.
   }, [previewState]);
 }
@@ -98,13 +94,13 @@ function Hint() {
   return (
     <div className="mb-3 flex items-center gap-2 text-muted-foreground">
       <FigureLabel index={1} />
-      <span className="label-mono">Demo code: {DEMO_PIN}</span>
+      <span className="label-mono">Demo code: {DEMO_CODE}</span>
     </div>
   );
 }
 
 export function BlockPreview({ slug }: { slug: string }) {
-  const hash = DEMO_PIN_HASH;
+  const hash = DEMO_HASH;
   const common = { expectedHash: hash, storage: "memory" as const };
 
   switch (slug) {
@@ -178,7 +174,7 @@ export function BlockPreview({ slug }: { slug: string }) {
     case "session-timeout-banner":
       return (
         <div>
-          <p className="label-mono mb-3 text-muted-foreground">Demo code: {DEMO_PIN} — timeout set to 12s</p>
+          <p className="label-mono mb-3 text-muted-foreground">Demo code: {DEMO_CODE} — timeout set to 12s</p>
           <PreviewFrame>
             <KnockCodesProvider expectedHash={hash} storage="memory" timeout={12_000}>
               <SessionTimeoutBannerDemo />
@@ -345,7 +341,7 @@ function PinInputPreview() {
 
   const forcedError = settings.previewState === "invalid" ? { reason: "invalid" as const } : null;
   const forcedSubmitting = settings.previewState === "submitting";
-  const displayValue = settings.previewState === "locked" ? value : DEMO_PIN;
+      const displayValue = settings.previewState === "locked" ? value : DEMO_CODE;
 
   return (
     <PreviewFrame>

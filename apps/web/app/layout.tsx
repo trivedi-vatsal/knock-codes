@@ -35,9 +35,15 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" className={cn("dark antialiased", geist.variable, geistMono.variable)}>
       <body>
         <ScrollReset />
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[60] focus:rounded-md focus:border focus:border-border focus:bg-background focus:px-3 focus:py-2 focus:text-sm focus:text-foreground"
+        >
+          Skip to content
+        </a>
         <div className="flex min-h-svh flex-col">
           <SiteHeader />
-          <main className="flex-1">{children}</main>
+          <main id="main-content" className="flex-1">{children}</main>
           <SiteFooter />
         </div>
       </body>
