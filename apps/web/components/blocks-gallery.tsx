@@ -11,7 +11,6 @@ const TEMPLATE_CORE_SLUGS = new Set([
   "knock-codes",
   "pin-input",
   "protected-layout",
-  "standalone-gate",
   "protected-modal",
   "protected-card",
   "unlock-dialog",
@@ -21,15 +20,16 @@ export function BlocksGallery({ blocks, categories }: { blocks: Block[]; categor
   const [query, setQuery] = useState("");
   const [filterMode, setFilterMode] = useState<"primary" | "templateCore" | "all" | string>("all");
 
-  const primaryCount = useMemo(() => blocks.filter((b) => b.tier === "primary").length, [blocks]);
+  const catalog = useMemo(() => blocks.filter((block) => block.tier !== "alias"), [blocks]);
+  const primaryCount = useMemo(() => catalog.filter((b) => b.tier === "primary").length, [catalog]);
   const templateCoreCount = useMemo(
-    () => blocks.filter((b) => TEMPLATE_CORE_SLUGS.has(b.slug)).length,
-    [blocks]
+    () => catalog.filter((b) => TEMPLATE_CORE_SLUGS.has(b.slug)).length,
+    [catalog]
   );
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return blocks.filter((block) => {
+    return catalog.filter((block) => {
       if (filterMode === "primary" && block.tier !== "primary") return false;
       if (filterMode === "templateCore" && !TEMPLATE_CORE_SLUGS.has(block.slug)) return false;
       if (filterMode !== "primary" && filterMode !== "templateCore" && filterMode !== "all" && block.category !== filterMode) {
@@ -42,7 +42,7 @@ export function BlocksGallery({ blocks, categories }: { blocks: Block[]; categor
         block.tags.some((tag) => tag.toLowerCase().includes(q))
       );
     });
-  }, [blocks, query, filterMode]);
+  }, [catalog, query, filterMode]);
 
   return (
     <div>
@@ -91,7 +91,7 @@ export function BlocksGallery({ blocks, categories }: { blocks: Block[]; categor
                 : "border-border text-muted-foreground hover:text-foreground"
             )}
           >
-            All ({blocks.length})
+            All ({catalog.length})
           </button>
           {categories.map((cat) => (
             <button

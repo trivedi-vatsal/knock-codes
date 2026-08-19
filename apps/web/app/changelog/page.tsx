@@ -11,6 +11,15 @@ export const metadata: Metadata = pageMetadata(
 
 const ENTRIES = [
   {
+    date: "2026-08-19",
+    added: [
+      "PinInput variant=\"boxes\" — segmented code entry used by the Knock Codes template.",
+    ],
+    changed: [
+      "React templates compose PinInput instead of inlining a second code field. Installing a template pulls pin-input.",
+    ],
+  },
+  {
     date: "2026-08-18",
     added: [
       "Optional validateSession on useKnockCodes and the provider — reject a stored session (for example by checking the server-issued token) on restore.",

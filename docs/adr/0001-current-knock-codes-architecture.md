@@ -33,7 +33,7 @@ Framework-agnostic, no UI:
 - **`<KnockCodes>`** — a thin renderer over the hook: renders `children` when unlocked, otherwise the PIN entry UI. No separate "mount loading" state.
 - **`KnockCodesProvider`** — shares one `useKnockCodes` instance across a tree via context, for when multiple components (a gate, a `LogoutButton`, a `SessionTimeoutBanner`) need to observe the same session.
 - **Blocks** (`packages/react/*.tsx`, one per `content/blocks/*.mdx`) — composable primitives: `<KnockCodes>`, `<PinInput>`, `<ProtectedRoute>`, `<ProtectedLayout>`, `<ProtectedModal>`, `<ProtectedCard>`, `<SessionTimeoutBanner>`, `<LogoutButton>`, `<AccessDeniedScreen>`, `<VerificationLoader>`, `<AccessReceipt>`, `<GateWrapper>`, etc.
-- **Templates** (`packages/react/*Template.tsx`, one per `content/templates/*.mdx`) — complete single-file screens that call `useKnockCodes` directly instead of importing block components. Deliberately self-contained so installing a template doesn't pull in the whole block set.
+- **Templates** (`packages/react/*Template.tsx`, one per `content/templates/*.mdx`) — complete screens that import block primitives (`PinInput`, and the hook) for code entry. Layout, theme, and chrome stay in the template file. Installing a template pulls `pin-input` via `registryDependencies`.
 
 ### Local hash mode vs. server verification mode
 

@@ -1,12 +1,12 @@
 ---
 title: "PIN Input"
-description: "A copy-paste React access-code field for building a fully custom gate UI on useKnockCodes — masked input, paste support, accessible errors. Zero dependencies."
+description: "A copy-paste React access-code field for building a custom gate on useKnockCodes — masked field or segmented boxes, paste support, accessible errors. Zero dependencies."
 category: "Core"
 tags: ["core", "form"]
 registryName: "pin-input"
 relatedBlocks: ["knock-codes", "unlock-dialog", "verification-loader"]
-accessibility: "Labeled via a real <label>, not just a placeholder. The show/hide toggle is a real button with an aria-label that flips with its state. Errors and the submitting label live in a shared aria-live=\"polite\" region."
-customization: "Deliberately a single masked text field, not a segmented per-character box grid — that shape supports arbitrary-length passphrases, not just 4-6 digit PINs. It carries no verification logic of its own, so it drops into any custom gate UI built on `useKnockCodes`."
+accessibility: "Field variant: labeled via a real <label>, show/hide is a button with an aria-label. Boxes variant: role=group with per-slot aria-labels. Errors and the submitting label live in a shared aria-live=\"polite\" region."
+customization: "`variant=\"field\"` (default) is a masked text input for arbitrary-length codes. `variant=\"boxes\"` is a fixed-length grid (`length`, `groupSize`). No verification logic of its own — drop it into any custom gate on `useKnockCodes`."
 bestUsedFor: "Building a custom access-code form on useKnockCodes without adopting a full template's layout."
 usageSnippet: |
   const { state, error, submit } = useKnockCodes({ expectedHash: hash });
@@ -45,7 +45,19 @@ props:
     description: "Overrides for every user-facing string."
   - name: "autoFocus"
     type: "boolean"
-    description: "Focus the field on mount."
+    description: "Focus the field (or first box) on mount."
+  - name: "variant"
+    type: '"field" | "boxes"'
+    default: '"field"'
+    description: "Masked text field, or a segmented character grid."
+  - name: "length"
+    type: "number"
+    default: "6"
+    description: "Slot count when variant is boxes."
+  - name: "groupSize"
+    type: "number"
+    default: "4"
+    description: "Dash between groups when variant is boxes."
 ---
 
 The presentational primitive `<KnockCodes>` and every dialog-based block render internally. Independently

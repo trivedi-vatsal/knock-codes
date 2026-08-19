@@ -1,8 +1,9 @@
 // Minimal Access Template v1.0.0
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useKnockCodes } from "./useKnockCodes.ts";
+import { PinInput } from "./PinInput.tsx";
 import { DEFAULT_LABELS, type KnockCodesConfig, type KnockCodesLabels } from "./types.ts";
 import { cx } from "./cx.ts";
 
@@ -84,14 +85,8 @@ export function MinimalAccessTemplate({
     storage: remember === "session" ? "sessionStorage" : config.storage,
   });
   const [code, setCode] = useState("");
-  const [revealed, setRevealed] = useState(false);
-  const inputRef = useRef<HTMLInputElement | null>(null);
   const [shakeSeed, setShakeSeed] = useState(0);
   const [showChildren, setShowChildren] = useState(false);
-
-  useEffect(() => {
-    if (state === "idle" && error) inputRef.current?.focus();
-  }, [error, state]);
 
   useEffect(() => {
     if (error) setShakeSeed((seed) => seed + 1);
@@ -139,8 +134,6 @@ function SuccessPanel({ theme }: { theme?: "light" | "dark" }) {
     setCode("");
   };
 
-  const errorMessage = error ? (error.reason === "network" ? merged.networkErrorMessage : merged.invalidErrorMessage) : null;
-
   const content = (
     <div
       className={cx(
@@ -164,46 +157,16 @@ function SuccessPanel({ theme }: { theme?: "light" | "dark" }) {
         {merged.description && <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{merged.description}</p>}
 
         <div className="mt-5">
-          <label htmlFor="minimal-access-code" className="mb-1.5 block text-xs font-medium text-gray-500 dark:text-gray-400">
-            {merged.inputLabel}
-          </label>
-          <div className="relative">
-            <input
-              ref={inputRef}
-              id="minimal-access-code"
-              type={revealed ? "text" : "password"}
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-              placeholder={merged.placeholder}
-              autoComplete="off"
-              autoFocus={autoFocus}
-              disabled={state === "submitting"}
-              aria-invalid={error ? true : undefined}
-              className="h-10 w-full rounded-[var(--ag-radius,0.5rem)] border border-[var(--ag-border,#d1d5db)] px-3 pr-16 text-sm text-gray-900 focus:border-[var(--ag-primary,#3b82f6)] focus:ring-2 focus:ring-[var(--ag-primary,#3b82f6)]/30 focus:outline-none disabled:opacity-60 dark:border-[var(--ag-border-dark,#374151)] dark:bg-[var(--ag-card-dark,#111827)] dark:text-gray-50"
-            />
-            <button
-              type="button"
-              onClick={() => setRevealed((r) => !r)}
-              aria-label={revealed ? merged.hideCodeLabel : merged.showCodeLabel}
-              className="absolute top-1/2 right-3 -translate-y-1/2 text-xs font-medium text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-            >
-              {revealed ? merged.hideCodeLabel : merged.showCodeLabel}
-            </button>
-          </div>
-          <div role="status" aria-live="polite" className="mt-2 min-h-[1.1rem] text-xs text-red-600 dark:text-red-400">
-            {state === "submitting" ? merged.submittingLabel : (errorMessage ?? "")}
-          </div>
+          <PinInput
+            value={code}
+            onChange={setCode}
+            onSubmit={() => void handleSubmit()}
+            submitting={state === "submitting"}
+            error={error}
+            labels={labels}
+            autoFocus={autoFocus}
+          />
         </div>
-
-        <button
-          type="button"
-          onClick={handleSubmit}
-          disabled={!code || state === "submitting"}
-          className="mt-3 w-full rounded-[var(--ag-radius,0.5rem)] bg-[var(--ag-primary,#111827)] px-4 py-2.5 text-sm font-semibold text-[var(--ag-primary-fg,#ffffff)] transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[var(--ag-primary-dark,#f9fafb)] dark:text-[var(--ag-primary-fg-dark,#111827)]"
-        >
-          {state === "submitting" ? merged.submittingLabel : merged.submitLabel}
-        </button>
 
         {(supportHref || onContactSupport) && (
           <div className="mt-3 text-center">

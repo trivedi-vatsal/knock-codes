@@ -1,8 +1,9 @@
 // Knock Codes Template v1.0.0
 "use client";
 
-import { useEffect, useRef, useState, type KeyboardEvent, type ClipboardEvent, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useKnockCodes } from "./useKnockCodes.ts";
+import { PinInput } from "./PinInput.tsx";
 import { DEFAULT_LABELS, type KnockCodesConfig, type KnockCodesLabels } from "./types.ts";
 import { cx } from "./cx.ts";
 
@@ -98,8 +99,7 @@ function SuccessView({ theme }: { theme?: "light" | "dark" }) {
  * backdrop, centered card, segmented code entry, support link, and footer
  * help text, all in one file. Built on the same `useKnockCodes`
  * session/verification contract as every other block, just with a
- * different presentation (segmented boxes instead of a masked text field —
- * for that, use `<KnockCodes>` + `<PinInput>` instead).
+ * different presentation. Segmented entry is `<PinInput variant="boxes">`.
  */
 export function KnockCodesTemplate({
   children,
@@ -121,18 +121,8 @@ export function KnockCodesTemplate({
     ...config,
     storage: remember === "session" ? "sessionStorage" : config.storage,
   });
-  const [digits, setDigits] = useState<string[]>(() => Array(codeLength).fill(""));
-  const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
-  const [shakeSeed, setShakeSeed] = useState(0);
+  const [code, setCode] = useState("");
   const [showChildren, setShowChildren] = useState(false);
-
-  useEffect(() => {
-    if (state === "idle" && error && autoFocus) inputRefs.current[0]?.focus();
-  }, [error, state, autoFocus]);
-
-  useEffect(() => {
-    if (error) setShakeSeed((seed) => seed + 1);
-  }, [error]);
 
   // Holds the unlock screen visible for a beat so success has a visible
   // transition instead of an instant swap to `children`.
@@ -159,54 +149,11 @@ export function KnockCodesTemplate({
     );
   }
 
-  const code = digits.join("");
-  const filled = code.length === codeLength && digits.every((d) => d !== "");
-
-  const setDigit = (index: number, value: string) => {
-    setDigits((current) => {
-      const next = [...current];
-      next[index] = value;
-      return next;
-    });
-  };
-
   const handleSubmit = async () => {
-    if (!filled || state === "submitting") return;
+    if (!code || state === "submitting") return;
     await submit(code);
-    setDigits(Array(codeLength).fill(""));
-    inputRefs.current[0]?.focus();
+    setCode("");
   };
-
-  const handleChange = (index: number, value: string) => {
-    const char = value.slice(-1);
-    setDigit(index, char);
-    if (char && index < codeLength - 1) inputRefs.current[index + 1]?.focus();
-  };
-
-  const handleKeyDown = (index: number, event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Backspace" && !digits[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus();
-      setDigit(index - 1, "");
-    } else if (event.key === "ArrowLeft" && index > 0) {
-      inputRefs.current[index - 1]?.focus();
-    } else if (event.key === "ArrowRight" && index < codeLength - 1) {
-      inputRefs.current[index + 1]?.focus();
-    } else if (event.key === "Enter") {
-      void handleSubmit();
-    }
-  };
-
-  const handlePaste = (event: ClipboardEvent<HTMLInputElement>) => {
-    const pasted = event.clipboardData.getData("text").trim().slice(0, codeLength);
-    if (!pasted) return;
-    event.preventDefault();
-    const next = Array(codeLength).fill("");
-    for (let i = 0; i < pasted.length; i++) next[i] = pasted[i];
-    setDigits(next);
-    inputRefs.current[Math.min(pasted.length, codeLength - 1)]?.focus();
-  };
-
-  const errorMessage = error ? (error.reason === "network" ? merged.networkErrorMessage : merged.invalidErrorMessage) : null;
 
   // Tailwind's `dark:` utilities only activate for descendants of a ".dark"
   // ancestor — never for the element carrying that class itself — so
@@ -236,51 +183,19 @@ export function KnockCodesTemplate({
         <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{merged.description}</p>
 
         <div className="mt-6">
-          <span className="mb-2 block text-xs font-medium tracking-wide text-gray-500 uppercase dark:text-gray-400">
-            {merged.accessCodeLabel}
-          </span>
-          <div
-            key={shakeSeed}
-            role="group"
-            aria-label={merged.accessCodeLabel}
-            className={cx("flex items-center gap-1 sm:gap-1.5", shakeSeed > 0 && "animate-[knock-codes-shake_0.4s_ease-in-out]")}
-          >
-            {Array.from({ length: codeLength }, (_, index) => (
-              <div key={index} className="flex min-w-0 flex-1 items-center gap-1 sm:gap-1.5">
-                {index > 0 && index % groupSize === 0 && <span className="shrink-0 text-gray-300">–</span>}
-                <input
-                  ref={(el) => {
-                    inputRefs.current[index] = el;
-                  }}
-                  value={digits[index]}
-                  onChange={(event) => handleChange(index, event.target.value)}
-                  onKeyDown={(event) => handleKeyDown(index, event)}
-                  onPaste={handlePaste}
-                  disabled={state === "submitting"}
-                  autoFocus={autoFocus && index === 0}
-                  maxLength={1}
-                  autoComplete="one-time-code"
-                  inputMode="text"
-                  aria-label={`${merged.accessCodeLabel} character ${index + 1} of ${codeLength}`}
-                  aria-invalid={error ? true : undefined}
-                  className="h-11 w-full min-w-0 max-w-10 rounded-[var(--ag-radius,0.5rem)] border border-[var(--ag-border,#d1d5db)] text-center text-sm font-medium text-gray-900 focus:border-[var(--ag-primary,#3b82f6)] focus:ring-2 focus:ring-[var(--ag-primary,#3b82f6)]/30 focus:outline-none disabled:opacity-60 dark:border-[var(--ag-border-dark,#374151)] dark:bg-[var(--ag-card-dark,#111827)] dark:text-gray-50"
-                />
-              </div>
-            ))}
-          </div>
-          <div role="status" aria-live="polite" className="mt-2 min-h-[1.1rem] text-xs text-red-600 dark:text-red-400">
-            {state === "submitting" ? merged.submittingLabel : (errorMessage ?? "")}
-          </div>
+          <PinInput
+            variant="boxes"
+            length={codeLength}
+            groupSize={groupSize}
+            value={code}
+            onChange={setCode}
+            onSubmit={() => void handleSubmit()}
+            submitting={state === "submitting"}
+            error={error}
+            labels={{ ...labels, inputLabel: merged.accessCodeLabel, submitLabel: merged.submitLabel }}
+            autoFocus={autoFocus}
+          />
         </div>
-
-        <button
-          type="button"
-          onClick={handleSubmit}
-          disabled={!filled || state === "submitting"}
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-[var(--ag-primary,#2563eb)] px-4 py-2.5 text-sm font-semibold text-[var(--ag-primary-fg,#ffffff)] transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {state === "submitting" ? merged.submittingLabel : merged.submitLabel} →
-        </button>
 
         {(supportHref || onContactSupport) && (
           <div className="mt-3 text-center">

@@ -109,3 +109,37 @@ test("network error uses distinct copy from invalid", () => {
   render(<Harness error={{ reason: "network" }} />);
   assert.equal(screen.getByText("Couldn't reach the server. Try again.").textContent, "Couldn't reach the server. Try again.");
 });
+
+test("boxes: paste fills slots and submit stays disabled until full", async () => {
+  const user = userEvent.setup();
+  function BoxesHarness() {
+    const [value, setValue] = useState("");
+    const [submitted, setSubmitted] = useState(0);
+    return (
+      <>
+        <PinInput
+          variant="boxes"
+          length={4}
+          groupSize={4}
+          value={value}
+          onChange={setValue}
+          onSubmit={() => setSubmitted((n) => n + 1)}
+          submitting={false}
+          error={null}
+        />
+        <div data-testid="boxes-submit-count">{submitted}</div>
+      </>
+    );
+  }
+
+  render(<BoxesHarness />);
+  const first = screen.getByLabelText("Access code character 1 of 4") as HTMLInputElement;
+  first.focus();
+  await user.paste("12");
+  assert.equal(screen.getByRole("button", { name: "Unlock" }).hasAttribute("disabled"), true);
+
+  await user.paste("4242");
+  assert.equal(screen.getByRole("button", { name: "Unlock" }).hasAttribute("disabled"), false);
+  await user.click(screen.getByRole("button", { name: "Unlock" }));
+  assert.equal(screen.getByTestId("boxes-submit-count").textContent, "1");
+});

@@ -60,14 +60,16 @@ in that model. Dates are release dates of this repository, not npm publishes.
 ### Changed
 - README local-vs-server table: server mode hides the hash; it does not hide bundled children or stop a
   forged session unless `validateSession` is wired. Packages are not on npm — distribution is the registry.
+- React templates compose `<PinInput>` instead of inlining a second code field. Installing a template
+  now pulls `pin-input`. `PinInput` gained `variant="boxes"` (`length`, `groupSize`).
 
 ### Template versions
 | Template | Version |
 | --- | --- |
-| `knock-codes-template` | 1.0.1 |
-| `branded-access-template` | 1.0.1 |
-| `minimal-access-template` | 1.0.1 |
-| `modal-access-template` | 1.0.1 |
+| `knock-codes-template` | 1.1.0 |
+| `branded-access-template` | 1.1.0 |
+| `minimal-access-template` | 1.1.0 |
+| `modal-access-template` | 1.1.0 |
 | `plain-html-gate` | 1.0.0 |
 
 ### Changed
