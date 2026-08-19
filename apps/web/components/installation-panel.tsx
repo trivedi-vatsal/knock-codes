@@ -25,12 +25,13 @@ export function InstallationPanel({
   const command = isLocalDev
     ? `npx shadcn@latest add ${siteUrl}/r/react/${registryName}.json`
     : `npx shadcn@latest add @knock-codes/${registryName}`;
+  const githubCommand = `npx shadcn@latest add trivedi-vatsal/knock-codes/${registryName}`;
   const allFiles = [...dependencyItems.flatMap((item) => item.files), ...ownFiles];
 
   return (
     <div className="space-y-4">
       <div>
-        <p className="label-mono mb-2 text-muted-foreground">CLI</p>
+        <p className="label-mono mb-2 text-muted-foreground">Recommended</p>
         <CommandBlock command={command} />
         {isLocalDev && (
           <p className="mt-2 text-xs text-muted-foreground">
@@ -67,14 +68,23 @@ export function InstallationPanel({
         </ul>
       </div>
 
-      <div className="rounded-lg border border-dashed border-border p-3">
-        <p className="label-mono mb-1.5 text-muted-foreground">No CLI? Copy the files by hand</p>
-        <ol className="list-decimal space-y-1 pl-4 text-xs text-muted-foreground">
-          <li>Open the Code tab in the preview above.</li>
-          <li>Create each path listed below in your project and paste its contents in.</li>
-          <li>Do the same for anything listed under &ldquo;Also installs&rdquo;, if present.</li>
-        </ol>
-      </div>
+      <details className="rounded-lg border border-dashed border-border p-3">
+        <summary className="cursor-pointer label-mono text-muted-foreground">Other ways</summary>
+        <div className="mt-3 space-y-4">
+          <div>
+            <p className="mb-2 text-xs text-muted-foreground">GitHub shorthand</p>
+            <CommandBlock command={githubCommand} />
+          </div>
+          <div>
+            <p className="label-mono mb-1.5 text-muted-foreground">Copy the files by hand</p>
+            <ol className="list-decimal space-y-1 pl-4 text-xs text-muted-foreground">
+              <li>Open the Code tab in the preview above.</li>
+              <li>Create each path listed below in your project and paste its contents in.</li>
+              <li>Do the same for anything listed under &ldquo;Also installs&rdquo;, if present.</li>
+            </ol>
+          </div>
+        </div>
+      </details>
     </div>
   );
 }

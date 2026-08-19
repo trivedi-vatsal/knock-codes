@@ -2,9 +2,9 @@
 
 import { BlueprintFrame } from "@/components/blueprint-frame";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { HashGenerator } from "@/components/hash-generator";
 import { CodeBrowser } from "@/components/code-browser";
 import { THREAT_MODEL_COPY } from "@/lib/copy";
+import Link from "next/link";
 
 interface ServerTemplateFile {
   filename: string;
@@ -20,16 +20,18 @@ export function TemplateSecuritySection({ isHtml = false, serverTemplates = [] }
   return (
     <section className="mb-10">
       <BlueprintFrame label="Security & Verification">
-        <Tabs defaultValue="hash">
+        <p className="mb-6 text-sm text-muted-foreground">
+          Need a hash? Use the{" "}
+          <Link href="/getting-started#generator" className="font-medium text-primary hover:underline">
+            hash generator
+          </Link>{" "}
+          on Getting Started — computed locally, never sent anywhere.
+        </p>
+        <Tabs defaultValue="threat">
           <TabsList className="mb-6">
-            <TabsTrigger value="hash">Hash Generator</TabsTrigger>
-            <TabsTrigger value="server">Server Mode</TabsTrigger>
             <TabsTrigger value="threat">Threat Model</TabsTrigger>
+            <TabsTrigger value="server">Server Mode</TabsTrigger>
           </TabsList>
-
-          <TabsContent value="hash" className="space-y-4">
-            <HashGenerator frameless />
-          </TabsContent>
 
           <TabsContent value="server" className="space-y-4">
             <h2 className="text-xl font-semibold tracking-tight text-foreground">Need real protection?</h2>
@@ -49,7 +51,10 @@ export function TemplateSecuritySection({ isHtml = false, serverTemplates = [] }
                   different.
                 </>
               )}{" "}
-              Each template rate-limits attempts and returns a short-lived signed token on success.
+              Each template rate-limits attempts and returns a short-lived signed token on success. Server mode hides
+              the hash, not children you already bundled — wire{" "}
+              <code className="rounded bg-muted px-1 py-0.5 text-xs">validateSession</code> if a forged session would
+              matter.
             </p>
             <CodeBrowser files={serverTemplates.map((t) => ({ path: t.filename, content: t.code }))} />
           </TabsContent>

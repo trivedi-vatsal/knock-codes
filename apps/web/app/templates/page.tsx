@@ -7,6 +7,7 @@ import { HomeCtaButton } from "@/components/home-cta-button";
 import { CodeViewer } from "@/components/code-viewer";
 import { getAllTemplates } from "@/lib/templates";
 import { pageMetadata } from "@/lib/seo";
+import Link from "next/link";
 
 export const metadata: Metadata = pageMetadata(
   "Templates — Knock Codes",
@@ -32,17 +33,10 @@ export default function TemplatesPage() {
         description="Every template ships as a complete, single-file access screen — background, card, form, support link, footer, and verification logic. Pick a style, copy the file, wire a hash, ship it."
       >
         <HomeCtaButton href="#gallery">Browse templates</HomeCtaButton>
-        <HomeCtaButton href="/blocks" variant="ghost">
-          Build from blocks
+        <HomeCtaButton href="/getting-started" variant="ghost">
+          Get started
         </HomeCtaButton>
       </PageHeader>
-
-      <section className="border-b border-border px-8 py-14">
-        <div className="mx-auto max-w-[480px] text-left">
-          <p className="label-mono mb-3 text-center text-muted-foreground">The shared contract</p>
-          <CodeViewer code={CONTRACT_SNIPPET} />
-        </div>
-      </section>
 
       <section id="gallery" className="px-8 py-20">
         <div className="mx-auto max-w-[1120px]">
@@ -67,30 +61,24 @@ export default function TemplatesPage() {
               ))}
             </div>
           </Reveal>
+          <Reveal>
+            <p className="mt-8 text-sm text-muted-foreground">
+              Prefer assembling your own layout?{" "}
+              <Link href="/blocks" className="font-medium text-primary hover:underline">
+                Build from blocks
+              </Link>
+              .
+            </p>
+          </Reveal>
         </div>
       </section>
 
-      <section className="border-t border-border px-8 py-24 text-center">
-        <Reveal className="mx-auto max-w-[1120px]">
-          <span className="mb-5 block font-mono text-[11px] font-medium tracking-[0.14em] uppercase">
-            <b className="font-medium text-primary">02</b>
-            <span className="text-fg-faint"> / Custom layout</span>
-          </span>
-          <h2 className="text-[clamp(30px,4.5vw,48px)] leading-[1.1] font-medium tracking-[-0.025em]">
-            Need something custom?
-          </h2>
-          <p className="mx-auto mt-4 max-w-[480px] text-muted-foreground">
-            If you prefer assembling your own layout instead of using a single-file template, explore our 16 composable React blocks.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <HomeCtaButton href="/blocks">Explore blocks</HomeCtaButton>
-            <HomeCtaButton href="/getting-started" variant="ghost">
-              Quickstart guide
-            </HomeCtaButton>
-          </div>
-        </Reveal>
+      <section className="border-t border-border px-8 py-14">
+        <div className="mx-auto max-w-[480px] text-left">
+          <p className="label-mono mb-3 text-center text-muted-foreground">The shared contract</p>
+          <CodeViewer code={CONTRACT_SNIPPET} />
+        </div>
       </section>
     </div>
   );
 }
-

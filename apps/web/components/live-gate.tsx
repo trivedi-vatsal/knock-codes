@@ -16,7 +16,7 @@ const INSTALL_COMMAND = "npx shadcn@latest add @knock-codes/knock-codes-template
  * aria-live error on a wrong knock, install command reveal on unlock.
  */
 export function LiveGate() {
-  const { state, error, submit } = useKnockCodes({
+  const { state, error, submit, ready } = useKnockCodes({
     expectedHash: DEMO_HASH,
     storage: "memory",
     storageKey: "kc-hero-gate",
@@ -70,6 +70,10 @@ export function LiveGate() {
       inputRefs.current[Math.min(pasted.length, CODE_LENGTH - 1)]?.focus();
     }
   };
+
+  if (!ready) {
+    return <div className="mx-auto mt-13 h-[280px] max-w-[430px] rounded-xl border border-border/80 bg-card/65" />;
+  }
 
   return (
     <div

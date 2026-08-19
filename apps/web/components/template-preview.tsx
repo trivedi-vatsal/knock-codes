@@ -9,11 +9,8 @@ import {
 } from "@knock-codes/react";
 import { usePreviewDark } from "@/components/preview-panel";
 import { FigureLabel } from "@/components/figure-label";
+import { DEMO_CODE, DEMO_HASH } from "@/lib/demo-hash";
 
-const DEMO_CODE = "demo1234";
-// sha256Hex(DEMO_CODE) — precomputed so the preview renders on first paint
-// instead of waiting on an async Web Crypto round trip for a hash of a fixed string.
-const DEMO_CODE_HASH = "0ead2060b65992dca4769af601a1b3a35ef38cfad2c2c465bb160ea764157c5d";
 const LOGO = <span className="text-lg font-bold text-gray-900 dark:text-gray-50">Acme Inc.</span>;
 
 function DemoUnlockedPanel() {
@@ -44,12 +41,12 @@ type PreviewFactory = (hash: string, theme: "light" | "dark") => ReactNode;
 
 const PREVIEWS: Record<string, PreviewFactory> = {
   "knock-codes": (hash, theme) => (
-    <KnockCodesTemplate expectedHash={hash} storage="memory" fullPage={false} theme={theme} logo={LOGO} supportHref="/security" autoFocus={false}>
+    <KnockCodesTemplate expectedHash={hash} storage="memory" fullPage={false} theme={theme} logo={LOGO} supportHref="/security" autoFocus={false} codeLength={4} groupSize={4}>
       <DemoUnlockedPanel />
     </KnockCodesTemplate>
   ),
   "knock-codes-template": (hash, theme) => (
-    <KnockCodesTemplate expectedHash={hash} storage="memory" fullPage={false} theme={theme} logo={LOGO} supportHref="/security" autoFocus={false}>
+    <KnockCodesTemplate expectedHash={hash} storage="memory" fullPage={false} theme={theme} logo={LOGO} supportHref="/security" autoFocus={false} codeLength={4} groupSize={4}>
       <DemoUnlockedPanel />
     </KnockCodesTemplate>
   ),
@@ -105,7 +102,7 @@ const PREVIEWS: Record<string, PreviewFactory> = {
 
 export function TemplatePreview({ slug }: { slug: string }) {
   const dark = usePreviewDark();
-  const hash = DEMO_CODE_HASH;
+  const hash = DEMO_HASH;
 
   const factory = PREVIEWS[slug];
   if (!factory) {
@@ -120,7 +117,7 @@ export function TemplatePreview({ slug }: { slug: string }) {
   }
 
   return (
-    <div className="relative flex h-full min-h-[44rem] flex-col">
+    <div className="relative flex h-full min-h-[28rem] flex-col">
       <div className="absolute top-3 left-3 z-10 flex items-center gap-2 text-gray-500 dark:text-white/50">
         <FigureLabel index={1} />
         <span className="label-mono">Demo code: {DEMO_CODE}</span>
