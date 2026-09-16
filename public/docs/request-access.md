@@ -51,7 +51,7 @@ Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
 
 ## Related
 
-Used by: client-preview-gate, cooldown-screen, expired-notice, gated-section, preview-chrome, quick-gate, revoked-notice, teaser-gate.
+Used by: client-preview-gate, cooldown-screen, expired-notice, gated-section, open-invitation, preview-chrome, quick-gate, revoked-notice, teaser-gate.
 
 ## Accessibility
 

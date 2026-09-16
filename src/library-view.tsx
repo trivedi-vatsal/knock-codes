@@ -11,6 +11,7 @@ import { PreviewRibbon } from '../registry/components/preview-ribbon';
 import { PreviewBar } from '../registry/components/preview-bar';
 import { RelockControl } from '../registry/components/relock-control';
 import { BlurVeil } from '../registry/components/blur-veil';
+import { PreviewWatermark } from '../registry/components/preview-watermark';
 const noop = () => {};
 const blockNames = [
   'Client preview gate',
@@ -100,6 +101,12 @@ function Thumbnail({ name, deadline, expiry }: { name: string; deadline: string;
           <SampleWork />
         </BlurVeil>
       );
+    case 'Preview watermark':
+      return (
+        <PreviewWatermark recipient="Acme Co." buildLabel="acme-v1" theme="light">
+          <SampleWork />
+        </PreviewWatermark>
+      );
   }
 }
 export function Library() {
@@ -171,7 +178,7 @@ export function Library() {
               className={`collection-preview ${blocks[name] ? 'block-thumbnail' : 'component-thumbnail'}`}
               aria-hidden="true"
               {...({ inert: version.startsWith('18.') ? '' : true } as {
-                inert?: boolean | string;
+                inert?: boolean;
               })}
             >
               <div className="thumbnail-content">

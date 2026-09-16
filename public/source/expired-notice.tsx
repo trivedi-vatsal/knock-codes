@@ -16,10 +16,10 @@
 'use client';
 
 import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from 'react';
-import { RecipientLine } from '../components/recipient-line';
-import { ExpiryPill } from '../components/expiry-pill';
-import { RequestAccess } from '../components/request-access';
-import { CooldownNotice } from '../components/cooldown-notice';
+import { RecipientLine } from './recipient-line';
+import { ExpiryPill } from './expiry-pill';
+import { RequestAccess } from './request-access';
+import { CooldownNotice } from './cooldown-notice';
 
 export interface ExpiredNoticeProps {
   /** Controlled code value; required. No code is verified here. */

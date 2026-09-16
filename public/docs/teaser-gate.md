@@ -195,12 +195,12 @@ export default function Example() {
 'use client';
 
 import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from 'react';
-import { CodeField } from '../components/code-field';
-import { RecipientLine } from '../components/recipient-line';
-import { ExpiryPill } from '../components/expiry-pill';
-import { RequestAccess } from '../components/request-access';
-import { CooldownNotice } from '../components/cooldown-notice';
-import { BlurVeil } from '../components/blur-veil';
+import { CodeField } from './code-field';
+import { RecipientLine } from './recipient-line';
+import { ExpiryPill } from './expiry-pill';
+import { RequestAccess } from './request-access';
+import { CooldownNotice } from './cooldown-notice';
+import { BlurVeil } from './blur-veil';
 
 export interface TeaserGateProps {
   /** Controlled code value; required. No code is verified here. */

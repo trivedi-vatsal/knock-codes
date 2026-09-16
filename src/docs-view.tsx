@@ -138,6 +138,31 @@ export function DocsIndex({
               </a>
             </div>
           </Section>
+          <Section title="Choose a screen">
+            {(
+              [
+                ['gate', 'Before access'],
+                ['unlocked', 'After unlock'],
+                ['ended', 'When it is over'],
+              ] as const
+            ).map(([lifecycle, label]) => (
+              <div key={lifecycle} className="gate-chooser">
+                <p className="chooser-label">{label}</p>
+                <div className="guide-links">
+                  {items
+                    .filter((item) => item.meta.lifecycle === lifecycle)
+                    .map((item) => (
+                      <a key={item.name} href={`/docs/${item.name}`}>
+                        <strong>
+                          {item.title} <span>↗</span>
+                        </strong>
+                        <span>{item.meta.whenToUse}</span>
+                      </a>
+                    ))}
+                </div>
+              </div>
+            ))}
+          </Section>
           <p className="guide-note">
             Your application verifies access and owns the state. Knock provides the interface.
           </p>
@@ -171,10 +196,65 @@ bunx --bun shadcn@latest registry add @knock-codes`}
               Choose another item in the playground to get its install command.
             </p>
           </Section>
-          <Section title="4. Connect your state">
+          <Section title="4. Verify on the server, then set unlocked">
             <p>
-              Pass the input value, callbacks, and visibility from your application. Verify access
-              on your server before revealing protected content.
+              Knock never checks a code. Submit reports the attempt. Your server decides. Then you
+              set <code>unlocked</code>. <code>status=&quot;success&quot;</code> only styles the
+              form.
+            </p>
+            <Snippet
+              label="actions.ts"
+              code={`'use server';
+
+export async function checkPreviewCode(code: string) {
+  const invite = await loadInvite(code);
+  if (!invite) return { ok: false as const, reason: 'invalid' as const };
+  if (invite.expired) return { ok: false as const, reason: 'expired' as const };
+  if (invite.revoked) return { ok: false as const, reason: 'revoked' as const };
+  return { ok: true as const };
+}`}
+            />
+            <Snippet
+              code={`'use client';
+import { useState, type FormEvent } from 'react';
+import { ClientPreviewGate } from '@/components/knock/client-preview-gate';
+import { ExpiredNotice } from '@/components/knock/expired-notice';
+import { RevokedNotice } from '@/components/knock/revoked-notice';
+import { checkPreviewCode } from './actions';
+
+export function Preview() {
+  const [value, setValue] = useState('');
+  const [unlocked, setUnlocked] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'pending' | 'error' | 'success'>('idle');
+  const [ended, setEnded] = useState<'expired' | 'revoked' | null>(null);
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setStatus('pending');
+    const result = await checkPreviewCode(value);
+    if (result.ok) {
+      setStatus('success');
+      setUnlocked(true);
+      return;
+    }
+    setStatus('error');
+    if (result.reason === 'expired' || result.reason === 'revoked') setEnded(result.reason);
+  }
+  if (ended === 'expired') return <ExpiredNotice value={value} onChange={setValue} onSubmit={onSubmit} status={status} unlocked={false} />;
+  if (ended === 'revoked') return <RevokedNotice value={value} onChange={setValue} onSubmit={onSubmit} status={status} unlocked={false} />;
+  return (
+    <ClientPreviewGate value={value} onChange={setValue} onSubmit={onSubmit} status={status} unlocked={unlocked}>
+      <YourPreview />
+    </ClientPreviewGate>
+  );
+}`}
+            />
+          </Section>
+          <Section title="5. These are not props">
+            <p>
+              Do not invent <code>onSuccess</code>, <code>password</code>, <code>correctCode</code>,{' '}
+              <code>attempts</code>, <code>maxAttempts</code>, or <code>onUnlock</code>. Never put
+              the expected code in the client. Expired and revoked are screens you choose after your
+              own check, not timers inside Knock.
             </p>
             <a className="docs-link" href="/docs/client-preview-gate">
               View usage and API ↗
@@ -241,19 +321,16 @@ bunx --bun shadcn@latest registry add @knock-codes`}
   );
 }
 
-export function DocsPage({
-  item,
-  onIndex,
-}: {
-  item: CatalogItem;
-  items?: CatalogItem[];
-  onIndex: () => void;
-}) {
+export function DocsPage({ item }: { item: CatalogItem }) {
+  const related = [...item.dependencies, ...item.meta.usedBy];
+  const labelDefaults = Object.entries(item.meta.defaults).filter(([name]) =>
+    name.startsWith('labels.'),
+  );
   return (
     <article className="docs guide-page reference-page">
-      <button className="docs-link" onClick={onIndex}>
+      <a className="docs-link" href="/docs">
         Documentation
-      </button>
+      </a>
       <h1>{item.title}</h1>
       <p className="guide-lead">{item.meta.whenToUse}</p>
       <div className="docs-resource-links">
@@ -261,6 +338,9 @@ export function DocsPage({
         <a href={`/docs/${item.name}.md`}>Markdown ↗</a>
         <a href={`/source/${item.name}.tsx`}>Source ↗</a>
       </div>
+      <Section title="Not for">
+        <p>{item.meta.notFor}</p>
+      </Section>
       <Section title="Installation">
         <Snippet code={`npx shadcn@latest add @knock-codes/${item.name}`} label="terminal" />
         <Snippet code={`npx shadcn@latest add ${item.registryUrl}`} label="terminal" />
@@ -272,6 +352,22 @@ export function DocsPage({
           <Snippet code={item.meta.examples.full} />
         </details>
       </Section>
+      {related.length > 0 && (
+        <Section title="Related">
+          <ul>
+            {item.dependencies.map((name) => (
+              <li key={`dep-${name}`}>
+                Installs <a href={`/docs/${name}`}>{name}</a>
+              </li>
+            ))}
+            {item.meta.usedBy.map((name) => (
+              <li key={`used-${name}`}>
+                Used by <a href={`/docs/${name}`}>{name}</a>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      )}
       <details className="reference-details">
         <summary>
           API reference <span>{item.props.length} props</span>
@@ -303,11 +399,21 @@ export function DocsPage({
             </tbody>
           </table>
         </div>
+        {labelDefaults.length > 0 && (
+          <ul>
+            {labelDefaults.map(([name, value]) => (
+              <li key={name}>
+                <code>{name}</code> {value}
+              </li>
+            ))}
+          </ul>
+        )}
       </details>
       <details className="reference-details">
         <summary>Behavior & accessibility</summary>
         <p>{item.meta.contract}</p>
         <p>{item.meta.a11y}</p>
+        <p>These are not props: {item.meta.unsupportedProps.join(', ')}.</p>
         <ul>
           {item.meta.pitfalls.map((pitfall) => (
             <li key={pitfall}>{pitfall}</li>

@@ -34,7 +34,7 @@
       "cooldown-notice"
     ],
     "usedBy": [],
-    "sourceHash": "d672ae60253bd4a1e670e24a6b9b6f38126ffc5ee4a39bab7bc0b95e12aacfe8",
+    "sourceHash": "01496768e1d355a6abc96a6cfa4d3347312f45116f6004c512f73d225300b8b5",
     "component": "CooldownScreen",
     "contract": "Your preview is still here. Give it a moment before your next try. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.",
     "props": [

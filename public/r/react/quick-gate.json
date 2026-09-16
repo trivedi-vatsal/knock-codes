@@ -36,7 +36,7 @@
       "cooldown-notice"
     ],
     "usedBy": [],
-    "sourceHash": "b030d4e8fe5c663e7730fb59d8e0fee8574af5b4a9bc53c8d506d0a705b29e07",
+    "sourceHash": "d3a27f52b2c0e2b2cbd696f2a670721691a9329d8e219600918ff815770fb6d2",
     "component": "QuickGate",
     "contract": "Enter your preview code to continue. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.",
     "props": [

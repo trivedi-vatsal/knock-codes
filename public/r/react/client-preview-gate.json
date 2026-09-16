@@ -37,7 +37,7 @@
       "cooldown-notice"
     ],
     "usedBy": [],
-    "sourceHash": "0ba102610d0b9256f17af696edd2cc339b843dc085b161836303878ea61ba3c8",
+    "sourceHash": "cff07ff3e62ebc2adc94735c7d507b3cc4a54eff98d0f1e6cf0da8b10f1c319a",
     "component": "ClientPreviewGate",
     "contract": "Your next chapter is ready for a first look. Enter the code from your invitation. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.",
     "props": [

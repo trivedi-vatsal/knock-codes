@@ -23,8 +23,5 @@
     "tests",
     "vite.config.ts",
     "scripts"
-  ],
-  "exclude": [
-    "scripts/eval-render-check.tsx"
   ]
 }

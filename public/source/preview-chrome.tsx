@@ -16,11 +16,11 @@
 'use client';
 
 import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from 'react';
-import { CodeField } from '../components/code-field';
-import { PreviewRibbon } from '../components/preview-ribbon';
-import { PreviewBar } from '../components/preview-bar';
-import { RequestAccess } from '../components/request-access';
-import { CooldownNotice } from '../components/cooldown-notice';
+import { CodeField } from './code-field';
+import { PreviewRibbon } from './preview-ribbon';
+import { PreviewBar } from './preview-bar';
+import { RequestAccess } from './request-access';
+import { CooldownNotice } from './cooldown-notice';
 
 export interface PreviewChromeProps {
   /** Controlled code value; required. No code is verified here. */

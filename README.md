@@ -1,6 +1,6 @@
 # Knock
 
-A copy-paste demo-gate UI library: nine components and eight blocks. React 18/19 + Tailwind CSS 4, with no other runtime dependencies. All code is MIT licensed. The previous version lives on the [`v1`](https://github.com/trivedi-vatsal/knock-codes/tree/v1) branch.
+A copy-paste demo-gate UI library: ten components and nine blocks. React 18/19 + Tailwind CSS 4, with no other runtime dependencies. All code is MIT licensed. The previous version lives on the [`v1`](https://github.com/trivedi-vatsal/knock-codes/tree/v1) branch.
 
 ## Run
 
@@ -44,9 +44,9 @@ No authentication, code verification, sessions, storage, fetch, cryptography or 
 
 ## Included
 
-Components: Code field, Cooldown notice, Recipient line, Expiry pill, Request access, Preview ribbon, Preview bar, Relock control, Blur veil.
+Components: Code field, Cooldown notice, Recipient line, Expiry pill, Request access, Preview ribbon, Preview bar, Relock control, Blur veil, Preview watermark.
 
-Blocks: Client preview gate, Quick gate, Teaser gate, Gated section, Expired notice, Revoked notice, Cooldown screen, Preview chrome.
+Blocks: Client preview gate, Quick gate, Teaser gate, Gated section, Expired notice, Revoked notice, Cooldown screen, Preview chrome, Open invitation.
 
 The workbench uses explicit demo consumer state. Submission reports an event; use its Reveal control to change visibility. Preview chrome keeps a draft ribbon and a bottom bar around unlocked content. Without `onRelock`, it omits the interactive bar rather than presenting a broken action. Notice blocks honor `unlocked` just like the other blocks; select the notice appropriate to your application’s lifecycle.
 
@@ -89,11 +89,8 @@ npm run test:install
 npm run test:pages
 npm run test:docs
 npm run test:react18
-npm run test:eval-runner
 ```
 
 Use `/audit` in development for the rendered browser a11y audit, including contrast. It is excluded from the production build. Browser testing uses Codex browser controls, not Playwright.
 
-CI runs public-source, generated-output, example compilation, hydration, structural accessibility, documentation rendering, shadcn registry validation and real installation checks against React 18 and 19. The model-installation job gives the configured model only `llms.txt` and a task, provides bounded documentation/install/write tools, then independently compiles and renders its integration and runs axe. Failed integrations fail the job; correct the source/docs/API rather than relaxing the eval.
-
-Configure the GitHub secret `OPENAI_API_KEY` and repository variable `OPENAI_MODEL` to run `npm run eval:model` in CI. The model job is skipped when `OPENAI_MODEL` is unset so deterministic checks can stay green. Missing credentials still fail `npm run eval:model` locally. `EVAL_ITEM=<slug>` limits a local diagnostic run; the CI default evaluates all 17. The offline runner self-test does not claim model performance.
+CI runs public-source, generated-output, example compilation, hydration, structural accessibility, documentation rendering, shadcn registry validation and real installation checks against React 18 and 19.

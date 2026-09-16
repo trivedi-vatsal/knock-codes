@@ -1,8 +1,6 @@
 /** MIT License — Copyright (c) 2026 Knock contributors. */
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { CodeField, normalizeCode } from '../registry/components/code-field';
-import source from '../registry/components/code-field.tsx?raw';
 import './styles.css';
 import { ComponentDemo, componentInfo } from './component-demo';
 import { BlockDemo, blockInfo, blocks } from './block-demo';
@@ -88,16 +86,6 @@ function Icon({ name, size = 18 }: { name: string; size?: number }) {
     </svg>
   );
 }
-const upcoming = [
-  'Cooldown notice',
-  'Recipient line',
-  'Expiry pill',
-  'Request access',
-  'Preview ribbon',
-  'Preview bar',
-  'Relock control',
-  'Blur veil',
-];
 function App() {
   const [{ selected, view, guide = 'introduction' }, setRoute] = useState<Route>(readRoute);
   const hasSidebar = ['playground', 'docs', 'guide'].includes(view);
@@ -143,16 +131,10 @@ function App() {
     addEventListener('keydown', close);
     return () => removeEventListener('keydown', close);
   }, [mobileNav]);
-  const [value, setValue] = useState('');
-  const [mode, setMode] = useState<'digits' | 'passphrase'>('digits');
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
-  const [status, setStatus] = useState<'idle' | 'pending' | 'error' | 'success'>('idle');
-  const [masked, setMasked] = useState(false);
-  const [tab, setTab] = useState('Preview');
   const [copied, setCopied] = useState(false);
   const [copyFallback, setCopyFallback] = useState('');
   const [announcement, setAnnouncement] = useState('');
-  const snippet = `<CodeField\n  value={code}\n  onChange={setCode}\n  mode="${mode}"\n  status="${status}"${masked ? '\n  masked' : ''}\n/>`;
   async function copy(text: string) {
     try {
       await navigator.clipboard.writeText(text);
@@ -264,51 +246,45 @@ function App() {
           ) : (
             <>
               <div className="nav-heading">
-                COMPONENTS <span>09</span>
+                COMPONENTS <span>{String(Object.keys(componentInfo).length).padStart(2, '0')}</span>
               </div>
-              {['Code field', ...upcoming].map((item) => (
-                <button
+              {Object.keys(componentInfo).map((item) => (
+                <a
                   key={item}
+                  href={pathFor({ selected: item, view: 'playground' })}
                   title={item}
                   className={`nav-item nav-button ${selected === item ? 'active' : ''}`}
                   aria-current={selected === item ? 'page' : undefined}
-                  onClick={() => {
+                  onClick={(event) => {
+                    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                    event.preventDefault();
                     navigate('playground', item);
-                    setMobileNav(false);
                   }}
                 >
                   <Icon name={componentInfo[item].icon} size={16} />
                   {item}
                   {selected === item && <span className="live-dot" />}
-                </button>
+                </a>
               ))}
               <div className="nav-heading blocks-heading">
-                BLOCKS <span>08</span>
+                BLOCKS <span>{String(Object.keys(blocks).length).padStart(2, '0')}</span>
               </div>
-              {[
-                'Client preview gate',
-                'Quick gate',
-                'Teaser gate',
-                'Gated section',
-                'Expired notice',
-                'Revoked notice',
-                'Cooldown screen',
-                'Preview chrome',
-              ].map((item) => (
-                <button
-                  disabled={!blocks[item]}
+              {Object.keys(blocks).map((item) => (
+                <a
+                  href={pathFor({ selected: item, view: 'playground' })}
                   title={item}
                   className={`nav-item nav-button block-item ${selected === item ? 'active' : ''}`}
                   key={item}
                   aria-current={selected === item ? 'page' : undefined}
-                  onClick={() => {
+                  onClick={(event) => {
+                    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                    event.preventDefault();
                     navigate('playground', item);
-                    setMobileNav(false);
                   }}
                 >
                   <span className="block-symbol">▦</span>
                   {item}
-                </button>
+                </a>
               ))}
             </>
           )}
@@ -346,7 +322,7 @@ function App() {
           ) : view === 'guide' || !documented ? (
             <DocsIndex items={items} page={guide} />
           ) : (
-            <DocsPage item={documented} items={items} onIndex={() => navigate('guide')} />
+            <DocsPage item={documented} />
           )
         ) : (
           <>
@@ -375,7 +351,7 @@ function App() {
             )}
             {blocks[selected] ? (
               <BlockDemo compact key={selected} name={selected} theme={theme} setTheme={setTheme} />
-            ) : selected !== 'Code field' ? (
+            ) : (
               <ComponentDemo
                 compact
                 key={selected}
@@ -383,267 +359,20 @@ function App() {
                 theme={theme}
                 setTheme={setTheme}
               />
-            ) : (
-              <>
-                <section className="workbench" aria-label="Code field playground">
-                  <div className="bench-header">
-                    <div className="tabs" role="tablist" aria-label="Component view">
-                      {['Preview', 'Code'].map((item) => (
-                        <button
-                          key={item}
-                          role="tab"
-                          id={`tab-${item}`}
-                          aria-controls="component-panel"
-                          tabIndex={tab === item ? 0 : -1}
-                          onKeyDown={(e) => {
-                            if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) {
-                              e.preventDefault();
-                              const next =
-                                e.key === 'Home'
-                                  ? 'Preview'
-                                  : e.key === 'End'
-                                    ? 'Code'
-                                    : item === 'Preview'
-                                      ? 'Code'
-                                      : 'Preview';
-                              setTab(next);
-                              document.getElementById(`tab-${next}`)?.focus();
-                            }
-                          }}
-                          aria-selected={tab === item}
-                          onClick={() => setTab(item)}
-                        >
-                          <Icon name={item === 'Preview' ? 'diamond' : 'code'} size={14} />
-                          {item}
-                        </button>
-                      ))}
-                    </div>
-                    <div className="bench-tools">
-                      <span className="live-caption">LIVE PLAYGROUND</span>
-                      <button
-                        onClick={() => {
-                          setValue('');
-                          setStatus('idle');
-                        }}
-                        aria-label="Reset preview"
-                      >
-                        <Icon name="reset" size={15} />
-                      </button>
-                      <span className="tool-divider" />
-                      <button
-                        aria-label="Light theme"
-                        aria-pressed={theme === 'light'}
-                        onClick={() => setTheme('light')}
-                      >
-                        <Icon name="sun" size={16} />
-                      </button>
-                      <button
-                        aria-label="Dark theme"
-                        aria-pressed={theme === 'dark'}
-                        onClick={() => setTheme('dark')}
-                      >
-                        <Icon name="moon" size={15} />
-                      </button>
-                    </div>
-                  </div>
-                  <div className="bench-body">
-                    <div
-                      id="component-panel"
-                      role="tabpanel"
-                      aria-labelledby={`tab-${tab}`}
-                      className={`preview-stage ${theme}`}
-                    >
-                      <div className="stage-caption">
-                        <span className="stage-dot" />
-                        YOUR NEXT GREAT FIRST IMPRESSION
-                      </div>
-                      {tab === 'Preview' ? (
-                        <div className="sample-card">
-                          <div className="sample-brand">
-                            <span className="studio-symbol">a</span>atelier
-                            <span>DESIGN STUDIO</span>
-                          </div>
-                          <div className="envelope-rule" />
-                          <div className="prepared">A LITTLE SOMETHING FOR ACME CO.</div>
-                          <h2>Good things await.</h2>
-                          <p className="sample-description">
-                            Your next chapter is ready for a first look.
-                            <br />
-                            Enter the code we sent your way.
-                          </p>
-                          <form
-                            onSubmit={(e) => {
-                              e.preventDefault();
-                              setAnnouncement(
-                                'Demo submitted. Your app decides what happens next.',
-                              );
-                            }}
-                          >
-                            <CodeField
-                              value={value}
-                              onChange={setValue}
-                              mode={mode}
-                              theme={theme}
-                              masked={masked}
-                              status={status}
-                              label={mode === 'digits' ? 'Your access code' : 'Your passphrase'}
-                              placeholder="A few words open the door"
-                              error="That didn’t quite match. Give your code another look."
-                              description="Paste it straight from your email. We’ll tidy it up."
-                              autoFocus={false}
-                            />
-                            <button
-                              className="preview-submit"
-                              type="submit"
-                              disabled={status === 'pending'}
-                            >
-                              {status === 'pending'
-                                ? 'Please wait…'
-                                : status === 'success'
-                                  ? 'Code received'
-                                  : 'Open the preview'}
-                              <Icon name={status === 'success' ? 'check' : 'arrow'} size={16} />
-                            </button>
-                          </form>
-                          <div className="sample-foot">
-                            A private preview. A work in progress.<span>↗</span>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="code-view">
-                          <div>YOUR CONTROLLED COMPONENT</div>
-                          <pre>{snippet}</pre>
-                          <button onClick={() => copy(snippet)}>
-                            <Icon name="copy" size={14} />
-                            {copied ? 'Copied' : 'Copy example'}
-                          </button>
-                          <button onClick={() => copy(source)}>Copy component source</button>
-                          <p>
-                            The consumer owns the value and visual state.
-                            <br />
-                            No code is checked by this component.
-                          </p>
-                        </div>
-                      )}
-                      <div className="stage-bottom">
-                        <span>CRAFTED TO FEEL PERSONAL</span>
-                        <span>01 — CODE FIELD</span>
-                      </div>
-                    </div>
-                    <aside className="controls" aria-label="Preview settings">
-                      <div className="control-title">
-                        Make it yours <span>↙</span>
-                      </div>
-                      <p className="control-intro">Same component. Your context.</p>
-                      <div className="control-label">Input mode</div>
-                      <div className="segmented">
-                        {(['digits', 'passphrase'] as const).map((m) => (
-                          <button
-                            key={m}
-                            aria-pressed={mode === m}
-                            onClick={() => {
-                              setMode(m);
-                              setValue('');
-                            }}
-                          >
-                            {m === 'digits' ? 'Digits' : 'Passphrase'}
-                          </button>
-                        ))}
-                      </div>
-                      <label className="control-label" htmlFor="state">
-                        State <span>CONTROLLED</span>
-                      </label>
-                      <select
-                        id="state"
-                        value={status}
-                        onChange={(e) => setStatus(e.target.value as typeof status)}
-                      >
-                        <option value="idle">Idle / ready</option>
-                        <option value="pending">Pending</option>
-                        <option value="error">Error</option>
-                        <option value="success">Success</option>
-                      </select>
-                      <div className="mask-row">
-                        <label htmlFor="mask">
-                          Mask the code<span>Keep it off nearby screens.</span>
-                        </label>
-                        <button
-                          id="mask"
-                          role="switch"
-                          aria-checked={masked}
-                          onClick={() => setMasked(!masked)}
-                        >
-                          <span />
-                        </button>
-                      </div>
-                      <div className="try-paste">
-                        <div>
-                          <span>↳</span> A LITTLE PASTE TEST
-                        </div>
-                        <p>Messy in. Clean out.</p>
-                        <code>
-                          {mode === 'digits' ? 'Code: “4821-9930”' : 'Passphrase: “open sesame”'}
-                        </code>
-                        <button
-                          onClick={() => {
-                            setValue(
-                              normalizeCode(
-                                mode === 'digits'
-                                  ? 'Code: “4821-9930”'
-                                  : 'Passphrase: “open sesame”',
-                                mode,
-                              ),
-                            );
-                            setAnnouncement('Sample normalized and inserted.');
-                          }}
-                        >
-                          Try this sample <Icon name="arrow" size={14} />
-                        </button>
-                      </div>
-                      <div className="value-output">
-                        <span>CURRENT VALUE</span>
-                        <code>
-                          {value ? (masked ? '•'.repeat(value.length) : `"${value}"`) : '""'}
-                        </code>
-                      </div>
-                      <div className="control-note">
-                        <Icon name="shield" size={15} />
-                        <p>
-                          Just the interface.
-                          <br />
-                          You’re in control of access.
-                        </p>
-                      </div>
-                    </aside>
-                  </div>
-                  <div className="bench-footer">
-                    <span>
-                      <Icon name="check" size={14} />
-                      Paste-friendly <i />
-                      Keyboard-native <i />
-                      Autofill-ready
-                    </span>
-                    <span>One file. Entirely yours.</span>
-                  </div>
-                </section>
-              </>
             )}
           </>
         )}
         <div role="status" className="announcement">
           {announcement}
         </div>
-        <footer className="page-footer developer-footer">
+        <footer className="page-footer site-footer">
           <div>
             <span className="footer-signoff">Thoughtful at the threshold.</span>
-            <p>
-              Built by <a href="https://github.com/trivedi-vatsal">Vatsal Trivedi</a>{' '}
-              <span>· MIT licensed</span>
-            </p>
+            <p>Knock · copy-paste UI for private previews · MIT licensed</p>
           </div>
-          <nav aria-label="Developer links">
-            <a href="mailto:trivedivatsal005@gmail.com">trivedivatsal005@gmail.com</a>
-            <a href="https://github.com/trivedi-vatsal">GitHub ↗</a>
+          <nav aria-label="Knock">
+            <a href="/docs">Docs</a>
+            <a href="https://github.com/trivedi-vatsal/knock-codes">GitHub ↗</a>
           </nav>
         </footer>
       </main>

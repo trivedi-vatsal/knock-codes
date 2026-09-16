@@ -11,8 +11,10 @@ import { ExpiredNotice } from '../registry/blocks/expired-notice';
 import { RevokedNotice } from '../registry/blocks/revoked-notice';
 import { CooldownScreen } from '../registry/blocks/cooldown-screen';
 import { PreviewChrome } from '../registry/blocks/preview-chrome';
+import { OpenInvitation } from '../registry/blocks/open-invitation';
 export const blocks: Record<string, ComponentType<ClientPreviewGateProps>> = {
   'Client preview gate': ClientPreviewGate,
+  'Open invitation': OpenInvitation,
   'Quick gate': QuickGate,
   'Teaser gate': TeaserGate,
   'Gated section': GatedSection,
@@ -74,6 +76,12 @@ export const blockInfo: Record<
       'A branded invitation, with every thoughtful detail in place.\nPrepared for a person. Ready for a first impression.',
     icon: 'diamond',
     contract: 'Controlled code entry, addressed invitation, expiry and access recovery.',
+  },
+  'Open invitation': {
+    title: 'The link is the key.',
+    description: 'No code to type. A named continue, then the work.',
+    icon: 'diamond',
+    contract: 'Continue reports onSubmit. Unlocked stays with the consumer.',
   },
 };
 const sources = import.meta.glob('../registry/blocks/*.tsx', {

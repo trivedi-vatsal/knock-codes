@@ -26,7 +26,7 @@ try {
     })),
     ...catalog.map((item) => ({
       name: item.name,
-      html: renderToString(React.createElement(view.DocsPage, { item, onIndex: () => {} })),
+      html: renderToString(React.createElement(view.DocsPage, { item })),
       item,
     })),
   ];
@@ -55,6 +55,19 @@ try {
         'npx shadcn@latest add @knock-codes/client-preview-gate',
       ])
         assert.ok(host.textContent!.includes(command), command);
+      for (const phrase of [
+        'checkPreviewCode',
+        'onUnlock',
+        'These are not props',
+        'ExpiredNotice',
+        'RevokedNotice',
+      ])
+        assert.ok(host.textContent!.includes(phrase), phrase);
+    }
+    if (page.name === 'introduction') {
+      assert.ok(host.textContent!.includes('Choose a screen'));
+      assert.ok(host.querySelector('a[href="/docs/client-preview-gate"]'));
+      assert.ok(host.querySelector('a[href="/docs/open-invitation"]'));
     }
     if (page.item) {
       assert.ok(host.textContent!.includes(`npx shadcn@latest add @knock-codes/${page.item.name}`));
@@ -67,6 +80,7 @@ try {
       const api = host.querySelector('.reference-details')!;
       assert.ok(!api.hasAttribute('open'), 'API starts collapsed');
       for (const prop of page.item.props) assert.ok(api.textContent!.includes(prop.name));
+      assert.ok(host.textContent!.includes(page.item.meta.notFor), `${page.name} notFor`);
     }
     for (const link of host.querySelectorAll('a[href^="#"]'))
       assert.ok(host.querySelector(link.getAttribute('href')!), 'section links resolve');

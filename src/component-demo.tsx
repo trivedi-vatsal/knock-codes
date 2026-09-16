@@ -1,5 +1,6 @@
 /** MIT License — Copyright (c) 2026 Knock contributors. Demo fixtures only. */
 import { useRef, useState } from 'react';
+import { CodeField, normalizeCode } from '../registry/components/code-field';
 import { CooldownNotice } from '../registry/components/cooldown-notice';
 import { RecipientLine } from '../registry/components/recipient-line';
 import { ExpiryPill } from '../registry/components/expiry-pill';
@@ -8,6 +9,7 @@ import { PreviewRibbon } from '../registry/components/preview-ribbon';
 import { PreviewBar } from '../registry/components/preview-bar';
 import { RelockControl } from '../registry/components/relock-control';
 import { BlurVeil } from '../registry/components/blur-veil';
+import { PreviewWatermark } from '../registry/components/preview-watermark';
 
 export const componentInfo: Record<
   string,
@@ -76,6 +78,13 @@ export const componentInfo: Record<
     icon: 'copy',
     contract: 'Blur is visual, not security. Content remains in the DOM.',
   },
+  'Preview watermark': {
+    title: 'The work keeps its name.',
+    description:
+      'A light mark on the preview itself.\nRecipient and build travel with every screenshot.',
+    icon: 'diamond',
+    contract: 'The overlay is presentation. Your application still owns access.',
+  },
 };
 const sources = import.meta.glob('../registry/components/*.tsx', {
   query: '?raw',
@@ -133,6 +142,10 @@ export function ComponentDemo({
   const [destination, setDestination] = useState('callback');
   const [message, setMessage] = useState('');
   const [copied, setCopied] = useState(false);
+  const [code, setCode] = useState('');
+  const [mode, setMode] = useState<'digits' | 'passphrase'>('digits');
+  const [status, setStatus] = useState<'idle' | 'pending' | 'error' | 'success'>('idle');
+  const [masked, setMasked] = useState(false);
   const restore = useRef<HTMLButtonElement>(null);
   const openContent = useRef<HTMLDivElement>(null);
   const info = componentInfo[name];
@@ -147,7 +160,8 @@ export function ComponentDemo({
     setMessage('Preview restored for this demo.');
     requestAnimationFrame(() => openContent.current?.focus());
   };
-  const code: Record<string, string> = {
+  const snippets: Record<string, string> = {
+    'Code field': `<CodeField\n  value={code}\n  onChange={setCode}\n  mode="${mode}"\n  status="${status}"${masked ? '\n  masked' : ''}\n/>`,
     'Cooldown notice': `<CooldownNotice\n  cooldownUntil={retryDeadline}\n/>`,
     'Recipient line': `<RecipientLine\n  recipient=${JSON.stringify(recipient)}\n/>`,
     'Expiry pill': `<ExpiryPill\n  expiresAt={previewExpiry}\n/>`,
@@ -160,6 +174,8 @@ export function ComponentDemo({
     'Relock control': '<RelockControl\n  onRelock={handleRelock}\n/>',
     'Blur veil':
       '<BlurVeil\n  unlocked={unlocked}\n  prompt={<YourAccessPrompt />}\n>\n  <YourPreview />\n</BlurVeil>',
+    'Preview watermark':
+      '<PreviewWatermark\n  recipient="Acme Co."\n  buildLabel="acme-v1"\n>\n  <YourPreview />\n</PreviewWatermark>',
   };
   async function copySource() {
     try {
@@ -214,8 +230,31 @@ export function ComponentDemo({
               </div>
             ) : (
               <div
-                className={`lifecycle-example ${['Preview ribbon', 'Preview bar', 'Blur veil'].includes(name) ? 'wide-example' : ''}`}
+                className={`lifecycle-example ${['Preview ribbon', 'Preview bar', 'Blur veil', 'Preview watermark'].includes(name) ? 'wide-example' : ''}`}
               >
+                {name === 'Code field' && (
+                  <div className="sample-card">
+                    <div className="sample-brand">
+                      <span className="studio-symbol">a</span>atelier
+                      <span>DESIGN STUDIO</span>
+                    </div>
+                    <div className="envelope-rule" />
+                    <h2>Good things await.</h2>
+                    <CodeField
+                      value={code}
+                      onChange={setCode}
+                      mode={mode}
+                      theme={theme}
+                      masked={masked}
+                      status={status}
+                      label={mode === 'digits' ? 'Your access code' : 'Your passphrase'}
+                      placeholder="A few words open the door"
+                      error="That didn’t quite match. Give your code another look."
+                      description="Paste it straight from your email. We’ll tidy it up."
+                      autoFocus={false}
+                    />
+                  </div>
+                )}
                 {name === 'Cooldown notice' && (
                   <CooldownNotice cooldownUntil={deadline} theme={theme} />
                 )}
@@ -352,6 +391,13 @@ export function ComponentDemo({
                     </BlurVeil>
                   </div>
                 )}
+                {name === 'Preview watermark' && (
+                  <div className="preview-document">
+                    <PreviewWatermark recipient={recipient} buildLabel={build} theme={theme}>
+                      <DraftContent onAction={action} />
+                    </PreviewWatermark>
+                  </div>
+                )}
               </div>
             )}
             <div className="stage-bottom">
@@ -364,6 +410,62 @@ export function ComponentDemo({
               Make it yours <span>↙</span>
             </div>
             <p className="control-intro">One detail. A better experience.</p>
+            {name === 'Code field' && (
+              <>
+                <div className="control-label">Input mode</div>
+                <div className="segmented">
+                  {(['digits', 'passphrase'] as const).map((item) => (
+                    <button
+                      key={item}
+                      aria-pressed={mode === item}
+                      onClick={() => {
+                        setMode(item);
+                        setCode('');
+                      }}
+                    >
+                      {item === 'digits' ? 'Digits' : 'Passphrase'}
+                    </button>
+                  ))}
+                </div>
+                <label className="control-label" htmlFor="state">
+                  State
+                </label>
+                <select
+                  id="state"
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value as typeof status)}
+                >
+                  <option value="idle">Idle / ready</option>
+                  <option value="pending">Pending</option>
+                  <option value="error">Error</option>
+                  <option value="success">Success</option>
+                </select>
+                <div className="mask-row">
+                  <label htmlFor="mask">Mask the code</label>
+                  <button
+                    id="mask"
+                    role="switch"
+                    aria-checked={masked}
+                    onClick={() => setMasked(!masked)}
+                  >
+                    <span />
+                  </button>
+                </div>
+                <button
+                  className="source-button"
+                  onClick={() =>
+                    setCode(
+                      normalizeCode(
+                        mode === 'digits' ? 'Code: “4821-9930”' : 'Passphrase: “open sesame”',
+                        mode,
+                      ),
+                    )
+                  }
+                >
+                  Try a messy paste ↗
+                </button>
+              </>
+            )}
             {name === 'Recipient line' && (
               <>
                 <label className="control-label" htmlFor="recipient">
@@ -489,6 +591,26 @@ export function ComponentDemo({
                 </p>
               </>
             )}
+            {name === 'Preview watermark' && (
+              <>
+                <label className="control-label" htmlFor="watermark-recipient">
+                  Prepared for
+                </label>
+                <input
+                  id="watermark-recipient"
+                  value={recipient}
+                  onChange={(e) => setRecipient(e.target.value)}
+                />
+                <label className="control-label" htmlFor="watermark-build">
+                  Build identifier
+                </label>
+                <input
+                  id="watermark-build"
+                  value={build}
+                  onChange={(e) => setBuild(e.target.value)}
+                />
+              </>
+            )}
             <div className="try-paste">
               <div>THE COMPONENT CONTRACT</div>
               <p>{info.contract}</p>
@@ -528,7 +650,7 @@ export function ComponentDemo({
           </div>
           <div className="usage-code">
             <div>{name.toLowerCase().replaceAll(' ', '-')}.tsx</div>
-            <pre>{code[name]}</pre>
+            <pre>{snippets[name]}</pre>
           </div>
         </section>
       )}

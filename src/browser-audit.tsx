@@ -60,8 +60,8 @@ export default function BrowserAudit() {
     <main style={{ margin: 0, padding: 30 }}>
       <h1>Rendered accessibility audit</h1>
       <p>
-        WCAG A / AA checks, including browser-rendered color contrast. All 17 items, both themes,
-        every visual state and unlocked content.
+        WCAG A / AA checks, including browser-rendered color contrast. Every registry item, both
+        themes, every visual state and unlocked content.
       </p>
       <button
         className="source-button"

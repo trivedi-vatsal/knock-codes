@@ -48,7 +48,7 @@ export function pageMetadata(route: Route) {
     route.view === 'home'
       ? 'Copy-paste React components for private previews. Thoughtful access screens, client invitations, and draft controls. React + Tailwind, ready for shadcn.'
       : route.view === 'library'
-        ? 'Browse 17 React components and blocks for private previews. Try live examples, customize the design, and install with shadcn.'
+        ? 'Browse React components and blocks for private previews. Try live examples, customize the design, and install with shadcn.'
         : route.view === 'not-found'
           ? 'This page could not be found. Explore the Knock library or return home.'
           : route.view === 'guide'
@@ -67,7 +67,7 @@ export function metadataHtml(route: Route) {
       .replaceAll('>', '&gt;');
   return `<title>${escape(meta.title)}</title>
 <meta name="description" content="${escape(meta.description)}" />
-<meta name="author" content="Vatsal Trivedi" />
+<meta name="author" content="Knock" />
 <meta name="robots" content="${route.view === 'not-found' ? 'noindex, follow' : 'index, follow'}" />
 <link rel="canonical" ${route.view === 'not-found' ? '' : `href="${escape(meta.url)}"`} />
 <meta property="og:type" content="website" />

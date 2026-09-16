@@ -1853,6 +1853,16 @@ h1 {
 .guide-links a:hover {
   background: #f4f4ec;
 }
+.chooser-label {
+  margin: 0 0 10px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #69725f;
+}
+.gate-chooser + .gate-chooser {
+  margin-top: 22px;
+}
 .guide-page .guide-note {
   margin-top: 30px;
   font-size: 12px;
@@ -2715,10 +2725,10 @@ h1 {
   line-height: 1.9;
   color: #687160;
 }
-.playground-app .developer-footer {
+.playground-app .site-footer {
   display: flex;
 }
-.developer-footer {
+.site-footer {
   height: auto;
   padding: 30px 0;
   gap: 24px;
@@ -2730,29 +2740,25 @@ h1 {
     serif;
   color: #424b3a;
 }
-.developer-footer p {
+.site-footer p {
   font-size: 11px;
   margin: 12px 0 0;
   line-height: 1.8;
 }
-.developer-footer p a {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.developer-footer nav {
+.site-footer nav {
   display: flex;
   flex-wrap: wrap;
   gap: 22px;
   font-size: 12px;
 }
-.developer-footer a:hover {
+.site-footer a:hover {
   color: #a3462d;
 }
 @media (max-width: 600px) {
   .not-found {
     padding: 60px 0 90px;
   }
-  .developer-footer nav {
+  .site-footer nav {
     gap: 16px;
   }
 }

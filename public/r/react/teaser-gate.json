@@ -38,7 +38,7 @@
       "blur-veil"
     ],
     "usedBy": [],
-    "sourceHash": "a329b1d7c054b114797783d986c2b70678c948884db9c6c8077e49d6102c363b",
+    "sourceHash": "e0fd25ab29fad732a56fa266b14e398731a464b1de0d265ce4117d16c1d970ca",
     "component": "TeaserGate",
     "contract": "Your private preview is just one invitation away. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.",
     "props": [

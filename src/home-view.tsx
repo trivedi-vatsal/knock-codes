@@ -42,7 +42,7 @@ export function Home() {
             ref={demo}
             {...({
               inert: demoActive ? undefined : version.startsWith('18.') ? '' : true,
-            } as { inert?: boolean | string })}
+            } as { inert?: boolean })}
           >
             <ClientPreviewGate
               value={value}

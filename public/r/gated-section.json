@@ -36,7 +36,7 @@
       "cooldown-notice"
     ],
     "usedBy": [],
-    "sourceHash": "d9cebdc1f97b9d6141bd269596c11a598a294670cdd8bdcaa4a7c2f747139ca8",
+    "sourceHash": "05f84c277308624b6db86f4cd4eb60dbe50fcf0a3727ece3166459afb6d4fbeb",
     "component": "GatedSection",
     "contract": "This part of the preview was prepared for invited reviewers. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.",
     "props": [

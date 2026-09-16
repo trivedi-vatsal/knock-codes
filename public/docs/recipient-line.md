@@ -48,7 +48,7 @@ See individual label/description props.
 
 ## Related
 
-Used by: client-preview-gate, cooldown-screen, expired-notice, gated-section, quick-gate, revoked-notice, teaser-gate.
+Used by: client-preview-gate, cooldown-screen, expired-notice, gated-section, open-invitation, quick-gate, revoked-notice, teaser-gate.
 
 ## Accessibility
 

@@ -34,7 +34,7 @@
       "cooldown-notice"
     ],
     "usedBy": [],
-    "sourceHash": "33fca082157c8f386288a1c37df3c1af556dbffdd924b594b57fe2d0c9876215",
+    "sourceHash": "cfcd642579cdfbefc0178d95f48b0b7e739e118abdfa594703255b2cc81a38a8",
     "component": "ExpiredNotice",
     "contract": "The invitation window has ended. Ask the studio for a fresh link. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.",
     "props": [

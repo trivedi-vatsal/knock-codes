@@ -12,7 +12,8 @@ const files = ['components', 'blocks'].flatMap((tier) =>
     .sort()
     .map((f) => `registry/${tier}/${f}`),
 );
-const program = ts.createProgram(files, {
+const sharedBlock = 'registry/shared/block.ts';
+const program = ts.createProgram([...files, sharedBlock], {
   jsx: ts.JsxEmit.ReactJSX,
   target: ts.ScriptTarget.ES2022,
   module: ts.ModuleKind.ESNext,
@@ -23,6 +24,31 @@ const program = ts.createProgram(files, {
 const checker = program.getTypeChecker();
 const check = process.argv.includes('--check');
 const changed: string[] = [];
+function flattenShared(component: string, content: string) {
+  if (!content.includes("'../shared/block'")) return content;
+  const shared = readFileSync(sharedBlock, 'utf8');
+  const body = shared.match(
+    /export interface KnockBlockProps (\{[\s\S]*?\n\})\n\nexport const/,
+  )?.[1];
+  const skin = shared.match(/export const knockBlockSkin = (`[\s\S]*?`);/)?.[1];
+  if (!body || !skin) throw new Error(`${sharedBlock} is malformed`);
+  return content
+    .replace(/import \{[^}]+\} from '\.\.\/shared\/block';\n/, '')
+    .replace(/import \{([^}]+)\} from 'react';/, (_, spec: string) => {
+      const names = spec
+        .split(',')
+        .map((part) => part.trim())
+        .filter(Boolean);
+      if (!names.some((name) => name.includes('FormEvent'))) names.push('type FormEvent');
+      if (!names.some((name) => name.includes('ReactNode'))) names.push('type ReactNode');
+      return `import { ${names.join(', ')} } from 'react';`;
+    })
+    .replace(
+      `export interface ${component}Props extends KnockBlockProps {}`,
+      `export interface ${component}Props ${body}`,
+    )
+    .replace('<style>{knockBlockSkin}</style>', `<style>{${skin}}</style>`);
+}
 function emit(file: string, content: string) {
   if (check) {
     if (!existsSync(file) || readFileSync(file, 'utf8') !== content) changed.push(file);
@@ -44,7 +70,7 @@ const dependencyMap = new Map(
   files.map((item) => [
     path.basename(item, '.tsx'),
     importsOf(item)
-      .filter((i) => i !== 'react')
+      .filter((i) => i !== 'react' && !i.includes('/shared/'))
       .map((i) => path.basename(i)),
   ]),
 );
@@ -162,38 +188,42 @@ for (const file of files) {
     ts.forEachChild(node, resolveLabels);
   };
   resolveLabels(source);
-  const props = declaration.members.filter(ts.isPropertySignature).map((prop) => {
-    const name = prop.name.getText(source);
-    const symbol = checker.getSymbolAtLocation(prop.name)!;
-    const description = ts.displayPartsToString(symbol.getDocumentationComment(checker));
-    if (!description) throw new Error(`${file}: ${name} lacks JSDoc`);
-    const tags = symbol.getJsDocTags(checker);
-    const explicit = tags
-      .find((t) => t.name === 'default')
-      ?.text?.map((x) => x.text)
-      .join('');
-    return {
-      name,
-      type:
-        prop.type
-          ?.getText(source)
+  const props = checker
+    .getTypeAtLocation(declaration)
+    .getProperties()
+    .map((symbol) => {
+      const prop = symbol.getDeclarations()?.find(ts.isPropertySignature);
+      if (!prop?.type) throw new Error(`${file}: ${symbol.getName()} is not a typed property`);
+      const name = symbol.getName();
+      const description = ts.displayPartsToString(symbol.getDocumentationComment(checker));
+      if (!description) throw new Error(`${file}: ${name} lacks JSDoc`);
+      const tags = symbol.getJsDocTags(checker);
+      const explicit = tags
+        .find((t) => t.name === 'default')
+        ?.text?.map((x) => x.text)
+        .join('');
+      const origin = prop.getSourceFile();
+      return {
+        name,
+        type: prop.type
+          .getText(origin)
           .replace(/\/\*\*[\s\S]*?\*\//g, '')
-          .replace(/\s+/g, ' ') ?? 'unknown',
-      required: !prop.questionToken,
-      default: defaults[name] ?? explicit ?? null,
-      description,
-      ...(prop.type && ts.isTypeLiteralNode(prop.type)
-        ? {
-            properties: prop.type.members.filter(ts.isPropertySignature).map((member) => ({
-              name: member.name.getText(source),
-              type: member.type?.getText(source),
-              required: !member.questionToken,
-              default: defaults[name + '.' + member.name.getText(source)] ?? null,
-            })),
-          }
-        : {}),
-    };
-  });
+          .replace(/\s+/g, ' '),
+        required: !prop.questionToken,
+        default: defaults[name] ?? explicit ?? null,
+        description,
+        ...(ts.isTypeLiteralNode(prop.type)
+          ? {
+              properties: prop.type.members.filter(ts.isPropertySignature).map((member) => ({
+                name: member.name.getText(origin),
+                type: member.type?.getText(origin),
+                required: !member.questionToken,
+                default: defaults[name + '.' + member.name.getText(origin)] ?? null,
+              })),
+            }
+          : {}),
+      };
+    });
   if (tier === 'components' && importsOf(file).some((i) => i !== 'react'))
     throw new Error(`${file}: components may import only React`);
   const dependencies = dependencyMap.get(slug)!;
@@ -224,6 +254,10 @@ for (const file of files) {
     );
     allExamples.push(exampleFile);
   }
+  const standalone = flattenShared(component, content).replace(
+    /from ['"]\.\.\/components\/([^'"]+)['"]/g,
+    "from './$1'",
+  );
   const contract = header
     .split('\n')
     .filter((l) => !l.includes('@') && !l.includes('MIT License'))
@@ -238,7 +272,7 @@ for (const file of files) {
     pitfalls,
     dependencies,
     usedBy,
-    sourceHash: createHash('sha256').update(content).digest('hex'),
+    sourceHash: createHash('sha256').update(standalone).digest('hex'),
     component,
     contract,
     props,
@@ -279,11 +313,7 @@ for (const file of files) {
     ]
       .filter(Boolean)
       .join(' ') || 'Self-contained; no other item installs with it.'
-  }\n\n## Accessibility\n\n${a11y}\n\n## Agent instructions and anti-hallucination contract\n\n${agentPrompt}\n\n## Source\n\n\`\`\`tsx\n${content}\n\`\`\`\n`;
-  const registryContent = content.replace(
-    /from ['"]\.\.\/components\/([^'"]+)['"]/g,
-    "from './$1'",
-  );
+  }\n\n## Accessibility\n\n${a11y}\n\n## Agent instructions and anti-hallucination contract\n\n${agentPrompt}\n\n## Source\n\n\`\`\`tsx\n${standalone}\n\`\`\`\n`;
   const registry = {
     $schema: 'https://ui.shadcn.com/schema/registry-item.json',
     name: slug,
@@ -296,7 +326,7 @@ for (const file of files) {
         path: file,
         type: 'registry:component',
         target: `@components/knock/${slug}.tsx`,
-        content: registryContent,
+        content: standalone,
       },
     ],
     meta,
@@ -304,7 +334,7 @@ for (const file of files) {
   };
   json(`public/r/${slug}.json`, registry);
   json(`public/r/react/${slug}.json`, registry);
-  emit(`public/source/${slug}.tsx`, content);
+  emit(`public/source/${slug}.tsx`, standalone);
   emit(`public/docs/${slug}.md`, markdown);
   emit(`public/prompts/${slug}.md`, agentPrompt);
   full += markdown + '\n\n---\n\n';
@@ -344,7 +374,7 @@ emit('public/llms-full.txt', full);
 emit('public/docs/index.md', index);
 json('.generated/tsconfig.json', {
   extends: '../tsconfig.json',
-  include: ['examples/*.tsx', '../registry/**/*.tsx'],
+  include: ['examples/*.tsx', '../registry/**/*.tsx', '../registry/**/*.ts'],
 });
 if (changed.length) throw new Error(`Generated files are stale:\n${changed.join('\n')}`);
 console.log(

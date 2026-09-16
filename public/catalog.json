@@ -497,6 +497,7 @@
         "cooldown-screen",
         "expired-notice",
         "gated-section",
+        "open-invitation",
         "preview-chrome",
         "quick-gate",
         "revoked-notice",
@@ -695,6 +696,7 @@
         "cooldown-screen",
         "expired-notice",
         "gated-section",
+        "open-invitation",
         "quick-gate",
         "revoked-notice",
         "teaser-gate"
@@ -1163,6 +1165,152 @@
     "registryUrl": "https://knock.codes/r/preview-ribbon.json"
   },
   {
+    "name": "preview-watermark",
+    "title": "Preview watermark",
+    "tier": "components",
+    "version": "0.1.0",
+    "component": "PreviewWatermark",
+    "props": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": true,
+        "default": null,
+        "description": "Work shown under the mark; required."
+      },
+      {
+        "name": "recipient",
+        "type": "string",
+        "required": false,
+        "default": null,
+        "description": "Intended recipient name or organization."
+      },
+      {
+        "name": "buildLabel",
+        "type": "string",
+        "required": false,
+        "default": null,
+        "description": "Preview build identifier."
+      },
+      {
+        "name": "labels",
+        "type": "{ mark?: string; }",
+        "required": false,
+        "default": null,
+        "description": "Localized mark text when recipient and build are omitted.",
+        "properties": [
+          {
+            "name": "mark",
+            "type": "string",
+            "required": false,
+            "default": null
+          }
+        ]
+      },
+      {
+        "name": "theme",
+        "type": "'light' | 'dark'",
+        "required": false,
+        "default": null,
+        "description": "Explicit theme; omitted follows the system preference."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "default": "''",
+        "description": "Additional wrapper classes."
+      }
+    ],
+    "dependencies": [],
+    "meta": {
+      "version": "0.1.0",
+      "lifecycle": "unlocked",
+      "whenToUse": "Unlocked work should carry who it was prepared for, including into screenshots that leave the review.",
+      "notFor": "A draft status strip. Use Preview ribbon when the label should sit above the work rather than across it.",
+      "pitfalls": [
+        "The overlay is visual. It does not prevent copies, and it is not authorization."
+      ],
+      "dependencies": [],
+      "usedBy": [],
+      "sourceHash": "cde4033691e510b370c58f09ee5c74b1a177cfd709817a95abea924270562088",
+      "component": "PreviewWatermark",
+      "contract": "Marks unlocked work with a light recipient or build overlay for screenshots. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "default": null,
+          "description": "Work shown under the mark; required."
+        },
+        {
+          "name": "recipient",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Intended recipient name or organization."
+        },
+        {
+          "name": "buildLabel",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Preview build identifier."
+        },
+        {
+          "name": "labels",
+          "type": "{ mark?: string; }",
+          "required": false,
+          "default": null,
+          "description": "Localized mark text when recipient and build are omitted.",
+          "properties": [
+            {
+              "name": "mark",
+              "type": "string",
+              "required": false,
+              "default": null
+            }
+          ]
+        },
+        {
+          "name": "theme",
+          "type": "'light' | 'dark'",
+          "required": false,
+          "default": null,
+          "description": "Explicit theme; omitted follows the system preference."
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": "''",
+          "description": "Additional wrapper classes."
+        }
+      ],
+      "defaults": {
+        "className": "''"
+      },
+      "slots": [
+        "children"
+      ],
+      "a11y": "Native controls, visible focus, localized labels; the repeating mark is decorative and hidden from assistive technology. No modal dialog is created.",
+      "unsupportedProps": [
+        "onSuccess",
+        "password",
+        "correctCode",
+        "attempts",
+        "maxAttempts",
+        "onUnlock"
+      ],
+      "examples": {
+        "minimal": "'use client';\nimport { useState } from 'react';\nimport { PreviewWatermark } from '@/components/knock/preview-watermark';\n\nexport default function Example() {\n  const [value, setValue] = useState('');\n  const [unlocked, setUnlocked] = useState(false);\n  const [message, setMessage] = useState('');\n  return <section aria-label=\"Preview watermark example\">\n    {/* Demo consumer state only. Integrate your authorization outside this UI. */}\n    <PreviewWatermark><p>Preview content</p></PreviewWatermark>\n    <p role=\"status\">{message}</p>\n  </section>;\n}\n",
+        "full": "'use client';\nimport { useState } from 'react';\nimport { PreviewWatermark } from '@/components/knock/preview-watermark';\n\nexport default function Example() {\n  const [value, setValue] = useState('');\n  const [unlocked, setUnlocked] = useState(false);\n  const [message, setMessage] = useState('');\n  return <section aria-label=\"Preview watermark example\">\n    {/* Demo consumer state only. Integrate your authorization outside this UI. */}\n    <PreviewWatermark recipient=\"Acme Co.\" buildLabel=\"acme-v1\" theme=\"light\" labels={{ mark: \"Private preview\" }}><p>Preview content</p></PreviewWatermark>\n    <p role=\"status\">{message}</p>\n  </section>;\n}\n"
+      }
+    },
+    "registryUrl": "https://knock.codes/r/preview-watermark.json"
+  },
+  {
     "name": "recipient-line",
     "title": "Recipient line",
     "tier": "components",
@@ -1213,6 +1361,7 @@
         "cooldown-screen",
         "expired-notice",
         "gated-section",
+        "open-invitation",
         "quick-gate",
         "revoked-notice",
         "teaser-gate"
@@ -1496,6 +1645,7 @@
         "cooldown-screen",
         "expired-notice",
         "gated-section",
+        "open-invitation",
         "preview-chrome",
         "quick-gate",
         "revoked-notice",
@@ -1980,7 +2130,7 @@
         "cooldown-notice"
       ],
       "usedBy": [],
-      "sourceHash": "0ba102610d0b9256f17af696edd2cc339b843dc085b161836303878ea61ba3c8",
+      "sourceHash": "cff07ff3e62ebc2adc94735c7d507b3cc4a54eff98d0f1e6cf0da8b10f1c319a",
       "component": "ClientPreviewGate",
       "contract": "Your next chapter is ready for a first look. Enter the code from your invitation. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.",
       "props": [
@@ -2794,7 +2944,7 @@
         "cooldown-notice"
       ],
       "usedBy": [],
-      "sourceHash": "d672ae60253bd4a1e670e24a6b9b6f38126ffc5ee4a39bab7bc0b95e12aacfe8",
+      "sourceHash": "01496768e1d355a6abc96a6cfa4d3347312f45116f6004c512f73d225300b8b5",
       "component": "CooldownScreen",
       "contract": "Your preview is still here. Give it a moment before your next try. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.",
       "props": [
@@ -3604,7 +3754,7 @@
         "cooldown-notice"
       ],
       "usedBy": [],
-      "sourceHash": "33fca082157c8f386288a1c37df3c1af556dbffdd924b594b57fe2d0c9876215",
+      "sourceHash": "cfcd642579cdfbefc0178d95f48b0b7e739e118abdfa594703255b2cc81a38a8",
       "component": "ExpiredNotice",
       "contract": "The invitation window has ended. Ask the studio for a fresh link. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.",
       "props": [
@@ -4415,7 +4565,7 @@
         "cooldown-notice"
       ],
       "usedBy": [],
-      "sourceHash": "d9cebdc1f97b9d6141bd269596c11a598a294670cdd8bdcaa4a7c2f747139ca8",
+      "sourceHash": "05f84c277308624b6db86f4cd4eb60dbe50fcf0a3727ece3166459afb6d4fbeb",
       "component": "GatedSection",
       "contract": "This part of the preview was prepared for invited reviewers. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.",
       "props": [
@@ -4837,6 +4987,815 @@
     "registryUrl": "https://knock.codes/r/gated-section.json"
   },
   {
+    "name": "open-invitation",
+    "title": "Open invitation",
+    "tier": "blocks",
+    "version": "0.1.0",
+    "component": "OpenInvitation",
+    "props": [
+      {
+        "name": "value",
+        "type": "string",
+        "required": true,
+        "default": null,
+        "description": "Controlled code value; required. No code is verified here."
+      },
+      {
+        "name": "onChange",
+        "type": "(value: string) => void",
+        "required": true,
+        "default": null,
+        "description": "Receives code edits; required."
+      },
+      {
+        "name": "onSubmit",
+        "type": "(event: FormEvent<HTMLFormElement>) => void",
+        "required": true,
+        "default": null,
+        "description": "Consumer submit handler; required. No access decision is made by this block."
+      },
+      {
+        "name": "status",
+        "type": "'idle' | 'pending' | 'error' | 'success'",
+        "required": true,
+        "default": null,
+        "description": "Controlled visual state; required. Success does not unlock."
+      },
+      {
+        "name": "unlocked",
+        "type": "boolean",
+        "required": true,
+        "default": null,
+        "description": "Consumer-controlled visibility; required. Takes precedence over notice presentation."
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": false,
+        "default": null,
+        "description": "Content revealed when unlocked. Teaser gate also renders it inert while locked."
+      },
+      {
+        "name": "error",
+        "type": "ReactNode",
+        "required": false,
+        "default": "labels?.fallbackError",
+        "description": "Announced error content supplied by the consumer."
+      },
+      {
+        "name": "recipient",
+        "type": "ReactNode",
+        "required": false,
+        "default": null,
+        "description": "Intended recipient name or organization."
+      },
+      {
+        "name": "expiresAt",
+        "type": "string",
+        "required": false,
+        "default": null,
+        "description": "Preview expiry as ISO 8601 with timezone. Presentation only."
+      },
+      {
+        "name": "cooldownUntil",
+        "type": "string",
+        "required": false,
+        "default": null,
+        "description": "Retry deadline as ISO 8601 with timezone. Disables the form visually until elapsed."
+      },
+      {
+        "name": "onRequestAccess",
+        "type": "() => void",
+        "required": false,
+        "default": null,
+        "description": "Callback used when no access URL is supplied."
+      },
+      {
+        "name": "requestAccessHref",
+        "type": "string",
+        "required": false,
+        "default": null,
+        "description": "Native http(s), relative, or mailto destination; takes precedence over callback."
+      },
+      {
+        "name": "logo",
+        "type": "ReactNode",
+        "required": false,
+        "default": null,
+        "description": "Optional brand mark."
+      },
+      {
+        "name": "heading",
+        "type": "ReactNode",
+        "required": false,
+        "default": "'This look is for you.'",
+        "description": "Overrides the default heading."
+      },
+      {
+        "name": "description",
+        "type": "ReactNode",
+        "required": false,
+        "default": "'Continue when you are ready. Your application decides what opens.'",
+        "description": "Overrides the default description."
+      },
+      {
+        "name": "labels",
+        "type": "{ submit?: string; pending?: string; success?: string; code?: string; hint?: string; recipient?: string; requestDescription?: string; requestAction?: string; requestUnavailable?: string; draft?: string; draftDescription?: string; build?: string; relock?: string; feedback?: string; navigation?: string; expires?: string; expiryPending?: string; expiryFine?: string; expirySoon?: string; expired?: string; expiryUnavailable?: string; expiryRemaining?: (seconds: number) => string; cooldownHeading?: string; cooldownDescription?: string; cooldownReady?: string; cooldownWaiting?: string; cooldownUnavailable?: string; countdown?: (seconds: number) => string; previewAccess?: string; fallbackError?: string; footer?: string; }",
+        "required": false,
+        "default": null,
+        "description": "Localized text and time formatters for all built-in copy.",
+        "properties": [
+          {
+            "name": "submit",
+            "type": "string",
+            "required": false,
+            "default": "'Open this invitation'"
+          },
+          {
+            "name": "pending",
+            "type": "string",
+            "required": false,
+            "default": "'Please wait…'"
+          },
+          {
+            "name": "success",
+            "type": "string",
+            "required": false,
+            "default": "'Invitation received'"
+          },
+          {
+            "name": "code",
+            "type": "string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "hint",
+            "type": "string",
+            "required": false,
+            "default": "'You already have the link. Continue when you are ready.'"
+          },
+          {
+            "name": "recipient",
+            "type": "string",
+            "required": false,
+            "default": "'Prepared for'"
+          },
+          {
+            "name": "requestDescription",
+            "type": "string",
+            "required": false,
+            "default": "'Missing your invitation?'"
+          },
+          {
+            "name": "requestAction",
+            "type": "string",
+            "required": false,
+            "default": "'Request access'"
+          },
+          {
+            "name": "requestUnavailable",
+            "type": "string",
+            "required": false,
+            "default": "'Contact the preview owner for a code.'"
+          },
+          {
+            "name": "draft",
+            "type": "string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "draftDescription",
+            "type": "string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "build",
+            "type": "string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "relock",
+            "type": "string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "feedback",
+            "type": "string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "navigation",
+            "type": "string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "expires",
+            "type": "string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "expiryPending",
+            "type": "string",
+            "required": false,
+            "default": "'Preview expiry'"
+          },
+          {
+            "name": "expiryFine",
+            "type": "string",
+            "required": false,
+            "default": "'Preview available'"
+          },
+          {
+            "name": "expirySoon",
+            "type": "string",
+            "required": false,
+            "default": "'Expiring soon'"
+          },
+          {
+            "name": "expired",
+            "type": "string",
+            "required": false,
+            "default": "'Preview expired'"
+          },
+          {
+            "name": "expiryUnavailable",
+            "type": "string",
+            "required": false,
+            "default": "'Expiry unavailable'"
+          },
+          {
+            "name": "expiryRemaining",
+            "type": "(seconds: number) => string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "cooldownHeading",
+            "type": "string",
+            "required": false,
+            "default": "'A little breathing room.'"
+          },
+          {
+            "name": "cooldownDescription",
+            "type": "string",
+            "required": false,
+            "default": "'A few tries didn’t quite match. Take a moment, then try the code from your email again.'"
+          },
+          {
+            "name": "cooldownReady",
+            "type": "string",
+            "required": false,
+            "default": "'Ready when you are. You can try again.'"
+          },
+          {
+            "name": "cooldownWaiting",
+            "type": "string",
+            "required": false,
+            "default": "'Your preview will be right here.'"
+          },
+          {
+            "name": "cooldownUnavailable",
+            "type": "string",
+            "required": false,
+            "default": "'Retry time is unavailable. Please contact the preview owner.'"
+          },
+          {
+            "name": "countdown",
+            "type": "(seconds: number) => string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "previewAccess",
+            "type": "string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "fallbackError",
+            "type": "string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "footer",
+            "type": "string",
+            "required": false,
+            "default": null
+          }
+        ]
+      },
+      {
+        "name": "theme",
+        "type": "'light' | 'dark'",
+        "required": false,
+        "default": null,
+        "description": "Explicit theme; omitted follows system preference."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "default": "''",
+        "description": "Additional root classes; public --knock-* CSS variables can be set on any parent."
+      },
+      {
+        "name": "mode",
+        "type": "'digits' | 'passphrase'",
+        "required": false,
+        "default": "\"digits\"",
+        "description": "Code input presentation."
+      },
+      {
+        "name": "length",
+        "type": "number",
+        "required": false,
+        "default": "8",
+        "description": "Number of digits."
+      },
+      {
+        "name": "masked",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Native password masking."
+      },
+      {
+        "name": "buildLabel",
+        "type": "string",
+        "required": false,
+        "default": null,
+        "description": "Preview build identifier."
+      },
+      {
+        "name": "onRelock",
+        "type": "() => void",
+        "required": false,
+        "default": null,
+        "description": "Consumer callback that must hide content and end access as appropriate."
+      },
+      {
+        "name": "onFeedback",
+        "type": "() => void",
+        "required": false,
+        "default": null,
+        "description": "Consumer feedback callback."
+      },
+      {
+        "name": "feedbackHref",
+        "type": "string",
+        "required": false,
+        "default": null,
+        "description": "Native feedback destination; takes precedence over callback."
+      }
+    ],
+    "dependencies": [
+      "recipient-line",
+      "expiry-pill",
+      "request-access",
+      "cooldown-notice"
+    ],
+    "meta": {
+      "version": "0.1.0",
+      "lifecycle": "gate",
+      "whenToUse": "The invitation is the access: a named recipient and a continue action, with no code to type.",
+      "notFor": "When a typed code is the proof. Use Client preview gate or Quick gate.",
+      "pitfalls": [
+        "Continue only reports `onSubmit`. Set `unlocked` from your server, never from the click alone.",
+        "`value` and `onChange` stay on the shared block contract so this file installs like the others. They are unused because there is no field."
+      ],
+      "dependencies": [
+        "recipient-line",
+        "expiry-pill",
+        "request-access",
+        "cooldown-notice"
+      ],
+      "usedBy": [],
+      "sourceHash": "e8d624e959a8241c1a10bef183fd444c7a33d631392ebdcc2d26fc732a5f9f71",
+      "component": "OpenInvitation",
+      "contract": "This look is for you. Continue when you are ready. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": "Controlled code value; required. No code is verified here."
+        },
+        {
+          "name": "onChange",
+          "type": "(value: string) => void",
+          "required": true,
+          "default": null,
+          "description": "Receives code edits; required."
+        },
+        {
+          "name": "onSubmit",
+          "type": "(event: FormEvent<HTMLFormElement>) => void",
+          "required": true,
+          "default": null,
+          "description": "Consumer submit handler; required. No access decision is made by this block."
+        },
+        {
+          "name": "status",
+          "type": "'idle' | 'pending' | 'error' | 'success'",
+          "required": true,
+          "default": null,
+          "description": "Controlled visual state; required. Success does not unlock."
+        },
+        {
+          "name": "unlocked",
+          "type": "boolean",
+          "required": true,
+          "default": null,
+          "description": "Consumer-controlled visibility; required. Takes precedence over notice presentation."
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Content revealed when unlocked. Teaser gate also renders it inert while locked."
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "default": "labels?.fallbackError",
+          "description": "Announced error content supplied by the consumer."
+        },
+        {
+          "name": "recipient",
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Intended recipient name or organization."
+        },
+        {
+          "name": "expiresAt",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Preview expiry as ISO 8601 with timezone. Presentation only."
+        },
+        {
+          "name": "cooldownUntil",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Retry deadline as ISO 8601 with timezone. Disables the form visually until elapsed."
+        },
+        {
+          "name": "onRequestAccess",
+          "type": "() => void",
+          "required": false,
+          "default": null,
+          "description": "Callback used when no access URL is supplied."
+        },
+        {
+          "name": "requestAccessHref",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Native http(s), relative, or mailto destination; takes precedence over callback."
+        },
+        {
+          "name": "logo",
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Optional brand mark."
+        },
+        {
+          "name": "heading",
+          "type": "ReactNode",
+          "required": false,
+          "default": "'This look is for you.'",
+          "description": "Overrides the default heading."
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "default": "'Continue when you are ready. Your application decides what opens.'",
+          "description": "Overrides the default description."
+        },
+        {
+          "name": "labels",
+          "type": "{ submit?: string; pending?: string; success?: string; code?: string; hint?: string; recipient?: string; requestDescription?: string; requestAction?: string; requestUnavailable?: string; draft?: string; draftDescription?: string; build?: string; relock?: string; feedback?: string; navigation?: string; expires?: string; expiryPending?: string; expiryFine?: string; expirySoon?: string; expired?: string; expiryUnavailable?: string; expiryRemaining?: (seconds: number) => string; cooldownHeading?: string; cooldownDescription?: string; cooldownReady?: string; cooldownWaiting?: string; cooldownUnavailable?: string; countdown?: (seconds: number) => string; previewAccess?: string; fallbackError?: string; footer?: string; }",
+          "required": false,
+          "default": null,
+          "description": "Localized text and time formatters for all built-in copy.",
+          "properties": [
+            {
+              "name": "submit",
+              "type": "string",
+              "required": false,
+              "default": "'Open this invitation'"
+            },
+            {
+              "name": "pending",
+              "type": "string",
+              "required": false,
+              "default": "'Please wait…'"
+            },
+            {
+              "name": "success",
+              "type": "string",
+              "required": false,
+              "default": "'Invitation received'"
+            },
+            {
+              "name": "code",
+              "type": "string",
+              "required": false,
+              "default": null
+            },
+            {
+              "name": "hint",
+              "type": "string",
+              "required": false,
+              "default": "'You already have the link. Continue when you are ready.'"
+            },
+            {
+              "name": "recipient",
+              "type": "string",
+              "required": false,
+              "default": "'Prepared for'"
+            },
+            {
+              "name": "requestDescription",
+              "type": "string",
+              "required": false,
+              "default": "'Missing your invitation?'"
+            },
+            {
+              "name": "requestAction",
+              "type": "string",
+              "required": false,
+              "default": "'Request access'"
+            },
+            {
+              "name": "requestUnavailable",
+              "type": "string",
+              "required": false,
+              "default": "'Contact the preview owner for a code.'"
+            },
+            {
+              "name": "draft",
+              "type": "string",
+              "required": false,
+              "default": null
+            },
+            {
+              "name": "draftDescription",
+              "type": "string",
+              "required": false,
+              "default": null
+            },
+            {
+              "name": "build",
+              "type": "string",
+              "required": false,
+              "default": null
+            },
+            {
+              "name": "relock",
+              "type": "string",
+              "required": false,
+              "default": null
+            },
+            {
+              "name": "feedback",
+              "type": "string",
+              "required": false,
+              "default": null
+            },
+            {
+              "name": "navigation",
+              "type": "string",
+              "required": false,
+              "default": null
+            },
+            {
+              "name": "expires",
+              "type": "string",
+              "required": false,
+              "default": null
+            },
+            {
+              "name": "expiryPending",
+              "type": "string",
+              "required": false,
+              "default": "'Preview expiry'"
+            },
+            {
+              "name": "expiryFine",
+              "type": "string",
+              "required": false,
+              "default": "'Preview available'"
+            },
+            {
+              "name": "expirySoon",
+              "type": "string",
+              "required": false,
+              "default": "'Expiring soon'"
+            },
+            {
+              "name": "expired",
+              "type": "string",
+              "required": false,
+              "default": "'Preview expired'"
+            },
+            {
+              "name": "expiryUnavailable",
+              "type": "string",
+              "required": false,
+              "default": "'Expiry unavailable'"
+            },
+            {
+              "name": "expiryRemaining",
+              "type": "(seconds: number) => string",
+              "required": false,
+              "default": null
+            },
+            {
+              "name": "cooldownHeading",
+              "type": "string",
+              "required": false,
+              "default": "'A little breathing room.'"
+            },
+            {
+              "name": "cooldownDescription",
+              "type": "string",
+              "required": false,
+              "default": "'A few tries didn’t quite match. Take a moment, then try the code from your email again.'"
+            },
+            {
+              "name": "cooldownReady",
+              "type": "string",
+              "required": false,
+              "default": "'Ready when you are. You can try again.'"
+            },
+            {
+              "name": "cooldownWaiting",
+              "type": "string",
+              "required": false,
+              "default": "'Your preview will be right here.'"
+            },
+            {
+              "name": "cooldownUnavailable",
+              "type": "string",
+              "required": false,
+              "default": "'Retry time is unavailable. Please contact the preview owner.'"
+            },
+            {
+              "name": "countdown",
+              "type": "(seconds: number) => string",
+              "required": false,
+              "default": null
+            },
+            {
+              "name": "previewAccess",
+              "type": "string",
+              "required": false,
+              "default": null
+            },
+            {
+              "name": "fallbackError",
+              "type": "string",
+              "required": false,
+              "default": null
+            },
+            {
+              "name": "footer",
+              "type": "string",
+              "required": false,
+              "default": null
+            }
+          ]
+        },
+        {
+          "name": "theme",
+          "type": "'light' | 'dark'",
+          "required": false,
+          "default": null,
+          "description": "Explicit theme; omitted follows system preference."
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": "''",
+          "description": "Additional root classes; public --knock-* CSS variables can be set on any parent."
+        },
+        {
+          "name": "mode",
+          "type": "'digits' | 'passphrase'",
+          "required": false,
+          "default": "\"digits\"",
+          "description": "Code input presentation."
+        },
+        {
+          "name": "length",
+          "type": "number",
+          "required": false,
+          "default": "8",
+          "description": "Number of digits."
+        },
+        {
+          "name": "masked",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Native password masking."
+        },
+        {
+          "name": "buildLabel",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Preview build identifier."
+        },
+        {
+          "name": "onRelock",
+          "type": "() => void",
+          "required": false,
+          "default": null,
+          "description": "Consumer callback that must hide content and end access as appropriate."
+        },
+        {
+          "name": "onFeedback",
+          "type": "() => void",
+          "required": false,
+          "default": null,
+          "description": "Consumer feedback callback."
+        },
+        {
+          "name": "feedbackHref",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Native feedback destination; takes precedence over callback."
+        }
+      ],
+      "defaults": {
+        "className": "''",
+        "labels.hint": "'You already have the link. Continue when you are ready.'",
+        "error": "labels?.fallbackError",
+        "labels.pending": "'Please wait…'",
+        "labels.success": "'Invitation received'",
+        "labels.submit": "'Open this invitation'",
+        "heading": "'This look is for you.'",
+        "description": "'Continue when you are ready. Your application decides what opens.'",
+        "labels.cooldownHeading": "'A little breathing room.'",
+        "labels.cooldownDescription": "'A few tries didn’t quite match. Take a moment, then try the code from your email again.'",
+        "labels.cooldownReady": "'Ready when you are. You can try again.'",
+        "labels.cooldownWaiting": "'Your preview will be right here.'",
+        "labels.cooldownUnavailable": "'Retry time is unavailable. Please contact the preview owner.'",
+        "labels.requestDescription": "'Missing your invitation?'",
+        "labels.requestAction": "'Request access'",
+        "labels.requestUnavailable": "'Contact the preview owner for a code.'",
+        "labels.recipient": "'Prepared for'",
+        "labels.expiryPending": "'Preview expiry'",
+        "labels.expiryFine": "'Preview available'",
+        "labels.expirySoon": "'Expiring soon'",
+        "labels.expired": "'Preview expired'",
+        "labels.expiryUnavailable": "'Expiry unavailable'"
+      },
+      "slots": [
+        "children",
+        "error",
+        "recipient",
+        "logo",
+        "heading",
+        "description"
+      ],
+      "a11y": "Native forms and controls, polite error and cooldown announcements, visible focus, focus transfer after unlock. This block is a region, not a modal. Locked children are not rendered.",
+      "unsupportedProps": [
+        "onSuccess",
+        "password",
+        "correctCode",
+        "attempts",
+        "maxAttempts",
+        "onUnlock"
+      ],
+      "examples": {
+        "minimal": "'use client';\nimport { useState } from 'react';\nimport { OpenInvitation } from '@/components/knock/open-invitation';\n\nexport default function Example() {\n  const [value, setValue] = useState('');\n  const [unlocked, setUnlocked] = useState(false);\n  const [message, setMessage] = useState('');\n  return <section aria-label=\"Open invitation example\">\n    {/* Demo consumer state only. Integrate your authorization outside this UI. */}\n    <OpenInvitation value={value} onChange={setValue} onSubmit={event => { event.preventDefault(); setMessage(\"Demo submitted\"); }} status=\"idle\" unlocked={unlocked}><p>Preview content</p></OpenInvitation>\n    <p role=\"status\">{message}</p>\n  </section>;\n}\n",
+        "full": "'use client';\nimport { useState } from 'react';\nimport { OpenInvitation } from '@/components/knock/open-invitation';\n\nexport default function Example() {\n  const [value, setValue] = useState('');\n  const [unlocked, setUnlocked] = useState(false);\n  const [message, setMessage] = useState('');\n  return <section aria-label=\"Open invitation example\">\n    {/* Demo consumer state only. Integrate your authorization outside this UI. */}\n    <OpenInvitation value={value} onChange={setValue} onSubmit={event => { event.preventDefault(); setMessage(\"Demo submitted; your authorization belongs outside this UI.\"); }} status=\"idle\" unlocked={unlocked} recipient=\"Acme Co.\" expiresAt=\"2030-01-01T12:00:00Z\" logo={<strong>Atelier</strong>} heading=\"This look is for you.\" description=\"Continue when you are ready.\" onRequestAccess={() => setMessage(\"Request access selected\")} buildLabel=\"acme-v1\" onRelock={() => setUnlocked(false)} onFeedback={() => setMessage(\"Feedback selected\")} theme=\"light\" labels={{ submit: \"Open this invitation\", footer: \"A draft, prepared for you.\" }}><p>Preview content</p></OpenInvitation>\n    <button type=\"button\" onClick={() => setUnlocked(current => !current)}>Toggle demo visibility</button>\n    <p role=\"status\">{message}</p>\n  </section>;\n}\n"
+      }
+    },
+    "registryUrl": "https://knock.codes/r/open-invitation.json"
+  },
+  {
     "name": "preview-chrome",
     "title": "Preview chrome",
     "tier": "blocks",
@@ -5231,7 +6190,7 @@
         "cooldown-notice"
       ],
       "usedBy": [],
-      "sourceHash": "7820cbe030d54ef7494bb9c6d2690f3d3ad6df7373bcf78418cadb7965bdeae1",
+      "sourceHash": "f37feecc96141f35ce72bec72650749fcd28e50c1b67a51d4bfb5cbe6093711f",
       "component": "PreviewChrome",
       "contract": "Enter your invitation code to see the draft. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.",
       "props": [
@@ -6049,7 +7008,7 @@
         "cooldown-notice"
       ],
       "usedBy": [],
-      "sourceHash": "b030d4e8fe5c663e7730fb59d8e0fee8574af5b4a9bc53c8d506d0a705b29e07",
+      "sourceHash": "d3a27f52b2c0e2b2cbd696f2a670721691a9329d8e219600918ff815770fb6d2",
       "component": "QuickGate",
       "contract": "Enter your preview code to continue. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.",
       "props": [
@@ -6857,7 +7816,7 @@
         "cooldown-notice"
       ],
       "usedBy": [],
-      "sourceHash": "11d8bd27369333b0e704dd93adde0b7461815afd236e0bfb2efb69e0d8460ef9",
+      "sourceHash": "9935c111b85585f0975a655b1aaadacbe411393e8e13eac939068058ed1ce243",
       "component": "RevokedNotice",
       "contract": "The owner has withdrawn access. Contact them if you need another look. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.",
       "props": [
@@ -7670,7 +8629,7 @@
         "blur-veil"
       ],
       "usedBy": [],
-      "sourceHash": "a329b1d7c054b114797783d986c2b70678c948884db9c6c8077e49d6102c363b",
+      "sourceHash": "e0fd25ab29fad732a56fa266b14e398731a464b1de0d265ce4117d16c1d970ca",
       "component": "TeaserGate",
       "contract": "Your private preview is just one invitation away. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.",
       "props": [

@@ -36,7 +36,7 @@
       "cooldown-notice"
     ],
     "usedBy": [],
-    "sourceHash": "7820cbe030d54ef7494bb9c6d2690f3d3ad6df7373bcf78418cadb7965bdeae1",
+    "sourceHash": "f37feecc96141f35ce72bec72650749fcd28e50c1b67a51d4bfb5cbe6093711f",
     "component": "PreviewChrome",
     "contract": "Enter your invitation code to see the draft. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.",
     "props": [

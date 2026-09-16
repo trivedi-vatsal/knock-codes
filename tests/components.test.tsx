@@ -12,6 +12,7 @@ import { PreviewRibbon } from '../registry/components/preview-ribbon';
 import { PreviewBar } from '../registry/components/preview-bar';
 import { RelockControl } from '../registry/components/relock-control';
 import { BlurVeil } from '../registry/components/blur-veil';
+import { PreviewWatermark } from '../registry/components/preview-watermark';
 
 const deadline = '2030-01-02T12:00:00Z';
 const now = Date.parse('2030-01-01T12:00:00Z');
@@ -37,6 +38,9 @@ test('every component supports deterministic server render in both themes', () =
       <BlurVeil unlocked={false} prompt="Invitation" theme={theme}>
         <button>Preview action</button>
       </BlurVeil>,
+      <PreviewWatermark recipient="Acme" buildLabel="v1" theme={theme}>
+        <p>Preview content</p>
+      </PreviewWatermark>,
     ];
     for (const element of cases) assert.equal(renderToString(element), renderToString(element));
   }
@@ -176,6 +180,14 @@ test('actions, countdown transition, inert and focus transfer, and per-item stru
   assert.equal(host.querySelector('[inert]'), null);
   assert.ok(document.activeElement?.contains(host.getElementsByTagName('button')[0]));
   assert.doesNotMatch(host.textContent!, /Reveal preview/);
+  await audit();
+  await render(
+    <PreviewWatermark recipient="Acme Co." buildLabel="v1">
+      <p>Preview content</p>
+    </PreviewWatermark>,
+  );
+  assert.match(host.textContent!, /Acme Co. · v1/);
+  assert.ok(host.querySelector('[aria-hidden="true"]'));
   await audit();
   await act(async () => root.unmount());
   dom.window.close();

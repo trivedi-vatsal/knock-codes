@@ -1,0 +1,452 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "open-invitation",
+  "type": "registry:block",
+  "title": "Open invitation",
+  "description": "This look is for you. Continue when you are ready. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.",
+  "registryDependencies": [
+    "https://knock.codes/r/recipient-line.json",
+    "https://knock.codes/r/expiry-pill.json",
+    "https://knock.codes/r/request-access.json",
+    "https://knock.codes/r/cooldown-notice.json"
+  ],
+  "files": [
+    {
+      "path": "registry/blocks/open-invitation.tsx",
+      "type": "registry:component",
+      "target": "@components/knock/open-invitation.tsx",
+      "content": "/**\n * MIT License — Copyright (c) 2026 Knock contributors.\n * This look is for you. Continue when you are ready.\n * Does not verify codes, persist state, or grant or revoke access.\n * Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.\n * @version 0.1.0\n * @minimalExample <OpenInvitation value={value} onChange={setValue} onSubmit={event => { event.preventDefault(); setMessage(\"Demo submitted\"); }} status=\"idle\" unlocked={unlocked}><p>Preview content</p></OpenInvitation>\n * @fullExample <OpenInvitation value={value} onChange={setValue} onSubmit={event => { event.preventDefault(); setMessage(\"Demo submitted; your authorization belongs outside this UI.\"); }} status=\"idle\" unlocked={unlocked} recipient=\"Acme Co.\" expiresAt=\"2030-01-01T12:00:00Z\" logo={<strong>Atelier</strong>} heading=\"This look is for you.\" description=\"Continue when you are ready.\" onRequestAccess={() => setMessage(\"Request access selected\")} buildLabel=\"acme-v1\" onRelock={() => setUnlocked(false)} onFeedback={() => setMessage(\"Feedback selected\")} theme=\"light\" labels={{ submit: \"Open this invitation\", footer: \"A draft, prepared for you.\" }}><p>Preview content</p></OpenInvitation>\n * @lifecycle gate\n * @whenToUse The invitation is the access: a named recipient and a continue action, with no code to type.\n * @notFor When a typed code is the proof. Use Client preview gate or Quick gate.\n * @pitfall Continue only reports `onSubmit`. Set `unlocked` from your server, never from the click alone.\n * @pitfall `value` and `onChange` stay on the shared block contract so this file installs like the others. They are unused because there is no field.\n * @a11y Native forms and controls, polite error and cooldown announcements, visible focus, focus transfer after unlock. This block is a region, not a modal. Locked children are not rendered.\n */\n'use client';\n\nimport { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from 'react';\nimport { RecipientLine } from './recipient-line';\nimport { ExpiryPill } from './expiry-pill';\nimport { RequestAccess } from './request-access';\nimport { CooldownNotice } from './cooldown-notice';\n\nexport interface OpenInvitationProps {\n  /** Controlled code value; required. No code is verified here. */\n  value: string;\n  /** Receives code edits; required. */\n  onChange: (value: string) => void;\n  /** Consumer submit handler; required. No access decision is made by this block. */\n  onSubmit: (event: FormEvent<HTMLFormElement>) => void;\n  /** Controlled visual state; required. Success does not unlock. */\n  status: 'idle' | 'pending' | 'error' | 'success';\n  /** Consumer-controlled visibility; required. Takes precedence over notice presentation. */\n  unlocked: boolean;\n  /** Content revealed when unlocked. Teaser gate also renders it inert while locked. */\n  children?: ReactNode;\n  /** Announced error content supplied by the consumer. */\n  error?: ReactNode;\n  /** Intended recipient name or organization. */\n  recipient?: ReactNode;\n  /** Preview expiry as ISO 8601 with timezone. Presentation only. */\n  expiresAt?: string;\n  /** Retry deadline as ISO 8601 with timezone. Disables the form visually until elapsed. */\n  cooldownUntil?: string;\n  /** Callback used when no access URL is supplied. */\n  onRequestAccess?: () => void;\n  /** Native http(s), relative, or mailto destination; takes precedence over callback. */\n  requestAccessHref?: string;\n  /** Optional brand mark. */\n  logo?: ReactNode;\n  /** Overrides the default heading. */\n  heading?: ReactNode;\n  /** Overrides the default description. */\n  description?: ReactNode;\n  /** Localized text and time formatters for all built-in copy. */\n  labels?: {\n    /** Localized submit. */\n    submit?: string;\n\n    /** Localized pending. */\n    pending?: string;\n\n    /** Localized success. */\n    success?: string;\n\n    /** Localized code. */\n    code?: string;\n\n    /** Localized hint. */\n    hint?: string;\n    /** Localized recipient. */\n    recipient?: string;\n\n    /** Localized request description. */\n    requestDescription?: string;\n\n    /** Localized request action. */\n    requestAction?: string;\n\n    /** Localized request unavailable. */\n    requestUnavailable?: string;\n    /** Localized draft. */\n    draft?: string;\n\n    /** Localized draft description. */\n    draftDescription?: string;\n\n    /** Localized build. */\n    build?: string;\n\n    /** Localized relock. */\n    relock?: string;\n\n    /** Localized feedback. */\n    feedback?: string;\n    /** Localized navigation. */\n    navigation?: string;\n\n    /** Localized expires. */\n    expires?: string;\n\n    /** Localized expiry pending. */\n    expiryPending?: string;\n\n    /** Localized expiry fine. */\n    expiryFine?: string;\n\n    /** Localized expiry soon. */\n    expirySoon?: string;\n    /** Localized expired. */\n    expired?: string;\n\n    /** Localized expiry unavailable. */\n    expiryUnavailable?: string;\n\n    /** Localized expiry remaining formatter. */\n    expiryRemaining?: (seconds: number) => string;\n    /** Localized cooldown heading. */\n    cooldownHeading?: string;\n\n    /** Localized cooldown description. */\n    cooldownDescription?: string;\n\n    /** Localized cooldown ready. */\n    cooldownReady?: string;\n    /** Localized cooldown waiting. */\n    cooldownWaiting?: string;\n\n    /** Localized cooldown unavailable. */\n    cooldownUnavailable?: string;\n\n    /** Localized countdown formatter. */\n    countdown?: (seconds: number) => string;\n    /** Localized preview access. */\n    previewAccess?: string;\n\n    /** Localized fallback error. */\n    fallbackError?: string;\n\n    /** Localized footer. */\n    footer?: string;\n  };\n  /** Explicit theme; omitted follows system preference. */\n  theme?: 'light' | 'dark';\n  /** Additional root classes; public --knock-* CSS variables can be set on any parent. */\n  className?: string;\n  /** Code input presentation. @default \"digits\" */\n  mode?: 'digits' | 'passphrase';\n  /** Number of digits. @default 8 */\n  length?: number;\n  /** Native password masking. @default false */\n  masked?: boolean;\n  /** Preview build identifier. */\n  buildLabel?: string;\n  /** Consumer callback that must hide content and end access as appropriate. */\n  onRelock?: () => void;\n  /** Consumer feedback callback. */\n  onFeedback?: () => void;\n  /** Native feedback destination; takes precedence over callback. */\n  feedbackHref?: string;\n}\nexport function OpenInvitation({\n  onSubmit,\n  status,\n  unlocked,\n  children,\n  error,\n  recipient,\n  expiresAt,\n  cooldownUntil,\n  onRequestAccess,\n  requestAccessHref,\n  logo,\n  heading,\n  description,\n  labels,\n  theme,\n  className = '',\n}: OpenInvitationProps) {\n  const id = useId();\n  const content = useRef<HTMLDivElement>(null);\n  const lockedRegion = useRef<HTMLDivElement>(null);\n  const wasUnlocked = useRef(unlocked);\n  const [now, setNow] = useState<number | null>(null);\n  useEffect(() => {\n    if (!cooldownUntil) return;\n    setNow(Date.now());\n    const timer = setInterval(() => setNow(Date.now()), 1000);\n    return () => clearInterval(timer);\n  }, [cooldownUntil]);\n  useEffect(() => {\n    if (unlocked && !wasUnlocked.current) content.current?.focus();\n    if (!unlocked && !lockedRegion.current?.querySelector('input:not(:disabled)'))\n      lockedRegion.current?.focus();\n    wasUnlocked.current = unlocked;\n  }, [unlocked]);\n  const cooling =\n    Boolean(cooldownUntil) &&\n    (now === null ||\n      !Number.isFinite(Date.parse(cooldownUntil!)) ||\n      Date.parse(cooldownUntil!) > now);\n  const cooldown = cooldownUntil ? (\n    <CooldownNotice\n      cooldownUntil={cooldownUntil}\n      theme={theme}\n      labels={{\n        heading: labels?.cooldownHeading,\n        description: labels?.cooldownDescription,\n        ready: labels?.cooldownReady,\n        waiting: labels?.cooldownWaiting,\n        unavailable: labels?.cooldownUnavailable,\n        countdown: labels?.countdown,\n      }}\n    />\n  ) : null;\n  const request = (\n    <RequestAccess\n      onRequestAccess={onRequestAccess}\n      requestAccessHref={requestAccessHref}\n      theme={theme}\n      labels={{\n        description: labels?.requestDescription,\n        action: labels?.requestAction,\n        unavailable: labels?.requestUnavailable,\n      }}\n    />\n  );\n  const form = (\n    <form\n      onSubmit={(event) => {\n        event.preventDefault();\n        if (status !== 'pending' && !cooling) onSubmit(event);\n      }}\n      aria-busy={status === 'pending'}\n    >\n      {cooling ? (\n        cooldown\n      ) : (\n        <p className=\"kb-description\">\n          {labels?.hint ?? 'You already have the link. Continue when you are ready.'}\n        </p>\n      )}\n      {status === 'error' && (\n        <p role=\"status\">{error ?? labels?.fallbackError ?? 'Please contact the preview owner.'}</p>\n      )}\n      <button type=\"submit\" className=\"kb-submit\" disabled={status === 'pending' || cooling}>\n        {status === 'pending'\n          ? (labels?.pending ?? 'Please wait…')\n          : status === 'success'\n            ? (labels?.success ?? 'Invitation received')\n            : (labels?.submit ?? 'Open this invitation')}\n        <svg\n          aria-hidden=\"true\"\n          width=\"15\"\n          height=\"15\"\n          viewBox=\"0 0 24 24\"\n          fill=\"none\"\n          stroke=\"currentColor\"\n          strokeWidth=\"1.5\"\n          strokeLinecap=\"round\"\n          strokeLinejoin=\"round\"\n        >\n          <path d=\"M7 17 17 7M7 7h10v10\" />\n        </svg>\n      </button>\n    </form>\n  );\n  const panel = (\n    <div ref={lockedRegion} tabIndex={-1} className=\"kb-panel\" role=\"region\" aria-labelledby={id}>\n      {logo && <div className=\"mb-5\">{logo}</div>}\n      {recipient && <RecipientLine recipient={recipient} label={labels?.recipient} theme={theme} />}\n      <h2 id={id} className=\"kb-heading\">\n        {heading ?? 'This look is for you.'}\n      </h2>\n      <p className=\"kb-description\">\n        {description ?? 'Continue when you are ready. Your application decides what opens.'}\n      </p>\n      {expiresAt && (\n        <div className=\"mb-5\">\n          <ExpiryPill\n            expiresAt={expiresAt}\n            theme={theme}\n            labels={{\n              pending: labels?.expiryPending,\n              fine: labels?.expiryFine,\n              soon: labels?.expirySoon,\n              expired: labels?.expired,\n              unavailable: labels?.expiryUnavailable,\n              remaining: labels?.expiryRemaining,\n            }}\n          />\n        </div>\n      )}\n      {form}\n      {(onRequestAccess || requestAccessHref) && <div className=\"mt-5\">{request}</div>}\n      {labels?.footer && <p className=\"kb-footer\">{labels.footer}</p>}\n    </div>\n  );\n  return (\n    <div\n      data-knock-block=\"open-invitation\"\n      data-theme={theme}\n      className={`flex w-full justify-center ${className}`}\n    >\n      <style>{`[data-knock-block]{--kb-bg:#fffefa;--kb-ink:#30382c;--kb-muted:#65705b;--kb-line:#d8dece;--kb-accent:#a3462d;color:var(--knock-ink,var(--kb-ink));color-scheme:light}[data-knock-block][data-theme=dark]{--kb-bg:#293028;--kb-ink:#f0f3e9;--kb-muted:#b6c2ab;--kb-line:#59654f;--kb-accent:#f1a187;color-scheme:dark}@media(prefers-color-scheme:dark){[data-knock-block]:not([data-theme=light]){--kb-bg:#293028;--kb-ink:#f0f3e9;--kb-muted:#b6c2ab;--kb-line:#59654f;--kb-accent:#f1a187;color-scheme:dark}}[data-knock-block] .kb-panel{background:var(--knock-bg,var(--kb-bg));border:1px solid var(--knock-border,var(--kb-line));border-radius:12px;padding:clamp(22px,5vw,36px);width:100%;max-width:480px;box-shadow:0 12px 30px #28301c0d}[data-knock-block] .kb-heading{font-family:Georgia,serif;font-size:clamp(26px,4vw,34px);font-weight:400;letter-spacing:-.8px;line-height:1.2;margin:16px 0 12px}[data-knock-block] .kb-description{font-size:13px;line-height:1.8;color:var(--knock-muted,var(--kb-muted));margin:0 0 24px}[data-knock-block] .kb-submit{display:flex;align-items:center;justify-content:center;gap:12px;min-height:44px;width:100%;border:1px solid var(--knock-accent,var(--kb-accent));border-radius:7px;background:var(--knock-accent,var(--kb-accent));color:var(--knock-on-accent,#fffefa);font-size:13px;font-weight:500;margin-top:14px}[data-knock-block][data-theme=dark] .kb-submit{color:var(--knock-on-accent,#293028)}@media(prefers-color-scheme:dark){[data-knock-block]:not([data-theme=light]) .kb-submit{color:var(--knock-on-accent,#293028)}}[data-knock-block] :focus-visible{outline:2px solid var(--knock-accent,var(--kb-accent));outline-offset:5px}[data-knock-block] .kb-submit:disabled{opacity:.6;cursor:wait}[data-knock-block] .kb-footer{border-top:1px solid var(--knock-border,var(--kb-line));padding-top:18px;margin-top:24px;font-size:11px;color:var(--knock-muted,var(--kb-muted))}@media(prefers-reduced-motion:reduce){[data-knock-block] *{animation:none!important;transition:none!important}}`}</style>\n      {unlocked ? (\n        <div ref={content} tabIndex={-1} className=\"w-full\">\n          {children}\n        </div>\n      ) : (\n        panel\n      )}\n    </div>\n  );\n}\n"
+    }
+  ],
+  "meta": {
+    "version": "0.1.0",
+    "lifecycle": "gate",
+    "whenToUse": "The invitation is the access: a named recipient and a continue action, with no code to type.",
+    "notFor": "When a typed code is the proof. Use Client preview gate or Quick gate.",
+    "pitfalls": [
+      "Continue only reports `onSubmit`. Set `unlocked` from your server, never from the click alone.",
+      "`value` and `onChange` stay on the shared block contract so this file installs like the others. They are unused because there is no field."
+    ],
+    "dependencies": [
+      "recipient-line",
+      "expiry-pill",
+      "request-access",
+      "cooldown-notice"
+    ],
+    "usedBy": [],
+    "sourceHash": "e8d624e959a8241c1a10bef183fd444c7a33d631392ebdcc2d26fc732a5f9f71",
+    "component": "OpenInvitation",
+    "contract": "This look is for you. Continue when you are ready. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.",
+    "props": [
+      {
+        "name": "value",
+        "type": "string",
+        "required": true,
+        "default": null,
+        "description": "Controlled code value; required. No code is verified here."
+      },
+      {
+        "name": "onChange",
+        "type": "(value: string) => void",
+        "required": true,
+        "default": null,
+        "description": "Receives code edits; required."
+      },
+      {
+        "name": "onSubmit",
+        "type": "(event: FormEvent<HTMLFormElement>) => void",
+        "required": true,
+        "default": null,
+        "description": "Consumer submit handler; required. No access decision is made by this block."
+      },
+      {
+        "name": "status",
+        "type": "'idle' | 'pending' | 'error' | 'success'",
+        "required": true,
+        "default": null,
+        "description": "Controlled visual state; required. Success does not unlock."
+      },
+      {
+        "name": "unlocked",
+        "type": "boolean",
+        "required": true,
+        "default": null,
+        "description": "Consumer-controlled visibility; required. Takes precedence over notice presentation."
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": false,
+        "default": null,
+        "description": "Content revealed when unlocked. Teaser gate also renders it inert while locked."
+      },
+      {
+        "name": "error",
+        "type": "ReactNode",
+        "required": false,
+        "default": "labels?.fallbackError",
+        "description": "Announced error content supplied by the consumer."
+      },
+      {
+        "name": "recipient",
+        "type": "ReactNode",
+        "required": false,
+        "default": null,
+        "description": "Intended recipient name or organization."
+      },
+      {
+        "name": "expiresAt",
+        "type": "string",
+        "required": false,
+        "default": null,
+        "description": "Preview expiry as ISO 8601 with timezone. Presentation only."
+      },
+      {
+        "name": "cooldownUntil",
+        "type": "string",
+        "required": false,
+        "default": null,
+        "description": "Retry deadline as ISO 8601 with timezone. Disables the form visually until elapsed."
+      },
+      {
+        "name": "onRequestAccess",
+        "type": "() => void",
+        "required": false,
+        "default": null,
+        "description": "Callback used when no access URL is supplied."
+      },
+      {
+        "name": "requestAccessHref",
+        "type": "string",
+        "required": false,
+        "default": null,
+        "description": "Native http(s), relative, or mailto destination; takes precedence over callback."
+      },
+      {
+        "name": "logo",
+        "type": "ReactNode",
+        "required": false,
+        "default": null,
+        "description": "Optional brand mark."
+      },
+      {
+        "name": "heading",
+        "type": "ReactNode",
+        "required": false,
+        "default": "'This look is for you.'",
+        "description": "Overrides the default heading."
+      },
+      {
+        "name": "description",
+        "type": "ReactNode",
+        "required": false,
+        "default": "'Continue when you are ready. Your application decides what opens.'",
+        "description": "Overrides the default description."
+      },
+      {
+        "name": "labels",
+        "type": "{ submit?: string; pending?: string; success?: string; code?: string; hint?: string; recipient?: string; requestDescription?: string; requestAction?: string; requestUnavailable?: string; draft?: string; draftDescription?: string; build?: string; relock?: string; feedback?: string; navigation?: string; expires?: string; expiryPending?: string; expiryFine?: string; expirySoon?: string; expired?: string; expiryUnavailable?: string; expiryRemaining?: (seconds: number) => string; cooldownHeading?: string; cooldownDescription?: string; cooldownReady?: string; cooldownWaiting?: string; cooldownUnavailable?: string; countdown?: (seconds: number) => string; previewAccess?: string; fallbackError?: string; footer?: string; }",
+        "required": false,
+        "default": null,
+        "description": "Localized text and time formatters for all built-in copy.",
+        "properties": [
+          {
+            "name": "submit",
+            "type": "string",
+            "required": false,
+            "default": "'Open this invitation'"
+          },
+          {
+            "name": "pending",
+            "type": "string",
+            "required": false,
+            "default": "'Please wait…'"
+          },
+          {
+            "name": "success",
+            "type": "string",
+            "required": false,
+            "default": "'Invitation received'"
+          },
+          {
+            "name": "code",
+            "type": "string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "hint",
+            "type": "string",
+            "required": false,
+            "default": "'You already have the link. Continue when you are ready.'"
+          },
+          {
+            "name": "recipient",
+            "type": "string",
+            "required": false,
+            "default": "'Prepared for'"
+          },
+          {
+            "name": "requestDescription",
+            "type": "string",
+            "required": false,
+            "default": "'Missing your invitation?'"
+          },
+          {
+            "name": "requestAction",
+            "type": "string",
+            "required": false,
+            "default": "'Request access'"
+          },
+          {
+            "name": "requestUnavailable",
+            "type": "string",
+            "required": false,
+            "default": "'Contact the preview owner for a code.'"
+          },
+          {
+            "name": "draft",
+            "type": "string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "draftDescription",
+            "type": "string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "build",
+            "type": "string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "relock",
+            "type": "string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "feedback",
+            "type": "string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "navigation",
+            "type": "string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "expires",
+            "type": "string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "expiryPending",
+            "type": "string",
+            "required": false,
+            "default": "'Preview expiry'"
+          },
+          {
+            "name": "expiryFine",
+            "type": "string",
+            "required": false,
+            "default": "'Preview available'"
+          },
+          {
+            "name": "expirySoon",
+            "type": "string",
+            "required": false,
+            "default": "'Expiring soon'"
+          },
+          {
+            "name": "expired",
+            "type": "string",
+            "required": false,
+            "default": "'Preview expired'"
+          },
+          {
+            "name": "expiryUnavailable",
+            "type": "string",
+            "required": false,
+            "default": "'Expiry unavailable'"
+          },
+          {
+            "name": "expiryRemaining",
+            "type": "(seconds: number) => string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "cooldownHeading",
+            "type": "string",
+            "required": false,
+            "default": "'A little breathing room.'"
+          },
+          {
+            "name": "cooldownDescription",
+            "type": "string",
+            "required": false,
+            "default": "'A few tries didn’t quite match. Take a moment, then try the code from your email again.'"
+          },
+          {
+            "name": "cooldownReady",
+            "type": "string",
+            "required": false,
+            "default": "'Ready when you are. You can try again.'"
+          },
+          {
+            "name": "cooldownWaiting",
+            "type": "string",
+            "required": false,
+            "default": "'Your preview will be right here.'"
+          },
+          {
+            "name": "cooldownUnavailable",
+            "type": "string",
+            "required": false,
+            "default": "'Retry time is unavailable. Please contact the preview owner.'"
+          },
+          {
+            "name": "countdown",
+            "type": "(seconds: number) => string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "previewAccess",
+            "type": "string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "fallbackError",
+            "type": "string",
+            "required": false,
+            "default": null
+          },
+          {
+            "name": "footer",
+            "type": "string",
+            "required": false,
+            "default": null
+          }
+        ]
+      },
+      {
+        "name": "theme",
+        "type": "'light' | 'dark'",
+        "required": false,
+        "default": null,
+        "description": "Explicit theme; omitted follows system preference."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "default": "''",
+        "description": "Additional root classes; public --knock-* CSS variables can be set on any parent."
+      },
+      {
+        "name": "mode",
+        "type": "'digits' | 'passphrase'",
+        "required": false,
+        "default": "\"digits\"",
+        "description": "Code input presentation."
+      },
+      {
+        "name": "length",
+        "type": "number",
+        "required": false,
+        "default": "8",
+        "description": "Number of digits."
+      },
+      {
+        "name": "masked",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Native password masking."
+      },
+      {
+        "name": "buildLabel",
+        "type": "string",
+        "required": false,
+        "default": null,
+        "description": "Preview build identifier."
+      },
+      {
+        "name": "onRelock",
+        "type": "() => void",
+        "required": false,
+        "default": null,
+        "description": "Consumer callback that must hide content and end access as appropriate."
+      },
+      {
+        "name": "onFeedback",
+        "type": "() => void",
+        "required": false,
+        "default": null,
+        "description": "Consumer feedback callback."
+      },
+      {
+        "name": "feedbackHref",
+        "type": "string",
+        "required": false,
+        "default": null,
+        "description": "Native feedback destination; takes precedence over callback."
+      }
+    ],
+    "defaults": {
+      "className": "''",
+      "labels.hint": "'You already have the link. Continue when you are ready.'",
+      "error": "labels?.fallbackError",
+      "labels.pending": "'Please wait…'",
+      "labels.success": "'Invitation received'",
+      "labels.submit": "'Open this invitation'",
+      "heading": "'This look is for you.'",
+      "description": "'Continue when you are ready. Your application decides what opens.'",
+      "labels.cooldownHeading": "'A little breathing room.'",
+      "labels.cooldownDescription": "'A few tries didn’t quite match. Take a moment, then try the code from your email again.'",
+      "labels.cooldownReady": "'Ready when you are. You can try again.'",
+      "labels.cooldownWaiting": "'Your preview will be right here.'",
+      "labels.cooldownUnavailable": "'Retry time is unavailable. Please contact the preview owner.'",
+      "labels.requestDescription": "'Missing your invitation?'",
+      "labels.requestAction": "'Request access'",
+      "labels.requestUnavailable": "'Contact the preview owner for a code.'",
+      "labels.recipient": "'Prepared for'",
+      "labels.expiryPending": "'Preview expiry'",
+      "labels.expiryFine": "'Preview available'",
+      "labels.expirySoon": "'Expiring soon'",
+      "labels.expired": "'Preview expired'",
+      "labels.expiryUnavailable": "'Expiry unavailable'"
+    },
+    "slots": [
+      "children",
+      "error",
+      "recipient",
+      "logo",
+      "heading",
+      "description"
+    ],
+    "a11y": "Native forms and controls, polite error and cooldown announcements, visible focus, focus transfer after unlock. This block is a region, not a modal. Locked children are not rendered.",
+    "unsupportedProps": [
+      "onSuccess",
+      "password",
+      "correctCode",
+      "attempts",
+      "maxAttempts",
+      "onUnlock"
+    ],
+    "examples": {
+      "minimal": "'use client';\nimport { useState } from 'react';\nimport { OpenInvitation } from '@/components/knock/open-invitation';\n\nexport default function Example() {\n  const [value, setValue] = useState('');\n  const [unlocked, setUnlocked] = useState(false);\n  const [message, setMessage] = useState('');\n  return <section aria-label=\"Open invitation example\">\n    {/* Demo consumer state only. Integrate your authorization outside this UI. */}\n    <OpenInvitation value={value} onChange={setValue} onSubmit={event => { event.preventDefault(); setMessage(\"Demo submitted\"); }} status=\"idle\" unlocked={unlocked}><p>Preview content</p></OpenInvitation>\n    <p role=\"status\">{message}</p>\n  </section>;\n}\n",
+      "full": "'use client';\nimport { useState } from 'react';\nimport { OpenInvitation } from '@/components/knock/open-invitation';\n\nexport default function Example() {\n  const [value, setValue] = useState('');\n  const [unlocked, setUnlocked] = useState(false);\n  const [message, setMessage] = useState('');\n  return <section aria-label=\"Open invitation example\">\n    {/* Demo consumer state only. Integrate your authorization outside this UI. */}\n    <OpenInvitation value={value} onChange={setValue} onSubmit={event => { event.preventDefault(); setMessage(\"Demo submitted; your authorization belongs outside this UI.\"); }} status=\"idle\" unlocked={unlocked} recipient=\"Acme Co.\" expiresAt=\"2030-01-01T12:00:00Z\" logo={<strong>Atelier</strong>} heading=\"This look is for you.\" description=\"Continue when you are ready.\" onRequestAccess={() => setMessage(\"Request access selected\")} buildLabel=\"acme-v1\" onRelock={() => setUnlocked(false)} onFeedback={() => setMessage(\"Feedback selected\")} theme=\"light\" labels={{ submit: \"Open this invitation\", footer: \"A draft, prepared for you.\" }}><p>Preview content</p></OpenInvitation>\n    <button type=\"button\" onClick={() => setUnlocked(current => !current)}>Toggle demo visibility</button>\n    <p role=\"status\">{message}</p>\n  </section>;\n}\n"
+    }
+  },
+  "docs": "UI only. Read https://knock.codes/docs/open-invitation.md. Consumers own authorization."
+}

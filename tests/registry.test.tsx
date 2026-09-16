@@ -1,16 +1,20 @@
 /** MIT License — Copyright (c) 2026 Knock contributors. */
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 const catalog = JSON.parse(readFileSync('public/catalog.json', 'utf8'));
-test('all 17 registry payloads include source-derived contracts and resolvable dependencies', () => {
-  assert.equal(catalog.length, 17);
+const authored = ['components', 'blocks'].flatMap((tier) =>
+  readdirSync(`registry/${tier}`).filter((file) => file.endsWith('.tsx')),
+);
+test('registry payloads include source-derived contracts and resolvable dependencies', () => {
+  assert.equal(catalog.length, authored.length);
   for (const item of catalog) {
     const registry = JSON.parse(readFileSync(`public/r/${item.name}.json`, 'utf8'));
     assert.equal(registry.name, item.name);
     assert.ok(registry.meta.sourceHash);
     assert.match(registry.files[0].content, /MIT License/);
     assert.match(registry.files[0].content, /'use client'/);
+    assert.doesNotMatch(registry.files[0].content, /shared\/block/);
     assert.ok(registry.meta.examples.minimal);
     assert.ok(registry.meta.examples.full);
     assert.equal(registry.meta.unsupportedProps.length, 6);
@@ -55,7 +59,7 @@ test('published catalogs match the shadcn directory: named knock-codes, no file 
     const registry = JSON.parse(readFileSync(file, 'utf8'));
     assert.equal(registry.name, 'knock-codes');
     assert.equal(registry.homepage, 'https://knock.codes');
-    assert.equal(registry.items.length, 17);
+    assert.equal(registry.items.length, catalog.length);
     for (const item of registry.items) {
       assert.equal(item.$schema, undefined);
       assert.ok(item.files[0].path);

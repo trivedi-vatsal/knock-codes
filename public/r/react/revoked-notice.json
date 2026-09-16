@@ -34,7 +34,7 @@
       "cooldown-notice"
     ],
     "usedBy": [],
-    "sourceHash": "11d8bd27369333b0e704dd93adde0b7461815afd236e0bfb2efb69e0d8460ef9",
+    "sourceHash": "9935c111b85585f0975a655b1aaadacbe411393e8e13eac939068058ed1ce243",
     "component": "RevokedNotice",
     "contract": "The owner has withdrawn access. Contact them if you need another look. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.",
     "props": [

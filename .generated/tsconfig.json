@@ -2,6 +2,7 @@
   "extends": "../tsconfig.json",
   "include": [
     "examples/*.tsx",
-    "../registry/**/*.tsx"
+    "../registry/**/*.tsx",
+    "../registry/**/*.ts"
   ]
 }
