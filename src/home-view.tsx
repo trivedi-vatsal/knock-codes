@@ -1,5 +1,5 @@
 /** MIT License — Copyright (c) 2026 Knock contributors. */
-import { useEffect, useRef, useState, type HTMLAttributes } from 'react';
+import { useEffect, useRef, useState, version } from 'react';
 import { ClientPreviewGate } from '../registry/blocks/client-preview-gate';
 
 export function Home() {
@@ -40,7 +40,9 @@ export function Home() {
           </div>
           <div
             ref={demo}
-            {...({ inert: demoActive ? undefined : true } as HTMLAttributes<HTMLDivElement>)}
+            {...({
+              inert: demoActive ? undefined : version.startsWith('18.') ? '' : true,
+            } as { inert?: boolean | string })}
           >
             <ClientPreviewGate
               value={value}
