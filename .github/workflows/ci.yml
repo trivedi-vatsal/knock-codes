@@ -26,6 +26,7 @@ jobs:
       - run: npm ci
       - run: npm install --no-save react@${{ matrix.react }} react-dom@${{ matrix.react }} @types/react@${{ matrix.types }} @types/react-dom@${{ matrix.types }}
       - run: npm run check:generated
+      - run: npm run check:registry
       - run: npm run build
       - run: npm test
       - run: npm run test:pages
@@ -36,7 +37,9 @@ jobs:
   model-installation:
     runs-on: ubuntu-latest
     # Forks cannot access secrets; run their model eval from a trusted branch after review.
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    if: >-
+      vars.OPENAI_MODEL != '' &&
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

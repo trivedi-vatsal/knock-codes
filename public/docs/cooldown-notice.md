@@ -14,6 +14,15 @@ A full screen that replaces the gate during the pause. Use the Cooldown screen b
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/cooldown-notice
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/cooldown-notice.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -52,7 +61,7 @@ Native controls, visible focus, localized labels; lifecycle messages use polite 
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Cooldown notice (CooldownNotice) from https://knock.codes/r/cooldown-notice.json in a React + Tailwind project. Read https://knock.codes/docs/cooldown-notice.md before editing.
+Install and wire Cooldown notice (CooldownNotice) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/cooldown-notice`, or from https://knock.codes/r/cooldown-notice.json. Read https://knock.codes/docs/cooldown-notice.md before editing.
 
 Displays a calm countdown without enforcing a retry policy. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.
 

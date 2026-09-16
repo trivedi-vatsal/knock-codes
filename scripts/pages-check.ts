@@ -27,7 +27,15 @@ try {
       checked += 1;
     }
   }
-  for (const url of ['/docs/index.md', '/catalog.json', '/llms.txt', '/llms-full.txt']) {
+  for (const url of [
+    '/docs/index.md',
+    '/catalog.json',
+    '/llms.txt',
+    '/llms-full.txt',
+    '/r/registry.json',
+    '/r/react/registry.json',
+    '/r/react/client-preview-gate.json',
+  ]) {
     assert.equal((await fetch(origin + url)).status, 200, url);
     checked += 1;
   }
@@ -78,8 +86,11 @@ try {
   assert.equal(png.readUInt32BE(16), 1200);
   assert.equal(png.readUInt32BE(20), 630);
   // Asset URLs with an extension must still 404 rather than returning the app shell.
-  for (const url of ['/docs/missing.md', '/r/missing.json'])
+  for (const url of ['/docs/missing.md', '/r/missing.json', '/r/react/missing.json'])
     assert.equal((await fetch(origin + url)).status, 404, url);
+  const published = JSON.parse(await (await fetch(origin + '/r/react/registry.json')).text());
+  assert.equal(published.name, 'knock-codes');
+  assert.equal(published.items[0].files[0].content, undefined);
   console.log(
     `All ${checked} published documentation, registry, source and index URLs returned the expected static resources.`,
   );

@@ -14,6 +14,15 @@ Internal or staging previews, where the branding is noise. Use Quick gate.
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/client-preview-gate
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/client-preview-gate.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -89,7 +98,7 @@ Native forms and controls, polite error and cooldown announcements, visible focu
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Client preview gate (ClientPreviewGate) from https://knock.codes/r/client-preview-gate.json in a React + Tailwind project. Read https://knock.codes/docs/client-preview-gate.md before editing.
+Install and wire Client preview gate (ClientPreviewGate) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/client-preview-gate`, or from https://knock.codes/r/client-preview-gate.json. Read https://knock.codes/docs/client-preview-gate.md before editing.
 
 Your next chapter is ready for a first look. Enter the code from your invitation. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.
 

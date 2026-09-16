@@ -1,0 +1,117 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "request-access",
+  "type": "registry:component",
+  "title": "Request access",
+  "description": "Routes a recipient without a code to the preview owner. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.",
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/components/request-access.tsx",
+      "type": "registry:component",
+      "target": "@components/knock/request-access.tsx",
+      "content": "/**\n * MIT License — Copyright (c) 2026 Knock contributors.\n * Routes a recipient without a code to the preview owner.\n * Does not verify codes, persist state, or grant or revoke access.\n * Contract: the consumer owns lifecycle timestamps and action callbacks.\n * @version 0.2.0\n * @minimalExample <RequestAccess onRequestAccess={() => setMessage(\"Request access selected\")} />\n * @fullExample <RequestAccess requestAccessHref=\"mailto:studio@example.com?subject=Preview%20access\" theme=\"light\" labels={{ description: \"Missing your invitation?\", action: \"Ask the studio\", unavailable: \"Contact the owner.\" }} />\n * @lifecycle gate\n * @whenToUse Recipients arrive without a working code — a forwarded invitation, a link that sat too long — and need a route back to the owner.\n * @notFor Sending the request. Nothing leaves the browser: you supply a link or a callback and deliver the message yourself.\n * @pitfall With neither `requestAccessHref` nor `onRequestAccess` set, the component renders its unavailable label rather than a dead control. Supply one of them.\n * @a11y Native controls, visible focus, localized labels; lifecycle messages use polite announcements. No modal dialog is created.\n */\n'use client';\n\nexport interface RequestAccessProps {\n  /** Destination URL or mailto address. Takes precedence over callback. Only relative, http(s), and mailto URLs are supported. */\n  requestAccessHref?: string;\n  /** Called when requesting access without a destination URL. */\n  onRequestAccess?: () => void;\n  /** Localized context and action. */\n  labels?: {\n    /** Localized description. */\n    description?: string;\n\n    /** Localized action. */\n    action?: string;\n\n    /** Localized unavailable. */\n    unavailable?: string;\n  };\n\n  /** Explicit theme; omitted follows the system preference. */\n  theme?: 'light' | 'dark';\n  /** Additional wrapper classes. */\n  className?: string;\n}\nexport function RequestAccess({\n  requestAccessHref,\n  onRequestAccess,\n  labels,\n  theme,\n  className = '',\n}: RequestAccessProps) {\n  const href =\n    requestAccessHref && /^(?:https?:\\/\\/|mailto:|\\/(?!\\/)|#|\\.\\.?\\/)/i.test(requestAccessHref)\n      ? requestAccessHref\n      : undefined;\n  const action = labels?.action ?? 'Request access';\n  const classes =\n    'inline-flex min-h-10 items-center gap-2 font-medium underline decoration-[var(--knock-border,var(--knock-line))] underline-offset-4';\n  return (\n    <div\n      data-knock-item=\"request\"\n      data-theme={theme}\n      className={`flex flex-wrap items-center gap-x-2 text-sm ${className}`}\n    >\n      <style>{`[data-knock-item]{--knock-surface:#fffefa;--knock-text:#30382c;--knock-secondary:#65705b;--knock-line:#d8dece;--knock-highlight:#a3462d;color:var(--knock-ink,var(--knock-text));color-scheme:light}[data-knock-item][data-theme=dark]{--knock-surface:#293028;--knock-text:#f0f3e9;--knock-secondary:#b6c2ab;--knock-line:#59654f;--knock-highlight:#f1a187;color-scheme:dark}@media(prefers-color-scheme:dark){[data-knock-item]:not([data-theme=light]){--knock-surface:#293028;--knock-text:#f0f3e9;--knock-secondary:#b6c2ab;--knock-line:#59654f;--knock-highlight:#f1a187;color-scheme:dark}}[data-knock-item] a:focus-visible,[data-knock-item] button:focus-visible,[data-knock-item] [tabindex]:focus-visible{outline:2px solid var(--knock-accent,var(--knock-highlight));outline-offset:4px}[data-knock-item] button,[data-knock-item] a{overflow-wrap:anywhere}@media(prefers-reduced-motion:reduce){[data-knock-item] *{animation:none!important;transition:none!important}}`}</style>\n      <span className=\"text-[var(--knock-muted,var(--knock-secondary))]\">\n        {labels?.description ?? 'Missing your invitation?'}\n      </span>\n      {href ? (\n        <a className={classes} href={href}>\n          {action}\n          <svg\n            aria-hidden=\"true\"\n            width=\"15\"\n            height=\"15\"\n            viewBox=\"0 0 24 24\"\n            fill=\"none\"\n            stroke=\"currentColor\"\n            strokeWidth=\"1.5\"\n            strokeLinecap=\"round\"\n            strokeLinejoin=\"round\"\n          >\n            <path d=\"M7 17 17 7M7 7h10v10\" />\n          </svg>\n        </a>\n      ) : onRequestAccess ? (\n        <button type=\"button\" className={classes} onClick={onRequestAccess}>\n          {action}\n          <svg\n            aria-hidden=\"true\"\n            width=\"15\"\n            height=\"15\"\n            viewBox=\"0 0 24 24\"\n            fill=\"none\"\n            stroke=\"currentColor\"\n            strokeWidth=\"1.5\"\n            strokeLinecap=\"round\"\n            strokeLinejoin=\"round\"\n          >\n            <path d=\"M7 17 17 7M7 7h10v10\" />\n          </svg>\n        </button>\n      ) : (\n        <span>{labels?.unavailable ?? 'Contact the preview owner for a code.'}</span>\n      )}\n    </div>\n  );\n}\n"
+    }
+  ],
+  "meta": {
+    "version": "0.2.0",
+    "lifecycle": "gate",
+    "whenToUse": "Recipients arrive without a working code — a forwarded invitation, a link that sat too long — and need a route back to the owner.",
+    "notFor": "Sending the request. Nothing leaves the browser: you supply a link or a callback and deliver the message yourself.",
+    "pitfalls": [
+      "With neither `requestAccessHref` nor `onRequestAccess` set, the component renders its unavailable label rather than a dead control. Supply one of them."
+    ],
+    "dependencies": [],
+    "usedBy": [
+      "client-preview-gate",
+      "cooldown-screen",
+      "expired-notice",
+      "gated-section",
+      "preview-chrome",
+      "quick-gate",
+      "revoked-notice",
+      "teaser-gate"
+    ],
+    "sourceHash": "add8b25d527fbf816d8a24549c450686cf19d72d4fb5fdf2ad96124d3334a26f",
+    "component": "RequestAccess",
+    "contract": "Routes a recipient without a code to the preview owner. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.",
+    "props": [
+      {
+        "name": "requestAccessHref",
+        "type": "string",
+        "required": false,
+        "default": null,
+        "description": "Destination URL or mailto address. Takes precedence over callback. Only relative, http(s), and mailto URLs are supported."
+      },
+      {
+        "name": "onRequestAccess",
+        "type": "() => void",
+        "required": false,
+        "default": null,
+        "description": "Called when requesting access without a destination URL."
+      },
+      {
+        "name": "labels",
+        "type": "{ description?: string; action?: string; unavailable?: string; }",
+        "required": false,
+        "default": null,
+        "description": "Localized context and action.",
+        "properties": [
+          {
+            "name": "description",
+            "type": "string",
+            "required": false,
+            "default": "'Missing your invitation?'"
+          },
+          {
+            "name": "action",
+            "type": "string",
+            "required": false,
+            "default": "'Request access'"
+          },
+          {
+            "name": "unavailable",
+            "type": "string",
+            "required": false,
+            "default": "'Contact the preview owner for a code.'"
+          }
+        ]
+      },
+      {
+        "name": "theme",
+        "type": "'light' | 'dark'",
+        "required": false,
+        "default": null,
+        "description": "Explicit theme; omitted follows the system preference."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "default": "''",
+        "description": "Additional wrapper classes."
+      }
+    ],
+    "defaults": {
+      "className": "''",
+      "labels.action": "'Request access'",
+      "labels.description": "'Missing your invitation?'",
+      "labels.unavailable": "'Contact the preview owner for a code.'"
+    },
+    "slots": [],
+    "a11y": "Native controls, visible focus, localized labels; lifecycle messages use polite announcements. No modal dialog is created.",
+    "unsupportedProps": [
+      "onSuccess",
+      "password",
+      "correctCode",
+      "attempts",
+      "maxAttempts",
+      "onUnlock"
+    ],
+    "examples": {
+      "minimal": "'use client';\nimport { useState } from 'react';\nimport { RequestAccess } from '@/components/knock/request-access';\n\nexport default function Example() {\n  const [value, setValue] = useState('');\n  const [unlocked, setUnlocked] = useState(false);\n  const [message, setMessage] = useState('');\n  return <section aria-label=\"Request access example\">\n    {/* Demo consumer state only. Integrate your authorization outside this UI. */}\n    <RequestAccess onRequestAccess={() => setMessage(\"Request access selected\")} />\n    <p role=\"status\">{message}</p>\n  </section>;\n}\n",
+      "full": "'use client';\nimport { useState } from 'react';\nimport { RequestAccess } from '@/components/knock/request-access';\n\nexport default function Example() {\n  const [value, setValue] = useState('');\n  const [unlocked, setUnlocked] = useState(false);\n  const [message, setMessage] = useState('');\n  return <section aria-label=\"Request access example\">\n    {/* Demo consumer state only. Integrate your authorization outside this UI. */}\n    <RequestAccess requestAccessHref=\"mailto:studio@example.com?subject=Preview%20access\" theme=\"light\" labels={{ description: \"Missing your invitation?\", action: \"Ask the studio\", unavailable: \"Contact the owner.\" }} />\n    <p role=\"status\">{message}</p>\n  </section>;\n}\n"
+    }
+  },
+  "docs": "UI only. Read https://knock.codes/docs/request-access.md. Consumers own authorization."
+}

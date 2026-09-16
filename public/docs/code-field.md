@@ -14,6 +14,15 @@ A complete gate screen. Use the Quick gate or Client preview gate block, which a
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/code-field
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/code-field.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -59,7 +68,7 @@ Native controls, visible focus, localized labels; lifecycle messages use polite 
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Code field (CodeField) from https://knock.codes/r/code-field.json in a React + Tailwind project. Read https://knock.codes/docs/code-field.md before editing.
+Install and wire Code field (CodeField) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/code-field`, or from https://knock.codes/r/code-field.json. Read https://knock.codes/docs/code-field.md before editing.
 
 Displays controlled demo-code entry, normalizing pasted message artifacts. Does not verify codes, unlock content, store values, or make network requests. Contract: value and onChange are required; the consumer owns all state.
 

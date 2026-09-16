@@ -14,6 +14,15 @@ A dismissible banner. There is no dismiss action by design: a ribbon that can be
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/preview-ribbon
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/preview-ribbon.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -47,7 +56,7 @@ Native controls, visible focus, localized labels; lifecycle messages use polite 
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Preview ribbon (PreviewRibbon) from https://knock.codes/r/preview-ribbon.json in a React + Tailwind project. Read https://knock.codes/docs/preview-ribbon.md before editing.
+Install and wire Preview ribbon (PreviewRibbon) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/preview-ribbon`, or from https://knock.codes/r/preview-ribbon.json. Read https://knock.codes/docs/preview-ribbon.md before editing.
 
 Keeps a draft label visible within preview screenshots. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.
 

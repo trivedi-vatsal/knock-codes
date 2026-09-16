@@ -1,4 +1,4 @@
-Install and wire Cooldown notice (CooldownNotice) from https://knock.codes/r/cooldown-notice.json in a React + Tailwind project. Read https://knock.codes/docs/cooldown-notice.md before editing.
+Install and wire Cooldown notice (CooldownNotice) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/cooldown-notice`, or from https://knock.codes/r/cooldown-notice.json. Read https://knock.codes/docs/cooldown-notice.md before editing.
 
 Displays a calm countdown without enforcing a retry policy. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.
 

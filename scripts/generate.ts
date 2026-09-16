@@ -256,7 +256,7 @@ for (const file of files) {
           `| ${p.name} | \`${p.type.replaceAll('|', '\\|').replaceAll('\n', ' ')}\` | ${p.required ? 'yes' : 'no'} | ${p.default ?? '—'} | ${p.description.replaceAll('|', '\\|')} |`,
       )
       .join('\n');
-  const agentPrompt = `Install and wire ${title} (${component}) from ${base}/r/${slug}.json in a React + Tailwind project. Read ${base}/docs/${slug}.md before editing.\n\n${contract}\n\nRequired props: ${
+  const agentPrompt = `Install and wire ${title} (${component}) with \`npx shadcn@latest registry add @knock-codes\` then \`npx shadcn@latest add @knock-codes/${slug}\`, or from ${base}/r/${slug}.json. Read ${base}/docs/${slug}.md before editing.\n\n${contract}\n\nRequired props: ${
     props
       .filter((p) => p.required)
       .map((p) => p.name + ': ' + p.type)
@@ -267,7 +267,7 @@ for (const file of files) {
     .join(
       '\n',
     )}\n\nThese are NOT props: ${unsupported.join(', ')}.\nNever put credentials or correct codes into these components. Status success is visual; unlocked is consumer-owned. Timer completion does not grant access.\n\nUse it when: ${whenToUse}\nDo not use it for: ${notFor}\nCommon mistakes:\n${pitfalls.map((p) => '- ' + p).join('\n')}\n\nAccessibility: ${a11y}\n\nMinimal example:\n\`\`\`tsx\n${examples.minimal}\`\`\`\n\nFully wired example:\n\`\`\`tsx\n${examples.full}\`\`\`\n`;
-  const markdown = `# ${title}\n\nVersion ${version} · ${tier} · ${lifecycle}\n\n${contract}\n\n## When to use\n\n${whenToUse}\n\n## Not for\n\n${notFor}\n\n## Install\n\n\`npx shadcn@latest add ${base}/r/${slug}.json\`\n\nRequires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.\n\n[Live demo](${base}/playground/${slug}) · [Registry JSON](${base}/r/${slug}.json) · [Source](${base}/source/${slug}.tsx)\n\n## Props\n\n${propTable}\n\n### Label defaults\n\n${
+  const markdown = `# ${title}\n\nVersion ${version} · ${tier} · ${lifecycle}\n\n${contract}\n\n## When to use\n\n${whenToUse}\n\n## Not for\n\n${notFor}\n\n## Install\n\nThe registry is listed in the shadcn directory as \`@knock-codes\`.\n\n\`\`\`\nnpx shadcn@latest registry add @knock-codes\nnpx shadcn@latest add @knock-codes/${slug}\n\`\`\`\n\nDirect URL:\n\n\`npx shadcn@latest add ${base}/r/${slug}.json\`\n\nRequires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.\n\n[Live demo](${base}/playground/${slug}) · [Registry JSON](${base}/r/${slug}.json) · [Source](${base}/source/${slug}.tsx)\n\n## Props\n\n${propTable}\n\n### Label defaults\n\n${
     Object.entries(defaults)
       .filter(([k]) => k.startsWith('labels.'))
       .map(([k, v]) => `- ${k}: \`${v}\``)
@@ -303,6 +303,7 @@ for (const file of files) {
     docs: `UI only. Read ${base}/docs/${slug}.md. Consumers own authorization.`,
   };
   json(`public/r/${slug}.json`, registry);
+  json(`public/r/react/${slug}.json`, registry);
   emit(`public/source/${slug}.tsx`, content);
   emit(`public/docs/${slug}.md`, markdown);
   emit(`public/prompts/${slug}.md`, agentPrompt);
@@ -320,13 +321,24 @@ for (const file of files) {
   });
 }
 json('public/catalog.json', catalog);
-json('registry.json', {
-  $schema: 'https://ui.shadcn.com/schema/registry.json',
-  name: 'knock',
-  homepage: base,
-  items: catalog.map((c) => JSON.parse(readFileSync(`public/r/${c.name}.json`, 'utf8'))),
+const published = catalog.map((c) => {
+  const item = JSON.parse(readFileSync(`public/r/${c.name}.json`, 'utf8'));
+  const { $schema: _schema, ...rest } = item;
+  return {
+    ...rest,
+    files: rest.files.map(({ content: _content, ...file }: { content?: string }) => file),
+  };
 });
-const index = `# Knock\n\nCopy-paste demo-gate UI for React 18/19 + Tailwind CSS 4. No authentication, verification, storage, fetch, or sessions.\n\nRead ${base}/llms-full.txt for the whole library in one fetch (contracts, examples and source).\nRequired values and callbacks are documented per item. Status success does not unlock: consumers own unlocked. Never invent onSuccess/password/correctCode/attempts/maxAttempts/onUnlock.\n\n## Items\n\n${catalog.map((c) => `- [${c.title}](${base}/docs/${c.name}.md): ${c.tier}, ${c.meta.lifecycle}; ${c.meta.whenToUse} Install ${base}/r/${c.name}.json`).join('\n')}\n\n## Theme\n\nSet theme to light/dark or omit for system preference. Override --knock-bg, --knock-ink, --knock-muted, --knock-accent, --knock-border, --knock-error on a parent. Check contrast after customizing.\n`;
+const indexPayload = {
+  $schema: 'https://ui.shadcn.com/schema/registry.json',
+  name: 'knock-codes',
+  homepage: base,
+  items: published,
+};
+json('registry.json', indexPayload);
+json('public/r/registry.json', indexPayload);
+json('public/r/react/registry.json', indexPayload);
+const index = `# Knock\n\nCopy-paste demo-gate UI for React 18/19 + Tailwind CSS 4. No authentication, verification, storage, fetch, or sessions.\n\nThe registry is listed in the shadcn directory. Add it once with \`npx shadcn@latest registry add @knock-codes\`, then install items as \`@knock-codes/<name>\`.\n\nRead ${base}/llms-full.txt for the whole library in one fetch (contracts, examples and source).\nRequired values and callbacks are documented per item. Status success does not unlock: consumers own unlocked. Never invent onSuccess/password/correctCode/attempts/maxAttempts/onUnlock.\n\n## Items\n\n${catalog.map((c) => `- [${c.title}](${base}/docs/${c.name}.md): ${c.tier}, ${c.meta.lifecycle}; ${c.meta.whenToUse} Install \`@knock-codes/${c.name}\` or ${base}/r/${c.name}.json`).join('\n')}\n\n## Theme\n\nSet theme to light/dark or omit for system preference. Override --knock-bg, --knock-ink, --knock-muted, --knock-accent, --knock-border, --knock-error on a parent. Check contrast after customizing.\n`;
 emit('public/llms.txt', index);
 emit('public/llms-full.txt', full);
 emit('public/docs/index.md', index);

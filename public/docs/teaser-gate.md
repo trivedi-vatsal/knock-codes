@@ -14,6 +14,15 @@ Anything confidential. Unlike the other gates, teaser content stays in the DOM w
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/teaser-gate
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/teaser-gate.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -89,7 +98,7 @@ Native forms and controls, polite error and cooldown announcements, visible focu
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Teaser gate (TeaserGate) from https://knock.codes/r/teaser-gate.json in a React + Tailwind project. Read https://knock.codes/docs/teaser-gate.md before editing.
+Install and wire Teaser gate (TeaserGate) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/teaser-gate`, or from https://knock.codes/r/teaser-gate.json. Read https://knock.codes/docs/teaser-gate.md before editing.
 
 Your private preview is just one invitation away. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.
 

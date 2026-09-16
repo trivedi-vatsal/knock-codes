@@ -13,7 +13,22 @@ Open http://localhost:5173. The home route `/` introduces Knock with an interact
 
 ## Install
 
-In a React/Tailwind project configured for shadcn:
+Knock is listed in the shadcn directory. In a React/Tailwind project that already has `components.json`:
+
+```sh
+npx shadcn@latest registry add @knock-codes
+pnpm dlx shadcn@latest registry add @knock-codes
+yarn dlx shadcn@latest registry add @knock-codes
+bunx --bun shadcn@latest registry add @knock-codes
+```
+
+Then install an item by name:
+
+```sh
+npx shadcn@latest add @knock-codes/client-preview-gate
+```
+
+Direct item URLs also work:
 
 ```sh
 npx shadcn@latest add https://knock.codes/r/client-preview-gate.json
@@ -48,7 +63,8 @@ Public URLs default to `https://knock.codes`. Set `REGISTRY_BASE_URL` to overrid
 
 The TypeScript compiler API reads source interfaces, JSDoc, defaults, JSX label mappings, versions and examples. It emits:
 
-- `/r/<item>.json`: shadcn payload, dependency URLs, prop schemas, defaults, slots, a11y notes, source hash and version.
+- `/r/<item>.json`: shadcn payload, dependency URLs, prop schemas, defaults, slots, a11y notes, source hash and version. The same payload is published at `/r/react/<item>.json` so the official shadcn directory URL `https://knock.codes/r/react/{name}.json` keeps resolving.
+- `/r/registry.json` and `/r/react/registry.json`: the shadcn catalog (no file `content`). Root `registry.json` is the same catalog for GitHub `owner/repo/item` installs.
 - `/docs/<item>.md`: Markdown documentation — contract, when to use, what it is not for, props, label defaults, common mistakes, related items, accessibility and source.
 - `/catalog.json`: every item's contract, props, guidance and dependency graph. The app renders its documentation pages from this file.
 - `/prompts/<item>.md`: agent prompt and anti-hallucination contract.
@@ -67,6 +83,7 @@ Single-input digit entry preserves native selection, backspace, arrows, password
 
 ```sh
 npm run check
+npm run check:registry
 npm run format:check
 npm run test:install
 npm run test:pages
@@ -77,6 +94,6 @@ npm run test:eval-runner
 
 Use `/audit` in development for the rendered browser a11y audit, including contrast. It is excluded from the production build. Browser testing uses Codex browser controls, not Playwright.
 
-CI runs public-source, generated-output, example compilation, hydration, structural accessibility, documentation rendering and real installation checks against React 18 and 19. The model-installation job gives the configured model only `llms.txt` and a task, provides bounded documentation/install/write tools, then independently compiles and renders its integration and runs axe. Failed integrations fail the job; correct the source/docs/API rather than relaxing the eval.
+CI runs public-source, generated-output, example compilation, hydration, structural accessibility, documentation rendering, shadcn registry validation and real installation checks against React 18 and 19. The model-installation job gives the configured model only `llms.txt` and a task, provides bounded documentation/install/write tools, then independently compiles and renders its integration and runs axe. Failed integrations fail the job; correct the source/docs/API rather than relaxing the eval.
 
-Configure the GitHub secret `OPENAI_API_KEY` and repository variable `OPENAI_MODEL`, then run `npm run eval:model` or CI. Missing configuration is a failure, never a skipped success. `EVAL_ITEM=<slug>` limits a local diagnostic run; the CI default evaluates all 17. The offline runner self-test does not claim model performance. See `docs/VERIFICATION.md` for executed checks and remaining external requirements.
+Configure the GitHub secret `OPENAI_API_KEY` and repository variable `OPENAI_MODEL` to run `npm run eval:model` in CI. The model job is skipped when `OPENAI_MODEL` is unset so deterministic checks can stay green. Missing credentials still fail `npm run eval:model` locally. `EVAL_ITEM=<slug>` limits a local diagnostic run; the CI default evaluates all 17. The offline runner self-test does not claim model performance. See `docs/VERIFICATION.md` for executed checks and remaining external requirements.

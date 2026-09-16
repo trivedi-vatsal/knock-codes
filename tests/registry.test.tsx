@@ -31,6 +31,8 @@ test('all 17 registry payloads include source-derived contracts and resolvable d
       );
     for (const dep of registry.registryDependencies)
       assert.ok(catalog.some((c: { name: string }) => dep.endsWith(`/r/${c.name}.json`)));
+    const alias = JSON.parse(readFileSync(`public/r/react/${item.name}.json`, 'utf8'));
+    assert.deepEqual(alias, registry);
   }
   const blocks = catalog.filter((c: { tier: string }) => c.tier === 'blocks');
   for (const block of blocks)
@@ -47,4 +49,17 @@ test('all 17 registry payloads include source-derived contracts and resolvable d
       })),
       `${block.name} has the same prop contract`,
     );
+});
+test('published catalogs match the shadcn directory: named knock-codes, no file content', () => {
+  for (const file of ['registry.json', 'public/r/registry.json', 'public/r/react/registry.json']) {
+    const registry = JSON.parse(readFileSync(file, 'utf8'));
+    assert.equal(registry.name, 'knock-codes');
+    assert.equal(registry.homepage, 'https://knock.codes');
+    assert.equal(registry.items.length, 17);
+    for (const item of registry.items) {
+      assert.equal(item.$schema, undefined);
+      assert.ok(item.files[0].path);
+      assert.equal(item.files[0].content, undefined);
+    }
+  }
 });

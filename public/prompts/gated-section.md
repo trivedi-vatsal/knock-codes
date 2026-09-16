@@ -1,4 +1,4 @@
-Install and wire Gated section (GatedSection) from https://knock.codes/r/gated-section.json in a React + Tailwind project. Read https://knock.codes/docs/gated-section.md before editing.
+Install and wire Gated section (GatedSection) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/gated-section`, or from https://knock.codes/r/gated-section.json. Read https://knock.codes/docs/gated-section.md before editing.
 
 This part of the preview was prepared for invited reviewers. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.
 

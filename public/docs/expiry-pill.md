@@ -14,6 +14,15 @@ Enforcing the deadline. The pill reaches its expired state and changes nothing a
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/expiry-pill
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/expiry-pill.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -53,7 +62,7 @@ Native controls, visible focus, localized labels; lifecycle messages use polite 
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Expiry pill (ExpiryPill) from https://knock.codes/r/expiry-pill.json in a React + Tailwind project. Read https://knock.codes/docs/expiry-pill.md before editing.
+Install and wire Expiry pill (ExpiryPill) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/expiry-pill`, or from https://knock.codes/r/expiry-pill.json. Read https://knock.codes/docs/expiry-pill.md before editing.
 
 Shows a preview lifetime as fine, expiring soon, or expired. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.
 

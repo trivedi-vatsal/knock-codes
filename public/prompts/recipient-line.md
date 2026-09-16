@@ -1,4 +1,4 @@
-Install and wire Recipient line (RecipientLine) from https://knock.codes/r/recipient-line.json in a React + Tailwind project. Read https://knock.codes/docs/recipient-line.md before editing.
+Install and wire Recipient line (RecipientLine) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/recipient-line`, or from https://knock.codes/r/recipient-line.json. Read https://knock.codes/docs/recipient-line.md before editing.
 
 Addresses a private preview to its intended recipient. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.
 

@@ -18,6 +18,15 @@ Protecting anything. The children stay in the DOM and travel to the browser; blu
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/blur-veil
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/blur-veil.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -55,7 +64,7 @@ Native controls, visible focus, localized labels; lifecycle messages use polite 
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Blur veil (BlurVeil) from https://knock.codes/r/blur-veil.json in a React + Tailwind project. Read https://knock.codes/docs/blur-veil.md before editing.
+Install and wire Blur veil (BlurVeil) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/blur-veil`, or from https://knock.codes/r/blur-veil.json. Read https://knock.codes/docs/blur-veil.md before editing.
 
 Shows an inert blurred teaser beneath a prompt; blur is presentation, not security. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.
 
@@ -231,6 +240,15 @@ A complete gate screen. Use the Quick gate or Client preview gate block, which a
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/code-field
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/code-field.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -276,7 +294,7 @@ Native controls, visible focus, localized labels; lifecycle messages use polite 
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Code field (CodeField) from https://knock.codes/r/code-field.json in a React + Tailwind project. Read https://knock.codes/docs/code-field.md before editing.
+Install and wire Code field (CodeField) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/code-field`, or from https://knock.codes/r/code-field.json. Read https://knock.codes/docs/code-field.md before editing.
 
 Displays controlled demo-code entry, normalizing pasted message artifacts. Does not verify codes, unlock content, store values, or make network requests. Contract: value and onChange are required; the consumer owns all state.
 
@@ -570,6 +588,15 @@ A full screen that replaces the gate during the pause. Use the Cooldown screen b
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/cooldown-notice
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/cooldown-notice.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -608,7 +635,7 @@ Native controls, visible focus, localized labels; lifecycle messages use polite 
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Cooldown notice (CooldownNotice) from https://knock.codes/r/cooldown-notice.json in a React + Tailwind project. Read https://knock.codes/docs/cooldown-notice.md before editing.
+Install and wire Cooldown notice (CooldownNotice) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/cooldown-notice`, or from https://knock.codes/r/cooldown-notice.json. Read https://knock.codes/docs/cooldown-notice.md before editing.
 
 Displays a calm countdown without enforcing a retry policy. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.
 
@@ -798,6 +825,15 @@ Enforcing the deadline. The pill reaches its expired state and changes nothing a
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/expiry-pill
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/expiry-pill.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -837,7 +873,7 @@ Native controls, visible focus, localized labels; lifecycle messages use polite 
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Expiry pill (ExpiryPill) from https://knock.codes/r/expiry-pill.json in a React + Tailwind project. Read https://knock.codes/docs/expiry-pill.md before editing.
+Install and wire Expiry pill (ExpiryPill) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/expiry-pill`, or from https://knock.codes/r/expiry-pill.json. Read https://knock.codes/docs/expiry-pill.md before editing.
 
 Shows a preview lifetime as fine, expiring soon, or expired. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.
 
@@ -1047,6 +1083,15 @@ The locked state. Use a gate block for that; this is post-unlock chrome. For rel
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/preview-bar
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/preview-bar.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -1090,7 +1135,7 @@ Native controls, visible focus, localized labels; lifecycle messages use polite 
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Preview bar (PreviewBar) from https://knock.codes/r/preview-bar.json in a React + Tailwind project. Read https://knock.codes/docs/preview-bar.md before editing.
+Install and wire Preview bar (PreviewBar) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/preview-bar`, or from https://knock.codes/r/preview-bar.json. Read https://knock.codes/docs/preview-bar.md before editing.
 
 Keeps build identity, expiry, feedback and relocking available after unlock. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.
 
@@ -1324,6 +1369,15 @@ A dismissible banner. There is no dismiss action by design: a ribbon that can be
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/preview-ribbon
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/preview-ribbon.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -1357,7 +1411,7 @@ Native controls, visible focus, localized labels; lifecycle messages use polite 
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Preview ribbon (PreviewRibbon) from https://knock.codes/r/preview-ribbon.json in a React + Tailwind project. Read https://knock.codes/docs/preview-ribbon.md before editing.
+Install and wire Preview ribbon (PreviewRibbon) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/preview-ribbon`, or from https://knock.codes/r/preview-ribbon.json. Read https://knock.codes/docs/preview-ribbon.md before editing.
 
 Keeps a draft label visible within preview screenshots. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.
 
@@ -1499,6 +1553,15 @@ Proof of identity. A recipient shown here is presentation, and it is visible to 
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/recipient-line
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/recipient-line.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -1532,7 +1595,7 @@ Native controls, visible focus, localized labels; lifecycle messages use polite 
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Recipient line (RecipientLine) from https://knock.codes/r/recipient-line.json in a React + Tailwind project. Read https://knock.codes/docs/recipient-line.md before editing.
+Install and wire Recipient line (RecipientLine) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/recipient-line`, or from https://knock.codes/r/recipient-line.json. Read https://knock.codes/docs/recipient-line.md before editing.
 
 Addresses a private preview to its intended recipient. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.
 
@@ -1674,6 +1737,15 @@ Previews that already use Preview bar or Preview chrome. Both include this contr
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/relock-control
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/relock-control.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -1709,7 +1781,7 @@ Native controls, visible focus, localized labels; lifecycle messages use polite 
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Relock control (RelockControl) from https://knock.codes/r/relock-control.json in a React + Tailwind project. Read https://knock.codes/docs/relock-control.md before editing.
+Install and wire Relock control (RelockControl) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/relock-control`, or from https://knock.codes/r/relock-control.json. Read https://knock.codes/docs/relock-control.md before editing.
 
 Lets the consumer hide a preview on a shared screen. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.
 
@@ -1868,6 +1940,15 @@ Sending the request. Nothing leaves the browser: you supply a link or a callback
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/request-access
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/request-access.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -1904,7 +1985,7 @@ Native controls, visible focus, localized labels; lifecycle messages use polite 
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Request access (RequestAccess) from https://knock.codes/r/request-access.json in a React + Tailwind project. Read https://knock.codes/docs/request-access.md before editing.
+Install and wire Request access (RequestAccess) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/request-access`, or from https://knock.codes/r/request-access.json. Read https://knock.codes/docs/request-access.md before editing.
 
 Routes a recipient without a code to the preview owner. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.
 
@@ -2090,6 +2171,15 @@ Internal or staging previews, where the branding is noise. Use Quick gate.
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/client-preview-gate
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/client-preview-gate.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -2165,7 +2255,7 @@ Native forms and controls, polite error and cooldown announcements, visible focu
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Client preview gate (ClientPreviewGate) from https://knock.codes/r/client-preview-gate.json in a React + Tailwind project. Read https://knock.codes/docs/client-preview-gate.md before editing.
+Install and wire Client preview gate (ClientPreviewGate) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/client-preview-gate`, or from https://knock.codes/r/client-preview-gate.json. Read https://knock.codes/docs/client-preview-gate.md before editing.
 
 Your next chapter is ready for a first look. Enter the code from your invitation. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.
 
@@ -2604,6 +2694,15 @@ Keeping the gate visible through a short wait. Use the Cooldown notice component
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/cooldown-screen
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/cooldown-screen.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -2673,7 +2772,7 @@ Native forms and controls, polite error and cooldown announcements, visible focu
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Cooldown screen (CooldownScreen) from https://knock.codes/r/cooldown-screen.json in a React + Tailwind project. Read https://knock.codes/docs/cooldown-screen.md before editing.
+Install and wire Cooldown screen (CooldownScreen) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/cooldown-screen`, or from https://knock.codes/r/cooldown-screen.json. Read https://knock.codes/docs/cooldown-screen.md before editing.
 
 Your preview is still here. Give it a moment before your next try. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.
 
@@ -3065,6 +3164,15 @@ Access the owner withdrew deliberately. Use Revoked notice, which says so instea
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/expired-notice
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/expired-notice.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -3134,7 +3242,7 @@ Native forms and controls, polite error and cooldown announcements, visible focu
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Expired notice (ExpiredNotice) from https://knock.codes/r/expired-notice.json in a React + Tailwind project. Read https://knock.codes/docs/expired-notice.md before editing.
+Install and wire Expired notice (ExpiredNotice) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/expired-notice`, or from https://knock.codes/r/expired-notice.json. Read https://knock.codes/docs/expired-notice.md before editing.
 
 The invitation window has ended. Ask the studio for a fresh link. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.
 
@@ -3521,6 +3629,15 @@ Gating a whole page. Use Client preview gate or Quick gate.
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/gated-section
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/gated-section.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -3595,7 +3712,7 @@ Native forms and controls, polite error and cooldown announcements, visible focu
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Gated section (GatedSection) from https://knock.codes/r/gated-section.json in a React + Tailwind project. Read https://knock.codes/docs/gated-section.md before editing.
+Install and wire Gated section (GatedSection) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/gated-section`, or from https://knock.codes/r/gated-section.json. Read https://knock.codes/docs/gated-section.md before editing.
 
 This part of the preview was prepared for invited reviewers. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.
 
@@ -4031,6 +4148,15 @@ The gate itself. This block never asks for a code.
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/preview-chrome
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/preview-chrome.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -4106,7 +4232,7 @@ Native forms and controls, polite error and cooldown announcements, visible focu
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Preview chrome (PreviewChrome) from https://knock.codes/r/preview-chrome.json in a React + Tailwind project. Read https://knock.codes/docs/preview-chrome.md before editing.
+Install and wire Preview chrome (PreviewChrome) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/preview-chrome`, or from https://knock.codes/r/preview-chrome.json. Read https://knock.codes/docs/preview-chrome.md before editing.
 
 Enter your invitation code to see the draft. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.
 
@@ -4553,6 +4679,15 @@ A client-facing first impression. Use Client preview gate, which carries brandin
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/quick-gate
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/quick-gate.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -4621,7 +4756,7 @@ Native forms and controls, polite error and cooldown announcements, visible focu
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Quick gate (QuickGate) from https://knock.codes/r/quick-gate.json in a React + Tailwind project. Read https://knock.codes/docs/quick-gate.md before editing.
+Install and wire Quick gate (QuickGate) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/quick-gate`, or from https://knock.codes/r/quick-gate.json. Read https://knock.codes/docs/quick-gate.md before editing.
 
 Enter your preview code to continue. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.
 
@@ -5039,6 +5174,15 @@ A lifetime that simply ran out. Use Expired notice.
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/revoked-notice
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/revoked-notice.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -5108,7 +5252,7 @@ Native forms and controls, polite error and cooldown announcements, visible focu
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Revoked notice (RevokedNotice) from https://knock.codes/r/revoked-notice.json in a React + Tailwind project. Read https://knock.codes/docs/revoked-notice.md before editing.
+Install and wire Revoked notice (RevokedNotice) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/revoked-notice`, or from https://knock.codes/r/revoked-notice.json. Read https://knock.codes/docs/revoked-notice.md before editing.
 
 The owner has withdrawn access. Contact them if you need another look. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.
 
@@ -5495,6 +5639,15 @@ Anything confidential. Unlike the other gates, teaser content stays in the DOM w
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/teaser-gate
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/teaser-gate.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -5570,7 +5723,7 @@ Native forms and controls, polite error and cooldown announcements, visible focu
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Teaser gate (TeaserGate) from https://knock.codes/r/teaser-gate.json in a React + Tailwind project. Read https://knock.codes/docs/teaser-gate.md before editing.
+Install and wire Teaser gate (TeaserGate) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/teaser-gate`, or from https://knock.codes/r/teaser-gate.json. Read https://knock.codes/docs/teaser-gate.md before editing.
 
 Your private preview is just one invitation away. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.
 

@@ -1,4 +1,4 @@
-Install and wire Revoked notice (RevokedNotice) from https://knock.codes/r/revoked-notice.json in a React + Tailwind project. Read https://knock.codes/docs/revoked-notice.md before editing.
+Install and wire Revoked notice (RevokedNotice) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/revoked-notice`, or from https://knock.codes/r/revoked-notice.json. Read https://knock.codes/docs/revoked-notice.md before editing.
 
 The owner has withdrawn access. Contact them if you need another look. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.
 

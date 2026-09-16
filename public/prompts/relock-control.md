@@ -1,4 +1,4 @@
-Install and wire Relock control (RelockControl) from https://knock.codes/r/relock-control.json in a React + Tailwind project. Read https://knock.codes/docs/relock-control.md before editing.
+Install and wire Relock control (RelockControl) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/relock-control`, or from https://knock.codes/r/relock-control.json. Read https://knock.codes/docs/relock-control.md before editing.
 
 Lets the consumer hide a preview on a shared screen. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.
 

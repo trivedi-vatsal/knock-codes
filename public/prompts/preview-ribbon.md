@@ -1,4 +1,4 @@
-Install and wire Preview ribbon (PreviewRibbon) from https://knock.codes/r/preview-ribbon.json in a React + Tailwind project. Read https://knock.codes/docs/preview-ribbon.md before editing.
+Install and wire Preview ribbon (PreviewRibbon) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/preview-ribbon`, or from https://knock.codes/r/preview-ribbon.json. Read https://knock.codes/docs/preview-ribbon.md before editing.
 
 Keeps a draft label visible within preview screenshots. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.
 

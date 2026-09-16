@@ -14,6 +14,15 @@ Gating a whole page. Use Client preview gate or Quick gate.
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/gated-section
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/gated-section.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -88,7 +97,7 @@ Native forms and controls, polite error and cooldown announcements, visible focu
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Gated section (GatedSection) from https://knock.codes/r/gated-section.json in a React + Tailwind project. Read https://knock.codes/docs/gated-section.md before editing.
+Install and wire Gated section (GatedSection) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/gated-section`, or from https://knock.codes/r/gated-section.json. Read https://knock.codes/docs/gated-section.md before editing.
 
 This part of the preview was prepared for invited reviewers. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.
 

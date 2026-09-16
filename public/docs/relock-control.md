@@ -14,6 +14,15 @@ Previews that already use Preview bar or Preview chrome. Both include this contr
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/relock-control
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/relock-control.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -49,7 +58,7 @@ Native controls, visible focus, localized labels; lifecycle messages use polite 
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Relock control (RelockControl) from https://knock.codes/r/relock-control.json in a React + Tailwind project. Read https://knock.codes/docs/relock-control.md before editing.
+Install and wire Relock control (RelockControl) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/relock-control`, or from https://knock.codes/r/relock-control.json. Read https://knock.codes/docs/relock-control.md before editing.
 
 Lets the consumer hide a preview on a shared screen. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.
 

@@ -31,16 +31,22 @@ function run(command: string, args: string[], cwd = temporary) {
 }
 const server = createServer((request, response) => {
   const pathname = new URL(request.url ?? '/', 'http://localhost').pathname;
-  const name = pathname.match(/^\/r\/([a-z-]+)\.json$/)?.[1];
+  const address = server.address();
+  if (!address || typeof address === 'string') throw new Error('No server port');
+  const origin = `http://localhost:${address.port}`;
+  if (pathname === '/r/registry.json' || pathname === '/r/react/registry.json') {
+    response.setHeader('Content-Type', 'application/json');
+    response.end(readFileSync(path.join(root, 'public/r/registry.json')));
+    return;
+  }
+  const name = pathname.match(/^\/r\/(?:react\/)?([a-z-]+)\.json$/)?.[1];
   if (!name || !catalog.some((c) => c.name === name)) {
     response.writeHead(404).end();
     return;
   }
   const json = JSON.parse(readFileSync(path.join(root, `public/r/${name}.json`), 'utf8'));
-  const address = server.address();
-  if (!address || typeof address === 'string') throw new Error('No server port');
   json.registryDependencies = json.registryDependencies.map(
-    (url: string) => `http://localhost:${address.port}/r/${url.split('/').at(-1)}`,
+    (url: string) => `${origin}/r/${url.split('/').at(-1)}`,
   );
   response.setHeader('Content-Type', 'application/json');
   response.end(JSON.stringify(json));
@@ -139,9 +145,31 @@ try {
   ]);
   for (const { name } of catalog)
     assert.ok(existsSync(path.join(temporary, `src/components/knock/${name}.tsx`)), name);
+  const components = JSON.parse(readFileSync(path.join(temporary, 'components.json'), 'utf8')) as {
+    registries?: Record<string, string>;
+  };
+  await run(process.execPath, [
+    path.join(root, 'node_modules/shadcn/dist/index.js'),
+    'registry',
+    'add',
+    `@knock-codes=${origin}/r/react/{name}.json`,
+  ]);
+  const updated = JSON.parse(readFileSync(path.join(temporary, 'components.json'), 'utf8')) as {
+    registries?: Record<string, string>;
+  };
+  assert.equal(updated.registries?.['@knock-codes'], `${origin}/r/react/{name}.json`);
+  assert.equal(components.registries?.['@knock-codes'], undefined);
+  await run(process.execPath, [
+    path.join(root, 'node_modules/shadcn/dist/index.js'),
+    'add',
+    '@knock-codes/quick-gate',
+    '--yes',
+    '--overwrite',
+  ]);
+  assert.ok(existsSync(path.join(temporary, 'src/components/knock/quick-gate.tsx')));
   await run(process.execPath, [path.join(root, 'node_modules/typescript/bin/tsc'), '--noEmit']);
   console.log(
-    `Installed and compiled all ${catalog.length} registry items with the real shadcn CLI. No additional runtime dependencies requested.`,
+    `Installed and compiled all ${catalog.length} registry items with the real shadcn CLI, including @knock-codes namespace add. No additional runtime dependencies requested.`,
   );
 } finally {
   await new Promise<void>((resolve) => server.close(() => resolve()));

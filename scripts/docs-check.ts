@@ -46,7 +46,18 @@ try {
   for (const page of pages) {
     host.innerHTML = page.html;
     assert.equal(host.querySelectorAll('h1').length, 1, `${page.name}: one page title`);
+    if (page.name === 'get-started') {
+      for (const command of [
+        'npx shadcn@latest registry add @knock-codes',
+        'pnpm dlx shadcn@latest registry add @knock-codes',
+        'yarn dlx shadcn@latest registry add @knock-codes',
+        'bunx --bun shadcn@latest registry add @knock-codes',
+        'npx shadcn@latest add @knock-codes/client-preview-gate',
+      ])
+        assert.ok(host.textContent!.includes(command), command);
+    }
     if (page.item) {
+      assert.ok(host.textContent!.includes(`npx shadcn@latest add @knock-codes/${page.item.name}`));
       assert.ok(host.textContent!.includes(`npx shadcn@latest add ${page.item.registryUrl}`));
       assert.ok(
         host.querySelector(`a[href="/playground/${page.name}"]`),

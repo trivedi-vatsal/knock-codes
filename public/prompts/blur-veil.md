@@ -1,4 +1,4 @@
-Install and wire Blur veil (BlurVeil) from https://knock.codes/r/blur-veil.json in a React + Tailwind project. Read https://knock.codes/docs/blur-veil.md before editing.
+Install and wire Blur veil (BlurVeil) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/blur-veil`, or from https://knock.codes/r/blur-veil.json. Read https://knock.codes/docs/blur-veil.md before editing.
 
 Shows an inert blurred teaser beneath a prompt; blur is presentation, not security. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.
 

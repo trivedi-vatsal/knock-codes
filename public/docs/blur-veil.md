@@ -14,6 +14,15 @@ Protecting anything. The children stay in the DOM and travel to the browser; blu
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/blur-veil
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/blur-veil.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -51,7 +60,7 @@ Native controls, visible focus, localized labels; lifecycle messages use polite 
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Blur veil (BlurVeil) from https://knock.codes/r/blur-veil.json in a React + Tailwind project. Read https://knock.codes/docs/blur-veil.md before editing.
+Install and wire Blur veil (BlurVeil) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/blur-veil`, or from https://knock.codes/r/blur-veil.json. Read https://knock.codes/docs/blur-veil.md before editing.
 
 Shows an inert blurred teaser beneath a prompt; blur is presentation, not security. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.
 

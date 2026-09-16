@@ -14,6 +14,15 @@ The locked state. Use a gate block for that; this is post-unlock chrome. For rel
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/preview-bar
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/preview-bar.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -57,7 +66,7 @@ Native controls, visible focus, localized labels; lifecycle messages use polite 
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Preview bar (PreviewBar) from https://knock.codes/r/preview-bar.json in a React + Tailwind project. Read https://knock.codes/docs/preview-bar.md before editing.
+Install and wire Preview bar (PreviewBar) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/preview-bar`, or from https://knock.codes/r/preview-bar.json. Read https://knock.codes/docs/preview-bar.md before editing.
 
 Keeps build identity, expiry, feedback and relocking available after unlock. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.
 

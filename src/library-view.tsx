@@ -1,5 +1,5 @@
 /** MIT License — Copyright (c) 2026 Knock contributors. Visual catalog using the published UI. */
-import { useState } from 'react';
+import { useState, type HTMLAttributes } from 'react';
 import { blocks, blockInfo } from './block-demo';
 import { componentInfo } from './component-demo';
 import { CodeField } from '../registry/components/code-field';
@@ -170,7 +170,7 @@ export function Library() {
             <div
               className={`collection-preview ${blocks[name] ? 'block-thumbnail' : 'component-thumbnail'}`}
               aria-hidden="true"
-              inert
+              {...({ inert: true } as HTMLAttributes<HTMLDivElement>)}
             >
               <div className="thumbnail-content">
                 <Thumbnail name={name} deadline={deadline} expiry={expiry} />

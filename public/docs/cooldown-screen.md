@@ -14,6 +14,15 @@ Keeping the gate visible through a short wait. Use the Cooldown notice component
 
 ## Install
 
+The registry is listed in the shadcn directory as `@knock-codes`.
+
+```
+npx shadcn@latest registry add @knock-codes
+npx shadcn@latest add @knock-codes/cooldown-screen
+```
+
+Direct URL:
+
 `npx shadcn@latest add https://knock.codes/r/cooldown-screen.json`
 
 Requires React 18 or 19 and Tailwind CSS 4. No other runtime dependencies.
@@ -83,7 +92,7 @@ Native forms and controls, polite error and cooldown announcements, visible focu
 
 ## Agent instructions and anti-hallucination contract
 
-Install and wire Cooldown screen (CooldownScreen) from https://knock.codes/r/cooldown-screen.json in a React + Tailwind project. Read https://knock.codes/docs/cooldown-screen.md before editing.
+Install and wire Cooldown screen (CooldownScreen) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/cooldown-screen`, or from https://knock.codes/r/cooldown-screen.json. Read https://knock.codes/docs/cooldown-screen.md before editing.
 
 Your preview is still here. Give it a moment before your next try. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.
 

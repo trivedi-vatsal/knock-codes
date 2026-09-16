@@ -1,5 +1,5 @@
 /** MIT License — Copyright (c) 2026 Knock contributors. */
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type HTMLAttributes } from 'react';
 import { ClientPreviewGate } from '../registry/blocks/client-preview-gate';
 
 export function Home() {
@@ -38,7 +38,10 @@ export function Home() {
             <span>THE FIRST IMPRESSION</span>
             <span>01 / CLIENT PREVIEW</span>
           </div>
-          <div ref={demo} inert={!demoActive}>
+          <div
+            ref={demo}
+            {...({ inert: demoActive ? undefined : true } as HTMLAttributes<HTMLDivElement>)}
+          >
             <ClientPreviewGate
               value={value}
               onChange={setValue}

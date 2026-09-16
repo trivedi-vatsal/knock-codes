@@ -1,0 +1,107 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "blur-veil",
+  "type": "registry:component",
+  "title": "Blur veil",
+  "description": "Shows an inert blurred teaser beneath a prompt; blur is presentation, not security. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.",
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/components/blur-veil.tsx",
+      "type": "registry:component",
+      "target": "@components/knock/blur-veil.tsx",
+      "content": "/**\n * MIT License — Copyright (c) 2026 Knock contributors.\n * Shows an inert blurred teaser beneath a prompt; blur is presentation, not security.\n * Does not verify codes, persist state, or grant or revoke access.\n * Contract: the consumer owns lifecycle timestamps and action callbacks.\n * @version 0.2.0\n * @minimalExample <BlurVeil unlocked={unlocked} prompt={<button onClick={() => setUnlocked(true)}>Reveal demo</button>}><p>Demo content</p></BlurVeil>\n * @fullExample <BlurVeil unlocked={unlocked} blur={8} label=\"Preview invitation\" theme=\"light\" prompt={<button onClick={() => setUnlocked(true)}>Reveal demo</button>}><button onClick={() => setMessage(\"Preview action\")}>Explore preview</button></BlurVeil>\n * @lifecycle gate\n * @whenToUse A glimpse of the work should sit behind the invitation, so entering a code feels worth the effort.\n * @notFor Protecting anything. The children stay in the DOM and travel to the browser; blur is a visual effect, not a boundary.\n * @pitfall Never pass genuinely protected content as children while locked. Pass a representative sample, and render the real preview only once `unlocked` is true.\n * @pitfall Locked children are inert and skipped by the keyboard. That is presentation, not authorization.\n * @a11y Native controls, visible focus, localized labels; lifecycle messages use polite announcements. No modal dialog is created.\n */\n'use client';\n\nimport { useEffect, useRef, version, type ReactNode } from 'react';\nexport interface BlurVeilProps {\n  /** Consumer-controlled access state; required. True removes the veil. */\n  unlocked: boolean;\n  /** Preview content; required. Locked content remains in the DOM and is not secure. */\n  children: ReactNode;\n  /** Prompt rendered above the inert preview while locked; required. */\n  prompt: ReactNode;\n  /** Blur radius in pixels, clamped to 0–30. @default 8 */\n  blur?: number;\n  /** Accessible label for the prompt region. @default \"Preview access\" */\n  label?: string;\n\n  /** Explicit theme; omitted follows the system preference. */\n  theme?: 'light' | 'dark';\n  /** Additional wrapper classes. */\n  className?: string;\n}\nexport function BlurVeil({\n  unlocked,\n  children,\n  prompt,\n  blur = 8,\n  label = 'Preview access',\n  theme,\n  className = '',\n}: BlurVeilProps) {\n  const content = useRef<HTMLDivElement>(null);\n  const overlay = useRef<HTMLDivElement>(null);\n  const wasUnlocked = useRef(unlocked);\n  useEffect(() => {\n    if (!unlocked) overlay.current?.focus();\n    else if (!wasUnlocked.current) content.current?.focus();\n    wasUnlocked.current = unlocked;\n  }, [unlocked]);\n  // React 18 serializes inert as a string; React 19 treats it as a boolean.\n  const inertProps = { inert: unlocked ? undefined : version.startsWith('18.') ? '' : true } as {\n    inert?: boolean;\n  };\n  return (\n    <div data-knock-item=\"veil\" data-theme={theme} className={`relative isolate ${className}`}>\n      <style>{`[data-knock-item]{--knock-surface:#fffefa;--knock-text:#30382c;--knock-secondary:#65705b;--knock-line:#d8dece;--knock-highlight:#a3462d;color:var(--knock-ink,var(--knock-text));color-scheme:light}[data-knock-item][data-theme=dark]{--knock-surface:#293028;--knock-text:#f0f3e9;--knock-secondary:#b6c2ab;--knock-line:#59654f;--knock-highlight:#f1a187;color-scheme:dark}@media(prefers-color-scheme:dark){[data-knock-item]:not([data-theme=light]){--knock-surface:#293028;--knock-text:#f0f3e9;--knock-secondary:#b6c2ab;--knock-line:#59654f;--knock-highlight:#f1a187;color-scheme:dark}}[data-knock-item] a:focus-visible,[data-knock-item] button:focus-visible,[data-knock-item] [tabindex]:focus-visible{outline:2px solid var(--knock-accent,var(--knock-highlight));outline-offset:4px}[data-knock-item] button,[data-knock-item] a{overflow-wrap:anywhere}@media(prefers-reduced-motion:reduce){[data-knock-item] *{animation:none!important;transition:none!important}}`}</style>\n      <div\n        ref={content}\n        tabIndex={-1}\n        {...inertProps}\n        aria-hidden={!unlocked || undefined}\n        className=\"rounded-lg\"\n        style={{\n          filter: unlocked\n            ? undefined\n            : `blur(${Math.max(0, Math.min(30, Number.isFinite(blur) ? blur : 8))}px)`,\n          pointerEvents: unlocked ? undefined : 'none',\n          userSelect: unlocked ? undefined : 'none',\n        }}\n      >\n        {children}\n      </div>\n      {!unlocked && (\n        <div className=\"absolute inset-0 flex items-center justify-center overflow-auto rounded-lg bg-[var(--knock-bg,var(--knock-surface))]/40 p-5\">\n          <div\n            ref={overlay}\n            tabIndex={-1}\n            role=\"region\"\n            aria-label={label}\n            className=\"max-h-full w-full max-w-sm rounded-xl border border-[var(--knock-border,var(--knock-line))] bg-[var(--knock-bg,var(--knock-surface))] p-6 shadow-lg\"\n          >\n            {prompt}\n          </div>\n        </div>\n      )}\n    </div>\n  );\n}\n"
+    }
+  ],
+  "meta": {
+    "version": "0.2.0",
+    "lifecycle": "gate",
+    "whenToUse": "A glimpse of the work should sit behind the invitation, so entering a code feels worth the effort.",
+    "notFor": "Protecting anything. The children stay in the DOM and travel to the browser; blur is a visual effect, not a boundary.",
+    "pitfalls": [
+      "Never pass genuinely protected content as children while locked. Pass a representative sample, and render the real preview only once `unlocked` is true.",
+      "Locked children are inert and skipped by the keyboard. That is presentation, not authorization."
+    ],
+    "dependencies": [],
+    "usedBy": [
+      "teaser-gate"
+    ],
+    "sourceHash": "50a38f70f49eb65efe9948dae7d18bb27c0946c9910a6cc37df74b2102d20ebb",
+    "component": "BlurVeil",
+    "contract": "Shows an inert blurred teaser beneath a prompt; blur is presentation, not security. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.",
+    "props": [
+      {
+        "name": "unlocked",
+        "type": "boolean",
+        "required": true,
+        "default": null,
+        "description": "Consumer-controlled access state; required. True removes the veil."
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": true,
+        "default": null,
+        "description": "Preview content; required. Locked content remains in the DOM and is not secure."
+      },
+      {
+        "name": "prompt",
+        "type": "ReactNode",
+        "required": true,
+        "default": null,
+        "description": "Prompt rendered above the inert preview while locked; required."
+      },
+      {
+        "name": "blur",
+        "type": "number",
+        "required": false,
+        "default": "8",
+        "description": "Blur radius in pixels, clamped to 0–30."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "'Preview access'",
+        "description": "Accessible label for the prompt region."
+      },
+      {
+        "name": "theme",
+        "type": "'light' | 'dark'",
+        "required": false,
+        "default": null,
+        "description": "Explicit theme; omitted follows the system preference."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "default": "''",
+        "description": "Additional wrapper classes."
+      }
+    ],
+    "defaults": {
+      "blur": "8",
+      "label": "'Preview access'",
+      "className": "''"
+    },
+    "slots": [
+      "children",
+      "prompt"
+    ],
+    "a11y": "Native controls, visible focus, localized labels; lifecycle messages use polite announcements. No modal dialog is created.",
+    "unsupportedProps": [
+      "onSuccess",
+      "password",
+      "correctCode",
+      "attempts",
+      "maxAttempts",
+      "onUnlock"
+    ],
+    "examples": {
+      "minimal": "'use client';\nimport { useState } from 'react';\nimport { BlurVeil } from '@/components/knock/blur-veil';\n\nexport default function Example() {\n  const [value, setValue] = useState('');\n  const [unlocked, setUnlocked] = useState(false);\n  const [message, setMessage] = useState('');\n  return <section aria-label=\"Blur veil example\">\n    {/* Demo consumer state only. Integrate your authorization outside this UI. */}\n    <BlurVeil unlocked={unlocked} prompt={<button onClick={() => setUnlocked(true)}>Reveal demo</button>}><p>Demo content</p></BlurVeil>\n    <p role=\"status\">{message}</p>\n  </section>;\n}\n",
+      "full": "'use client';\nimport { useState } from 'react';\nimport { BlurVeil } from '@/components/knock/blur-veil';\n\nexport default function Example() {\n  const [value, setValue] = useState('');\n  const [unlocked, setUnlocked] = useState(false);\n  const [message, setMessage] = useState('');\n  return <section aria-label=\"Blur veil example\">\n    {/* Demo consumer state only. Integrate your authorization outside this UI. */}\n    <BlurVeil unlocked={unlocked} blur={8} label=\"Preview invitation\" theme=\"light\" prompt={<button onClick={() => setUnlocked(true)}>Reveal demo</button>}><button onClick={() => setMessage(\"Preview action\")}>Explore preview</button></BlurVeil>\n    <button type=\"button\" onClick={() => setUnlocked(current => !current)}>Toggle demo visibility</button>\n    <p role=\"status\">{message}</p>\n  </section>;\n}\n"
+    }
+  },
+  "docs": "UI only. Read https://knock.codes/docs/blur-veil.md. Consumers own authorization."
+}

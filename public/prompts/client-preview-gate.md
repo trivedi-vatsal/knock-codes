@@ -1,4 +1,4 @@
-Install and wire Client preview gate (ClientPreviewGate) from https://knock.codes/r/client-preview-gate.json in a React + Tailwind project. Read https://knock.codes/docs/client-preview-gate.md before editing.
+Install and wire Client preview gate (ClientPreviewGate) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/client-preview-gate`, or from https://knock.codes/r/client-preview-gate.json. Read https://knock.codes/docs/client-preview-gate.md before editing.
 
 Your next chapter is ready for a first look. Enter the code from your invitation. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.
 

@@ -149,14 +149,29 @@ export function DocsIndex({
           <Section title="1. Prepare your project">
             <p>Use React 18 or 19, Tailwind CSS 4, and a configured shadcn project.</p>
           </Section>
-          <Section title="2. Install an item">
+          <Section title="2. Add the Knock registry">
+            <p>
+              Knock is listed in the shadcn directory as <code>@knock-codes</code>. Add it once, in
+              a project that already has <code>components.json</code>:
+            </p>
+            <Snippet
+              label="terminal"
+              code={`npx shadcn@latest registry add @knock-codes
+pnpm dlx shadcn@latest registry add @knock-codes
+yarn dlx shadcn@latest registry add @knock-codes
+bunx --bun shadcn@latest registry add @knock-codes`}
+            />
+          </Section>
+          <Section title="3. Install an item">
+            <Snippet code={`npx shadcn@latest add @knock-codes/${starter.name}`} label="terminal" />
+            <p>Or install from the item URL:</p>
             <Snippet code={`npx shadcn@latest add ${starter.registryUrl}`} label="terminal" />
             <p>
               The registry installs the block and its component dependencies into your project.
               Choose another item in the playground to get its install command.
             </p>
           </Section>
-          <Section title="3. Connect your state">
+          <Section title="4. Connect your state">
             <p>
               Pass the input value, callbacks, and visibility from your application. Verify access
               on your server before revealing protected content.
@@ -247,6 +262,7 @@ export function DocsPage({
         <a href={`/source/${item.name}.tsx`}>Source ↗</a>
       </div>
       <Section title="Installation">
+        <Snippet code={`npx shadcn@latest add @knock-codes/${item.name}`} label="terminal" />
         <Snippet code={`npx shadcn@latest add ${item.registryUrl}`} label="terminal" />
       </Section>
       <Section title="Usage">

@@ -1,4 +1,4 @@
-Install and wire Preview chrome (PreviewChrome) from https://knock.codes/r/preview-chrome.json in a React + Tailwind project. Read https://knock.codes/docs/preview-chrome.md before editing.
+Install and wire Preview chrome (PreviewChrome) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/preview-chrome`, or from https://knock.codes/r/preview-chrome.json. Read https://knock.codes/docs/preview-chrome.md before editing.
 
 Enter your invitation code to see the draft. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.
 

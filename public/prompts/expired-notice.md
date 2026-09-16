@@ -1,4 +1,4 @@
-Install and wire Expired notice (ExpiredNotice) from https://knock.codes/r/expired-notice.json in a React + Tailwind project. Read https://knock.codes/docs/expired-notice.md before editing.
+Install and wire Expired notice (ExpiredNotice) with `npx shadcn@latest registry add @knock-codes` then `npx shadcn@latest add @knock-codes/expired-notice`, or from https://knock.codes/r/expired-notice.json. Read https://knock.codes/docs/expired-notice.md before editing.
 
 The invitation window has ended. Ask the studio for a fresh link. Does not verify codes, persist state, or grant or revoke access. Contract: all blocks share controlled input and visibility props. The consumer owns unlocked.
 
