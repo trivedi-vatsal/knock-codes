@@ -1,39 +1,56 @@
-name: CI
-
+name: Public library checks
 on:
   push:
-    branches: [main]
+    paths: ['registry/**', 'scripts/**', 'tests/**', 'src/**', 'public/**', 'package*.json', 'tsconfig.json', 'vite.config.ts', 'index.html', '.github/workflows/**']
   pull_request:
-
+    paths: ['registry/**', 'scripts/**', 'tests/**', 'src/**', 'public/**', 'package*.json', 'tsconfig.json', 'vite.config.ts', 'index.html', '.github/workflows/**']
+  workflow_dispatch:
+permissions:
+  contents: read
 jobs:
-  ci:
+  contracts:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - react: '18.3.1'
+            types: '18'
+          - react: '19'
+            types: '19'
     steps:
       - uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v4
-
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.6.0
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Typecheck
-        run: pnpm typecheck
-
-      - name: Test
-        run: pnpm test
-
-      - name: Lint
-        run: pnpm lint
-
-      - name: Verify the built registry matches registry/react/registry.json
-        run: pnpm registry:check
-
-      - name: Build web
-        run: pnpm --filter web build
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm install --no-save react@${{ matrix.react }} react-dom@${{ matrix.react }} @types/react@${{ matrix.types }} @types/react-dom@${{ matrix.types }}
+      - run: npm run check:generated
+      - run: npm run build
+      - run: npm test
+      - run: npm run test:pages
+      - run: npm run test:docs
+      - run: npm run test:install
+      - run: npm run test:eval-runner
+      - run: npm run format:check
+  model-installation:
+    runs-on: ubuntu-latest
+    # Forks cannot access secrets; run their model eval from a trusted branch after review.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run generate
+      - run: npm run eval:model
         env:
-          NEXT_PUBLIC_SITE_URL: https://knock.codes
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: model-evals
+          path: artifacts/model-evals.json

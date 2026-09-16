@@ -1,0 +1,102 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "relock-control",
+  "type": "registry:component",
+  "title": "Relock control",
+  "description": "Lets the consumer hide a preview on a shared screen. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.",
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/components/relock-control.tsx",
+      "type": "registry:component",
+      "target": "@components/knock/relock-control.tsx",
+      "content": "/**\n * MIT License — Copyright (c) 2026 Knock contributors.\n * Lets the consumer hide a preview on a shared screen.\n * Does not verify codes, persist state, or grant or revoke access.\n * Contract: the consumer owns lifecycle timestamps and action callbacks.\n * @version 0.2.0\n * @minimalExample <RelockControl onRelock={() => setUnlocked(false)} />\n * @fullExample <RelockControl onRelock={() => setUnlocked(false)} disabled={false} theme=\"light\" labels={{ action: \"Relock\", description: \"Hide this preview before stepping away.\" }} />\n * @lifecycle unlocked\n * @whenToUse One deliberate way to put the preview away on a shared screen, inside chrome you have already built.\n * @notFor Previews that already use Preview bar or Preview chrome. Both include this control, and two relock buttons is the usual duplication.\n * @pitfall Activating calls `onRelock` and does nothing else. Hiding the content, and returning focus to the gate, remain yours.\n * @a11y Native controls, visible focus, localized labels; lifecycle messages use polite announcements. No modal dialog is created.\n */\n'use client';\n\nexport interface RelockControlProps {\n  /** Called on activation. Consumer must hide content and end access as appropriate; required. */\n  onRelock: () => void;\n  /** Disable while the consumer is processing. @default false */\n  disabled?: boolean;\n  /** Localized label and explanation. */\n  labels?: {\n    /** Localized action. */\n    action?: string;\n\n    /** Localized description. */\n    description?: string;\n  };\n\n  /** Explicit theme; omitted follows the system preference. */\n  theme?: 'light' | 'dark';\n  /** Additional wrapper classes. */\n  className?: string;\n}\nexport function RelockControl({\n  onRelock,\n  disabled = false,\n  labels,\n  theme,\n  className = '',\n}: RelockControlProps) {\n  return (\n    <div\n      data-knock-item=\"relock\"\n      data-theme={theme}\n      className={`inline-flex flex-col items-start gap-2 ${className}`}\n    >\n      <style>{`[data-knock-item]{--knock-surface:#fffefa;--knock-text:#30382c;--knock-secondary:#65705b;--knock-line:#d8dece;--knock-highlight:#a3462d;color:var(--knock-ink,var(--knock-text));color-scheme:light}[data-knock-item][data-theme=dark]{--knock-surface:#293028;--knock-text:#f0f3e9;--knock-secondary:#b6c2ab;--knock-line:#59654f;--knock-highlight:#f1a187;color-scheme:dark}@media(prefers-color-scheme:dark){[data-knock-item]:not([data-theme=light]){--knock-surface:#293028;--knock-text:#f0f3e9;--knock-secondary:#b6c2ab;--knock-line:#59654f;--knock-highlight:#f1a187;color-scheme:dark}}[data-knock-item] a:focus-visible,[data-knock-item] button:focus-visible,[data-knock-item] [tabindex]:focus-visible{outline:2px solid var(--knock-accent,var(--knock-highlight));outline-offset:4px}[data-knock-item] button,[data-knock-item] a{overflow-wrap:anywhere}@media(prefers-reduced-motion:reduce){[data-knock-item] *{animation:none!important;transition:none!important}}`}</style>\n      <button\n        type=\"button\"\n        onClick={onRelock}\n        disabled={disabled}\n        className=\"inline-flex min-h-11 items-center gap-2 rounded-lg border border-[var(--knock-border,var(--knock-line))] bg-[var(--knock-bg,var(--knock-surface))] px-4 text-sm font-medium disabled:cursor-wait disabled:opacity-60\"\n      >\n        <svg\n          aria-hidden=\"true\"\n          width=\"16\"\n          height=\"16\"\n          viewBox=\"0 0 24 24\"\n          fill=\"none\"\n          stroke=\"currentColor\"\n          strokeWidth=\"1.5\"\n        >\n          <rect x=\"5\" y=\"10\" width=\"14\" height=\"11\" rx=\"2\" />\n          <path d=\"M8 10V7a4 4 0 0 1 8 0v3\" />\n        </svg>\n        {labels?.action ?? 'Relock preview'}\n      </button>\n      <span className=\"text-xs text-[var(--knock-muted,var(--knock-secondary))]\">\n        {labels?.description ?? 'Stepping away? Keep this preview private.'}\n      </span>\n    </div>\n  );\n}\n"
+    }
+  ],
+  "meta": {
+    "version": "0.2.0",
+    "lifecycle": "unlocked",
+    "whenToUse": "One deliberate way to put the preview away on a shared screen, inside chrome you have already built.",
+    "notFor": "Previews that already use Preview bar or Preview chrome. Both include this control, and two relock buttons is the usual duplication.",
+    "pitfalls": [
+      "Activating calls `onRelock` and does nothing else. Hiding the content, and returning focus to the gate, remain yours."
+    ],
+    "dependencies": [],
+    "usedBy": [],
+    "sourceHash": "0aed704d6bf0ca5d2c3bd219e63881e0524c486a65136af1003df0d070b1fc14",
+    "component": "RelockControl",
+    "contract": "Lets the consumer hide a preview on a shared screen. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.",
+    "props": [
+      {
+        "name": "onRelock",
+        "type": "() => void",
+        "required": true,
+        "default": null,
+        "description": "Called on activation. Consumer must hide content and end access as appropriate; required."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Disable while the consumer is processing."
+      },
+      {
+        "name": "labels",
+        "type": "{ action?: string; description?: string; }",
+        "required": false,
+        "default": null,
+        "description": "Localized label and explanation.",
+        "properties": [
+          {
+            "name": "action",
+            "type": "string",
+            "required": false,
+            "default": "'Relock preview'"
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false,
+            "default": "'Stepping away? Keep this preview private.'"
+          }
+        ]
+      },
+      {
+        "name": "theme",
+        "type": "'light' | 'dark'",
+        "required": false,
+        "default": null,
+        "description": "Explicit theme; omitted follows the system preference."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "default": "''",
+        "description": "Additional wrapper classes."
+      }
+    ],
+    "defaults": {
+      "disabled": "false",
+      "className": "''",
+      "labels.action": "'Relock preview'",
+      "labels.description": "'Stepping away? Keep this preview private.'"
+    },
+    "slots": [],
+    "a11y": "Native controls, visible focus, localized labels; lifecycle messages use polite announcements. No modal dialog is created.",
+    "unsupportedProps": [
+      "onSuccess",
+      "password",
+      "correctCode",
+      "attempts",
+      "maxAttempts",
+      "onUnlock"
+    ],
+    "examples": {
+      "minimal": "'use client';\nimport { useState } from 'react';\nimport { RelockControl } from '@/components/knock/relock-control';\n\nexport default function Example() {\n  const [value, setValue] = useState('');\n  const [unlocked, setUnlocked] = useState(false);\n  const [message, setMessage] = useState('');\n  return <section aria-label=\"Relock control example\">\n    {/* Demo consumer state only. Integrate your authorization outside this UI. */}\n    <RelockControl onRelock={() => setUnlocked(false)} />\n    <p role=\"status\">{message}</p>\n  </section>;\n}\n",
+      "full": "'use client';\nimport { useState } from 'react';\nimport { RelockControl } from '@/components/knock/relock-control';\n\nexport default function Example() {\n  const [value, setValue] = useState('');\n  const [unlocked, setUnlocked] = useState(false);\n  const [message, setMessage] = useState('');\n  return <section aria-label=\"Relock control example\">\n    {/* Demo consumer state only. Integrate your authorization outside this UI. */}\n    <RelockControl onRelock={() => setUnlocked(false)} disabled={false} theme=\"light\" labels={{ action: \"Relock\", description: \"Hide this preview before stepping away.\" }} />\n    <button type=\"button\" onClick={() => setUnlocked(current => !current)}>Toggle demo visibility</button>\n    <p role=\"status\">{message}</p>\n  </section>;\n}\n"
+    }
+  },
+  "docs": "UI only. Read https://knock.codes/docs/relock-control.md. Consumers own authorization."
+}

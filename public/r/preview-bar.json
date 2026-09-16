@@ -1,0 +1,153 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "preview-bar",
+  "type": "registry:component",
+  "title": "Preview bar",
+  "description": "Keeps build identity, expiry, feedback and relocking available after unlock. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.",
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/components/preview-bar.tsx",
+      "type": "registry:component",
+      "target": "@components/knock/preview-bar.tsx",
+      "content": "/**\n * MIT License — Copyright (c) 2026 Knock contributors.\n * Keeps build identity, expiry, feedback and relocking available after unlock.\n * Does not verify codes, persist state, or grant or revoke access.\n * Contract: the consumer owns lifecycle timestamps and action callbacks.\n * @version 0.2.0\n * @minimalExample <PreviewBar buildLabel=\"v1\" onRelock={() => setUnlocked(false)} />\n * @fullExample <PreviewBar buildLabel=\"acme-v1\" expiresAt=\"2030-01-01T12:00:00Z\" onRelock={() => setUnlocked(false)} onFeedback={() => setMessage(\"Feedback selected\")} theme=\"light\" labels={{ navigation: \"Preview controls\", preview: \"Draft\", expires: \"Expires\", invalidExpiry: \"Ask the owner\", feedback: \"Feedback\", relock: \"Relock\" }} />\n * @lifecycle unlocked\n * @whenToUse After unlock, build identity, remaining lifetime, feedback and relock should stay reachable without covering the work.\n * @notFor The locked state. Use a gate block for that; this is post-unlock chrome. For relock alone inside chrome you already have, use the Relock control.\n * @pitfall `onRelock` only calls back. The bar hides nothing: set your own `unlocked` to false and move focus yourself.\n * @pitfall Omitting `onRelock` omits the relock control rather than rendering an action that does nothing.\n * @a11y Native controls, visible focus, localized labels; lifecycle messages use polite announcements. No modal dialog is created.\n */\n'use client';\n\nexport interface PreviewBarProps {\n  /** Build or version identifier; required. */\n  buildLabel: string;\n  /** ISO 8601 expiry timestamp with timezone. Displayed deterministically in UTC. */\n  expiresAt?: string;\n  /** Called when the consumer should relock the preview; required. */\n  onRelock: () => void;\n  /** Feedback destination. Takes precedence over callback; relative, http(s), or mailto. */\n  feedbackHref?: string;\n  /** Feedback callback when no destination URL is supplied. */\n  onFeedback?: () => void;\n  /** Localized visible and accessible labels. */\n  labels?: {\n    /** Localized navigation. */\n    navigation?: string;\n\n    /** Localized preview. */\n    preview?: string;\n\n    /** Localized expires. */\n    expires?: string;\n\n    /** Localized invalid expiry. */\n    invalidExpiry?: string;\n\n    /** Localized feedback. */\n    feedback?: string;\n\n    /** Localized relock. */\n    relock?: string;\n  };\n\n  /** Explicit theme; omitted follows the system preference. */\n  theme?: 'light' | 'dark';\n  /** Additional wrapper classes. */\n  className?: string;\n}\nexport function PreviewBar({\n  buildLabel,\n  expiresAt,\n  onRelock,\n  feedbackHref,\n  onFeedback,\n  labels,\n  theme,\n  className = '',\n}: PreviewBarProps) {\n  const href =\n    feedbackHref && /^(?:https?:\\/\\/|mailto:|\\/(?!\\/)|#|\\.\\.?\\/)/i.test(feedbackHref)\n      ? feedbackHref\n      : undefined;\n  const valid = expiresAt && Number.isFinite(Date.parse(expiresAt));\n  const date = valid\n    ? new Date(expiresAt!).toISOString().replace('T', ' ').slice(0, 16) + ' UTC'\n    : '';\n  const action = 'inline-flex min-h-10 items-center gap-2 rounded-md px-3 text-xs font-medium';\n  return (\n    <nav\n      aria-label={labels?.navigation ?? 'Preview controls'}\n      data-knock-item=\"bar\"\n      data-theme={theme}\n      className={`flex flex-wrap items-center justify-between gap-x-5 gap-y-2 border border-[var(--knock-border,var(--knock-line))] bg-[var(--knock-bg,var(--knock-surface))] p-3 ${className}`}\n    >\n      <style>{`[data-knock-item]{--knock-surface:#fffefa;--knock-text:#30382c;--knock-secondary:#65705b;--knock-line:#d8dece;--knock-highlight:#a3462d;color:var(--knock-ink,var(--knock-text));color-scheme:light}[data-knock-item][data-theme=dark]{--knock-surface:#293028;--knock-text:#f0f3e9;--knock-secondary:#b6c2ab;--knock-line:#59654f;--knock-highlight:#f1a187;color-scheme:dark}@media(prefers-color-scheme:dark){[data-knock-item]:not([data-theme=light]){--knock-surface:#293028;--knock-text:#f0f3e9;--knock-secondary:#b6c2ab;--knock-line:#59654f;--knock-highlight:#f1a187;color-scheme:dark}}[data-knock-item] a:focus-visible,[data-knock-item] button:focus-visible,[data-knock-item] [tabindex]:focus-visible{outline:2px solid var(--knock-accent,var(--knock-highlight));outline-offset:4px}[data-knock-item] button,[data-knock-item] a{overflow-wrap:anywhere}@media(prefers-reduced-motion:reduce){[data-knock-item] *{animation:none!important;transition:none!important}}`}</style>\n      <div className=\"flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1\">\n        <span className=\"text-xs font-medium uppercase tracking-widest\">\n          {labels?.preview ?? 'Draft preview'}\n        </span>\n        <span className=\"break-all font-mono text-xs text-[var(--knock-muted,var(--knock-secondary))]\">\n          {buildLabel}\n        </span>\n        {expiresAt && (\n          <span className=\"text-xs text-[var(--knock-muted,var(--knock-secondary))]\">\n            {valid ? (\n              <>\n                {labels?.expires ?? 'Expires'} <time dateTime={expiresAt}>{date}</time>\n              </>\n            ) : (\n              (labels?.invalidExpiry ?? 'Expiry unavailable')\n            )}\n          </span>\n        )}\n      </div>\n      <div className=\"flex flex-wrap items-center gap-1\">\n        {href ? (\n          <a href={href} className={action}>\n            {labels?.feedback ?? 'Send feedback'}\n            <svg\n              aria-hidden=\"true\"\n              width=\"15\"\n              height=\"15\"\n              viewBox=\"0 0 24 24\"\n              fill=\"none\"\n              stroke=\"currentColor\"\n              strokeWidth=\"1.5\"\n              strokeLinecap=\"round\"\n              strokeLinejoin=\"round\"\n            >\n              <path d=\"M7 17 17 7M7 7h10v10\" />\n            </svg>\n          </a>\n        ) : onFeedback ? (\n          <button type=\"button\" onClick={onFeedback} className={action}>\n            {labels?.feedback ?? 'Send feedback'}\n            <svg\n              aria-hidden=\"true\"\n              width=\"15\"\n              height=\"15\"\n              viewBox=\"0 0 24 24\"\n              fill=\"none\"\n              stroke=\"currentColor\"\n              strokeWidth=\"1.5\"\n              strokeLinecap=\"round\"\n              strokeLinejoin=\"round\"\n            >\n              <path d=\"M7 17 17 7M7 7h10v10\" />\n            </svg>\n          </button>\n        ) : null}\n        <button\n          type=\"button\"\n          onClick={onRelock}\n          className={`${action} border border-[var(--knock-border,var(--knock-line))]`}\n        >\n          {labels?.relock ?? 'Relock preview'}\n        </button>\n      </div>\n    </nav>\n  );\n}\n"
+    }
+  ],
+  "meta": {
+    "version": "0.2.0",
+    "lifecycle": "unlocked",
+    "whenToUse": "After unlock, build identity, remaining lifetime, feedback and relock should stay reachable without covering the work.",
+    "notFor": "The locked state. Use a gate block for that; this is post-unlock chrome. For relock alone inside chrome you already have, use the Relock control.",
+    "pitfalls": [
+      "`onRelock` only calls back. The bar hides nothing: set your own `unlocked` to false and move focus yourself.",
+      "Omitting `onRelock` omits the relock control rather than rendering an action that does nothing."
+    ],
+    "dependencies": [],
+    "usedBy": [
+      "preview-chrome"
+    ],
+    "sourceHash": "ceb88d561bf6f4da6bdb778b44a9cd9d16a1964d87c8c6c215ed0fed7bcac8b8",
+    "component": "PreviewBar",
+    "contract": "Keeps build identity, expiry, feedback and relocking available after unlock. Does not verify codes, persist state, or grant or revoke access. Contract: the consumer owns lifecycle timestamps and action callbacks.",
+    "props": [
+      {
+        "name": "buildLabel",
+        "type": "string",
+        "required": true,
+        "default": null,
+        "description": "Build or version identifier; required."
+      },
+      {
+        "name": "expiresAt",
+        "type": "string",
+        "required": false,
+        "default": null,
+        "description": "ISO 8601 expiry timestamp with timezone. Displayed deterministically in UTC."
+      },
+      {
+        "name": "onRelock",
+        "type": "() => void",
+        "required": true,
+        "default": null,
+        "description": "Called when the consumer should relock the preview; required."
+      },
+      {
+        "name": "feedbackHref",
+        "type": "string",
+        "required": false,
+        "default": null,
+        "description": "Feedback destination. Takes precedence over callback; relative, http(s), or mailto."
+      },
+      {
+        "name": "onFeedback",
+        "type": "() => void",
+        "required": false,
+        "default": null,
+        "description": "Feedback callback when no destination URL is supplied."
+      },
+      {
+        "name": "labels",
+        "type": "{ navigation?: string; preview?: string; expires?: string; invalidExpiry?: string; feedback?: string; relock?: string; }",
+        "required": false,
+        "default": null,
+        "description": "Localized visible and accessible labels.",
+        "properties": [
+          {
+            "name": "navigation",
+            "type": "string",
+            "required": false,
+            "default": "'Preview controls'"
+          },
+          {
+            "name": "preview",
+            "type": "string",
+            "required": false,
+            "default": "'Draft preview'"
+          },
+          {
+            "name": "expires",
+            "type": "string",
+            "required": false,
+            "default": "'Expires'"
+          },
+          {
+            "name": "invalidExpiry",
+            "type": "string",
+            "required": false,
+            "default": "'Expiry unavailable'"
+          },
+          {
+            "name": "feedback",
+            "type": "string",
+            "required": false,
+            "default": "'Send feedback'"
+          },
+          {
+            "name": "relock",
+            "type": "string",
+            "required": false,
+            "default": "'Relock preview'"
+          }
+        ]
+      },
+      {
+        "name": "theme",
+        "type": "'light' | 'dark'",
+        "required": false,
+        "default": null,
+        "description": "Explicit theme; omitted follows the system preference."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "default": "''",
+        "description": "Additional wrapper classes."
+      }
+    ],
+    "defaults": {
+      "className": "''",
+      "labels.navigation": "'Preview controls'",
+      "labels.preview": "'Draft preview'",
+      "labels.expires": "'Expires'",
+      "labels.invalidExpiry": "'Expiry unavailable'",
+      "labels.feedback": "'Send feedback'",
+      "labels.relock": "'Relock preview'"
+    },
+    "slots": [],
+    "a11y": "Native controls, visible focus, localized labels; lifecycle messages use polite announcements. No modal dialog is created.",
+    "unsupportedProps": [
+      "onSuccess",
+      "password",
+      "correctCode",
+      "attempts",
+      "maxAttempts",
+      "onUnlock"
+    ],
+    "examples": {
+      "minimal": "'use client';\nimport { useState } from 'react';\nimport { PreviewBar } from '@/components/knock/preview-bar';\n\nexport default function Example() {\n  const [value, setValue] = useState('');\n  const [unlocked, setUnlocked] = useState(false);\n  const [message, setMessage] = useState('');\n  return <section aria-label=\"Preview bar example\">\n    {/* Demo consumer state only. Integrate your authorization outside this UI. */}\n    <PreviewBar buildLabel=\"v1\" onRelock={() => setUnlocked(false)} />\n    <p role=\"status\">{message}</p>\n  </section>;\n}\n",
+      "full": "'use client';\nimport { useState } from 'react';\nimport { PreviewBar } from '@/components/knock/preview-bar';\n\nexport default function Example() {\n  const [value, setValue] = useState('');\n  const [unlocked, setUnlocked] = useState(false);\n  const [message, setMessage] = useState('');\n  return <section aria-label=\"Preview bar example\">\n    {/* Demo consumer state only. Integrate your authorization outside this UI. */}\n    <PreviewBar buildLabel=\"acme-v1\" expiresAt=\"2030-01-01T12:00:00Z\" onRelock={() => setUnlocked(false)} onFeedback={() => setMessage(\"Feedback selected\")} theme=\"light\" labels={{ navigation: \"Preview controls\", preview: \"Draft\", expires: \"Expires\", invalidExpiry: \"Ask the owner\", feedback: \"Feedback\", relock: \"Relock\" }} />\n    <button type=\"button\" onClick={() => setUnlocked(current => !current)}>Toggle demo visibility</button>\n    <p role=\"status\">{message}</p>\n  </section>;\n}\n"
+    }
+  },
+  "docs": "UI only. Read https://knock.codes/docs/preview-bar.md. Consumers own authorization."
+}

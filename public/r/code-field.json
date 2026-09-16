@@ -1,0 +1,166 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "code-field",
+  "type": "registry:component",
+  "title": "Code field",
+  "description": "Displays controlled demo-code entry, normalizing pasted message artifacts. Does not verify codes, unlock content, store values, or make network requests. Contract: value and onChange are required; the consumer owns all state.",
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/components/code-field.tsx",
+      "type": "registry:component",
+      "target": "@components/knock/code-field.tsx",
+      "content": "/**\n * MIT License — Copyright (c) 2026 Knock contributors.\n * Displays controlled demo-code entry, normalizing pasted message artifacts.\n * Does not verify codes, unlock content, store values, or make network requests.\n * Contract: value and onChange are required; the consumer owns all state.\n * @version 0.2.0\n * @minimalExample <CodeField value={value} onChange={setValue} />\n * @fullExample <CodeField value={value} onChange={setValue} mode=\"digits\" length={8} masked status=\"error\" error=\"Check your invitation code.\" label=\"Your code\" description=\"Paste from your invitation.\" autoFocus name=\"preview-code\" theme=\"light\" className=\"max-w-sm\" />\n * @lifecycle gate\n * @whenToUse You are building your own gate layout and need only the entry field, with codes pasted out of an email tidied on the way in.\n * @notFor A complete gate screen. Use the Quick gate or Client preview gate block, which already compose this field with a heading, a submit action and lifecycle notices.\n * @pitfall `length` is a display and autofill hint, not validation. The field never rejects input and never reports whether a code is correct.\n * @pitfall `status=\"success\"` only styles the field. Revealing content is your own `unlocked` state, decided after your own server check.\n * @pitfall `autoFocus` moves focus on mount. Leave it off when the field sits below other content or inside a long page.\n * @a11y Native controls, visible focus, localized labels; lifecycle messages use polite announcements. No modal dialog is created.\n */\n'use client';\n\nimport { useEffect, useId, useRef, useState, type ReactNode } from 'react';\n\nexport interface CodeFieldProps {\n  /** Current code; required. Never interpreted as authorization. */\n  value: string;\n  /** Receives the normalized value; required. */\n  onChange: (value: string) => void;\n  /** Input presentation. @default \"digits\" */\n  mode?: 'digits' | 'passphrase';\n  /** Maximum digit count, from 1 to 16. Ignored for passphrases. @default 8 */\n  length?: number;\n  /** Uses a native password input and masked segments. @default false */\n  masked?: boolean;\n  /** Visual state only; pending disables editing. @default \"idle\" */\n  status?: 'idle' | 'pending' | 'error' | 'success';\n  /** Announced error text supplied by the consumer. */\n  error?: ReactNode;\n  /** Visible and accessible field name. @default \"Access code\" */\n  label?: string;\n  /** Optional hint connected to the input. */\n  description?: ReactNode;\n  /** Optional passphrase placeholder. */\n  placeholder?: string;\n  /** Focus after mount. @default true */\n  autoFocus?: boolean;\n  /** Native form field name. @default \"code\" */\n  name?: string;\n  /** Explicit theme; omitted follows system preference. */\n  theme?: 'light' | 'dark';\n  /** Additional wrapper classes. */\n  className?: string;\n}\n\n/** Removes message wrappers, invisible formatting and digit separators. */\nexport function normalizeCode(\n  value: string,\n  mode: 'digits' | 'passphrase' = 'digits',\n  length = 8,\n): string {\n  let clean = value\n    .replace(/[\\u200B-\\u200D\\u2060\\uFEFF]/g, '')\n    .trim()\n    .replace(/^(?:access\\s+code|code|passphrase)\\s*:\\s*/i, '');\n  if (/^[\"“‘'].*[\"”’']$/s.test(clean)) clean = clean.slice(1, -1).trim();\n  return mode === 'digits'\n    ? clean.replace(/[^0-9]/g, '').slice(0, Math.max(1, Math.min(16, Math.floor(length) || 8)))\n    : clean;\n}\n\nexport function CodeField({\n  value,\n  onChange,\n  mode = 'digits',\n  length = 8,\n  masked = false,\n  status = 'idle',\n  error,\n  label = 'Access code',\n  description,\n  placeholder,\n  autoFocus = true,\n  name = 'code',\n  theme,\n  className = '',\n}: CodeFieldProps) {\n  const id = useId();\n  const input = useRef<HTMLInputElement>(null);\n  const [position, setPosition] = useState(0);\n  const [focused, setFocused] = useState(false);\n  const count = Math.max(1, Math.min(16, Math.floor(length) || 8));\n  useEffect(() => {\n    if (autoFocus) input.current?.focus();\n  }, [autoFocus]);\n  return (\n    <div data-knock-code=\"\" data-theme={theme} className={`w-full ${className}`}>\n      <style>{`\n      [data-knock-code]{--kc-bg:#fffefa;--kc-ink:#292b27;--kc-muted:#666960;--kc-border:#d4d5cc;--kc-accent:#a3462d;--kc-error:#a42c28;color:var(--knock-ink,var(--kc-ink));color-scheme:light}\n      [data-knock-code][data-theme=dark]{--kc-bg:#272a27;--kc-ink:#f4f2eb;--kc-muted:#b3b7ac;--kc-border:#60665d;--kc-accent:#f1a187;--kc-error:#ffa69e;color-scheme:dark}\n      @media(prefers-color-scheme:dark){[data-knock-code]:not([data-theme=light]){--kc-bg:#272a27;--kc-ink:#f4f2eb;--kc-muted:#b3b7ac;--kc-border:#60665d;--kc-accent:#f1a187;--kc-error:#ffa69e;color-scheme:dark}}\n      [data-knock-code] .kc-native:focus-visible{outline:2px solid var(--knock-accent,var(--kc-accent));outline-offset:5px}\n      [data-knock-code] .kc-slot{background:var(--knock-bg,var(--kc-bg));border:1px solid var(--knock-border,var(--kc-border))}\n      [data-knock-code] .kc-slot[data-active=true]{border-color:var(--knock-accent,var(--kc-accent));box-shadow:0 0 0 3px color-mix(in srgb,var(--knock-accent,var(--kc-accent)) 12%,transparent)}\n      [data-knock-code][data-error=true] .kc-slot{border-color:var(--knock-error,var(--kc-error))}\n    `}</style>\n      <label htmlFor={id} className=\"mb-3 block text-[13px] font-medium\">\n        {label}\n      </label>\n      <div className=\"relative\" data-error={status === 'error' || undefined}>\n        {mode === 'digits' && (\n          <div aria-hidden=\"true\" className=\"flex gap-1.5 sm:gap-2\">\n            {Array.from({ length: count }, (_, i) => (\n              <span\n                key={i}\n                data-active={focused && i === Math.min(position, count - 1)}\n                className=\"kc-slot flex h-14 min-w-0 flex-1 items-center justify-center rounded-lg font-mono text-xl\"\n                style={{\n                  marginLeft: count === 8 && i === 4 ? 8 : 0,\n                  borderColor:\n                    status === 'error' ? 'var(--knock-error,var(--kc-error))' : undefined,\n                }}\n              >\n                {value[i] ? (\n                  masked ? (\n                    '•'\n                  ) : (\n                    value[i]\n                  )\n                ) : (\n                  <span className=\"h-1 w-1 rounded-full bg-[var(--knock-border,var(--kc-border))]\" />\n                )}\n              </span>\n            ))}\n          </div>\n        )}\n        <input\n          ref={input}\n          id={id}\n          name={name}\n          type={masked ? 'password' : 'text'}\n          value={value}\n          placeholder={placeholder}\n          autoComplete=\"one-time-code\"\n          inputMode={mode === 'digits' ? 'numeric' : 'text'}\n          spellCheck={false}\n          autoCapitalize=\"none\"\n          disabled={status === 'pending'}\n          aria-invalid={status === 'error' || undefined}\n          aria-describedby={\n            [description ? `${id}-hint` : '', error ? `${id}-error` : '']\n              .filter(Boolean)\n              .join(' ') || undefined\n          }\n          onFocus={() => setFocused(true)}\n          onBlur={() => setFocused(false)}\n          onSelect={(e) => setPosition(e.currentTarget.selectionStart ?? 0)}\n          onChange={(e) =>\n            onChange(\n              mode === 'digits' ? normalizeCode(e.target.value, mode, count) : e.target.value,\n            )\n          }\n          onPaste={(e) => {\n            e.preventDefault();\n            const field = e.currentTarget;\n            const pasted = normalizeCode(e.clipboardData.getData('text'), mode, count);\n            const start = field.selectionStart ?? value.length;\n            const end = field.selectionEnd ?? start;\n            const next =\n              mode === 'digits' && pasted.length >= count\n                ? pasted\n                : value.slice(0, start) + pasted + value.slice(end);\n            onChange(mode === 'digits' ? next.slice(0, count) : next);\n            const caret =\n              mode === 'digits' && pasted.length >= count\n                ? count\n                : Math.min(start + pasted.length, mode === 'digits' ? count : next.length);\n            requestAnimationFrame(() => {\n              field.setSelectionRange(caret, caret);\n              setPosition(caret);\n            });\n          }}\n          className={\n            mode === 'digits'\n              ? 'kc-native absolute inset-0 h-full w-full rounded-lg border-0 bg-transparent text-transparent caret-transparent selection:bg-transparent disabled:cursor-wait'\n              : 'kc-native h-14 w-full rounded-lg border border-[var(--knock-border,var(--kc-border))] bg-[var(--knock-bg,var(--kc-bg))] px-4 text-base text-[var(--knock-ink,var(--kc-ink))] disabled:cursor-wait'\n          }\n        />\n      </div>\n      {description && (\n        <div id={`${id}-hint`} className=\"mt-3 text-xs text-[var(--knock-muted,var(--kc-muted))]\">\n          {description}\n        </div>\n      )}\n      <div\n        id={`${id}-error`}\n        role=\"status\"\n        aria-live=\"polite\"\n        className=\"mt-2 text-xs text-[var(--knock-error,var(--kc-error))]\"\n      >\n        {status === 'error' ? error : null}\n      </div>\n    </div>\n  );\n}\n"
+    }
+  ],
+  "meta": {
+    "version": "0.2.0",
+    "lifecycle": "gate",
+    "whenToUse": "You are building your own gate layout and need only the entry field, with codes pasted out of an email tidied on the way in.",
+    "notFor": "A complete gate screen. Use the Quick gate or Client preview gate block, which already compose this field with a heading, a submit action and lifecycle notices.",
+    "pitfalls": [
+      "`length` is a display and autofill hint, not validation. The field never rejects input and never reports whether a code is correct.",
+      "`status=\"success\"` only styles the field. Revealing content is your own `unlocked` state, decided after your own server check.",
+      "`autoFocus` moves focus on mount. Leave it off when the field sits below other content or inside a long page."
+    ],
+    "dependencies": [],
+    "usedBy": [
+      "client-preview-gate",
+      "gated-section",
+      "preview-chrome",
+      "quick-gate",
+      "teaser-gate"
+    ],
+    "sourceHash": "ee0b92e16d7bdada3362aa45ef576c1007c936969056b458c0bee458f93cd184",
+    "component": "CodeField",
+    "contract": "Displays controlled demo-code entry, normalizing pasted message artifacts. Does not verify codes, unlock content, store values, or make network requests. Contract: value and onChange are required; the consumer owns all state.",
+    "props": [
+      {
+        "name": "value",
+        "type": "string",
+        "required": true,
+        "default": null,
+        "description": "Current code; required. Never interpreted as authorization."
+      },
+      {
+        "name": "onChange",
+        "type": "(value: string) => void",
+        "required": true,
+        "default": null,
+        "description": "Receives the normalized value; required."
+      },
+      {
+        "name": "mode",
+        "type": "'digits' | 'passphrase'",
+        "required": false,
+        "default": "'digits'",
+        "description": "Input presentation."
+      },
+      {
+        "name": "length",
+        "type": "number",
+        "required": false,
+        "default": "8",
+        "description": "Maximum digit count, from 1 to 16. Ignored for passphrases."
+      },
+      {
+        "name": "masked",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Uses a native password input and masked segments."
+      },
+      {
+        "name": "status",
+        "type": "'idle' | 'pending' | 'error' | 'success'",
+        "required": false,
+        "default": "'idle'",
+        "description": "Visual state only; pending disables editing."
+      },
+      {
+        "name": "error",
+        "type": "ReactNode",
+        "required": false,
+        "default": null,
+        "description": "Announced error text supplied by the consumer."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "'Access code'",
+        "description": "Visible and accessible field name."
+      },
+      {
+        "name": "description",
+        "type": "ReactNode",
+        "required": false,
+        "default": null,
+        "description": "Optional hint connected to the input."
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "default": null,
+        "description": "Optional passphrase placeholder."
+      },
+      {
+        "name": "autoFocus",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Focus after mount."
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": false,
+        "default": "'code'",
+        "description": "Native form field name."
+      },
+      {
+        "name": "theme",
+        "type": "'light' | 'dark'",
+        "required": false,
+        "default": null,
+        "description": "Explicit theme; omitted follows system preference."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "default": "''",
+        "description": "Additional wrapper classes."
+      }
+    ],
+    "defaults": {
+      "mode": "'digits'",
+      "length": "8",
+      "masked": "false",
+      "status": "'idle'",
+      "label": "'Access code'",
+      "autoFocus": "true",
+      "name": "'code'",
+      "className": "''"
+    },
+    "slots": [
+      "error",
+      "description"
+    ],
+    "a11y": "Native controls, visible focus, localized labels; lifecycle messages use polite announcements. No modal dialog is created.",
+    "unsupportedProps": [
+      "onSuccess",
+      "password",
+      "correctCode",
+      "attempts",
+      "maxAttempts",
+      "onUnlock"
+    ],
+    "examples": {
+      "minimal": "'use client';\nimport { useState } from 'react';\nimport { CodeField } from '@/components/knock/code-field';\n\nexport default function Example() {\n  const [value, setValue] = useState('');\n  const [unlocked, setUnlocked] = useState(false);\n  const [message, setMessage] = useState('');\n  return <section aria-label=\"Code field example\">\n    {/* Demo consumer state only. Integrate your authorization outside this UI. */}\n    <CodeField value={value} onChange={setValue} />\n    <p role=\"status\">{message}</p>\n  </section>;\n}\n",
+      "full": "'use client';\nimport { useState } from 'react';\nimport { CodeField } from '@/components/knock/code-field';\n\nexport default function Example() {\n  const [value, setValue] = useState('');\n  const [unlocked, setUnlocked] = useState(false);\n  const [message, setMessage] = useState('');\n  return <section aria-label=\"Code field example\">\n    {/* Demo consumer state only. Integrate your authorization outside this UI. */}\n    <CodeField value={value} onChange={setValue} mode=\"digits\" length={8} masked status=\"error\" error=\"Check your invitation code.\" label=\"Your code\" description=\"Paste from your invitation.\" autoFocus name=\"preview-code\" theme=\"light\" className=\"max-w-sm\" />\n    <p role=\"status\">{message}</p>\n  </section>;\n}\n"
+    }
+  },
+  "docs": "UI only. Read https://knock.codes/docs/code-field.md. Consumers own authorization."
+}
