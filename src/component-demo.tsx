@@ -1,6 +1,13 @@
 /** MIT License — Copyright (c) 2026 Knock contributors. Demo fixtures only. */
 import { useRef, useState } from 'react';
 import { CodeField, normalizeCode } from '../registry/components/code-field';
+import {
+  DigitLength,
+  lengthFrom,
+  Select,
+  statusOptions,
+  type DigitPreset,
+} from './playground-controls';
 import { CooldownNotice } from '../registry/components/cooldown-notice';
 import { RecipientLine } from '../registry/components/recipient-line';
 import { ExpiryPill } from '../registry/components/expiry-pill';
@@ -146,6 +153,13 @@ export function ComponentDemo({
   const [mode, setMode] = useState<'digits' | 'passphrase'>('digits');
   const [status, setStatus] = useState<'idle' | 'pending' | 'error' | 'success'>('idle');
   const [masked, setMasked] = useState(false);
+  const [digitPreset, setDigitPreset] = useState<DigitPreset>('8');
+  const [customLength, setCustomLength] = useState('10');
+  const length = lengthFrom(digitPreset, customLength);
+  const setDigits = (preset: DigitPreset) => {
+    setDigitPreset(preset);
+    setCode((current) => current.slice(0, lengthFrom(preset, customLength)));
+  };
   const restore = useRef<HTMLButtonElement>(null);
   const openContent = useRef<HTMLDivElement>(null);
   const info = componentInfo[name];
@@ -161,7 +175,7 @@ export function ComponentDemo({
     requestAnimationFrame(() => openContent.current?.focus());
   };
   const snippets: Record<string, string> = {
-    'Code field': `<CodeField\n  value={code}\n  onChange={setCode}\n  mode="${mode}"\n  status="${status}"${masked ? '\n  masked' : ''}\n/>`,
+    'Code field': `<CodeField\n  value={code}\n  onChange={setCode}\n  mode="${mode}"${mode === 'digits' ? `\n  length={${length}}` : ''}\n  status="${status}"${masked ? '\n  masked' : ''}\n/>`,
     'Cooldown notice': `<CooldownNotice\n  cooldownUntil={retryDeadline}\n/>`,
     'Recipient line': `<RecipientLine\n  recipient=${JSON.stringify(recipient)}\n/>`,
     'Expiry pill': `<ExpiryPill\n  expiresAt={previewExpiry}\n/>`,
@@ -244,6 +258,7 @@ export function ComponentDemo({
                       value={code}
                       onChange={setCode}
                       mode={mode}
+                      length={length}
                       theme={theme}
                       masked={masked}
                       status={status}
@@ -396,19 +411,26 @@ export function ComponentDemo({
                     </button>
                   ))}
                 </div>
+                {mode === 'digits' && (
+                  <DigitLength
+                    preset={digitPreset}
+                    custom={customLength}
+                    onPreset={setDigits}
+                    onCustom={(next) => {
+                      setCustomLength(next);
+                      setCode((current) => current.slice(0, lengthFrom('custom', next)));
+                    }}
+                  />
+                )}
                 <label className="control-label" htmlFor="state">
                   State
                 </label>
-                <select
+                <Select
                   id="state"
                   value={status}
-                  onChange={(e) => setStatus(e.target.value as typeof status)}
-                >
-                  <option value="idle">Idle / ready</option>
-                  <option value="pending">Pending</option>
-                  <option value="error">Error</option>
-                  <option value="success">Success</option>
-                </select>
+                  onChange={(next) => setStatus(next as typeof status)}
+                  options={statusOptions}
+                />
                 <div className="mask-row">
                   <label htmlFor="mask">Mask the code</label>
                   <button
@@ -427,6 +449,7 @@ export function ComponentDemo({
                       normalizeCode(
                         mode === 'digits' ? 'Code: “4821-9930”' : 'Passphrase: “open sesame”',
                         mode,
+                        length,
                       ),
                     )
                   }
@@ -471,27 +494,24 @@ export function ComponentDemo({
                 <label className="control-label" htmlFor="expiry">
                   Preview lifetime
                 </label>
-                <select
+                <Select
                   id="expiry"
                   value={expiryState}
-                  onChange={(e) => {
-                    setExpiryState(e.target.value);
+                  onChange={(next) => {
+                    setExpiryState(next);
                     setExpiry(
                       new Date(
                         Date.now() +
-                          (e.target.value === 'fine'
-                            ? 3 * 86400000
-                            : e.target.value === 'soon'
-                              ? 2 * 3600000
-                              : -1000),
+                          (next === 'fine' ? 3 * 86400000 : next === 'soon' ? 2 * 3600000 : -1000),
                       ).toISOString(),
                     );
                   }}
-                >
-                  <option value="fine">Fine · 3 days left</option>
-                  <option value="soon">Expiring soon · 2 hours</option>
-                  <option value="expired">Expired</option>
-                </select>
+                  options={[
+                    { value: 'fine', label: 'Fine · 3 days left' },
+                    { value: 'soon', label: 'Expiring soon · 2 hours' },
+                    { value: 'expired', label: 'Expired' },
+                  ]}
+                />
               </>
             )}
             {name === 'Request access' && (
@@ -499,15 +519,16 @@ export function ComponentDemo({
                 <label className="control-label" htmlFor="destination">
                   Resolve to
                 </label>
-                <select
+                <Select
                   id="destination"
                   value={destination}
-                  onChange={(e) => setDestination(e.target.value)}
-                >
-                  <option value="callback">Callback</option>
-                  <option value="mailto">Email / mailto</option>
-                  <option value="link">Relative link</option>
-                </select>
+                  onChange={setDestination}
+                  options={[
+                    { value: 'callback', label: 'Callback' },
+                    { value: 'mailto', label: 'Email / mailto' },
+                    { value: 'link', label: 'Relative link' },
+                  ]}
+                />
                 <p className="fixture-note">
                   Callback mode stays in the demo. Links use their native browser behavior.
                 </p>

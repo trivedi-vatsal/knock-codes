@@ -112,3 +112,63 @@ test('controlled paste, focus, error association and structural accessibility', 
   await act(async () => root.unmount());
   dom.window.close();
 });
+
+test('length renders that many digit slots', () => {
+  const html = renderToString(
+    <CodeField value="12" onChange={() => {}} length={4} autoFocus={false} />,
+  );
+  assert.equal([...html.matchAll(/class="kc-slot/g)].length, 4);
+});
+
+test('clicking a digit slot places the caret on that slot', async () => {
+  const dom = new JSDOM(
+    '<!doctype html><html lang="en"><head><title>Code field caret</title></head><body><main id="root"></main></body></html>',
+    { pretendToBeVisual: true },
+  );
+  Object.assign(globalThis, {
+    window: dom.window,
+    document: dom.window.document,
+    HTMLElement: dom.window.HTMLElement,
+    requestAnimationFrame: (cb: () => void) => {
+      cb();
+      return 0;
+    },
+    IS_REACT_ACT_ENVIRONMENT: true,
+  });
+  const { createRoot } = await import('react-dom/client');
+  const host = document.getElementById('root')!;
+  const root = createRoot(host);
+  await act(async () =>
+    root.render(<CodeField value="12345678" onChange={() => {}} autoFocus={false} />),
+  );
+  const input = host.querySelector('input') as HTMLInputElement;
+  const boxes = [...host.querySelectorAll('.kc-slot')];
+  boxes.forEach((box, i) => {
+    box.getBoundingClientRect = () => ({
+      x: i * 40,
+      y: 0,
+      left: i * 40,
+      right: i * 40 + 40,
+      top: 0,
+      bottom: 40,
+      width: 40,
+      height: 40,
+      toJSON() {},
+    });
+  });
+  await act(async () => {
+    input.dispatchEvent(
+      new dom.window.MouseEvent('pointerdown', {
+        clientX: 90,
+        button: 0,
+        bubbles: true,
+        cancelable: true,
+      }),
+    );
+  });
+  assert.equal(input.selectionStart, 2);
+  assert.equal(input.selectionEnd, 2);
+  assert.equal(boxes[2].getAttribute('data-active'), 'true');
+  await act(async () => root.unmount());
+  dom.window.close();
+});

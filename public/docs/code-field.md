@@ -1,6 +1,6 @@
 # Code field
 
-Version 0.2.0 · components · gate
+Version 0.2.1 · components · gate
 
 Displays controlled demo-code entry, normalizing pasted message artifacts. Does not verify codes, unlock content, store values, or make network requests. Contract: value and onChange are required; the consumer owns all state.
 
@@ -144,7 +144,7 @@ export default function Example() {
  * Displays controlled demo-code entry, normalizing pasted message artifacts.
  * Does not verify codes, unlock content, store values, or make network requests.
  * Contract: value and onChange are required; the consumer owns all state.
- * @version 0.2.0
+ * @version 0.2.1
  * @minimalExample <CodeField value={value} onChange={setValue} />
  * @fullExample <CodeField value={value} onChange={setValue} mode="digits" length={8} masked status="error" error="Check your invitation code." label="Your code" description="Paste from your invitation." autoFocus name="preview-code" theme="light" className="max-w-sm" />
  * @lifecycle gate
@@ -224,9 +224,15 @@ export function CodeField({
 }: CodeFieldProps) {
   const id = useId();
   const input = useRef<HTMLInputElement>(null);
+  const slots = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState(0);
   const [focused, setFocused] = useState(false);
   const count = Math.max(1, Math.min(16, Math.floor(length) || 8));
+  const placeCaret = (field: HTMLInputElement, index: number) => {
+    const caret = Math.max(0, Math.min(index, value.length, count));
+    field.setSelectionRange(caret, caret);
+    setPosition(caret);
+  };
   useEffect(() => {
     if (autoFocus) input.current?.focus();
   }, [autoFocus]);
@@ -237,6 +243,7 @@ export function CodeField({
       [data-knock-code][data-theme=dark]{--kc-bg:#272a27;--kc-ink:#f4f2eb;--kc-muted:#b3b7ac;--kc-border:#60665d;--kc-accent:#f1a187;--kc-error:#ffa69e;color-scheme:dark}
       @media(prefers-color-scheme:dark){[data-knock-code]:not([data-theme=light]){--kc-bg:#272a27;--kc-ink:#f4f2eb;--kc-muted:#b3b7ac;--kc-border:#60665d;--kc-accent:#f1a187;--kc-error:#ffa69e;color-scheme:dark}}
       [data-knock-code] .kc-native:focus-visible{outline:2px solid var(--knock-accent,var(--kc-accent));outline-offset:5px}
+      [data-knock-code] .kc-native.absolute:focus-visible{outline:none}
       [data-knock-code] .kc-slot{background:var(--knock-bg,var(--kc-bg));border:1px solid var(--knock-border,var(--kc-border))}
       [data-knock-code] .kc-slot[data-active=true]{border-color:var(--knock-accent,var(--kc-accent));box-shadow:0 0 0 3px color-mix(in srgb,var(--knock-accent,var(--kc-accent)) 12%,transparent)}
       [data-knock-code][data-error=true] .kc-slot{border-color:var(--knock-error,var(--kc-error))}
@@ -246,14 +253,14 @@ export function CodeField({
       </label>
       <div className="relative" data-error={status === 'error' || undefined}>
         {mode === 'digits' && (
-          <div aria-hidden="true" className="flex gap-1.5 sm:gap-2">
+          <div ref={slots} aria-hidden="true" className="flex gap-1.5 sm:gap-2">
             {Array.from({ length: count }, (_, i) => (
               <span
                 key={i}
                 data-active={focused && i === Math.min(position, count - 1)}
                 className="kc-slot flex h-14 min-w-0 flex-1 items-center justify-center rounded-lg font-mono text-xl"
                 style={{
-                  marginLeft: count === 8 && i === 4 ? 8 : 0,
+                  marginLeft: count >= 4 && count % 2 === 0 && i === count / 2 ? 8 : 0,
                   borderColor:
                     status === 'error' ? 'var(--knock-error,var(--kc-error))' : undefined,
                 }}
@@ -289,9 +296,31 @@ export function CodeField({
               .filter(Boolean)
               .join(' ') || undefined
           }
-          onFocus={() => setFocused(true)}
+          onFocus={(e) => {
+            setFocused(true);
+            if (
+              mode === 'digits' &&
+              e.currentTarget.selectionStart !== e.currentTarget.selectionEnd
+            )
+              placeCaret(e.currentTarget, e.currentTarget.value.length);
+          }}
           onBlur={() => setFocused(false)}
-          onSelect={(e) => setPosition(e.currentTarget.selectionStart ?? 0)}
+          onPointerDown={(e) => {
+            if (mode !== 'digits' || e.button !== 0) return;
+            e.preventDefault();
+            const field = e.currentTarget;
+            field.focus();
+            const boxes = slots.current?.children;
+            if (!boxes?.length) return;
+            const index = Array.from(boxes).findIndex(
+              (box) => e.clientX <= box.getBoundingClientRect().right,
+            );
+            placeCaret(field, index < 0 ? count : index);
+          }}
+          onSelect={(e) => {
+            if (e.currentTarget.selectionStart === e.currentTarget.selectionEnd)
+              setPosition(e.currentTarget.selectionStart ?? 0);
+          }}
           onChange={(e) =>
             onChange(
               mode === 'digits' ? normalizeCode(e.target.value, mode, count) : e.target.value,

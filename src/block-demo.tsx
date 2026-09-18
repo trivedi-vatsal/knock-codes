@@ -12,6 +12,13 @@ import { RevokedNotice } from '../registry/blocks/revoked-notice';
 import { CooldownScreen } from '../registry/blocks/cooldown-screen';
 import { PreviewChrome } from '../registry/blocks/preview-chrome';
 import { OpenInvitation } from '../registry/blocks/open-invitation';
+import {
+  DigitLength,
+  lengthFrom,
+  Select,
+  statusOptions,
+  type DigitPreset,
+} from './playground-controls';
 export const blocks: Record<string, ComponentType<ClientPreviewGateProps>> = {
   'Client preview gate': ClientPreviewGate,
   'Open invitation': OpenInvitation,
@@ -150,6 +157,13 @@ export function BlockDemo({
     name === 'Cooldown screen' ? new Date(Date.now() + 90000).toISOString() : undefined,
   );
   const [masked, setMasked] = useState(false);
+  const [digitPreset, setDigitPreset] = useState<DigitPreset>('8');
+  const [customLength, setCustomLength] = useState('10');
+  const length = lengthFrom(digitPreset, customLength);
+  const setDigits = (preset: DigitPreset) => {
+    setDigitPreset(preset);
+    setValue((current) => current.slice(0, lengthFrom(preset, customLength)));
+  };
   const control = useRef<HTMLButtonElement>(null);
   const props: ClientPreviewGateProps = {
     value,
@@ -164,6 +178,7 @@ export function BlockDemo({
     expiresAt,
     cooldownUntil,
     mode,
+    length,
     masked,
     theme,
     logo:
@@ -272,15 +287,12 @@ export function BlockDemo({
             <label className="control-label" htmlFor="block-state">
               Visual status
             </label>
-            <select
+            <Select
               id="block-state"
-              value={status}
-              onChange={(e) => setStatus(e.target.value as typeof status)}
-            >
-              {['idle', 'pending', 'error', 'success'].map((s) => (
-                <option key={s}>{s}</option>
-              ))}
-            </select>
+              value={status ?? 'idle'}
+              onChange={(next) => setStatus(next as typeof status)}
+              options={statusOptions}
+            />
             <label className="control-label" htmlFor="block-recipient">
               Recipient
             </label>
@@ -289,17 +301,32 @@ export function BlockDemo({
               value={recipient}
               onChange={(e) => setRecipient(e.target.value)}
             />
-            <label className="control-label" htmlFor="block-mode">
-              Code mode
-            </label>
-            <select
-              id="block-mode"
-              value={mode}
-              onChange={(e) => setMode(e.target.value as typeof mode)}
-            >
-              <option value="digits">Digits</option>
-              <option value="passphrase">Passphrase</option>
-            </select>
+            <div className="control-label">Code mode</div>
+            <div className="segmented">
+              {(['digits', 'passphrase'] as const).map((item) => (
+                <button
+                  key={item}
+                  aria-pressed={mode === item}
+                  onClick={() => {
+                    setMode(item);
+                    setValue('');
+                  }}
+                >
+                  {item === 'digits' ? 'Digits' : 'Passphrase'}
+                </button>
+              ))}
+            </div>
+            {mode === 'digits' && (
+              <DigitLength
+                preset={digitPreset}
+                custom={customLength}
+                onPreset={setDigits}
+                onCustom={(next) => {
+                  setCustomLength(next);
+                  setValue((current) => current.slice(0, lengthFrom('custom', next)));
+                }}
+              />
+            )}
             <div className="mask-row">
               <label htmlFor="block-mask">Mask code</label>
               <button
