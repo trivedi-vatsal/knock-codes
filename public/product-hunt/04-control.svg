@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1270" height="760" viewBox="0 0 1270 760">
+  <rect width="1270" height="760" fill="#faf9f6"/>
+  <text x="64" y="82" fill="#303c30" font-family="Arial, Helvetica, sans-serif" font-size="35" font-weight="700" letter-spacing="-1.5">knock.</text>
+  <path d="M64 110H1206" stroke="#dedfd5"/>
+  <text x="64" y="224" fill="#303c30" font-family="Georgia, serif" font-size="66" letter-spacing="-1.8">
+    <tspan x="64">UI only. Your app</tspan>
+    <tspan x="64" dy="76">stays in control.</tspan>
+  </text>
+  <text x="68" y="410" fill="#69725f" font-family="Arial, Helvetica, sans-serif" font-size="20">
+    <tspan x="68">Knock presents access states.</tspan>
+    <tspan x="68" dy="34">Your server verifies codes, creates sessions,</tspan>
+    <tspan x="68" dy="34">and protects the work.</tspan>
+  </text>
+  <g transform="translate(700 130)">
+    <rect width="480" height="430" rx="10" fill="#303c30"/>
+    <svg x="50" y="42" width="380" height="190" viewBox="0 0 320 160">
+      <rect x="34" y="17" width="252" height="126" rx="5" fill="#f3efdf" stroke="#adbca0"/>
+      <path d="M39 17h242a5 5 0 0 1 5 5v23H34V22a5 5 0 0 1 5-5Z" fill="#adbca0"/>
+      <circle cx="48" cy="31" r="3" fill="#41523d"/>
+      <path d="M59 31h42m127 0h39" stroke="#41523d"/>
+      <path d="M52 123V81a22 22 0 0 1 44 0v42" fill="#8f9d7c"/>
+      <path d="M102 123V99a16 16 0 0 1 32 0v24" fill="#ba795b"/>
+      <path d="M151 67h109m-109 10h78m-78 22h109m-109 10h92" stroke="#b8bea8" stroke-width="3"/>
+      <path d="m250 45 36 0v26Z" fill="#b9795a"/>
+      <circle cx="267" cy="127" r="19" fill="#d8a080" stroke="#263329" stroke-width="3"/>
+      <path d="m259 127 6 6 10-12" stroke="#263329" stroke-width="2"/>
+    </svg>
+    <path d="M50 270H430" stroke="#62705b"/>
+    <g font-family="Arial, Helvetica, sans-serif">
+      <text x="50" y="312" fill="#e0aa8a" font-family="monospace" font-size="12" letter-spacing="1.4">CLEAR RESPONSIBILITY</text>
+      <text x="50" y="355" fill="#f3efdf" font-family="Georgia, serif" font-size="29">Presentation by Knock.</text>
+      <text x="50" y="394" fill="#d0d5c4" font-size="17">Authorization by your application.</text>
+    </g>
+  </g>
+  <path d="M64 650H1206" stroke="#dedfd5"/>
+  <text x="64" y="696" fill="#69725f" font-family="monospace" font-size="14" letter-spacing="1.2">CONTROLLED UI  &#183;  SERVER SIDE AUTHORIZATION</text>
+  <text x="1206" y="696" fill="#303c30" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="16">Free &#183; Open source &#183; MIT</text>
+</svg>

@@ -226,15 +226,13 @@ npm run test:react18   # React 18 compatibility check
 
 CI validates generated output, examples, hydration, accessibility structure, docs, and installation against React 18 and 19. For UI changes, also inspect the relevant playground at desktop and mobile sizes and test keyboard interaction.
 
-### Build and deploy
+### Build
 
 ```sh
 npm run build
 ```
 
-The static site is written to `dist/`, including route-specific metadata, `sitemap.xml`, `robots.txt`, and `404.html`. The repository’s GitHub Pages workflow builds and deploys `main`.
-
-For another host, serve each route’s directory index and return `404.html` with HTTP 404 for unknown paths. Avoid a blanket rewrite to the homepage: missing documentation and registry assets must also return real 404s.
+The static site is written to `dist/`, including route-specific metadata, `sitemap.xml`, `robots.txt`, and `404.html`. Use this locally or in CI. Production hosting is on Vercel: connected branches deploy automatically from `vercel.json`.
 
 ## Contributing
 

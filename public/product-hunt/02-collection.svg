@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1270" height="760" viewBox="0 0 1270 760">
+  <rect width="1270" height="760" fill="#faf9f6"/>
+  <text x="64" y="82" fill="#303c30" font-family="Arial, Helvetica, sans-serif" font-size="35" font-weight="700" letter-spacing="-1.5">knock.</text>
+  <path d="M64 110H1206" stroke="#dedfd5"/>
+  <text x="64" y="221" fill="#303c30" font-family="Georgia, serif" font-size="62" letter-spacing="-1.8">
+    <tspan x="64">A complete entrance</tspan>
+    <tspan x="64" dy="72">or just the missing piece.</tspan>
+  </text>
+  <text x="68" y="399" fill="#69725f" font-family="Arial, Helvetica, sans-serif" font-size="20">
+    Start with a full flow, or take only what your project needs.
+  </text>
+  <g transform="translate(697 135)">
+    <rect width="483" height="410" rx="10" fill="#edf0e5" stroke="#d4d9ca"/>
+    <svg x="32" y="38" width="419" height="210" viewBox="0 0 320 160">
+      <rect x="44" y="28" width="108" height="104" rx="5" fill="#263329" stroke="#71816a" transform="rotate(-8 98 80)"/>
+      <rect x="169" y="28" width="108" height="104" rx="5" fill="#263329" stroke="#71816a" transform="rotate(8 223 80)"/>
+      <rect x="99" y="17" width="122" height="126" rx="5" fill="#f3efdf" stroke="#adbca0"/>
+      <path d="M99 39h122" stroke="#b8bea8"/>
+      <circle cx="111" cy="28" r="2" fill="#a9553c"/>
+      <path d="M121 28h27" stroke="#b8bea8"/>
+      <path d="M151 67v-7a9 9 0 0 1 18 0v7" stroke="#617253"/>
+      <rect x="146" y="65" width="28" height="22" rx="3" fill="#dfe4d3" stroke="#899878"/>
+      <rect x="114" y="99" width="92" height="12" rx="2" stroke="#b8bea8"/>
+      <rect x="114" y="120" width="92" height="10" rx="2" fill="#ba795b"/>
+      <path d="m237 95 22 21-13 1-5 13Z" fill="#d8a080" stroke="#263329" stroke-width="2"/>
+    </svg>
+    <g font-family="Arial, Helvetica, sans-serif">
+      <text x="40" y="298" fill="#aa513a" font-family="monospace" font-size="12" letter-spacing="1.4">THE COLLECTION</text>
+      <text x="40" y="342" fill="#303c30" font-family="Georgia, serif" font-size="30">Nine blocks. Ten components.</text>
+      <text x="40" y="378" fill="#69725f" font-size="15">Gates, invitations, expiry states, and draft chrome.</text>
+    </g>
+  </g>
+  <g transform="translate(64 535)" font-family="Arial, Helvetica, sans-serif">
+    <rect width="178" height="52" rx="4" fill="#303c30"/>
+    <text x="89" y="33" fill="#fffdf6" text-anchor="middle" font-size="15">Access screens</text>
+    <rect x="190" width="164" height="52" rx="4" fill="#f2e9dc" stroke="#dedfd5"/>
+    <text x="272" y="33" fill="#303c30" text-anchor="middle" font-size="15">Invitations</text>
+    <rect x="366" width="166" height="52" rx="4" fill="#edf0e5" stroke="#dedfd5"/>
+    <text x="449" y="33" fill="#303c30" text-anchor="middle" font-size="15">Draft labels</text>
+  </g>
+  <path d="M64 650H1206" stroke="#dedfd5"/>
+  <text x="64" y="696" fill="#69725f" font-family="monospace" font-size="14" letter-spacing="1.2">9 BLOCKS  &#183;  10 COMPONENTS</text>
+  <text x="1206" y="696" fill="#303c30" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="16">Explore the library &#8594;</text>
+</svg>

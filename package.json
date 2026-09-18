@@ -3,6 +3,9 @@
   "version": "0.2.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "npm run generate && vite --host 0.0.0.0",
     "build": "npm run generate && tsc --noEmit && npm run check:examples && vite build && tsx scripts/site-pages.ts",
