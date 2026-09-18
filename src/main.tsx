@@ -238,9 +238,7 @@ function App() {
                 </a>
               ))}
               <div className="guide-nav-footer">
-                <a href="/library">
-                  Browse components <span>↗</span>
-                </a>
+                <a href="/library">Browse the library</a>
               </div>
             </>
           ) : (
@@ -293,18 +291,18 @@ function App() {
       <main id="main" className={hasSidebar && sidebarCollapsed ? 'sidebar-collapsed' : ''}>
         {view === 'not-found' ? (
           <section className="not-found">
-            <span className="eyebrow">404 / A CLOSED DOOR</span>
-            <h1>This page stepped out.</h1>
+            <span className="eyebrow">404</span>
+            <h1>Page not found</h1>
             <p>
-              The link may have changed, or the page never lived here.
+              This URL isn’t a Knock page.
               <br />
-              There’s still plenty to explore.
+              Open the library, or go home.
             </p>
             <div className="home-actions">
               <a className="home-primary" href="/library">
-                Explore the library ↗
+                Browse the library
               </a>
-              <a href="/">Back home</a>
+              <a href="/">Home</a>
             </div>
           </section>
         ) : view === 'home' ? (
@@ -328,11 +326,10 @@ function App() {
           <>
             <div className="playground-heading">
               <div>
-                <span className="eyebrow">{blocks[selected] ? 'BLOCK' : 'COMPONENT'}</span>
                 <h1>{selected}</h1>
               </div>
               <div className="playground-actions">
-                <a href={`/docs/${slugOf(selected)}`}>Usage & API ↗</a>
+                <a href={`/docs/${slugOf(selected)}`}>Usage and API</a>
                 {documented && (
                   <button
                     className="install-action"
@@ -367,12 +364,12 @@ function App() {
         </div>
         <footer className="page-footer site-footer">
           <div>
-            <span className="footer-signoff">Thoughtful at the threshold.</span>
-            <p>Knock · copy-paste UI for private previews · MIT licensed</p>
+            <span className="footer-signoff">Knock.codes</span>
+            <p>Copy-paste UI for private previews · MIT licensed</p>
           </div>
           <nav aria-label="Knock">
             <a href="/docs">Docs</a>
-            <a href="https://github.com/trivedi-vatsal/knock-codes">GitHub ↗</a>
+            <a href="https://github.com/trivedi-vatsal/knock-codes">GitHub</a>
           </nav>
         </footer>
       </main>

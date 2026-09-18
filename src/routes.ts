@@ -38,7 +38,7 @@ export function pageMetadata(route: Route) {
     route.view === 'not-found'
       ? 'Page not found — Knock'
       : route.view === 'home'
-        ? 'Knock — Thoughtful UI for private previews'
+        ? 'Knock — copy-paste UI for private previews'
         : route.view === 'library'
           ? 'Component library — Knock'
           : route.view === 'guide'
@@ -46,7 +46,7 @@ export function pageMetadata(route: Route) {
             : `${route.selected}${route.view === 'docs' ? ' documentation' : ' playground'} — Knock`;
   const description =
     route.view === 'home'
-      ? 'Copy-paste React components for private previews. Thoughtful access screens, client invitations, and draft controls. React + Tailwind, ready for shadcn.'
+      ? 'Copy-paste React components for private previews: access screens, invitations, and draft controls. React + Tailwind, install with shadcn.'
       : route.view === 'library'
         ? 'Browse React components and blocks for private previews. Try live examples, customize the design, and install with shadcn.'
         : route.view === 'not-found'
@@ -78,10 +78,10 @@ export function metadataHtml(route: Route) {
 <meta property="og:image" content="https://knock.codes/og.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="Knock — Thoughtful UI for private previews. React + Tailwind. Copy, customize, share." />
+<meta property="og:image:alt" content="Knock — copy-paste UI for private previews. React + Tailwind." />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="${escape(meta.title)}" />
 <meta name="twitter:description" content="${escape(meta.description)}" />
 <meta name="twitter:image" content="https://knock.codes/og.png" />
-<meta name="twitter:image:alt" content="Knock — Thoughtful UI for private previews." />`;
+<meta name="twitter:image:alt" content="Knock — copy-paste UI for private previews." />`;
 }

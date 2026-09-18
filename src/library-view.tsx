@@ -22,8 +22,8 @@ const slugOf = (name: string) => name.toLowerCase().replaceAll(' ', '-');
 function SampleWork() {
   return (
     <div className="collection-draft">
-      <span>ATELIER / COLLECTION 01</span>
-      <h3>A new perspective.</h3>
+      <span>ATELIER / ACME LOBBY</span>
+      <h3>Hallway seating</h3>
       <div className="collection-art">
         <i />
         <i />
@@ -97,7 +97,11 @@ function Thumbnail({ name, deadline, expiry }: { name: string; deadline: string;
       return <RelockControl onRelock={noop} theme="light" />;
     case 'Blur veil':
       return (
-        <BlurVeil unlocked={false} theme="light" prompt={<strong>Your first look awaits.</strong>}>
+        <BlurVeil
+          unlocked={false}
+          theme="light"
+          prompt={<strong>Enter a code to continue.</strong>}
+        >
           <SampleWork />
         </BlurVeil>
       );
@@ -123,12 +127,11 @@ export function Library() {
     <div className="collection">
       <div className="collection-heading">
         <div>
-          <span className="eyebrow">THE KNOCK LIBRARY</span>
-          <h1>A better first look.</h1>
-          <p>Copy-paste UI for the invitation, the preview, and everything after.</p>
+          <h1>Library</h1>
+          <p>{entries.length} copy-paste items. Search, filter, then open a playground.</p>
         </div>
         <a className="collection-guide" href="/docs/get-started">
-          Start building <span>↗</span>
+          Installation
         </a>
       </div>
       <div className="collection-toolbar">
@@ -169,7 +172,7 @@ export function Library() {
       </div>
       <p className="collection-count" role="status">
         {shown.length} {shown.length === 1 ? 'item' : 'items'}{' '}
-        <span>Choose one to explore and customize</span>
+        <span>Open a playground to copy the source</span>
       </p>
       <div className="collection-grid">
         {shown.map((name) => (
@@ -186,13 +189,8 @@ export function Library() {
               </div>
             </div>
             <a className="collection-item-link" href={`/playground/${slugOf(name)}`}>
-              <span>
-                <small>{blocks[name] ? 'BLOCK' : 'COMPONENT'}</small>
-                <h2>{name}</h2>
-              </span>
-              <span className="collection-open" aria-hidden="true">
-                ↗
-              </span>
+              <small>{blocks[name] ? 'BLOCK' : 'COMPONENT'}</small>
+              <h2>{name}</h2>
             </a>
           </article>
         ))}

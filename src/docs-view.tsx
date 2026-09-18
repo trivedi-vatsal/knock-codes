@@ -99,10 +99,7 @@ export function DocsIndex({
   return (
     <article className={`docs guide-page ${page === 'introduction' ? 'docs-index' : ''}`}>
       <div className="breadcrumb">Documentation</div>
-      <p className="guide-kicker">{page === 'introduction' ? 'INTRODUCTION' : 'GETTING STARTED'}</p>
-      <h1>
-        {page === 'introduction' ? 'Thoughtful UI for the space before access.' : guides[page]}
-      </h1>
+      <h1>{page === 'introduction' ? 'Knock' : guides[page]}</h1>
       {page === 'introduction' && (
         <>
           <p>
@@ -111,30 +108,25 @@ export function DocsIndex({
           </p>
           <div className="docs-stats" aria-label={`${items.length} library items`}>
             <span>
-              <strong>{items.filter((item) => item.tier === 'blocks').length}</strong> ready-made
-              blocks
+              <strong>{items.filter((item) => item.tier === 'blocks').length}</strong> blocks
             </span>
             <span>
-              <strong>{items.filter((item) => item.tier === 'components').length}</strong> focused
+              <strong>{items.filter((item) => item.tier === 'components').length}</strong>{' '}
               components
             </span>
             <span>
               <strong>0</strong> runtime dependencies
             </span>
           </div>
-          <Section title="Start where you need">
+          <Section title="Install or browse">
             <div className="guide-links">
               <a href="/docs/get-started">
-                <strong>
-                  Install Knock <span>↗</span>
-                </strong>
+                <strong>Install Knock</strong>
                 <span>Add your first component with the shadcn CLI.</span>
               </a>
               <a href="/library">
-                <strong>
-                  Explore the library <span>↗</span>
-                </strong>
-                <span>Try blocks and components, then copy the code.</span>
+                <strong>Browse the library</strong>
+                <span>Open a playground, then copy the source.</span>
               </a>
             </div>
           </Section>
@@ -143,7 +135,7 @@ export function DocsIndex({
               [
                 ['gate', 'Before access'],
                 ['unlocked', 'After unlock'],
-                ['ended', 'When it is over'],
+                ['ended', 'After it ends'],
               ] as const
             ).map(([lifecycle, label]) => (
               <div key={lifecycle} className="gate-chooser">
@@ -153,9 +145,7 @@ export function DocsIndex({
                     .filter((item) => item.meta.lifecycle === lifecycle)
                     .map((item) => (
                       <a key={item.name} href={`/docs/${item.name}`}>
-                        <strong>
-                          {item.title} <span>↗</span>
-                        </strong>
+                        <strong>{item.title}</strong>
                         <span>{item.meta.whenToUse}</span>
                       </a>
                     ))}
@@ -257,14 +247,14 @@ export function Preview() {
               own check, not timers inside Knock.
             </p>
             <a className="docs-link" href="/docs/client-preview-gate">
-              View usage and API ↗
+              Usage and API
             </a>
           </Section>
         </>
       )}
       {page === 'styling' && (
         <>
-          <p className="guide-lead">Make it feel like your product.</p>
+          <p className="guide-lead">Change theme and CSS variables.</p>
           <Section title="Theme">
             <p>
               Set the component’s theme to light or dark, or omit it to follow the system
@@ -298,11 +288,11 @@ export function Preview() {
           </p>
           <div className="guide-links">
             <a href="/llms.txt">
-              <strong>llms.txt ↗</strong>
+              <strong>llms.txt</strong>
               <span>A compact index of the library.</span>
             </a>
             <a href="/llms-full.txt">
-              <strong>llms-full.txt ↗</strong>
+              <strong>llms-full.txt</strong>
               <span>All contracts, examples, and source.</span>
             </a>
           </div>
@@ -313,7 +303,7 @@ export function Preview() {
             />
           </Section>
           <a className="docs-link" href="/prompts/client-preview-gate.md">
-            Read the full item prompt ↗
+            Item prompt
           </a>
         </>
       )}
@@ -334,9 +324,9 @@ export function DocsPage({ item }: { item: CatalogItem }) {
       <h1>{item.title}</h1>
       <p className="guide-lead">{item.meta.whenToUse}</p>
       <div className="docs-resource-links">
-        <a href={`/playground/${item.name}`}>Open playground ↗</a>
-        <a href={`/docs/${item.name}.md`}>Markdown ↗</a>
-        <a href={`/source/${item.name}.tsx`}>Source ↗</a>
+        <a href={`/playground/${item.name}`}>Playground</a>
+        <a href={`/docs/${item.name}.md`}>Markdown</a>
+        <a href={`/source/${item.name}.tsx`}>Source</a>
       </div>
       <Section title="Not for">
         <p>{item.meta.notFor}</p>

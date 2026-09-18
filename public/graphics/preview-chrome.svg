@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="220" viewBox="0 0 640 220" fill="none">
+<!-- MIT License — Copyright (c) 2026 Knock contributors. -->
+<rect x="98" y="29" width="444" height="163" rx="6" fill="#fffdf5" stroke="#b5bea5"/>
+<path d="M104 29h432a6 6 0 0 1 6 6v22H98V35a6 6 0 0 1 6-6Z" fill="#dce2cf"/>
+<circle cx="115" cy="43" r="3" fill="#7b866c"/><path d="M128 43h48m285 0h18m12 0h34" stroke="#7b866c"/>
+<rect x="120" y="76" width="153" height="94" rx="2" fill="#e8ddca"/>
+<path d="M145 170v-49a32 32 0 0 1 64 0v49" fill="#aab497"/><path d="M215 170v-34a21 21 0 0 1 42 0v34" fill="#bf8061"/>
+<path d="M294 87h107m-107 11h78M294 121h210m-210 10h210m-210 10h139" stroke="#c6cbbd" stroke-width="3"/>
+<rect x="294" y="157" width="69" height="13" rx="2" fill="#e1e6d5"/>
+<path d="m455 57 87 0v58Z" fill="#a9553c"/><path d="m494 65 31 20m-24-20 24 15" stroke="#f8e5cf"/>
+<path d="M75 206h491M83 17h-16v16m490 174h16v-16" stroke="#c6cbbd"/>
+</svg>

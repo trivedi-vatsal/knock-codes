@@ -104,16 +104,16 @@ function DraftContent({ onAction }: { onAction: () => void }) {
       <div className="draft-hero">
         <span className="draft-object" aria-hidden="true" />
         <div>
-          <span className="eyebrow">LESS, BUT CONSIDERED</span>
           <h3>
-            Objects for
-            <br />a slower day.
+            Walnut stool,
+            <br />
+            18 inches
           </h3>
-          <button onClick={onAction}>Explore the collection ↗</button>
+          <button onClick={onAction}>View materials</button>
         </div>
       </div>
       <div className="draft-detail">
-        Natural materials. Lasting impressions.<span>EST. 2026</span>
+        Natural materials. Spring 2026.<span>EST. 2026</span>
       </div>
     </div>
   );
@@ -239,7 +239,7 @@ export function ComponentDemo({
                       <span>DESIGN STUDIO</span>
                     </div>
                     <div className="envelope-rule" />
-                    <h2>Good things await.</h2>
+                    <h2>Enter your code</h2>
                     <CodeField
                       value={code}
                       onChange={setCode}
@@ -248,8 +248,8 @@ export function ComponentDemo({
                       masked={masked}
                       status={status}
                       label={mode === 'digits' ? 'Your access code' : 'Your passphrase'}
-                      placeholder="A few words open the door"
-                      error="That didn’t quite match. Give your code another look."
+                      placeholder={mode === 'digits' ? '0000' : 'Enter the passphrase'}
+                      error="That code did not match."
                       description="Paste it straight from your email. We’ll tidy it up."
                       autoFocus={false}
                     />
@@ -264,46 +264,26 @@ export function ComponentDemo({
                       <span className="studio-symbol">a</span>atelier
                     </div>
                     <div className="envelope-rule" />
-                    <span className="eyebrow">A PRIVATE FIRST LOOK</span>
-                    <h2>
-                      Made with you
-                      <br />
-                      in mind.
-                    </h2>
+                    <h2>Private preview</h2>
                     <RecipientLine recipient={recipient || 'Your client'} theme={theme} />
-                    <div className="invitation-signature">
-                      From our studio, to your next chapter.
-                    </div>
+                    <div className="invitation-signature">From atelier.</div>
                   </div>
                 )}
                 {name === 'Expiry pill' && (
                   <div className="invitation-fixture">
-                    <span className="eyebrow">A MOMENT TO EXPLORE</span>
-                    <h2>
-                      Your preview
-                      <br />
-                      has a little time.
-                    </h2>
+                    <h2>This link expires</h2>
                     <ExpiryPill expiresAt={expiry} theme={theme} />
                     <p className="fixture-note">
-                      The work is yours to look around.
+                      The pill is visual.
                       <br />
-                      We’ll keep the timeline clear.
+                      Your server still has to refuse expired codes.
                     </p>
                   </div>
                 )}
                 {name === 'Request access' && (
                   <div className="invitation-fixture">
-                    <span className="eyebrow">YOU’RE IN THE RIGHT PLACE</span>
-                    <h2>
-                      Let’s get you
-                      <br />a first look.
-                    </h2>
-                    <p className="fixture-note">
-                      Your invitation might be a few emails back.
-                      <br />
-                      There’s always a way to reach us.
-                    </p>
+                    <h2>Need a code?</h2>
+                    <p className="fixture-note">If the invite was forwarded, request a new one.</p>
                     <RequestAccess
                       theme={theme}
                       onRequestAccess={destination === 'callback' ? action : undefined}
@@ -337,11 +317,10 @@ export function ComponentDemo({
                     </div>
                   ) : (
                     <div className="invitation-fixture">
-                      <span className="eyebrow">ALL TUCKED AWAY</span>
-                      <h2>Until next time.</h2>
+                      <h2>Preview hidden</h2>
                       <p className="fixture-note">This demo’s content is now hidden.</p>
                       <button className="source-button" ref={restore} onClick={show}>
-                        Restore demo preview ↗
+                        Restore demo preview
                       </button>
                     </div>
                   ))}
@@ -349,19 +328,14 @@ export function ComponentDemo({
                   <div className="invitation-fixture" ref={openContent} tabIndex={-1}>
                     {unlocked ? (
                       <>
-                        <span className="eyebrow">BEFORE YOU GO</span>
-                        <h2>
-                          A little privacy.
-                          <br />A little peace of mind.
-                        </h2>
+                        <h2>Hide this preview</h2>
                         <RelockControl onRelock={relock} theme={theme} />
                       </>
                     ) : (
                       <>
-                        <span className="eyebrow">PREVIEW HIDDEN</span>
-                        <h2>See you soon.</h2>
+                        <h2>Preview hidden</h2>
                         <button className="source-button" ref={restore} onClick={show}>
-                          Restore demo preview ↗
+                          Restore demo preview
                         </button>
                       </>
                     )}
@@ -374,15 +348,12 @@ export function ComponentDemo({
                       theme={theme}
                       prompt={
                         <>
-                          <span className="eyebrow">AN INVITATION TO LOOK CLOSER</span>
-                          <h2 className="veil-heading">
-                            Something good
-                            <br />
-                            is taking shape.
-                          </h2>
-                          <p className="fixture-note">Your preview starts on the other side.</p>
+                          <h2 className="veil-heading">Locked preview</h2>
+                          <p className="fixture-note">
+                            The page behind this prompt is blurred and skipped by Tab.
+                          </p>
                           <button className="preview-submit" onClick={() => setRevealed(true)}>
-                            Reveal demo ↗
+                            Reveal demo
                           </button>
                         </>
                       }
@@ -406,10 +377,8 @@ export function ComponentDemo({
             </div>
           </div>
           <aside className="controls" aria-label={`${name} settings`}>
-            <div className="control-title">
-              Make it yours <span>↙</span>
-            </div>
-            <p className="control-intro">One detail. A better experience.</p>
+            <div className="control-title">Demo settings</div>
+            <p className="control-intro">These controls only change this playground.</p>
             {name === 'Code field' && (
               <>
                 <div className="control-label">Input mode</div>
@@ -462,7 +431,7 @@ export function ComponentDemo({
                     )
                   }
                 >
-                  Try a messy paste ↗
+                  Try a messy paste
                 </button>
               </>
             )}
@@ -616,7 +585,7 @@ export function ComponentDemo({
               <p>{info.contract}</p>
             </div>
             <button className="source-button" onClick={copySource}>
-              {copied ? 'Copied ✓' : 'Copy component ↗'}
+              {copied ? 'Copied ✓' : 'Copy component'}
             </button>
           </aside>
         </div>
@@ -635,12 +604,7 @@ export function ComponentDemo({
       {!compact && (
         <section className="usage" id="usage">
           <div>
-            <div className="eyebrow">SMALL DETAILS. FULLY CONSIDERED.</div>
-            <h2>
-              Fits your preview.
-              <br />
-              Feels like your brand.
-            </h2>
+            <h2>Usage</h2>
             <p>{info.contract}</p>
             <p>
               Copy the self-contained source from the Code tab.

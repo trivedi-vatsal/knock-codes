@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="160" viewBox="0 0 480 160" fill="none">
+<!-- MIT License — Copyright (c) 2026 Knock contributors. -->
+<circle cx="240" cy="80" r="57" stroke="#d9ddce"/><circle cx="240" cy="80" r="45" stroke="#b5bea5" stroke-width="4"/><path d="M240 35a45 45 0 0 1 39 67" stroke="#a9553c" stroke-width="4" stroke-linecap="round"/>
+<path d="M230 68v24m20-24v24" stroke="#64705a" stroke-width="5" stroke-linecap="round"/>
+<path d="M105 68h49m-32 12h32m-17 12h17M326 68h49m-49 12h32m-32 12h17" stroke="#b5bea5"/>
+<circle cx="240" cy="23" r="3" fill="#64705a"/>
+</svg>

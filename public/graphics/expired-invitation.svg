@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="220" viewBox="0 0 360 220" fill="none">
+<!-- MIT License — Copyright (c) 2026 Knock contributors. -->
+<circle cx="179" cy="105" r="80" stroke="#e0d1be" stroke-dasharray="3 7"/>
+<path d="m97 89 80-42 86 42v96H97Z" fill="#e7d9c2" stroke="#baa78b"/>
+<rect x="118" y="48" width="124" height="123" rx="3" fill="#fffaf0" stroke="#cbbba3"/>
+<path d="M140 72h65m-65 10h43" stroke="#cbbba3"/>
+<circle cx="180" cy="116" r="22" stroke="#aa6149"/><path d="M180 102v15l10 6" stroke="#aa6149" stroke-width="2"/>
+<path d="m97 89 83 62 83-62v96H97Z" fill="#e7d9c2" stroke="#baa78b"/>
+<path d="m97 185 65-48m101 48-65-48" stroke="#baa78b"/>
+<circle cx="180" cy="159" r="12" fill="#a9553c"/><path d="M175 159h10" stroke="#fffaf0"/>
+</svg>

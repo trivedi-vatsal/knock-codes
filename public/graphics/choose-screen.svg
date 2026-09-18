@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="160" viewBox="0 0 320 160" fill="none">
+<!-- MIT License — Copyright (c) 2026 Knock contributors. -->
+<rect x="44" y="28" width="108" height="104" rx="5" fill="#263329" stroke="#71816a" transform="rotate(-8 98 80)"/><rect x="169" y="28" width="108" height="104" rx="5" fill="#263329" stroke="#71816a" transform="rotate(8 223 80)"/><rect x="99" y="17" width="122" height="126" rx="5" fill="#f3efdf" stroke="#adbca0"/><path d="M99 39h122" stroke="#b8bea8"/><circle cx="111" cy="28" r="2" fill="#a9553c"/><path d="M121 28h27" stroke="#b8bea8"/><path d="M151 67v-7a9 9 0 0 1 18 0v7" stroke="#617253"/><rect x="146" y="65" width="28" height="22" rx="3" fill="#dfe4d3" stroke="#899878"/><rect x="114" y="99" width="92" height="12" rx="2" stroke="#b8bea8"/><rect x="114" y="120" width="92" height="10" rx="2" fill="#ba795b"/><path d="m237 95 22 21-13 1-5 13Z" fill="#d8a080" stroke="#263329" stroke-width="2"/>
+</svg>

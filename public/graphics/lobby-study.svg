@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="240" viewBox="0 0 480 240" fill="none">
+<!-- MIT License — Copyright (c) 2026 Knock contributors. -->
+<path d="M0 0h480v240H0Z" fill="#ede5d6"/><path d="M65 0v171l175 69M65 171h415" stroke="#c2b69e"/>
+<path d="M294 171V62a46 46 0 0 1 92 0v109" fill="#a9b399"/><path d="M306 171V63a34 34 0 0 1 68 0v108" fill="#d9decf"/>
+<path d="m306 171 68-23 72 46-110 20Z" fill="#f9f0da"/>
+<path d="m115 161 132-25 64 30-134 28Z" fill="#bc8663" stroke="#916a4e"/><path d="m115 161 62 33v13l-62-32Zm62 33 134-28v13l-134 28Z" fill="#a87150" stroke="#916a4e"/>
+<path d="M125 180v34m59-5v22m113-48v23" stroke="#6b705d" stroke-width="7"/>
+<path d="m135 158 64 31m-40-36 64 31m-40-36 64 31m-40-36 64 31" stroke="#d7ac89"/>
+<path d="M105 43h100v58H105Z" fill="#faf5e9" stroke="#c2b69e"/><path d="m118 86 22-25 18 16 15-10 20 19Z" fill="#adb497"/>
+<path d="M434 174v-56m0 22c-26 0-30-26-30-26 26 1 30 26 30 26Zm0 15c26 0 30-26 30-26-26 1-30 26-30 26Z" stroke="#7b866c" fill="#a9b399"/>
+<path d="M417 174h34l-6 27h-22Z" fill="#bd8064"/>
+</svg>

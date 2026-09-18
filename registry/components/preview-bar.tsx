@@ -102,36 +102,10 @@ export function PreviewBar({
         {href ? (
           <a href={href} className={action}>
             {labels?.feedback ?? 'Send feedback'}
-            <svg
-              aria-hidden="true"
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M7 17 17 7M7 7h10v10" />
-            </svg>
           </a>
         ) : onFeedback ? (
           <button type="button" onClick={onFeedback} className={action}>
             {labels?.feedback ?? 'Send feedback'}
-            <svg
-              aria-hidden="true"
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M7 17 17 7M7 7h10v10" />
-            </svg>
           </button>
         ) : null}
         <button

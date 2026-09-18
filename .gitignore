@@ -4,3 +4,5 @@ dist/
 artifacts/
 docs/VERIFICATION.md
 docs/plans/
+.agents/*
+skills-lock.json

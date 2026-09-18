@@ -1,147 +1,211 @@
 /** MIT License — Copyright (c) 2026 Knock contributors. */
-import { useEffect, useRef, useState, version } from 'react';
-import { ClientPreviewGate } from '../registry/blocks/client-preview-gate';
+
+const bentoItems = [
+  {
+    className: 'home-bento-gate',
+    graphic: 'quick-gate',
+    href: '/playground/quick-gate',
+    name: 'Quick gate',
+    kind: 'Block',
+    note: 'One field. For staging and internal links.',
+  },
+  {
+    className: 'home-bento-code',
+    graphic: 'code-field',
+    href: '/playground/code-field',
+    name: 'Code field',
+    kind: 'Component',
+    note: 'Digit or passphrase entry. Paste from email.',
+  },
+  {
+    className: 'home-bento-cool',
+    graphic: 'cooldown',
+    href: '/playground/cooldown-notice',
+    name: 'Cooldown notice',
+    kind: 'Component',
+    note: 'A retry countdown. It never submits or locks you out.',
+  },
+  {
+    className: 'home-bento-chrome',
+    graphic: 'preview-chrome',
+    href: '/playground/preview-chrome',
+    name: 'Preview chrome',
+    kind: 'Block',
+    note: 'Draft ribbon and bar around unlocked work.',
+  },
+  {
+    className: 'home-bento-ended',
+    graphic: 'expired-invitation',
+    href: '/playground/expired-notice',
+    name: 'Expired notice',
+    kind: 'Block',
+    note: 'The invitation window has closed. Ask for a new link.',
+  },
+];
+
+function HomeBento() {
+  return (
+    <section className="home-bento-section" aria-labelledby="home-bento-title">
+      <div className="home-registry-heading">
+        <div>
+          <h2 id="home-bento-title">
+            Small details.
+            <br />A complete entrance.
+          </h2>
+        </div>
+        <div>
+          <p>
+            From the first code to the final review.
+            <br />
+            Start with the pieces your project needs.
+          </p>
+          <a href="/library">View all 19 items</a>
+        </div>
+      </div>
+      <div className="home-bento">
+        {bentoItems.map((item) => (
+          <a key={item.href} className={`home-bento-tile ${item.className}`} href={item.href}>
+            <div className="home-bento-art">
+              <img
+                src={`/graphics/${item.graphic}.svg`}
+                alt=""
+                width={
+                  item.graphic === 'preview-chrome'
+                    ? 640
+                    : item.graphic === 'expired-invitation'
+                      ? 360
+                      : 480
+                }
+                height={
+                  item.graphic === 'quick-gate'
+                    ? 300
+                    : item.graphic === 'preview-chrome' || item.graphic === 'expired-invitation'
+                      ? 220
+                      : 160
+                }
+                loading="lazy"
+              />
+            </div>
+            <span>{item.kind}</span>
+            <strong>{item.name}</strong>
+            <p>{item.note}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+}
 
 export function Home() {
-  const demo = useRef<HTMLDivElement>(null);
-  const [demoActive, setDemoActive] = useState(false);
-  const [value, setValue] = useState('');
-  const [unlocked, setUnlocked] = useState(false);
-  useEffect(() => {
-    if (demoActive) demo.current?.querySelector('input')?.focus({ preventScroll: true });
-  }, [demoActive]);
   return (
     <div className="home-page">
       <section className="home-hero" aria-labelledby="home-title">
         <div className="home-copy">
-          <p className="eyebrow">UI FOR PRIVATE PREVIEWS</p>
           <h1 id="home-title">
-            Good work deserves
-            <br />a thoughtful welcome.
+            Your work.
+            <br />A little more
+            <br />
+            private.
           </h1>
           <p className="home-lead">
-            Give your next client preview a front door that feels like you. Copy-paste React
-            components for access screens, invitations, and the draft on the other side.
+            React components for work you’re not ready to make public. Add access screens,
+            invitations, and draft labels. Keep the source in your project.
           </p>
           <div className="home-actions">
             <a className="home-primary" href="/library">
-              Explore the library <span>↗</span>
+              Explore the library
             </a>
             <a href="/docs/get-started">Get started</a>
           </div>
-          <p className="home-facts">
-            React + Tailwind <span>·</span> Install with shadcn <span>·</span> Yours to customize
-          </p>
+          <p className="home-hero-note">Your code. Your branding. Your app handles access.</p>
         </div>
-        <div className="home-example">
-          <div className="home-example-label">
-            <span>THE FIRST IMPRESSION</span>
-            <span>01 / CLIENT PREVIEW</span>
-          </div>
-          <div
-            ref={demo}
-            {...({
-              inert: demoActive ? undefined : version.startsWith('18.') ? '' : true,
-            } as { inert?: boolean })}
-          >
-            <ClientPreviewGate
-              value={value}
-              onChange={setValue}
-              onSubmit={(event) => {
-                event.preventDefault();
-                setUnlocked(true);
-              }}
-              status="idle"
-              unlocked={unlocked}
-              theme="light"
-              recipient="Acme Co."
-              logo={<strong className="home-studio">atelier</strong>}
-              heading="A first look, just for you."
-              description="Your next chapter is ready. Come take a look."
-              requestAccessHref="/docs/get-started"
-              onRelock={() => {
-                setUnlocked(false);
-                setValue('');
-              }}
-              buildLabel="Concept 01"
-              labels={{
-                hint: 'Try any code to explore this example.',
-                submit: 'Open the preview',
-                footer: 'Prepared with care. Shared in confidence.',
-              }}
-            >
-              <div className="home-open-preview">
-                <span>ACME / CONCEPT 01</span>
-                <h2>
-                  Room for
-                  <br />
-                  what comes next.
-                </h2>
-                <p>
-                  You’re looking at a draft. A place to explore, discuss, and shape the next
-                  direction together.
-                </p>
-                <button
-                  onClick={() => {
-                    setUnlocked(false);
-                    setValue('');
-                  }}
-                >
-                  Relock this example ↗
-                </button>
-              </div>
-            </ClientPreviewGate>
-          </div>
-          <div className="home-demo-note">
-            {demoActive ? (
-              'Interactive example. Any code opens this demo.'
-            ) : (
-              <button onClick={() => setDemoActive(true)}>Try the interactive example ↗</button>
-            )}
-          </div>
+        <figure className="home-hero-art">
+          <img
+            src="/graphics/private-entrance.svg"
+            alt=""
+            width="560"
+            height="520"
+            fetchPriority="high"
+          />
+          <figcaption>Access screens and draft chrome</figcaption>
+        </figure>
+        <div className="home-hero-specs">
+          <span>
+            <strong>19</strong> blocks &amp; components
+          </span>
+          <span>React + Tailwind</span>
+          <span>Install with shadcn</span>
+          <span>MIT licensed</span>
         </div>
       </section>
+      <HomeBento />
       <section className="home-how" aria-labelledby="home-how-title">
         <div className="home-section-heading">
-          <p className="eyebrow">FROM FIRST HELLO TO FINAL REVIEW</p>
-          <h2 id="home-how-title">A small library for the whole preview.</h2>
-        </div>
-        <div className="home-steps">
           <div>
-            <span>01 / CHOOSE</span>
-            <h3>Start with the screen.</h3>
+            <h2 id="home-how-title">
+              Nine blocks.
+              <br />
+              Ten components.
+              <br />
+              Make them yours.
+            </h2>
+          </div>
+          <div className="home-how-intro">
             <p>
-              Use a complete client gate, a quick staging screen, or individual components to build
+              A complete screen or just the missing piece. Bring it into your project, make it fit,
+              and share the work in progress.
+            </p>
+            <a href="/docs/get-started">Start building</a>
+          </div>
+        </div>
+        <ol className="home-steps">
+          <li>
+            <div className="home-step-label">
+              <span>01</span> The starting point
+            </div>
+            <img src="/graphics/choose-screen.svg" alt="" width="320" height="160" loading="lazy" />
+            <h3>Pick your pieces</h3>
+            <p>
+              A ready-made client gate, a staging screen, or individual components for a flow of
               your own.
             </p>
-          </div>
-          <div>
-            <span>02 / MAKE IT YOURS</span>
-            <h3>Bring your own identity.</h3>
+            <a href="/library">Explore the library</a>
+          </li>
+          <li>
+            <div className="home-step-label">
+              <span>02</span> In your codebase
+            </div>
+            <img src="/graphics/edit-source.svg" alt="" width="320" height="160" loading="lazy" />
+            <h3>Make it feel like you</h3>
             <p>
-              Install the source with shadcn. Change the colors, copy, and branding directly in your
-              project.
+              Install with shadcn. The source lives in your project—ready for your colors, copy, and
+              branding.
             </p>
-          </div>
-          <div>
-            <span>03 / KEEP THE CONTEXT</span>
-            <h3>Go beyond the unlock.</h3>
+            <a href="/docs/styling">Make it your own</a>
+          </li>
+          <li>
+            <div className="home-step-label">
+              <span>03</span> Ready for feedback
+            </div>
+            <img src="/graphics/review-draft.svg" alt="" width="320" height="160" loading="lazy" />
+            <h3>Give the draft context</h3>
             <p>
-              Keep draft labels, build details, feedback, and relock controls alongside the work
-              being reviewed.
+              Keep draft labels, build names, feedback, and relock controls alongside the work being
+              reviewed.
             </p>
-          </div>
-        </div>
+            <a href="/playground/preview-chrome">Try preview chrome</a>
+          </li>
+        </ol>
       </section>
       <aside className="home-contract">
         <div>
-          <h2>The interface is ours. Access is yours.</h2>
+          <h2>Knock is UI only</h2>
           <p>
             Knock provides controlled UI. Your application verifies codes and decides who can see
             the preview.
           </p>
         </div>
-        <a href="/docs">How Knock fits your app ↗</a>
+        <a href="/docs">How access works</a>
       </aside>
     </div>
   );

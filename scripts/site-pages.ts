@@ -23,7 +23,7 @@ for (const route of [...routes, '/404', '/docs/introduction']) {
   if (route === '/404')
     html = html.replace(
       '<div id="root"></div>',
-      '<div id="root"><main><h1>Page not found</h1><p>This page could not be found.</p><a href="/library">Explore the library</a></main></div>',
+      '<div id="root"><main><h1>Page not found</h1><p>This page could not be found.</p><a href="/library">Browse the library</a></main></div>',
     );
   const output = route === '/404' ? 'dist/404.html' : path.join('dist', route, 'index.html');
   mkdirSync(path.dirname(output), { recursive: true });

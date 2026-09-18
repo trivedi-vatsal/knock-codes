@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="160" viewBox="0 0 480 160" fill="none">
+<!-- MIT License — Copyright (c) 2026 Knock contributors. -->
+<path d="M47 80h386" stroke="#ded3c4" stroke-dasharray="3 6"/>
+<rect x="77" y="44" width="46" height="64" rx="5" fill="#fffaf1" stroke="#ccb9a1"/><circle cx="100" cy="76" r="4" fill="#7d6e59"/><rect x="133" y="44" width="46" height="64" rx="5" fill="#fffaf1" stroke="#ccb9a1"/><circle cx="156" cy="76" r="4" fill="#7d6e59"/><rect x="189" y="44" width="46" height="64" rx="5" fill="#fffaf1" stroke="#ccb9a1"/><circle cx="212" cy="76" r="4" fill="#7d6e59"/><rect x="245" y="44" width="46" height="64" rx="5" fill="#fffaf1" stroke="#ccb9a1"/><circle cx="268" cy="76" r="4" fill="#7d6e59"/><rect x="301" y="44" width="46" height="64" rx="5" fill="#fffaf1" stroke="#a9553c"/><path d="M324 62v27" stroke="#a9553c"/><rect x="357" y="44" width="46" height="64" rx="5" fill="#fffaf1" stroke="#ccb9a1"/><path d="M80 128h82m211 0h28m-5-5 5 5-5 5" stroke="#bfa98c"/>
+</svg>

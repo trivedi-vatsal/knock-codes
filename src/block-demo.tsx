@@ -47,7 +47,7 @@ export const blockInfo: Record<
   },
   'Expired notice': {
     title: 'Every preview has its moment.',
-    description: 'A thoughtful ending, and a clear way to ask for another look.',
+    description: 'An expired invitation with a way to request another look.',
     icon: 'diamond',
     contract: 'An expired invitation with a route back to the owner.',
   },
@@ -73,7 +73,7 @@ export const blockInfo: Record<
   'Client preview gate': {
     title: 'Your work. Their first look.',
     description:
-      'A branded invitation, with every thoughtful detail in place.\nPrepared for a person. Ready for a first impression.',
+      'A branded invitation for a named recipient, with expiry and a request-access path.',
     icon: 'diamond',
     contract: 'Controlled code entry, addressed invitation, expiry and access recovery.',
   },
@@ -96,11 +96,10 @@ function PreviewContent() {
         <span>atelier / acme</span>
         <span>PRIVATE DESIGN REVIEW</span>
       </div>
-      <p className="eyebrow">THE NEXT CHAPTER</p>
       <h2>
-        Room for
+        Hallway
         <br />
-        something remarkable.
+        seating
       </h2>
       <div className="block-art" aria-hidden="true">
         <span />
@@ -108,17 +107,17 @@ function PreviewContent() {
         <span />
       </div>
       <p className="fixture-note">
-        A first direction. A shared conversation.
+        Oak benches and the north wall.
         <br />
-        Built around what comes next.
+        Notes from Tuesday’s review.
       </p>
       <button
         className="source-button"
         onClick={(event) => {
-          event.currentTarget.textContent = 'Thanks for exploring ✓';
+          event.currentTarget.textContent = 'Copied ✓';
         }}
       >
-        Explore the concept ↗
+        View drawings
       </button>
     </div>
   );
@@ -180,7 +179,7 @@ export function BlockDemo({
     },
     onFeedback: () => setMessage('Feedback callback received.'),
     buildLabel: 'acme-v0.8.2',
-    error: 'That didn’t quite match. Give your invitation another look.',
+    error: 'That code did not match. Try again.',
   };
   const source = sources[`../registry/blocks/${slug}.tsx`];
   async function copy() {
@@ -238,8 +237,8 @@ export function BlockDemo({
               <div className="block-example">
                 {name === 'Gated section' && (
                   <div className="section-surround">
-                    <span className="eyebrow">THE PUBLIC PART</span>
-                    <h3>A shared starting point.</h3>
+                    <span>Public page</span>
+                    <h3>Project overview</h3>
                     <p>This part stays available to everyone.</p>
                   </div>
                 )}
@@ -248,7 +247,7 @@ export function BlockDemo({
                 </Block>
                 {name === 'Gated section' && (
                   <div className="section-surround">
-                    <a href="/docs/gated-section">Explore the project notes ↗</a>
+                    <a href="/docs/gated-section">Gated section docs</a>
                   </div>
                 )}
               </div>
@@ -259,10 +258,8 @@ export function BlockDemo({
             </div>
           </div>
           <aside className="controls" aria-label={`${name} settings`}>
-            <div className="control-title">
-              Make it yours <span>↙</span>
-            </div>
-            <p className="control-intro">Everything stays in your hands.</p>
+            <div className="control-title">Demo settings</div>
+            <p className="control-intro">These controls only change this playground.</p>
             <div className="control-label">Consumer visibility</div>
             <div className="segmented">
               <button ref={control} aria-pressed={!unlocked} onClick={() => setUnlocked(false)}>
@@ -325,10 +322,10 @@ export function BlockDemo({
               <p>Submit never unlocks. Reveal changes the demo consumer’s state.</p>
             </div>
             <button className="source-button" onClick={copy}>
-              {copied ? 'Copied ✓' : 'Copy block ↗'}
+              {copied ? 'Copied ✓' : 'Copy block'}
             </button>
             <a className="source-button" href={`/docs/${slug}`}>
-              Props & installation ↗
+              Props and installation
             </a>
           </aside>
         </div>
@@ -347,15 +344,10 @@ export function BlockDemo({
       {!compact && (
         <section className="usage" id="usage">
           <div>
-            <div className="eyebrow">A COMPLETE FIRST IMPRESSION</div>
-            <h2>
-              One block.
-              <br />
-              Your entire welcome.
-            </h2>
+            <h2>Usage</h2>
             <p>{blockInfo[name].contract}</p>
             <a href={`/docs/${slug}`} className="source-button">
-              Read the generated documentation ↗
+              Documentation
             </a>
           </div>
           <div className="usage-code">
